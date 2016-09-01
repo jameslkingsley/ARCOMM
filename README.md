@@ -1,2 +1,2 @@
-# HubAPI
-Web API framework for managing join applications.
+# ARCHUB
+Website for managing join applications.
