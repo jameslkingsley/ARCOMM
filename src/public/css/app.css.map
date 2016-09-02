@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.scss"],"names":[],"mappings":"AACA,yEAAY;AAKZ;EACI,oBAAoB,EACvB","file":"app.css","sourcesContent":["// Fonts\n@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);\n\n// Variables\n@import \"variables\";\n\nbody {\n    background: #F5F5F5;\n}"],"sourceRoot":"/source/"}
