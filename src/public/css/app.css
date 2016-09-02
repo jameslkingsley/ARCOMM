@@ -1,5 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@import url(https://fonts.googleapis.com/css?family=Coming+Soon);
 body {
-  background: #F5F5F5; }
+  background: #F5F5F5;
+  font-family: "Coming Soon", cursive;
+  font-size: 16px;
+  color: #444; }
 
 /*# sourceMappingURL=app.css.map */
