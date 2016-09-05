@@ -16,8 +16,55 @@
     <form method="post" action="/join">
         {{ csrf_field() }}
 
+        <div class="form-group {{ $errors->first('name') != '' ? 'has-error' : ''}}">
+            <label class="control-label" for="name">Your Name</label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Name" maxlength="255">
+            <span id="name_help" class="help-block">{{ $errors->first('name') }}</span>
+        </div>
+
         <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="Your name" maxlength="255" />
+            <input type="number" name="age" class="form-control" placeholder="Age" />
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="location" class="form-control" placeholder="Location" />
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="email" class="form-control" placeholder="Email Address" />
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="steam" class="form-control" placeholder="Steam Account" />
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" name="available">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" name="apex">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" name="groups">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <textarea name="experience" class="form-control" placeholder="Arma Experience"></textarea>
+        </div>
+
+        <div class="form-group">
+            <textarea name="bio" class="form-control" placeholder="About Yourself"></textarea>
         </div>
 
         <div class="form-group">

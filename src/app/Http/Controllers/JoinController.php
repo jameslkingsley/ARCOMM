@@ -17,7 +17,16 @@ class JoinController extends Controller
     public function submit(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'age' => 'required|integer|between:16,100',
+            'location' => 'required',
+            'email' => 'required|email',
+            'steam' => 'required|url',
+            'available' => 'required',
+            'apex' => 'required|integer',
+            'groups' => 'required',
+            'experience' => 'required',
+            'bio' => 'required'
         ]);
 
         // Create the join request if there are no form errors
