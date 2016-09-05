@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\JoinRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
-class PageController extends Controller {
-    public function Home() {
-        return view('home', [
-            'title' => 'Home'
-        ]);
-    }
+class PageController extends Controller
+{
+	public function home()
+    {
+		return JoinRequest::all();
+	}
 }

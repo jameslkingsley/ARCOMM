@@ -1,24 +1,30 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            @unless (empty($title))
-                {{ $title }} &mdash; 
-            @endunless
-            {{ env('SITE_NAME', 'ARCHUB') }}
-        </title>
-        <link rel="stylesheet" href="{{ url('css/app.css') }}">
-    </head>
+<html lang="en">
+<head>
+    <title>
+        @unless (empty($title))
+            {{ $title }} &mdash;
+        @endunless
+        {{ env('SITE_NAME', 'ARCHUB') }}
+    </title>
 
-    <body>
-        <header>
-            @yield('header')
-        </header>
-        <main>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <header>
+        @yield('header')
+    </header>
+    <main>
+        <div class="container">
             @yield('content')
-        </main>
-        <footer>
-            @yield('footer')
-        </footer>
-    </body>
+        </div>
+    </main>
+    <footer>
+        @yield('footer')
+    </footer>
+    @yield('scripts')
+</body>
 </html>
