@@ -1,8 +1,45 @@
-@import url(https://fonts.googleapis.com/css?family=Coming+Soon);
+@import url(https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900);
 body {
-  background: #F5F5F5;
-  font-family: "Coming Soon", cursive;
+  background: #FFF;
+  font-family: "Catamaran", sans-serif;
   font-size: 16px;
   color: #444; }
+
+header {
+  height: 50px;
+  background: #BD2C2C;
+  margin-bottom: 30px; }
+  header .nav {
+    padding: 0;
+    line-height: 50px; }
+    header .nav a {
+      float: right;
+      color: #222;
+      font-weight: 400;
+      font-size: 14px;
+      color: #EEE;
+      padding: 0 10px;
+      text-decoration: none !important;
+      -webkit-transition: all .15s ease;
+      transition: all .15s ease;
+      text-transform: uppercase; }
+      header .nav a:hover {
+        color: #FFF; }
+
+a {
+  color: #BD2C2C; }
+  a:hover {
+    color: #BD2C2C; }
+  a:active {
+    color: #BD2C2C; }
+  a:focus {
+    color: #BD2C2C; }
+  a:visited {
+    color: #BD2C2C; }
+
+footer {
+  float: left;
+  width: 100%;
+  margin: 50px 0; }
 
 /*# sourceMappingURL=app.css.map */

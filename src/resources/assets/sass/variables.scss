@@ -1,5 +1,14 @@
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900);
+
+// Typography
+$font-family: 'Catamaran', sans-serif;
+$font-size-base: 16px;
+$line-height-base: 1.6;
+$text-color-base: #444;
+
 // Body
-$body-bg: #F5F5F5;
+$body-bg: #FFF;
 
 // Brands
 $brand-primary: #BD2C2C;
@@ -7,9 +16,3 @@ $brand-info: #8eb4cb;
 $brand-success: #2ab27b;
 $brand-warning: #cbb956;
 $brand-danger:  #bf5329;
-
-// Typography
-$font-family: 'Coming Soon', cursive;
-$font-size-base: 16px;
-$line-height-base: 1.6;
-$text-color-base: #444;

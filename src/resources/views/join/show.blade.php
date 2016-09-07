@@ -1,9 +1,9 @@
 @extends('layout')
 
 @section('title')
-    Home
+    View
 @endsection
 
 @section('content')
-    Home
+    {{ dump($jr) }}
 @endsection

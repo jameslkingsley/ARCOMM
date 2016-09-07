@@ -6,3 +6,5 @@
 *.phpproj
 *.suo
 *.sln
+/nbproject/private/
+.phpintel/
