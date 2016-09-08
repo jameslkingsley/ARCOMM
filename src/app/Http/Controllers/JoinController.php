@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use Illuminate\Support\Facades\Input;
 use App\JoinRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -24,9 +25,19 @@ class JoinController extends Controller {
         return view('join.show', compact('jr'));
     }
 
-    public function listRequests() {
-        $joinRequests = JoinRequest::all();
-        return view('join.list.list', compact('joinRequests'));
+    public function getRequests($status = '') {
+        return (empty($status)) ? JoinRequest::all() : JoinRequest::where('status', '=', JoinRequest::StatusList[$status])->get();
+    }
+
+    public function items() {
+        $status = Input::get('statusKey');
+        $joinRequests = $this->getRequests($status);
+        return view('join.list.items', compact('joinRequests'));
+    }
+
+    public function listRequests($status = '') {
+        $joinRequests = $this->getRequests($status);
+        return view('join.list.index', compact('joinRequests'));
     }
 
     public function submit(Request $request) {

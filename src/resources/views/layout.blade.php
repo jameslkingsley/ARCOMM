@@ -9,7 +9,6 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css" /> --}}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/app.css">
 
@@ -20,15 +19,26 @@
     <body>
         <header>
             @yield('header')
-            <div class="nav container">
-                <a href="/" style="float:left">ARCHUB</a>
-                <a href="/join">Submit Join Request</a>
-                <a href="/join/list">View Join Requests</a>
+            <div class="nav">
+                <a href="/" class="nav-link nav-link-disabled">
+                    <i class="brand-logo"></i>
+                    <span class="brand-text"></span>
+                </a>
+                <a href="/join/list" class="nav-link">
+                    <i class="glyphicon glyphicon-inbox"></i>
+                    <span>Join Requests</span>
+                </a>
                 @yield('nav')
             </div>
         </header>
         <main>
-            <div class="container">
+            <div class="subnav">
+                @yield('subnav')
+            </div>
+            <div class="content">
+                <div class="controls">
+                    @yield('controls')
+                </div>
                 @yield('content')
             </div>
         </main>

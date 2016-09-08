@@ -18,5 +18,7 @@ Route::get('/', 'PageController@home');
 Route::get('/join', 'JoinController@index');
 Route::post('/join', 'JoinController@submit');
 Route::get('/join/list', 'JoinController@listRequests');
+Route::get('/join/items', 'JoinController@items');
 Route::get('/join/show/{joinRequest}', 'JoinController@show');
 Route::get('/join/approve/{joinRequest}', 'JoinController@approve');
+// Route::resource('join', 'JoinController');

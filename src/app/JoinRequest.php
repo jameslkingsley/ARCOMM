@@ -24,11 +24,6 @@ class JoinRequest extends Model {
         'bio'
     ];
 
-    public static function getConstants() {
-        $class = new \ReflectionClass(__CLASS__);
-        return $class->getConstants();
-    }
-
     /**
      * Sets the status of a join request
      * @param [integer] $status [New status]
