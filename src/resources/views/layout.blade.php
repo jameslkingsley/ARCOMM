@@ -20,11 +20,11 @@
         <header>
             @yield('header')
             <div class="nav">
-                <a href="/" class="nav-link nav-link-disabled">
+                <a href="{{ url('/') }}" class="nav-link nav-link-disabled">
                     <i class="brand-logo"></i>
                     <span class="brand-text"></span>
                 </a>
-                <a href="/join/list" class="nav-link">
+                <a href="{{ route('admin.join-requests.index') }}" class="nav-link">
                     <i class="glyphicon glyphicon-inbox"></i>
                     <span>Join Requests</span>
                 </a>

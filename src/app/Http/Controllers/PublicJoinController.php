@@ -8,12 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\JoinRequest;
 
-class JoinController extends Controller
+class PublicJoinController extends Controller
 {
     public function __construct()
     {
-        // Middleware
-        $this->middleware('admin');
+        // Middleware TODO
     }
 
     /**
@@ -21,10 +20,9 @@ class JoinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($status = 'Pending')
+    public function index()
     {
-        $joinRequests = $this->getRequests($status);
-        return view('join.admin.index', compact('joinRequests'));
+        return $this->create();
     }
 
     /**
@@ -34,7 +32,7 @@ class JoinController extends Controller
      */
     public function create()
     {
-        //
+        return view('join.public.form');
     }
 
     /**
@@ -45,7 +43,23 @@ class JoinController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'age' => 'required|integer|between:16,100',
+            'location' => 'required',
+            'email' => 'required|email',
+            'steam' => 'required|url',
+            'available' => 'required',
+            'apex' => 'required|integer',
+            'groups' => 'required',
+            'experience' => 'required',
+            'bio' => 'required'
+        ]);
+
+        // Create the join request if there are no form errors
+        JoinRequest::create($request->all());
+
+        return back();
     }
 
     /**
@@ -54,9 +68,9 @@ class JoinController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(JoinRequest $jr)
+    public function show($id)
     {
-        return view('join.admin.show', compact('jr'));
+        //
     }
 
     /**
@@ -91,17 +105,5 @@ class JoinController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function items()
-    {
-        $status = Input::get('statusKey');
-        $joinRequests = $this->getRequests($status);
-        return view('join.admin.items', compact('joinRequests'));
-    }
-
-    public function getRequests($status = '')
-    {
-        return (empty($status)) ? JoinRequest::all() : JoinRequest::where('status', '=', JoinRequest::StatusList[$status])->get();
     }
 }

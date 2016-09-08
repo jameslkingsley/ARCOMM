@@ -15,10 +15,19 @@
 Route::get('/', 'PageController@home');
 
 // Join Requests
-Route::get('/join', 'JoinController@index');
-Route::post('/join', 'JoinController@submit');
-Route::get('/join/list', 'JoinController@listRequests');
-Route::get('/join/items', 'JoinController@items');
-Route::get('/join/show/{joinRequest}', 'JoinController@show');
-Route::get('/join/approve/{joinRequest}', 'JoinController@approve');
-// Route::resource('join', 'JoinController');
+// Route::get('/join', 'JoinController@index');
+// Route::post('/join', 'JoinController@submit');
+// Route::get('/join/list', 'JoinController@listRequests');
+// Route::get('/join/items', 'JoinController@items');
+// Route::get('/join/show/{joinRequest}', 'JoinController@show');
+// Route::get('/join/approve/{joinRequest}', 'JoinController@approve');
+
+Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
+
+Route::group(['middleware' => 'admin'], function() {
+    Route::get('/join-requests/items', 'JoinController@items');
+    Route::resource('join-requests', 'JoinController', [
+        'as' => 'admin',
+        'names' => []
+    ]);
+});
