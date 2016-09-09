@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JoinRequest extends Model {
+class JoinRequest extends Model
+{
     const StatusList = [
         'Pending' => 0,
         'Approved' => 1,
@@ -24,11 +25,18 @@ class JoinRequest extends Model {
         'bio'
     ];
 
+    public function getStatusAsText()
+    {
+        $status = array_search($this->status, JoinRequest::StatusList, false);
+        return (gettype($status) == "boolean") ? "Unknown" : $status;
+    }
+
     /**
      * Sets the status of a join request
      * @param [integer] $status [New status]
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
         $this->update();
     }
@@ -38,7 +46,8 @@ class JoinRequest extends Model {
      * Sends an approved email to the recipient
      * @return void
      */
-    public function approve() {
+    public function approve()
+    {
         setStatus(StatusList['Approved']);
     }
 
@@ -47,7 +56,8 @@ class JoinRequest extends Model {
      * Sends a declined email to the recipient
      * @return void
      */
-    public function decline() {
+    public function decline()
+    {
         setStatus(StatusList['Declined']);
     }
 }

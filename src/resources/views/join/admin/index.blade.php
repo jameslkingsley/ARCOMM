@@ -26,6 +26,21 @@
                 event.preventDefault();
             });
 
+            $(document).on("click", ".jr-item", function(event) {
+                var id = $(this).data("id");
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ action("JoinController@showByInput") }}',
+                    data: {"id": id},
+                    success: function(data) {
+                        openPanel(data);
+                    }
+                });
+
+                event.preventDefault();
+            });
+
             $('.status-filter').first().click();
         });
     </script>

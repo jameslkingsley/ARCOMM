@@ -1,7 +1,7 @@
 <ul class="jr-list">
     @foreach ($joinRequests as $jr)
         <li>
-            <a href="/join/show/{{ $jr->id }}" class="jr-item">
+            <a href="{{ action('JoinController@show', ['jr' => $jr]) }}" class="jr-item" data-id="{{ $jr->id }}">
                 <h1>{{ $jr->name }}</h1>
                 <p>
                     {{ $jr->created_at->diffForHumans() }}

@@ -26,6 +26,7 @@ Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
 
 Route::group(['middleware' => 'admin'], function() {
     Route::get('/join-requests/items', 'JoinController@items');
+    Route::get('/join-requests/showByInput', 'JoinController@showByInput');
     Route::resource('join-requests', 'JoinController', [
         'as' => 'admin',
         'names' => []

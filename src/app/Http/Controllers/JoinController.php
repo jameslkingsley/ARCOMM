@@ -59,6 +59,13 @@ class JoinController extends Controller
         return view('join.admin.show', compact('jr'));
     }
 
+    public function showByInput()
+    {
+        $id = Input::get('id');
+        $jr = JoinRequest::find($id);
+        return view('join.admin.show', compact('jr'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
