@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\JoinRequest;
+use App\JoinStatus;
 
 class JoinController extends Controller
 {
@@ -21,10 +23,11 @@ class JoinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($status = 'Pending')
+    public function index($status = 'pending')
     {
-        $joinRequests = $this->getRequests($status);
-        return view('join.admin.index', compact('joinRequests'));
+        $joinRequests = JoinRequest::items($status);
+        $joinStatuses = JoinStatus::orderBy('position', 'asc')->get();
+        return view('join.admin.index', compact('joinRequests', 'joinStatuses'));
     }
 
     /**
@@ -63,7 +66,8 @@ class JoinController extends Controller
     {
         $id = Input::get('id');
         $jr = JoinRequest::find($id);
-        return view('join.admin.show', compact('jr'));
+        $joinStatuses = JoinStatus::orderBy('position', 'asc')->get();
+        return view('join.admin.show', compact('jr', 'joinStatuses'));
     }
 
     /**
@@ -100,15 +104,73 @@ class JoinController extends Controller
         //
     }
 
-    public function items()
+    public function viewItems($s = '', $o = 'desc')
     {
-        $status = Input::get('statusKey');
-        $joinRequests = $this->getRequests($status);
+        $status = Input::get('status', $s);
+        $order = Input::get('order', $o);
+        $joinRequests = JoinRequest::items($status, $order);
         return view('join.admin.items', compact('joinRequests'));
     }
 
-    public function getRequests($status = '')
+    public function createStatus()
     {
-        return (empty($status)) ? JoinRequest::all() : JoinRequest::where('status', '=', JoinRequest::StatusList[$status])->get();
+        $text = Input::get('text', '');
+
+        if (empty($text) || strlen($text) > 12) return;
+
+        $permalink = str_slug($text, '-');
+
+        if (JoinStatus::where('permalink', '=', $permalink)->first() == null) {
+            $status = new JoinStatus();
+            $status->text = $text;
+            $status->permalink = $permalink;
+            $status->save();
+            return $status->id;
+        }
+    }
+
+    public function setStatus()
+    {
+        $joinRequestID = Input::get('join_request_id', 0);
+        $newStatusID = Input::get('new_status_id', 0);
+
+        if ($joinRequestID == 0 || $newStatusID == 0) return;
+
+        $jr = JoinRequest::findOrFail($joinRequestID);
+        $jr->status_id = $newStatusID;
+        $jr->save();
+    }
+
+    public function getStatusView()
+    {
+        $id = Input::get('id');
+        $jr = JoinRequest::find($id);
+        $joinStatuses = JoinStatus::orderBy('position', 'asc')->get();
+        return view('join.admin.status', compact('jr', 'joinStatuses'));
+    }
+
+    public function transferOldRecords()
+    {
+        $apps = DB::table('apps')->get();
+
+        foreach ($apps as $item) {
+            $jr = new JoinRequest();
+            $jr->created_at = $item->appTimestamp;
+            $jr->updated_at = $item->appTimestamp;
+            $jr->name = $item->appName;
+            $jr->age = (int)$item->appAge;
+            $jr->location = $item->appCountry;
+            $jr->email = $item->appEmail;
+            $jr->steam = $item->appSteam;
+            $jr->available = (str_contains(strtolower($item->appAvailable), 'yes')) ? true : false;
+            $jr->apex = (str_contains(strtolower($item->appApex), 'yes')) ? true : false;
+            $jr->groups = (str_contains(strtolower($item->appGroups), 'yes')) ? true : false;
+            $jr->experience = $item->appExperience;
+            $jr->bio = $item->appBio;
+            $jr->status_id = JoinStatus::where('text', '=', $item->appStatus)->first()->id;
+            $jr->save();
+        }
+
+        return $apps;
     }
 }

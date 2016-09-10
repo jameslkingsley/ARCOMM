@@ -3,32 +3,28 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Input;
+use Validator;
+use App\JoinStatus;
 
 class JoinRequest extends Model
 {
-    const StatusList = [
-        'Pending' => 0,
-        'Approved' => 1,
-        'Declined' => 2
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'age',
+    //     'location',
+    //     'email',
+    //     'steam',
+    //     'available',
+    //     'apex',
+    //     'groups',
+    //     'experience',
+    //     'bio'
+    // ];
 
-    protected $fillable = [
-        'name',
-        'age',
-        'location',
-        'email',
-        'steam',
-        'available',
-        'apex',
-        'groups',
-        'experience',
-        'bio'
-    ];
-
-    public function getStatusAsText()
+    public function status()
     {
-        $status = array_search($this->status, JoinRequest::StatusList, false);
-        return (gettype($status) == "boolean") ? "Unknown" : $status;
+        return $this->hasOne('App\JoinStatus', 'id', 'status_id');
     }
 
     /**
@@ -37,8 +33,8 @@ class JoinRequest extends Model
      */
     public function setStatus($status)
     {
-        $this->status = $status;
-        $this->update();
+        // $this->status = $status;
+        // $this->update();
     }
 
     /**
@@ -48,7 +44,7 @@ class JoinRequest extends Model
      */
     public function approve()
     {
-        setStatus(StatusList['Approved']);
+        setStatus(StatusList['approved']);
     }
 
     /**
@@ -58,6 +54,19 @@ class JoinRequest extends Model
      */
     public function decline()
     {
-        setStatus(StatusList['Declined']);
+        setStatus(StatusList['declined']);
+    }
+
+    public static function items($s = '', $o = 'desc')
+    {
+        $order = Input::get('order', $o);
+
+        if (empty($s)) {
+            return JoinRequest::orderBy('created_at', $o)->get();
+        } else {
+            $status = Input::get('status', $s);
+            $statusID = JoinStatus::where('permalink', strtolower($status))->first();
+            return JoinRequest::where('status_id', $statusID->id)->orderBy('created_at', $order)->get();
+        }
     }
 }

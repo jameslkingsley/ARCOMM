@@ -11,24 +11,23 @@
 |
  */
 
-// Home
+//--- Home
 Route::get('/', 'PageController@home');
 
-// Join Requests
-// Route::get('/join', 'JoinController@index');
-// Route::post('/join', 'JoinController@submit');
-// Route::get('/join/list', 'JoinController@listRequests');
-// Route::get('/join/items', 'JoinController@items');
-// Route::get('/join/show/{joinRequest}', 'JoinController@show');
-// Route::get('/join/approve/{joinRequest}', 'JoinController@approve');
-
+//--- Join Requests
 Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
-
 Route::group(['middleware' => 'admin'], function() {
-    Route::get('/join-requests/items', 'JoinController@items');
+    Route::get('/join-requests/viewItems', 'JoinController@viewItems');
     Route::get('/join-requests/showByInput', 'JoinController@showByInput');
+    // Route::get('/join-requests/transfer', 'JoinController@transferOldRecords');
+    Route::get('/join-requests/{status}', 'JoinController@index');
+    Route::post('/join-requests/createStatus', 'JoinController@createStatus');
+    Route::post('/join-requests/setStatus', 'JoinController@setStatus');
+    Route::post('/join-requests/getStatusView', 'JoinController@getStatusView');
+
     Route::resource('join-requests', 'JoinController', [
         'as' => 'admin',
+        'except' => [],
         'names' => []
     ]);
 });

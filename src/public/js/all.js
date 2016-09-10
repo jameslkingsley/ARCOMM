@@ -1,3 +1,10 @@
+//--- Add active class to current page
+$(document).ready(function(event) {
+    var pathArray = window.location.pathname.split('/');
+    var indexUrl = (window.location.protocol + "//" + window.location.hostname + "/") + pathArray[1];
+    $('header .nav .nav-link[href="' + indexUrl + '"]').addClass('active');
+});
+
 openPanel = function(content, d) {
     var delay = d || 150;
 
@@ -17,4 +24,15 @@ openPanel = function(content, d) {
         });
     });
 }
+
+setUrl = function(url, title) {
+    var url = (window.location.protocol + "//" + window.location.hostname + "/") + url;
+    
+    window.history.replaceState({
+        archubPush: true
+    }, document.title, url);
+
+    if (title) document.title = title;
+}
+
 //# sourceMappingURL=all.js.map

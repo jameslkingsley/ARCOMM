@@ -19,6 +19,9 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="{{ url('/css/font-awesome.min.css') }}">
 
+        <!-- Dropit -->
+        <script src="{{ url('/js/dropit.js') }}"></script>
+
         <!-- Main -->
         <link rel="stylesheet" href="{{ url('/css/app.css') }}">
         <script src="{{ url('/js/all.js') }}"></script>
@@ -43,10 +46,10 @@
             <div class="subnav">
                 @yield('subnav')
             </div>
+            <div class="controls">
+                @yield('controls')
+            </div>
             <div class="content">
-                <div class="controls">
-                    @yield('controls')
-                </div>
                 @yield('content')
             </div>
         </main>
