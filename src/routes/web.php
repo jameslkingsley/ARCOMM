@@ -14,6 +14,11 @@
 //--- Home
 Route::get('/', 'PageController@home');
 
+//--- Login
+Route::get('/login', 'SteamController@index');
+Route::get('/steam', 'SteamController@processUser');
+Route::get('/steam-cookie', 'SteamController@cookie');
+
 //--- Join Requests
 Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
 Route::group(['middleware' => 'admin'], function() {

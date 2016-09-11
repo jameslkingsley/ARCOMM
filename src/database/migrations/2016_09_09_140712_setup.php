@@ -43,7 +43,7 @@ class Setup extends Migration
         });
 
         //--- Add Foreign Keys
-        Schema::table('join_requests', function($table) {            
+        Schema::table('join_requests', function($table) {
             $table->foreign('status_id')->references('id')->on('join_statuses');
         });
     }

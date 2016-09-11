@@ -38,6 +38,7 @@
                 loadItems(status, "desc", function(data) {
                     $('#join-requests').html(data);
                     $('#search').val("");
+                    $('.content').scrollTop(0);
                 });
 
                 event.preventDefault();
