@@ -11,8 +11,8 @@
 |
  */
 
-//--- Home
-Route::get('/', 'PageController@home');
+//--- Public
+Route::get('/', 'PageController@index');
 
 //--- Login
 Route::get('/login', 'SteamController@index');

@@ -19,4 +19,6 @@ elixir(mix => {
         .scripts([
             'common.js'
         ]);
+
+    mix.sass('public.scss', './public/css/public.css');
 });

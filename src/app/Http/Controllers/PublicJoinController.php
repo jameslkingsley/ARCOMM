@@ -59,7 +59,7 @@ class PublicJoinController extends Controller
         // Create the join request if there are no form errors
         JoinRequest::create($request->all());
 
-        return back();
+        return back()->withInput();
     }
 
     /**

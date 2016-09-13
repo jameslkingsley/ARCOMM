@@ -1,89 +1,113 @@
-@extends('layout')
+@extends('layout-public')
 
 @section('title')
     Join
 @endsection
 
 @section('content')
-    <h1>Join</h1>
+    <div class="content container">
+        <h2>What makes a good member?</h2>
+        <p class="bg-info">We're looking for well adjusted people who listen to and respect others. While a vast amount of experience in Arma is welcome, it's not required. Aspiring members should make an effort to attend the weekly operations, be accountable for their actions and generally have a good sense of humor.</p>
+        <br />
+        <form method="post" action="/join">
+            <div class="form-group {{ Bootstrap::error($errors->first('name')) }}">
+                <label class="control-label">Your Name</label>
+                <span class="help-block">This is the name you use in Arma and should be the same as on TeamSpeak.</span>
+                <input type="text" name="name" class="form-control" placeholder="Name" maxlength="255" value="{{ old('name') }}" />
+            </div>
 
-    <form method="post" action="/join">
-        {{ csrf_field() }}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group {{ Bootstrap::error($errors->first('age')) }}">
+                        <label class="control-label">Your Age</label>
+                        <span class="help-block">You must be at least 16 years old.</span>
+                        <input type="number" name="age" class="form-control" placeholder="Age" value="{{ old('age') }}" />
+                    </div>
+                </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('name')) }}">
-            <label class="control-label">Your Name</label>
-            <span class="help-block">{{ $errors->first('name') }}</span>
-            <input type="text" name="name" class="form-control" placeholder="Name" maxlength="255">
-        </div>
+                <div class="col-md-6">
+                    <div class="form-group {{ Bootstrap::error($errors->first('location')) }}">
+                        <label class="control-label">Your Location</label>
+                        <span class="help-block">You can be as specific as you like.</span>
+                        <input type="text" name="location" class="form-control" placeholder="Location" value="{{ old('location') }}" />
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('age')) }}">
-            <label class="control-label">Your Age</label>
-            <span class="help-block">{{ $errors->first('age') }}</span>
-            <input type="number" name="age" class="form-control" placeholder="Age" />
-        </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group {{ Bootstrap::error($errors->first('email')) }}">
+                        <label class="control-label">Your Email Address</label>
+                        <span class="help-block">We use your email address to contact you about your application. You must enter a valid and regularly checked email address.</span>
+                        <input type="text" name="email" class="form-control" placeholder="Email Address" value="{{ old('email') }}" />
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="form-group {{ Bootstrap::error($errors->first('steam')) }}">
+                        <label class="control-label">Your Steam Account</label>
+                        <span class="help-block">Please provide a link to your Steam account. You can do this by going to Steam > Your Name > Right-Click > Copy Page URL</span>
+                        <input type="text" name="steam" class="form-control" placeholder="Steam Account" value="{{ old('steam') }}" />
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('location')) }}">
-            <label class="control-label">Your Location</label>
-            <span class="help-block">{{ $errors->first('location') }}</span>
-            <input type="text" name="location" class="form-control" placeholder="Location" />
-        </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group {{ Bootstrap::error($errors->first('available')) }}">
+                        <label class="control-label">Are you available Saturdays at {{ env('SITE_OP_TIME', '--:--') }} time?</label>
+                        <span class="help-block">This is when main operations take place.</span>
+                        <select class="form-control" name="available">
+                            <option value="" {{ (old('available') == '') ? 'selected="true"' : '' }} style="display:none">Select</option>
+                            <option value="0" {{ (old('available') == '0') ? 'selected="true"' : '' }}>No</option>
+                            <option value="1" {{ (old('available') == '1') ? 'selected="true"' : '' }}>Yes</option>
+                        </select>
+                    </div>
+                </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('email')) }}">
-            <label class="control-label">Your Email Address</label>
-            <span class="help-block">{{ $errors->first('email') }}</span>
-            <input type="text" name="email" class="form-control" placeholder="Email Address" />
-        </div>
+                <div class="col-md-4">
+                    <div class="form-group {{ Bootstrap::error($errors->first('apex')) }}">
+                        <label class="control-label">Do you own the Apex expansion?</label>
+                        <span class="help-block">Members are required to own the Apex expansion.</span>
+                        <select class="form-control" name="apex">
+                            <option value="" {{ (old('apex') == '') ? 'selected="true"' : '' }} style="display:none">Select</option>
+                            <option value="0" {{ (old('apex') == '0') ? 'selected="true"' : '' }}>No</option>
+                            <option value="1" {{ (old('apex') == '1') ? 'selected="true"' : '' }}>Yes</option>
+                        </select>
+                    </div>
+                </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('steam')) }}">
-            <label class="control-label">Your Steam Account</label>
-            <span class="help-block">{{ $errors->first('steam') }}</span>
-            <input type="text" name="steam" class="form-control" placeholder="Steam Account" />
-        </div>
+                <div class="col-md-4">
+                    <div class="form-group {{ Bootstrap::error($errors->first('groups')) }}">
+                        <label class="control-label">Are you currently in another ArmA group?</label>
+                        <span class="help-block">This won't affect your chances of acceptance.</span>
+                        <select class="form-control" name="groups">
+                            <option value="" {{ (old('groups') == '') ? 'selected="true"' : '' }} style="display:none">Select</option>
+                            <option value="0" {{ (old('groups') == '0') ? 'selected="true"' : '' }}>No</option>
+                            <option value="1" {{ (old('groups') == '1') ? 'selected="true"' : '' }}>Yes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('available')) }}">
-            <label class="control-label">Are you available Saturdays at {{ env('SITE_OP_TIME', '--:--') }} time?</label>
-            <span class="help-block">{{ $errors->first('available') }}</span>
-            <select class="form-control" name="available">
-                <option value="" selected="true" style="display:none">Select</option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-            </select>
-        </div>
+            <div class="form-group {{ Bootstrap::error($errors->first('experience')) }}">
+                <label class="control-label">Your Arma Experience</label>
+                <span class="help-block">Give us a short description of your Arma experience, what mods you've used etc.</span>
+                <textarea name="experience" class="form-control" placeholder="Arma Experience" style="height:130px">{{ old('experience') }}</textarea>
+            </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('apex')) }}">
-            <label class="control-label">Do you own the Apex expansion?</label>
-            <span class="help-block">{{ $errors->first('apex') }}</span>
-            <select class="form-control" name="apex">
-                <option value="" selected="" style="display:none">Select</option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-            </select>
-        </div>
+            <div class="form-group {{ Bootstrap::error($errors->first('bio')) }}">
+                <label class="control-label">About Yourself</label>
+                <span class="help-block" style="margin-bottom: 0;">Tell us a bit about yourself and how you think you would contribute as a member.</span>
+                <span class="help-block" style="color: #cc6000 !important;margin-top: 0;">
+                    The more you write the better! This part is really important. Sharing a bit about yourself goes a long way. We're not looking for one-liners.
+                </span>
+                <textarea name="bio" class="form-control" placeholder="About Yourself" style="height:300px">{{ old('bio') }}</textarea>
+            </div>
 
-        <div class="form-group {{ Bootstrap::error($errors->first('groups')) }}">
-            <label class="control-label">Are you currently in another ArmA group?</label>
-            <span class="help-block">{{ $errors->first('groups') }}</span>
-            <select class="form-control" name="groups">
-                <option value="" selected="" style="display:none">Select</option>
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-            </select>
-        </div>
-
-        <div class="form-group {{ Bootstrap::error($errors->first('experience')) }}">
-            <label class="control-label">Your Arma Experience</label>
-            <span class="help-block">{{ $errors->first('experience') }}</span>
-            <textarea name="experience" class="form-control" placeholder="Arma Experience"></textarea>
-        </div>
-
-        <div class="form-group {{ Bootstrap::error($errors->first('bio')) }}">
-            <label class="control-label">About Yourself</label>
-            <span class="help-block">{{ $errors->first('bio') }}</span>
-            <textarea name="bio" class="form-control" placeholder="About Yourself"></textarea>
-        </div>
-
-        <div class="form-group">
-            <input type="submit" name="submit" class="btn btn-primary" value="Send Request" />
-        </div>
-    </form>
+            <div class="form-group">
+                <input type="submit" name="submit" class="btn btn-primary btn-fill btn-dark" value="Submit Application" />
+            </div>
+        </form>
+    </div>
 @endsection
