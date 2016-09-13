@@ -180,6 +180,8 @@ return [
 
         App\Providers\HelperServiceProvider::class,
 
+        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+
     ],
 
     /*

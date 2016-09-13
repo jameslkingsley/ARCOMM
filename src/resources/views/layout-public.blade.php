@@ -32,6 +32,8 @@
         <!-- Bootstrap Scripts -->
         <script src="{{ url('/js/bootstrap.js') }}" type="text/javascript"></script>
         <script src="{{ url('/js/awesome-landing-page.js') }}" type="text/javascript"></script>
+
+        @yield('head')
     </head>
 
     <body class="landing-page landing-page1 {{ (trim($__env->yieldContent('splash'))) ? '' : 'darker' }}">

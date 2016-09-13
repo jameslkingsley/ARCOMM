@@ -15,7 +15,7 @@
             <div class="container text-center">
                 <h4 class="header-text">Serious, Tactical, Immersive Fun.</h4>
                 <p>
-                    We pride ourself on the absence of ranks and social drama. Our players range from former mil-sim players to beginners of Arma. Everyone is considered an equal member. No one holds the power to command anyone else outside of gameplay.<br>
+                    We pride ourselves on the absence of ranks and social drama. Our players range from former mil-sim players to beginners of Arma. Everyone is considered an equal member. No one holds the power to command anyone else outside of gameplay.<br>
                 </p>
                 <p class="highlight">
                     <strong>A reformed group with the spirit and gameplay based around the <a href="http://www.shacktac.com" style="color:#d6a600" target="_newtab">ShackTac</a> experience.</strong>

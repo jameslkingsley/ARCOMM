@@ -49,4 +49,39 @@ label {
     box-shadow: none;
     -webkit-box-shadow: none; }
 
+.footer:not(.footer-big) nav > ul li:first-of-type {
+  margin-left: 0; }
+
+.thumbnail {
+  border: none;
+  padding: 0;
+  margin-bottom: 30px;
+  border-radius: 2px;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease; }
+  .thumbnail:hover {
+    -webkit-transform: scale(1.05, 1.05);
+    transform: scale(1.05, 1.05); }
+  .thumbnail img {
+    border-radius: 2px; }
+
+.dz-default.dz-message {
+  width: 50%;
+  height: 250px;
+  border: 2px dashed #000;
+  margin: 0 auto;
+  line-height: 250px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  opacity: 0.85;
+  cursor: pointer;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  border-radius: 5px; }
+  .dz-default.dz-message:hover {
+    border-color: #bd2c2c;
+    color: #bd2c2c;
+    text-decoration: underline; }
+
 /*# sourceMappingURL=public.css.map */

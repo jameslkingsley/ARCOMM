@@ -14,6 +14,9 @@
 //--- Public
 Route::get('/', 'PageController@index');
 
+//--- Media
+Route::resource('media', 'MediaController');
+
 //--- Login
 Route::get('/login', 'SteamController@index');
 Route::get('/steam', 'SteamController@processUser');
