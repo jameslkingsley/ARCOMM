@@ -9,6 +9,8 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+        <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
+
         <!-- jQuery -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0-rc.2/jquery-ui.min.js"></script>
