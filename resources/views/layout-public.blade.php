@@ -31,12 +31,11 @@
 
         <!-- Bootstrap Scripts -->
         <script src="{{ url('/js/bootstrap.js') }}" type="text/javascript"></script>
-        <script src="{{ url('/js/awesome-landing-page.js') }}" type="text/javascript"></script>
 
         @yield('head')
     </head>
 
-    <body class="landing-page landing-page1 {{ (trim($__env->yieldContent('splash'))) ? '' : 'darker' }}">
+    <body class="landing-page landing-page1">
         <nav class="navbar navbar-transparent navbar-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -49,7 +48,7 @@
                     <a href="{{ url('/') }}">
                         <div class="logo-container">
                             <div class="logo">
-                                <img src="{{ (trim($__env->yieldContent('splash'))) ? url('/images/logo.png') : url('/images/logo-red.png') }}" alt="Logo">
+                                <img src="{{ url('/images/logo.png') }}" alt="Logo">
                             </div>
                         </div>
                     </a>
@@ -64,7 +63,7 @@
             </div>
         </nav>
         @yield('content')
-        <footer class="footer">
+        {{-- <footer class="footer">
             <div class="container">
                 <nav class="pull-left">
                     <ul>
@@ -82,7 +81,7 @@
                     &copy; 2016 ARCOMM. All rights reserved.
                 </div>
             </div>
-        </footer>
+        </footer> --}}
         @yield('scripts')
     </body>
 </html>

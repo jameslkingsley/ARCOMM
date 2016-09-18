@@ -528,9 +528,8 @@ a:focus, a:active {
 }
 
 .footer {
-  background-color: white;
+  background-color: #000;
   line-height: 20px;
-  margin-top: -30px;
 }
 .footer nav > ul {
   list-style: none;
@@ -544,7 +543,7 @@ a:focus, a:active {
   margin-bottom: 3px;
 }
 .footer nav > ul a:not(.btn):hover, .footer nav > ul a:not(.btn):focus {
-  color: #777777;
+  color: #fff;
 }
 .footer .social-area {
   padding: 15px 0;
@@ -824,8 +823,12 @@ a:focus, a:active {
 
 .logo-container .logo{
     overflow: hidden;
-    width: 36px;
+    width: 46px;
     float: left;
+    background: #bd2c2c;
+    padding: 7px;
+    height: 71px;
+    transition: all .15s ease;
 }
 
 .logo-container .brand{
@@ -839,10 +842,12 @@ a:focus, a:active {
     height: 50px;
 }
 .logo-container{
-    margin-top: 15px;
+    margin-top: -10px;
 }
 .logo-container .logo img{
     width: 100%;
+    margin-top: 25px;
+    transition: all .15s ease;
 }
 
 .landing-page1 .container{
@@ -873,7 +878,7 @@ a:focus, a:active {
 
 .landing-page .parallax {
   width: 100%;
-  height: 630px;
+  max-height: 600px;
   overflow: hidden;
   display: block;
   background-size: 100%;
@@ -1078,7 +1083,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
     overflow: hidden;
     width: 100%;
     min-height: 600px;
-    margin-top: 30px;
    }
 
    .landing-page .section-presentation img{
@@ -1100,7 +1104,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 600px;
+    max-height: 600px;
     text-align: center;
    }
  
@@ -1113,11 +1117,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
     -o-transform:      translateX(-50%);
     transform:         translateX(-50%);
     z-index: 20;
-    top: 150px;
-
+    top: 200px;
   }
   .landing-page .section-no-padding .parallax .info h1{
-    font-size: 40px;
+    font-size: 48px;
     font-weight: 300;
   }
 
@@ -1128,8 +1131,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
     }
 
    .landing-page .section-no-padding .parallax .info .btn-lg{
-    margin-top: 75px;
-    padding: 14px 80px;
+    margin-top: 25px;
+    /* padding: 14px 80px; */
    }
 
    .landing-page .section-demo{
@@ -1682,4 +1685,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
     .landing-page .navbar-top{
         padding-top: 10px;
     }
+}
+
+.section-dark {
+    background: #000;
+}
+
+.section-dark .header-text {
+    color: #FFF;
+}
+
+.section-dark p {
+    color: #AAA;
 }
