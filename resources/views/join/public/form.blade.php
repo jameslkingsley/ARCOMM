@@ -109,8 +109,8 @@
             <div class="form-group {{ Bootstrap::error($errors->first('bio')) }}">
                 <label class="control-label">About Yourself</label>
                 <span class="help-block" style="margin-bottom: 0;">Tell us a bit about yourself and how you think you would contribute as a member.</span>
-                <span class="help-block" style="color: #cc6000 !important;margin-top: 0;">
-                    The more you write the better! This part is really important. Sharing a bit about yourself goes a long way. We're not looking for one-liners.
+                <span class="help-block" style="color: #bd2c2c !important;margin-top: 0;">
+                    The more you write the better! This part is very important. Sharing a bit about yourself goes a long way. We're not looking for one-liners.
                 </span>
                 <textarea name="bio" class="form-control" placeholder="About Yourself" style="height:300px">{{ old('bio') }}</textarea>
             </div>
