@@ -20,7 +20,7 @@
         <link href="{{ url('/css/landing-page.css') }}" rel="stylesheet">
 
         <!-- Fonts and icons -->
-        <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        {{-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"> --}}
 
         <!-- Public Stylesheet -->
         <link rel="stylesheet" type="text/css" href="{{ url('/css/public.css') }}">
