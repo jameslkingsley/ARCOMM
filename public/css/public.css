@@ -11,7 +11,7 @@
   background: #000; }
 
 .content {
-  margin: 100px auto; }
+  margin: 150px auto; }
 
 .darker .navbar-transparent .navbar-nav > li > a, [class*="navbar-ct"] .navbar-nav > li > a {
   color: #333; }
@@ -83,11 +83,6 @@ label {
     border-color: #bd2c2c;
     color: #bd2c2c;
     text-decoration: underline; }
-
-.logo-container .logo:hover {
-  height: 81px; }
-  .logo-container .logo:hover img {
-    margin-top: 35px; }
 
 body {
   background: #000;

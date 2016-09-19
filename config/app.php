@@ -182,6 +182,8 @@ return [
 
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
+        Syntax\SteamApi\SteamApiServiceProvider::class,
+
     ],
 
     /*

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use SimpleXMLElement;
+use Syntax\SteamApi;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;

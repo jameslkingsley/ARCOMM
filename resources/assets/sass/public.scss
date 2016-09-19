@@ -16,7 +16,7 @@
 }
 
 .content {
-    margin: 100px auto;
+    margin: 150px auto;
 }
 
 .darker .navbar-transparent .navbar-nav > li > a, [class*="navbar-ct"] .navbar-nav > li > a {
@@ -104,16 +104,6 @@ label {
         border-color: $brand-primary;
         color: $brand-primary;
         text-decoration: underline;
-    }
-}
-
-.logo-container .logo {
-    &:hover {
-        height: 81px;
-
-        img {
-            margin-top: 35px;
-        }
     }
 }
 

@@ -52,7 +52,7 @@
                     <a href="{{ url('/') }}">
                         <div class="logo-container">
                             <div class="logo">
-                                <img src="{{ url('/images/logo.png') }}" alt="Logo">
+                                <img src="{{ url('/images/logo-white-full.png') }}" alt="Logo">
                             </div>
                         </div>
                     </a>
@@ -62,30 +62,12 @@
                         <li><a href="{{ url('/media') }}">Media</a></li>
                         <li><a href="{{ url('/roster') }}">Roster</a></li>
                         <li><a href="{{ url('/join') }}">Join</a></li>
+                        <li><a href="{{ url('/login') }}" style="padding-top: 4px"><img style="width: 81px" src="{{ url('/images/steam.png') }}"></a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         @yield('content')
-        {{-- <footer class="footer">
-            <div class="container">
-                <nav class="pull-left">
-                    <ul>
-                        <li><a href="{{ url('/media') }}">Media</a></li>
-                        <li><a href="{{ url('/roster') }}">Roster</a></li>
-                        <li><a href="{{ url('/join') }}">Join</a></li>
-                    </ul>
-                </nav>
-                <div class="social-area pull-right">
-                    <a href="http://steamcommunity.com/groups/ARCOMM" class="btn btn-social btn-simple" target="_newtab">
-                        <i class="fa fa-steam"></i>
-                    </a>
-                </div>
-                <div class="copyright">
-                    &copy; 2016 ARCOMM. All rights reserved.
-                </div>
-            </div>
-        </footer> --}}
         @yield('scripts')
     </body>
 </html>

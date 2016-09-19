@@ -466,6 +466,7 @@ a:focus, a:active {
   opacity: 0.8;
   filter: alpha(opacity=80);
   font-weight: 500;
+  background-color: transparent;
 }
 .navbar-transparent .navbar-nav > .active > a,
 .navbar-transparent .navbar-nav > .active > a:hover,
@@ -476,9 +477,6 @@ a:focus, a:active {
 [class*="navbar-ct"] .navbar-nav > .active > a:focus,
 [class*="navbar-ct"] .navbar-nav > li > a:hover,
 [class*="navbar-ct"] .navbar-nav > li > a:focus {
-  background-color: transparent;
-  border-radius: 3px;
-  color: white;
   opacity: 1;
   filter: alpha(opacity=100);
 }
@@ -824,11 +822,11 @@ a:focus, a:active {
 
 .logo-container .logo{
     overflow: hidden;
-    width: 46px;
+    width: 130px;
     float: left;
     background: #bd2c2c;
-    padding: 7px;
-    height: 71px;
+    padding: 18px;
+    height: 130px;
     transition: all .15s ease;
 }
 
@@ -843,11 +841,9 @@ a:focus, a:active {
     height: 50px;
 }
 .logo-container{
-    margin-top: -10px;
 }
 .logo-container .logo img{
     width: 100%;
-    margin-top: 25px;
     transition: all .15s ease;
 }
 
@@ -875,6 +871,7 @@ a:focus, a:active {
   right: 0;
   left: 0;
   z-index: 1030;
+  height: 50px;
 }
 
 .landing-page .parallax {
@@ -1684,7 +1681,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
 
 @media (min-width: 768px){
     .landing-page .navbar-top{
-        padding-top: 10px;
     }
 }
 
