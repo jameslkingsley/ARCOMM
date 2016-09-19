@@ -428,7 +428,7 @@ a:focus, a:active {
 }
 .navbar .navbar-nav > li > a {
   padding: 10px 15px;
-  margin: 15px 3px;
+  margin: 15px 0;
 }
 .navbar .navbar-nav > li > a.btn {
   margin: 15px 3px;
@@ -465,6 +465,7 @@ a:focus, a:active {
   border-color: white;
   opacity: 0.8;
   filter: alpha(opacity=80);
+  font-weight: 500;
 }
 .navbar-transparent .navbar-nav > .active > a,
 .navbar-transparent .navbar-nav > .active > a:hover,

@@ -32,6 +32,10 @@
         <!-- Bootstrap Scripts -->
         <script src="{{ url('/js/bootstrap.js') }}" type="text/javascript"></script>
 
+        <!-- Select2 -->
+        <link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
+        <script type="text/javascript" src="{{ url('/js/select2.full.min.js') }}"></script>
+
         @yield('head')
     </head>
 

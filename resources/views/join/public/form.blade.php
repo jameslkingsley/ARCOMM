@@ -4,6 +4,16 @@
     Join
 @endsection
 
+@section('scripts')
+    <script>
+        $(document).ready(function(event) {
+            $('select').select2({
+                minimumResultsForSearch: -1
+            });
+        });
+    </script>
+@endsection
+
 @section('content')
     <div class="content container">
         <h2>What makes a good member?</h2>
@@ -57,8 +67,8 @@
                     <div class="form-group {{ Bootstrap::error($errors->first('available')) }}">
                         <label class="control-label">Are you available Saturdays at {{ env('SITE_OP_TIME', '--:--') }} time?</label>
                         <span class="help-block">This is when main operations take place.</span>
-                        <select class="form-control" name="available">
-                            <option value="" {{ (old('available') == '') ? 'selected="true"' : '' }} style="display:none">Select</option>
+                        <select class="form-control" name="available" data-placeholder="Select">
+                            <option></option>
                             <option value="0" {{ (old('available') == '0') ? 'selected="true"' : '' }}>No</option>
                             <option value="1" {{ (old('available') == '1') ? 'selected="true"' : '' }}>Yes</option>
                         </select>
@@ -69,8 +79,8 @@
                     <div class="form-group {{ Bootstrap::error($errors->first('apex')) }}">
                         <label class="control-label">Do you own the Apex expansion?</label>
                         <span class="help-block">Members are required to own the Apex expansion.</span>
-                        <select class="form-control" name="apex">
-                            <option value="" {{ (old('apex') == '') ? 'selected="true"' : '' }} style="display:none">Select</option>
+                        <select class="form-control" name="apex" data-placeholder="Select">
+                            <option></option>
                             <option value="0" {{ (old('apex') == '0') ? 'selected="true"' : '' }}>No</option>
                             <option value="1" {{ (old('apex') == '1') ? 'selected="true"' : '' }}>Yes</option>
                         </select>
@@ -81,8 +91,8 @@
                     <div class="form-group {{ Bootstrap::error($errors->first('groups')) }}">
                         <label class="control-label">Are you currently in another ArmA group?</label>
                         <span class="help-block">This won't affect your chances of acceptance.</span>
-                        <select class="form-control" name="groups">
-                            <option value="" {{ (old('groups') == '') ? 'selected="true"' : '' }} style="display:none">Select</option>
+                        <select class="form-control" name="groups" data-placeholder="Select">
+                            <option></option>
                             <option value="0" {{ (old('groups') == '0') ? 'selected="true"' : '' }}>No</option>
                             <option value="1" {{ (old('groups') == '1') ? 'selected="true"' : '' }}>Yes</option>
                         </select>
