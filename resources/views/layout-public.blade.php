@@ -60,9 +60,14 @@
                 <div class="collapse navbar-collapse" id="example" >
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url('/media') }}">Media</a></li>
+                        <li><a href="{{ url('/modset') }}">Modset</a></li>
                         <li><a href="{{ url('/roster') }}">Roster</a></li>
                         <li><a href="{{ url('/join') }}">Join</a></li>
-                        <li><a href="{{ url('/login') }}" style="padding-top: 4px"><img style="width: 81px" src="{{ url('/images/steam.png') }}"></a></li>
+                        <li>
+                            <a href="{{ \App\Http\Controllers\SteamController::getAuthUrl(url('/steamauth')) }}" style="padding-top: 4px">
+                                <img style="width: 81px" src="{{ url('/images/steam.png') }}">
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

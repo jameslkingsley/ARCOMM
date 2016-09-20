@@ -17,10 +17,8 @@ Route::get('/', 'PageController@index');
 //--- Media
 Route::resource('media', 'MediaController');
 
-//--- Login
-Route::get('/login', 'SteamController@index');
-Route::get('/steam', 'SteamController@processUser');
-Route::get('/steam-cookie', 'SteamController@cookie');
+//--- Steam Authentication
+Route::get('/steamauth', 'SteamController@processUser');
 
 //--- Join Requests
 Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);

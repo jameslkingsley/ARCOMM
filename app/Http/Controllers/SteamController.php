@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use SimpleXMLElement;
-use Syntax\SteamApi;
+use Syntax\SteamApi\Steam;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
@@ -15,17 +15,6 @@ class SteamController extends Controller
 
     private $steamID;
 
-    public function cookie()
-    {
-        return Cookie::get('steamID64', 'not found');
-    }
-
-    public function index()
-    {
-        $url = $this->getAuthUrl(url('/steam'));
-        return view('login.index', compact('url'));
-    }
-
     public function processUser()
     {
         $steamID = $this->validateSteam();
@@ -34,16 +23,16 @@ class SteamController extends Controller
         // Return the user to an error page if Steam ID is empty
         if (empty($steamID)) return view('login.error');
 
-        $user = $this->getUserInfo();
+        $user = Steam::user($steamID);
 
-        User::updateOrCreate(['steam_id' => $steamID], [
+        /*User::updateOrCreate(['steam_id' => $steamID], [
             'steam_id' => $steamID,
             'name' => $user["steamID"],
             'avatar' => $user["avatarFull"]
-        ]);
+        ]);*/
 
         // $cookie = Cookie::forever('steamID64', $steamID);
-        Cookie::queue('steamID64', $steamID, 300);
+        // Cookie::queue('steamID64', $steamID, 300);
 
         return $user;
     }
@@ -64,7 +53,7 @@ class SteamController extends Controller
      * @param bool useAmp Use &amp; in the URL, true; or just &, false.
      * @return string The string to go in the URL
      */
-    public function getAuthUrl($returnTo = false, $useAmp = true)
+    public static function getAuthUrl($returnTo = false, $useAmp = true)
     {
         $returnTo = (!$returnTo) ? url()->current() : $returnTo;
         
