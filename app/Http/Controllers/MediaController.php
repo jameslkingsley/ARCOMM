@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
 use App\Gallery;
+use App\User;
 
 class MediaController extends Controller
 {
@@ -27,7 +28,9 @@ class MediaController extends Controller
      */
     public function create()
     {
-        return view('media.admin.upload');
+        if (User::isMember()) {
+            return view('media.admin.upload');
+        }
     }
 
     /**
@@ -38,9 +41,11 @@ class MediaController extends Controller
      */
     public function store(Request $request)
     {
-        $gallery = Gallery::find(1);
-        $gallery->addMedia($request->file('file'))->toCollection('images');
-        return back();
+        // Record 1 is the default gallery
+        if (User::isMember()) {
+            $gallery = Gallery::find(1);
+            $gallery->addMedia($request->file('file'))->toCollection('images');
+        }
     }
 
     /**

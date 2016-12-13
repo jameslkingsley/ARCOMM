@@ -16,7 +16,7 @@
 
 @section('content')
     <div class="content container">
-        <h3 class="text-center">Upload Media</h3>
+        <h2 class="text-center">Upload Media</h2>
 
         <br />
 

@@ -19,6 +19,9 @@ class CreateUsers extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->string('steam_id');
+            $table->string('username');
+            $table->string('avatar');
+            $table->rememberToken();
         });
     }
 

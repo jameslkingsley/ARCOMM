@@ -63,11 +63,16 @@
                         <li><a href="{{ url('/modset') }}">Modset</a></li>
                         <li><a href="{{ url('/roster') }}">Roster</a></li>
                         <li><a href="{{ url('/join') }}">Join</a></li>
-                        <li>
-                            <a href="{{ \App\Http\Controllers\SteamController::getAuthUrl(url('/steamauth')) }}" style="padding-top: 4px">
-                                <img style="width: 81px" src="{{ url('/images/steam.png') }}">
-                            </a>
-                        </li>
+                        @if(App\User::isAdmin())
+                            <li><a href="{{ url('/join-requests') }}">Admin</a></li>
+                        @endif
+                        @if(Auth::guest())
+                            <li>
+                                <a href="{{ url('/steamauth') }}" style="padding-top: 4px">
+                                    <img style="width: 81px" src="{{ url('/images/steam.png') }}">
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

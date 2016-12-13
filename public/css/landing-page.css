@@ -84,7 +84,7 @@ a:focus, a:active {
 }
 
 .btn {
-  border-width: 2px;
+  border-width: 1px;
   background-color: transparent;
   font-weight: 400;
   opacity: 0.8;
@@ -1685,7 +1685,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
 }
 
 .section-dark {
-    background: #000;
+    background: #100f0f;
 }
 
 .section-dark .header-text {

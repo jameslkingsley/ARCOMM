@@ -8,7 +8,8 @@
         "php": ">=5.6.4",
         "laravel/framework": "5.3.*",
         "spatie/laravel-medialibrary": "^4.8",
-        "syntax/steam-api": "2.0.*"
+        "syntax/steam-api": "^2.0",
+        "invisnik/laravel-steam-auth": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

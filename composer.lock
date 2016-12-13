@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c28a4c54312e7d68ecbee1b2fa0d195",
-    "content-hash": "8c5c8cb438ecc03137397a6f2707f138",
+    "hash": "7b0be63b875703d1398dbfccda6a5098",
+    "content-hash": "e89eeac955fbebeb67da1ec428951977",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -443,6 +443,52 @@
                 "watermark"
             ],
             "time": "2016-09-01 17:04:03"
+        },
+        {
+            "name": "invisnik/laravel-steam-auth",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/invisnik/laravel-steam-auth.git",
+                "reference": "7b8dfc787a57bdee7ee9d089ca70075421a6c89b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/invisnik/laravel-steam-auth/zipball/7b8dfc787a57bdee7ee9d089ca70075421a6c89b",
+                "reference": "7b8dfc787a57bdee7ee9d089ca70075421a6c89b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "laravel/framework": "5.*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Invisnik\\LaravelSteamAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Brytkov",
+                    "email": "invis.nik@gmail.com"
+                }
+            ],
+            "description": "Laravel Steam Auth",
+            "keywords": [
+                "auth",
+                "laravel",
+                "steam"
+            ],
+            "time": "2016-11-07 19:26:26"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -2522,16 +2568,16 @@
         },
         {
             "name": "syntax/steam-api",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/syntaxerrors/Steam.git",
-                "reference": "e67a4f7ca1911677bc4fae3058c3f28fe69ed90b"
+                "reference": "6a6b2fa2c6877f4b0ccbe3593c23c03350bb2bdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/syntaxerrors/Steam/zipball/e67a4f7ca1911677bc4fae3058c3f28fe69ed90b",
-                "reference": "e67a4f7ca1911677bc4fae3058c3f28fe69ed90b",
+                "url": "https://api.github.com/repos/syntaxerrors/Steam/zipball/6a6b2fa2c6877f4b0ccbe3593c23c03350bb2bdb",
+                "reference": "6a6b2fa2c6877f4b0ccbe3593c23c03350bb2bdb",
                 "shasum": ""
             },
             "require": {
@@ -2562,7 +2608,7 @@
                 }
             ],
             "description": "A steam-api client for Laravel 5.",
-            "time": "2016-08-29 13:18:09"
+            "time": "2016-10-27 13:11:46"
         },
         {
             "name": "vlucas/phpdotenv",

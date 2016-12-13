@@ -11,21 +11,38 @@
 |
  */
 
+//--- Steam Authentication
+Route::get('/steamauth', 'AuthController@login');
+
+//--- Join Requests
+Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
+
 //--- Public
 Route::get('/', 'PageController@index');
 
 //--- Media
 Route::resource('media', 'MediaController');
 
-//--- Steam Authentication
-Route::get('/steamauth', 'SteamController@processUser');
+//--- Modset
+Route::get('/modset', function() {
+    return view('modset.index');
+});
 
-//--- Join Requests
-Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
+//--- Roster
+Route::get('/roster', 'PageController@roster');
+
+//--- Members
+Route::group(['middleware' => 'member'], function() {
+    Route::get('/guides', function() {
+        return view('home.index');
+    });
+});
+
+//--- Admins
 Route::group(['middleware' => 'admin'], function() {
+    // Route::get('/join-requests/transfer', 'JoinController@transferOldRecords');
     Route::get('/join-requests/viewItems', 'JoinController@viewItems');
     Route::get('/join-requests/showByInput', 'JoinController@showByInput');
-    // Route::get('/join-requests/transfer', 'JoinController@transferOldRecords');
     Route::get('/join-requests/{status}', 'JoinController@index');
     Route::post('/join-requests/createStatus', 'JoinController@createStatus');
     Route::post('/join-requests/setStatus', 'JoinController@setStatus');

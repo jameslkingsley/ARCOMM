@@ -25,14 +25,12 @@
 
 @section('content')
     <div class="content container">
-        <div class="row">
-            <div class="col-md-6 text-left">
-                <h3 style="margin: 0;line-height: 38px;">Media</h3>
-            </div>
-            <div class="col-md-6 text-right">
-                <a href="{{ url('/media/create') }}" class="btn">Upload</a>
-            </div>
-        </div>
+        <h2>
+            Media
+            @if(App\User::isMember())
+                <a href="{{ url('/media/create') }}" class="btn btn-primary btn-fill btn-dark pull-right">Upload</a>
+            @endif
+        </h2>
 
         <br />
 

@@ -21,6 +21,12 @@ class CreateGalleriesTable extends Migration
             $table->string('permalink');
             $table->boolean('container')->default(true);
         });
+
+        DB::table('galleries')->insert([
+            'name' => 'Default',
+            'permalink' => 'default',
+            'container' => true
+        ]);
     }
 
     /**

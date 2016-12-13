@@ -182,6 +182,8 @@ return [
 
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
+        Invisnik\LaravelSteamAuth\SteamServiceProvider::class,
+
         Syntax\SteamApi\SteamApiServiceProvider::class,
 
     ],
