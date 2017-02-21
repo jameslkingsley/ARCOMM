@@ -44,11 +44,12 @@
             <div class="container">
                 <div class="navbar-header">
                     <button id="menu-toggle" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar bar1"></span>
-                    <span class="icon-bar bar2"></span>
-                    <span class="icon-bar bar3"></span>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
                     </button>
+
                     <a href="{{ url('/') }}">
                         <div class="logo-container">
                             <div class="logo">
@@ -57,16 +58,19 @@
                         </div>
                     </a>
                 </div>
+
                 <div class="collapse navbar-collapse" id="example" >
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url('/media') }}">Media</a></li>
                         <li><a href="{{ url('/modset') }}">Modset</a></li>
                         <li><a href="{{ url('/roster') }}">Roster</a></li>
                         <li><a href="{{ url('/join') }}">Join</a></li>
-                        @if(App\User::isAdmin())
-                            <li><a href="{{ url('/join-requests') }}">Admin</a></li>
+
+                        @if(!auth()->guest() && auth()->user()->isMember())
+                            <li><a href="{{ url('/hub') }}">Hub</a></li>
                         @endif
-                        @if(Auth::guest())
+
+                        @if(auth()->guest())
                             <li>
                                 <a href="{{ url('/steamauth') }}" style="padding-top: 4px">
                                     <img style="width: 81px" src="{{ url('/images/steam.png') }}">
@@ -77,6 +81,7 @@
                 </div>
             </div>
         </nav>
+
         @yield('content')
         @yield('scripts')
     </body>

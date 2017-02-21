@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    Join Requests
+    Applications
 @endsection
 
 @section('scripts')
@@ -33,7 +33,7 @@
 
                 $('.status-filter').removeClass("active");
                 $this.addClass("active");
-                setUrl('join-requests/' + status);
+                setUrl('hub/applications/' + status);
                 
                 loadItems(status, "desc", function(data) {
                     $('#join-requests').html(data);

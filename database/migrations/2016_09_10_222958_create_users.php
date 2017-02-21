@@ -21,6 +21,7 @@ class CreateUsers extends Migration
             $table->string('steam_id');
             $table->string('username');
             $table->string('avatar');
+            $table->integer('access_level')->default(1);
             $table->rememberToken();
         });
     }
@@ -32,6 +33,6 @@ class CreateUsers extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('users');
     }
 }

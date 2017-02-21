@@ -15,7 +15,16 @@ class Administrator
      */
     public function handle($request, Closure $next)
     {
-        // abort(404, 'Not an administrator'); TODO
+        if (auth()->guest()) {
+            abort(404, 'Not logged in');
+            return;
+        }
+
+        if (!auth()->user()->isAdmin()) {
+            abort(404, 'Not an administrator');
+            return;
+        }
+
         return $next($request);
     }
 }

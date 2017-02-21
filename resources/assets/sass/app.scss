@@ -464,3 +464,22 @@ footer {
 ::-webkit-scrollbar-thumb {
     background: $brand-primary;
 }
+
+#images {
+    .thumb {
+        position: relative;
+    }
+}
+
+.photo-delete {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    color: white !important;
+    font-size: 24px;
+    z-index: 100;
+}

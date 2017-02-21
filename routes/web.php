@@ -11,17 +11,18 @@
 |
  */
 
+//--- Home
+Route::get('/', 'PageController@index');
+
 //--- Steam Authentication
 Route::get('/steamauth', 'AuthController@login');
 
 //--- Join Requests
 Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
 
-//--- Public
-Route::get('/', 'PageController@index');
-
 //--- Media
 Route::resource('media', 'MediaController');
+Route::post('/media/delete', 'MediaController@deletePhoto');
 
 //--- Modset
 Route::get('/modset', function() {
@@ -40,17 +41,25 @@ Route::group(['middleware' => 'member'], function() {
 
 //--- Admins
 Route::group(['middleware' => 'admin'], function() {
-    // Route::get('/join-requests/transfer', 'JoinController@transferOldRecords');
-    Route::get('/join-requests/viewItems', 'JoinController@viewItems');
-    Route::get('/join-requests/showByInput', 'JoinController@showByInput');
-    Route::get('/join-requests/{status}', 'JoinController@index');
-    Route::post('/join-requests/createStatus', 'JoinController@createStatus');
-    Route::post('/join-requests/setStatus', 'JoinController@setStatus');
-    Route::post('/join-requests/getStatusView', 'JoinController@getStatusView');
+    // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
+    Route::get('/hub/applications/viewItems', 'JoinController@viewItems');
+    Route::get('/hub/applications/showByInput', 'JoinController@showByInput');
+    Route::get('/hub/applications/{status}', 'JoinController@index');
+    Route::post('/hub/applications/createStatus', 'JoinController@createStatus');
+    Route::post('/hub/applications/setStatus', 'JoinController@setStatus');
+    Route::post('/hub/applications/getStatusView', 'JoinController@getStatusView');
 
-    Route::resource('join-requests', 'JoinController', [
+    Route::resource('/hub/applications', 'JoinController', [
         'as' => 'admin',
         'except' => [],
         'names' => []
     ]);
+});
+
+Route::group(['middleware' => 'member'], function() {
+    Route::post('/hub/missions/show-panel', 'MissionController@showPanel');
+    Route::get('/hub/missions/{panel}', 'MissionController@index');
+    Route::resource('/hub/missions', 'MissionController');
+
+    Route::resource('/hub', 'HubController');
 });

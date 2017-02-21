@@ -30,27 +30,20 @@ class User extends Authenticatable
      */
     protected $hidden = [];
 
-    public static function isMember()
+    public function isMember()
     {
         if (Auth::guest()) {
             return false;
         }
 
         return in_array(
-            Steam::convertId(Auth::user()->steam_id, 'id64'),
+            Steam::convertId($this->steam_id, 'id64'),
             SteamAPI::members()
         );
     }
 
-    public static function isAdmin()
+    public function isAdmin()
     {
-        if (!self::isMember()) {
-            return false;
-        }
-
-        return in_array(
-            Steam::convertId(Auth::user()->steam_id, 'id64'),
-            explode (",", env('ADMIN_STEAM_ID64', []))
-        );
+        return $this->isMember() && $this->access_level > 1;
     }
 }

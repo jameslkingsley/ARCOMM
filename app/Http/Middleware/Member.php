@@ -18,8 +18,14 @@ class Member
      */
     public function handle($request, Closure $next)
     {
-        if (!User::isMember()) {
-            abort(404, "You are not logged in or are not a member");
+        if (auth()->guest()) {
+            abort(404, "You are not logged in");
+            return;
+        }
+
+        if (!auth()->user()->isMember()) {
+            abort(404, "You are not a member");
+            return;
         }
 
         return $next($request);

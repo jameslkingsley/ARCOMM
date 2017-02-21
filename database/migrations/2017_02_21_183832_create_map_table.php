@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGalleriesTable extends Migration
+class CreateMapTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,15 @@ class CreateGalleriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('galleries', function($table) {
+        Schema::create('maps', function($table) {
             $table->increments('id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
-            $table->string('name');
-            $table->string('permalink');
-            $table->boolean('container')->default(true);
+            $table->string('display_name');
+            $table->string('class_name');
+            $table->enum('ecosystem', ['default', 'woodland', 'winter', 'desert', 'tropical', 'urban', 'mediterranean'])->default('default');
+            $table->string('image')->nullable();
         });
-
-        DB::table('galleries')->insert([
-            'name' => 'Default',
-            'permalink' => 'default',
-            'container' => true
-        ]);
     }
 
     /**
@@ -36,6 +31,6 @@ class CreateGalleriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('galleries');
+        Schema::dropIfExists('maps');
     }
 }

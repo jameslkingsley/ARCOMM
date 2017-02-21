@@ -32,32 +32,69 @@
     <body>
         <header>
             @yield('header')
+
+            <script>
+                $(document).ready(function(e) {
+                    var activeNav = $('.nav-link[data-page="{{ (empty(Request::segment(2))) ? "missions" : Request::segment(2) }}"]');
+                    activeNav.addClass('active');
+                    $('.subnav')
+                        .css('padding-top', activeNav.offset().top)
+                        .animate({
+                            'left': '80px'
+                        }, 500, 'easeInOutCirc');
+                });
+            </script>
+
             <div class="nav">
                 <a href="{{ url('/') }}" class="nav-link nav-link-disabled">
                     <i class="brand-logo"></i>
                     <span class="brand-text"></span>
                 </a>
-                <a href="{{ route('admin.join-requests.index') }}" class="nav-link">
-                    <i class="glyphicon glyphicon-inbox"></i>
-                    <span>Join Requests</span>
+
+                @if(auth()->user()->isAdmin())
+                    <a href="{{ url('/hub/applications') }}" class="nav-link" data-page="applications">
+                        <i class="glyphicon glyphicon-inbox"></i>
+                        <span>Applications</span>
+                    </a>
+                @endif
+
+                <a href="{{ url('/hub/missions') }}" class="nav-link" data-page="missions">
+                    <i class="fa fa-map"></i>
+                    <span>Missions</span>
                 </a>
+
+                <a href="{{ url('/hub/settings') }}" class="nav-link" data-page="settings">
+                    <i class="fa fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+
+                <a href="https://www.nfoservers.com/donate.pl?force_recipient=1&recipient=fbidude21@yahoo.com" target="_newtab" class="nav-link">
+                    <i class="fa fa-usd"></i>
+                    <span>Donate</span>
+                </a>
+
                 @yield('nav')
             </div>
         </header>
+
         <main>
             <div class="subnav">
                 @yield('subnav')
             </div>
+
             <div class="controls">
                 @yield('controls')
             </div>
+
             <div class="content">
                 @yield('content')
             </div>
         </main>
+
         <footer>
             @yield('footer')
         </footer>
+
         @yield('scripts')
     </body>
 </html>
