@@ -24,6 +24,8 @@
         <!-- Dropit -->
         <script src="{{ url('/js/dropit.js') }}"></script>
 
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.waitforimages/1.5.0/jquery.waitforimages.min.js"></script>
+
         <!-- Main -->
         <link rel="stylesheet" href="{{ url('/css/app.css') }}">
         <script src="{{ url('/js/all.js') }}"></script>

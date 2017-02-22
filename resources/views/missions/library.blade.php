@@ -23,7 +23,7 @@
             <a
                 href="{{ url('/hub/missions/' . $mission->id) }}"
                 class="mission-item"
-                style="background-image: url({{ url($mission->map()->image_2d) }})"
+                style="background-image: url({{ url($mission->map->image_2d) }})"
                 data-id="{{ $mission->id }}">
                 <div class="mission-item-inner">
                     <span class="mission-item-title">

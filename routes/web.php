@@ -59,8 +59,9 @@ Route::group(['middleware' => 'admin'], function() {
 Route::group(['middleware' => 'member'], function() {
     Route::post('/hub/missions/show-panel', 'MissionController@showPanel');
     Route::post('/hub/missions/show-mission', 'MissionController@showMission');
+    Route::post('/hub/missions/save-comment', 'MissionController@saveComment');
+    Route::post('/hub/missions/publish-comment', 'MissionController@publishComment');
     Route::get('/hub/missions/{panel}', 'MissionController@index');
     Route::resource('/hub/missions', 'MissionController');
-
     Route::resource('/hub', 'HubController');
 });

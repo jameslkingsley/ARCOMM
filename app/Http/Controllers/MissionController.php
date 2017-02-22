@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Mission;
+use App\MissionComment;
 
 class MissionController extends Controller
 {
@@ -99,5 +100,25 @@ class MissionController extends Controller
     public function library()
     {
         return 'Test';
+    }
+
+    public function saveComment(Request $request)
+    {
+        $form = $request->all();
+
+        if ($form['id'] == -1) {
+            $comment = new MissionComment();
+            $comment->mission_id = $form['mission_id'];
+            $comment->user_id = auth()->user()->id;
+            $comment->text = $form['text'];
+            $comment->published = false;
+            $comment->save();
+            return $comment->id;
+        } else {
+            $comment = MissionComment::find($form['id']);
+            $comment->text = $form['text'];
+            $comment->save();
+            return $comment->id;
+        }
     }
 }

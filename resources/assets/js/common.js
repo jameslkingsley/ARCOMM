@@ -37,16 +37,18 @@ openBigWindow = function(content, delay) {
         '</div>'
     );
 
-    $('.large-panel-exit').fadeIn(delay);
-    $('.large-panel-container, .large-panel-sidebar').animate({"top": "0"}, delay, "easeInOutCirc");
+    $('.large-panel-container').waitForImages(function() {
+        $('.large-panel-exit').fadeIn(delay);
+        $('.large-panel-container, .large-panel-sidebar').animate({"top": "0"}, delay, "easeInOutCirc");
 
-    $('.large-panel-exit').bind('click', function(event) {
-        $('.large-panel-exit').fadeOut(delay, function() {
-            $('.large-panel-exit').remove();
-        });
+        $('.large-panel-exit').bind('click', function(event) {
+            $('.large-panel-exit').fadeOut(delay, function() {
+                $('.large-panel-exit').remove();
+            });
 
-        $('.large-panel-container, .large-panel-sidebar').animate({"top": "100%"}, delay, "easeInOutCirc", function() {
-            $('.large-panel-container').remove();
+            $('.large-panel-container, .large-panel-sidebar').animate({"top": "100%"}, delay, "easeInOutCirc", function() {
+                $('.large-panel-container').remove();
+            });
         });
     });
 }
