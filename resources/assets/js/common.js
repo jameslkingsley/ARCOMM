@@ -25,6 +25,32 @@ openPanel = function(content, d) {
     });
 }
 
+openBigWindow = function(content, delay) {
+    delay = delay || 500;
+
+    $('.large-panel-container, .large-panel-exit').remove();
+
+    $('body').prepend(
+        '<div class="large-panel-exit"></div>'+
+        '<div class="large-panel-container">'+
+        '<div class="large-panel-inner">' + content + '</div>'+
+        '</div>'
+    );
+
+    $('.large-panel-exit').fadeIn(delay);
+    $('.large-panel-container, .large-panel-sidebar').animate({"top": "0"}, delay, "easeInOutCirc");
+
+    $('.large-panel-exit').bind('click', function(event) {
+        $('.large-panel-exit').fadeOut(delay, function() {
+            $('.large-panel-exit').remove();
+        });
+
+        $('.large-panel-container, .large-panel-sidebar').animate({"top": "100%"}, delay, "easeInOutCirc", function() {
+            $('.large-panel-container').remove();
+        });
+    });
+}
+
 setUrl = function(url, title) {
     var url = (window.location.protocol + "//" + window.location.hostname + "/") + url;
     

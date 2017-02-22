@@ -58,6 +58,7 @@ Route::group(['middleware' => 'admin'], function() {
 
 Route::group(['middleware' => 'member'], function() {
     Route::post('/hub/missions/show-panel', 'MissionController@showPanel');
+    Route::post('/hub/missions/show-mission', 'MissionController@showMission');
     Route::get('/hub/missions/{panel}', 'MissionController@index');
     Route::resource('/hub/missions', 'MissionController');
 

@@ -20,7 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'steam_id',
         'username',
-        'avatar'
+        'avatar',
+        'email'
     ];
 
     /**

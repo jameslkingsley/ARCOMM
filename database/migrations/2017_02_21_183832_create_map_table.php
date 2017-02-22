@@ -20,7 +20,8 @@ class CreateMapTable extends Migration
             $table->string('display_name');
             $table->string('class_name');
             $table->enum('ecosystem', ['default', 'woodland', 'winter', 'desert', 'tropical', 'urban', 'mediterranean'])->default('default');
-            $table->string('image')->nullable();
+            $table->string('image_2d')->nullable();
+            $table->string('image_3d')->nullable();
         });
     }
 

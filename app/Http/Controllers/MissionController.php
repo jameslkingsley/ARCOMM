@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use App\Mission;
 
 class MissionController extends Controller
 {
@@ -21,6 +22,12 @@ class MissionController extends Controller
     {
         $panel = Input::get('panel');
         return view('missions.' . $panel);
+    }
+
+    public function showMission()
+    {
+        $mission = Mission::find(Input::get('id'));
+        return view('missions.show', compact('mission'));
     }
 
     /**

@@ -82,11 +82,11 @@
                 @yield('subnav')
             </div>
 
-            <div class="controls">
-                @yield('controls')
-            </div>
-
             <div class="content">
+                <div class="controls">
+                    @yield('controls')
+                </div>
+
                 @yield('content')
             </div>
         </main>
