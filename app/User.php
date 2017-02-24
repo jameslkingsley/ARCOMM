@@ -4,13 +4,16 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Steam;
 use Auth;
 use App\SteamAPI;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMediaConversions
 {
     use Notifiable;
+    use HasMediaTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -30,6 +33,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [];
+
+    public function registerMediaConversions()
+    {
+    }
 
     public function isMember()
     {

@@ -217,12 +217,9 @@ footer {
 }
 
 .controls {
-    position: fixed;
-    top: 0;
-    left: 330px;
-    right: 0;
-    padding: 35px;
     overflow: hidden;
+    float: left;
+    width: 100%;
 }
 
 .controls .form-control {
@@ -579,6 +576,7 @@ header .nav .nav-link.active {
     left: 5%;
     right: 5%;
     font-size: 26px;
+    word-wrap: break-word;
 }
 
 .mission-item-mode {
@@ -715,9 +713,11 @@ header .nav .nav-link.active {
 }
 
 .mission-banner-heading {
-    float: left;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     text-align: center;
     color: white;
     font-size: 72px;
@@ -807,4 +807,152 @@ header .nav .nav-link.active {
 
 .hub-form-control:focus {
     background: #f9f9f9;
+}
+
+.mission-nav {
+    position: absolute;
+    top: calc(100vh / 1.618);
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    padding: 0 50px;
+}
+
+.mission-nav-item {
+    float: left;
+    height: 100%;
+    text-align: center;
+    line-height: 60px;
+    padding: 0 25px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444 !important;
+    text-decoration: none !important;
+}
+
+.mission-nav-item.active {
+    box-shadow: 0 -2px 0 #bd2c2c inset;
+    color: #bd2c2c !important;
+}
+
+.mission-banner-tagline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: calc(170vh / 1.618);
+}
+
+.mission-weather {
+    float: left;
+    width: 100%;
+    height: 100%;
+    padding: 20px 25px;
+}
+
+.mission-weather-map {
+    float: left;
+    width: 100%;
+    font-size: 28px;
+}
+
+.mission-weather-datetime {
+    float: left;
+    width: 100%;
+    font-size: 18px;
+}
+
+.mission-weather-overcast {
+    float: left;
+    width: 100%;
+    font-size: 18px;
+}
+
+.mission-weather-image {
+    float: left;
+    width: 140px;
+    height: 140px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.mission-overview {
+    float: left;
+    width: 100%;
+    margin-bottom: 50px;
+    height: 250px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: #f5f5f5;
+}
+
+.mission-terrain {
+    float: right;
+    width: calc(100% - 250px);
+    height: calc(100% + 40px);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: #eee;
+    margin: -20px -25px;
+}
+
+.mission-version {
+    float: right;
+    height: 100%;
+    line-height: 60px;
+    font-weight: 500;
+    font-size: 14px;
+    color: black;
+    opacity: .66;
+}
+
+.mission-briefing {
+    float: left;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.mission-briefing-nav {
+    float: left;
+    width: 150px;
+    border-right: 1px solid #eee;
+}
+
+.mission-briefing-content {
+    float: left;
+    width: calc(100% - 150px);
+    padding: 0 25px;
+}
+
+.mission-briefing-nav a {
+    float: left;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    text-align: right;
+    text-transform: uppercase;
+    font-size: 16px;
+    text-decoration: none !important;
+}
+
+.mission-briefing-nav a:hover, .mission-briefing-nav a.active {
+    background: #f5f5f5;
+}
+
+.mission-briefing-content h4 {
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Mission;
 use App\MissionComment;
+use App\ArmaLexer;
+use Storage;
 
 class MissionController extends Controller
 {
@@ -28,6 +30,7 @@ class MissionController extends Controller
     public function showMission()
     {
         $mission = Mission::find(Input::get('id'));
+        $mission->storeConfigs();
         return view('missions.show', compact('mission'));
     }
 
@@ -119,6 +122,69 @@ class MissionController extends Controller
             $comment->text = $form['text'];
             $comment->save();
             return $comment->id;
+        }
+    }
+
+    public function publishComment(Request $request)
+    {
+        $form = $request->all();
+
+        if ($form['id'] == -1) {
+            $comment = new MissionComment();
+            $comment->mission_id = $form['mission_id'];
+            $comment->user_id = auth()->user()->id;
+            $comment->text = $form['text'];
+            $comment->published = true;
+            $comment->save();
+            return $comment->id;
+        } else {
+            $comment = MissionComment::find($form['id']);
+            $comment->text = $form['text'];
+            $comment->published = true;
+            $comment->save();
+            return $comment->id;
+        }
+    }
+
+    public static function armake()
+    {
+        return resource_path('utils/armake.exe');
+    }
+
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $mission = new Mission();
+            $mission->user_id = auth()->user()->id;
+            $mission->file_name = $request->file->getClientOriginalName();
+            $mission->display_name = $request->file->getClientOriginalName();
+            $mission->summary = '';
+            $mission->mode = 'coop';
+            $mission->map_id = 1;
+            $mission->pbo_path = '';
+            $mission->save();
+
+            $path = $request->file->storeAs(
+                'missions/' . auth()->user()->id,
+                $mission->id . '.pbo'
+            );
+
+            $mission->pbo_path = $path;
+            $mission->save();
+
+            $unpacked = $mission->unpack();
+
+            $config = ArmaLexer::convert($unpacked . '/config.hpp');
+            $ext = ArmaLexer::convert($unpacked . '/description.ext');
+            $sqm = ArmaLexer::convert($unpacked . '/mission.sqm');
+
+            $mission->deleteUnpacked();
+
+            $mission->display_name = $ext->onLoadName;
+            $mission->summary = $ext->onLoadMission;
+            $mission->save();
+
+            return $mission->id;
         }
     }
 }

@@ -42,6 +42,13 @@ openBigWindow = function(content, delay) {
         $('.large-panel-container, .large-panel-sidebar').animate({"top": "0"}, delay, "easeInOutCirc");
 
         $('.large-panel-exit').bind('click', function(event) {
+            $('.mission-nav').css({
+                'position': 'absolute',
+                'top': 'calc(100vh / 1.618)',
+                'left': 0,
+                'right': 0
+            });
+
             $('.large-panel-exit').fadeOut(delay, function() {
                 $('.large-panel-exit').remove();
             });

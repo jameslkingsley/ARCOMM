@@ -62,6 +62,7 @@ Route::group(['middleware' => 'member'], function() {
     Route::post('/hub/missions/save-comment', 'MissionController@saveComment');
     Route::post('/hub/missions/publish-comment', 'MissionController@publishComment');
     Route::get('/hub/missions/{panel}', 'MissionController@index');
+    Route::post('/hub/missions/create', 'MissionController@upload');
     Route::resource('/hub/missions', 'MissionController');
     Route::resource('/hub', 'HubController');
 });

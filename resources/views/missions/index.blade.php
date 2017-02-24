@@ -5,11 +5,16 @@
 @endsection
 
 @section('scripts')
+    <script type="text/javascript" src="{{ url('/js/dropzone.js') }}"></script>
+
     <script>
         $(document).ready(function(e) {
             $('.subnav-link').click(function(event) {
                 var caller = $(this);
                 var panel = caller.data('panel');
+                var noAjax = caller.data('noajax');
+
+                if (noAjax) return;
 
                 $('.subnav-link').removeClass('active');
                 caller.addClass('active');
@@ -26,18 +31,40 @@
 
                 event.preventDefault();
             });
+
+            $('#mission-upload-btn').dropzone({
+                url: '{{ url('/hub/missions/create') }}',
+                acceptedFiles: '',
+                addedfile: function(file) {},
+                success: function(file, data) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ url('/hub/missions/show-mission') }}',
+                        data: {'id': data.trim()},
+                        success: function(data) {
+                            openBigWindow(data);
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection
 
 @section('subnav')
-    @foreach (['Create', 'Library'] as $p)
-        <a
-            href="javascript:void(0)"
-            data-panel="{{ strtolower($p) }}"
-            class="subnav-link {{ (strtolower($p) == $panel) ? 'active' : '' }}"
-        >{{ $p }}</a>
-    @endforeach
+    <a
+        href="javascript:void(0)"
+        data-panel="upload"
+        data-noajax="true"
+        id="mission-upload-btn"
+        class="subnav-link {{ ('upload' == $panel) ? 'active' : '' }}"
+    >Upload</a>
+
+    <a
+        href="javascript:void(0)"
+        data-panel="library"
+        class="subnav-link {{ ('library' == $panel) ? 'active' : '' }}"
+    >Library</a>
 @endsection
 
 @section('controls')

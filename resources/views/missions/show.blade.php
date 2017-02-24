@@ -1,25 +1,112 @@
+<script>
+    $(document).ready(function(e) {
+        setContentTop = function() {
+            $('#mission-content-break').css(
+                'margin-top',
+                $('.mission-nav').offset().top + 50 + 'px'
+            );
+        }
+
+        $(window).resize(function() {
+            setContentTop();
+        });
+
+        $('.large-panel-container').scroll(function() {
+            var top = $(this).scrollTop();
+            var left = $('.mission-nav').offset().left;
+            var right = $(window).innerWidth() - ($('.mission-nav').offset().left + $('.mission-nav').outerWidth());
+
+            if (top >= 600) {
+                $('.mission-nav').css({
+                    'position': 'fixed',
+                    'top': 0,
+                    'left': left,
+                    'right': right
+                });
+            } else {
+                $('.mission-nav').css({
+                    'position': 'absolute',
+                    'top': 'calc(100vh / 1.618)',
+                    'left': 0,
+                    'right': 0
+                });
+            }
+        });
+    });
+</script>
+
 <div class="large-panel-content">
     <div class="mission-banner" style="background-image: url({{ $mission->banner() }})">
         <span class="mission-banner-heading">
             {{ $mission->display_name }}
         </span>
+
+        <span class="mission-banner-tagline">
+            By {{ $mission->user->username }}
+        </span>
     </div>
 
-    <h1 class="mt-0 mb-0" style="margin-top: calc(100vh / 1.618)">
-        {{ $mission->display_name }}
-    </h1>
+    <div class="mission-nav">
+        <a href="javascript:void(0)" class="mission-nav-item active" data-section="overview">
+            Overview
+        </a>
 
-    <p class="text-muted">
-        By {{ $mission->user->username }}
+        <a href="javascript:void(0)" class="mission-nav-item" data-section="briefing">
+            Briefing
+        </a>
 
-        @if(!is_null($mission->last_played))
-            &mdash;
-            <span title="{{ $mission->last_played }}">Last played {{ $mission->last_played->diffForHumans() }}</span>
-        @endif
-    </p>
+        <a href="javascript:void(0)" class="mission-nav-item" data-section="aar">
+            After-Action Report
+        </a>
+
+        <a href="javascript:void(0)" class="mission-nav-item" data-section="history">
+            History
+        </a>
+
+        <span class="mission-version">
+            ARCMF {{ $mission->version() }}
+        </span>
+    </div>
+
+    <div id="mission-content-break" class="pull-left full-width" style="margin-top: calc(108vh / 1.618)"></div>
+
+    <div class="mission-overview">
+        <div class="mission-weather">
+            <span class="mission-weather-map">
+                {{ $mission->map->display_name }} &mdash; {{ $mission->date() }} &mdash; {{ $mission->time() }}
+            </span>
+
+            <span class="mission-weather-overcast">
+                {{ $mission->weather() }}
+            </span>
+
+            <span class="mission-weather-image" style="background-image: url('{{ $mission->weatherImage() }}')"></span>
+        </div>
+    </div>
 
     <h3>Briefing</h3>
-    <p>{!! $mission->summary !!}</p>
+
+    <div class="mission-briefing">
+        <div class="mission-briefing-nav">
+            <a href="javascript:void(0)" class="active" data-classname="BLUFOR">BLUFOR</a>
+            <a href="javascript:void(0)" data-classname="OPFOR">OPFOR</a>
+            <a href="javascript:void(0)" data-classname="INDFOR">INDFOR</a>
+            <a href="javascript:void(0)" data-classname="CIVILIAN">CIVILIAN</a>
+            <a href="javascript:void(0)" data-classname="GAME_MASTER">GAME MASTER</a>
+        </div>
+
+        <div class="mission-briefing-content">
+            @foreach ([
+                'situation' => 'Situation',
+                'mission' => 'Mission'
+            ] as $subject => $heading)
+                <h4>{{ $heading }}</h4>
+                @foreach ($mission->config()->CfgARCMF->Briefing->BLUFOR->$subject as $paragraph)
+                    <p>{{ $paragraph }}</p>
+                @endforeach
+            @endforeach
+        </div>
+    </div>
 
     <h3>After-Action Report</h3>
 
