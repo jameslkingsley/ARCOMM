@@ -23,4 +23,9 @@ class MissionComment extends Model
     {
         return $this->belongsTo('App\Mission');
     }
+
+    public function isMine()
+    {
+        return $this->user_id == auth()->user()->id;
+    }
 }

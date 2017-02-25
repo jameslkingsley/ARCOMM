@@ -5,6 +5,8 @@
 @endsection
 
 @section('scripts')
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/magnific-popup.css') }}">
+    <script type="text/javascript" src="{{ url('/js/jquery.magnific-popup.min.js') }}"></script>
     <script type="text/javascript" src="{{ url('/js/dropzone.js') }}"></script>
 
     <script>
@@ -45,6 +47,9 @@
                             openBigWindow(data);
                         }
                     });
+                },
+                error: function(file, message) {
+                    alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
                 }
             });
         });

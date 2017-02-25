@@ -100,67 +100,83 @@ class MissionController extends Controller
         //
     }
 
-    public function library()
-    {
-        return 'Test';
-    }
-
     public function saveComment(Request $request)
     {
         $form = $request->all();
 
+        if (strlen(trim($form['text'])) == 0) {
+            abort(403, 'No comment text provided');
+            return;
+        }
+
         if ($form['id'] == -1) {
             $comment = new MissionComment();
             $comment->mission_id = $form['mission_id'];
             $comment->user_id = auth()->user()->id;
             $comment->text = $form['text'];
-            $comment->published = false;
+            $comment->published = $form['published'];
             $comment->save();
-            return $comment->id;
         } else {
             $comment = MissionComment::find($form['id']);
             $comment->text = $form['text'];
+            $comment->published = $form['published'];
             $comment->save();
+        }
+
+        if ($comment->published) {
+            return view('missions.comment', compact('comment'));
+        } else {
             return $comment->id;
         }
     }
 
-    public function publishComment(Request $request)
+    public function deleteComment(Request $request)
     {
         $form = $request->all();
-
-        if ($form['id'] == -1) {
-            $comment = new MissionComment();
-            $comment->mission_id = $form['mission_id'];
-            $comment->user_id = auth()->user()->id;
-            $comment->text = $form['text'];
-            $comment->published = true;
-            $comment->save();
-            return $comment->id;
-        } else {
-            $comment = MissionComment::find($form['id']);
-            $comment->text = $form['text'];
-            $comment->published = true;
-            $comment->save();
-            return $comment->id;
-        }
+        MissionComment::destroy($form['comment_id']);
     }
 
-    public static function armake()
+    public function showBriefing(Request $request)
     {
-        return resource_path('utils/armake.exe');
+        $form = $request->all();
+        $mission = Mission::find($form['mission_id']);
+        $faction = $form['faction'];
+        return view('missions.briefing', compact('mission', 'faction'));
+    }
+
+    public function lockBriefing(Request $request)
+    {
+        $form = $request->all();
+        $mission = Mission::find($form['mission_id']);
+
+        if (!$mission->isMine() && !auth()->user()->isAdmin()) {
+            abort(403, 'You are not authorised to edit this mission');
+            return;
+        }
+
+        $mission->{'locked_' . $form['faction'] . '_briefing'} = $form['locked'];
+        $mission->save();
+    }
+
+    public function showComments(Request $request)
+    {
+        $form = $request->all();
+        $comments = Mission::find($form['mission_id'])->comments;
+        return view('missions.comments', compact('comments'));
     }
 
     public function upload(Request $request)
     {
         if ($request->hasFile('file')) {
+            $details = Mission::getDetailsFromName($request->file->getClientOriginalName());
+
             $mission = new Mission();
             $mission->user_id = auth()->user()->id;
             $mission->file_name = $request->file->getClientOriginalName();
             $mission->display_name = $request->file->getClientOriginalName();
             $mission->summary = '';
-            $mission->mode = 'coop';
-            $mission->map_id = 1;
+            $mission->mode = $details->mode;
+            $mission->map_id = $details->map->id;
             $mission->pbo_path = '';
             $mission->save();
 
@@ -173,18 +189,22 @@ class MissionController extends Controller
             $mission->save();
 
             $unpacked = $mission->unpack();
-
-            $config = ArmaLexer::convert($unpacked . '/config.hpp');
             $ext = ArmaLexer::convert($unpacked . '/description.ext');
-            $sqm = ArmaLexer::convert($unpacked . '/mission.sqm');
-
             $mission->deleteUnpacked();
 
-            $mission->display_name = $ext->onLoadName;
-            $mission->summary = $ext->onLoadMission;
+            $mission->display_name = $ext->onloadname;
+            $mission->summary = $ext->onloadmission;
             $mission->save();
 
             return $mission->id;
         }
+    }
+
+    public function uploadMedia(Request $request)
+    {
+        $mission = Mission::find($request->mission_id);
+        $mission->addMedia($request->file('file'))->toCollection('images');
+        $media = $mission->getMedia('images')->last();
+        return view('missions.media-item', compact('media'));
     }
 }

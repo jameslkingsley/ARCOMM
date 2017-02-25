@@ -9,7 +9,7 @@ class SteamAPI extends Model
 {
     public static function members()
     {
-        $members = simplexml_load_file('http://steamcommunity.com/groups/'.env('STEAM_GROUP').'/memberslistxml/?xml=1')->members;
+        $members = simplexml_load_file('http://steamcommunity.com/groups/ARCOMM/memberslistxml/?xml=1')->members;
         return (array)$members->steamID64;
     }
 }

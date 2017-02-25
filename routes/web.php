@@ -59,8 +59,13 @@ Route::group(['middleware' => 'admin'], function() {
 Route::group(['middleware' => 'member'], function() {
     Route::post('/hub/missions/show-panel', 'MissionController@showPanel');
     Route::post('/hub/missions/show-mission', 'MissionController@showMission');
+    Route::post('/hub/missions/show-briefing', 'MissionController@showBriefing');
+    Route::post('/hub/missions/lock-briefing', 'MissionController@lockBriefing');
+    Route::post('/hub/missions/show-comments', 'MissionController@showComments');
     Route::post('/hub/missions/save-comment', 'MissionController@saveComment');
+    Route::post('/hub/missions/delete-comment', 'MissionController@deleteComment');
     Route::post('/hub/missions/publish-comment', 'MissionController@publishComment');
+    Route::post('/hub/missions/add-media', 'MissionController@uploadMedia');
     Route::get('/hub/missions/{panel}', 'MissionController@index');
     Route::post('/hub/missions/create', 'MissionController@upload');
     Route::resource('/hub/missions', 'MissionController');

@@ -669,21 +669,27 @@ header .nav .nav-link.active {
     bottom: 0;
     width: calc(33% - 106px);
     background: #f2f2f2;
+    overflow-y: auto;
 }
 
 .mission-media-item {
     float: left;
-    width: 150px;
-    height: 150px;
-    background: rgba(255, 255, 255, 0.75);
+    width: calc(50% - 5px);
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.66);
     text-align: center;
-    line-height: 150px;
-    font-size: 46px;
+    line-height: 200px;
+    font-size: 64px;
     color: rgba(0, 0, 0, 0.15) !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 5px;
+    outline: 0 !important;
 }
 
 .mission-media-item:hover {
-    background: white;
+    background-color: white;
 }
 
 .full-width {
@@ -697,7 +703,7 @@ header .nav .nav-link.active {
 .mission-media {
     float: left;
     width: 100%;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 }
 
 .mission-banner {
@@ -763,8 +769,8 @@ header .nav .nav-link.active {
 
 .mission-comment-item-text {
     float: left;
-    width: 100%;
-    padding-left: 50px;
+    width: calc(100% - 50px);
+    /* padding-left: 50px; */
     padding-top: 5px;
 }
 
@@ -818,6 +824,7 @@ header .nav .nav-link.active {
     background: white;
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     padding: 0 50px;
+    z-index: 100;
 }
 
 .mission-nav-item {
@@ -955,4 +962,67 @@ header .nav .nav-link.active {
     font-weight: 600;
     font-size: 16px;
     text-transform: uppercase;
+}
+
+.mission-briefing-nav a.locked {
+    opacity: .5;
+    cursor: default;
+    background: transparent !important;
+}
+
+.mission-comment-control {
+    font-size: 14px;
+    color: #444;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #444;
+    border-radius: 100%;
+    line-height: 30px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.mission-comments .pagination {
+    float: left;
+    width: 100%;
+    text-align: center;
+    cursor: default;
+}
+
+.mission-comments .pagination li {
+    display: inline-block;
+}
+
+.mission-comments .pagination li span, .mission-comments .pagination li a {
+    border: none;
+    border-radius: 0;
+}
+
+.mission-comments .pagination li span {
+    color: #444 !important;
+}
+
+.mission-comments .pagination li a {
+    color: #bd2c2c !important;
+}
+
+.btn {
+    cursor: pointer !important;
+}
+
+.mission-comment-controls {
+    float: left;
+    width: 40px;
+    padding-top: 10px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.mission-comment-control:hover {
+    border-color: #bd2c2c;
+}
+
+.mission-media-item:nth-of-type(1n) {
+    margin-right: 5px;
 }

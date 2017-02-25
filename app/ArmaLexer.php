@@ -265,9 +265,9 @@ class ArmaLexer
         foreach($array as $k => $v) {
             if (strlen($k)) {
                 if (is_array($v)) {
-                    $obj->{$k} = static::arrayToObject($v);
+                    $obj->{strtolower($k)} = static::arrayToObject($v);
                 } else {
-                    $obj->{$k} = $v;
+                    $obj->{strtolower($k)} = $v;
                 }
             }
         }

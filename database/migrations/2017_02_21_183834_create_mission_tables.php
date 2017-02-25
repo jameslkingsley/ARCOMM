@@ -27,6 +27,11 @@ class CreateMissionTables extends Migration
             $table->string('pbo_path');
             $table->integer('revisions')->default(0);
             $table->boolean('published')->default(false);
+            $table->boolean('locked_blufor_briefing')->default(false);
+            $table->boolean('locked_opfor_briefing')->default(false);
+            $table->boolean('locked_indfor_briefing')->default(false);
+            $table->boolean('locked_civilian_briefing')->default(false);
+            $table->boolean('locked_gamemaster_briefing')->default(false);
         });
 
         Schema::table('missions', function($table) {
