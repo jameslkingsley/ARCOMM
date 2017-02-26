@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Steam;
 use Auth;
 use App\SteamAPI;
+use App\Mission;
 
 class User extends Authenticatable implements HasMediaConversions
 {
@@ -34,10 +35,18 @@ class User extends Authenticatable implements HasMediaConversions
      */
     protected $hidden = [];
 
-    public function registerMediaConversions()
-    {
-    }
+    /**
+     * Media library image conversions.
+     *
+     * @return void
+     */
+    public function registerMediaConversions() {}
 
+    /**
+     * Checks whether the user is a member of the Steam group.
+     *
+     * @return boolean
+     */
     public function isMember()
     {
         if (Auth::guest()) {
@@ -50,8 +59,26 @@ class User extends Authenticatable implements HasMediaConversions
         );
     }
 
+    /**
+     * Checks whether the user is an admin.
+     * Access level must be greater than 1.
+     *
+     * @return boolean
+     */
     public function isAdmin()
     {
         return $this->isMember() && $this->access_level > 1;
+    }
+
+
+    /**
+     * Gets the user's missions.
+     * Ordered from latest to oldest.
+     *
+     * @return Collection
+     */
+    public function missions()
+    {
+        return Mission::where('user_id', $this->id)->orderBy('created_at', 'desc')->get();
     }
 }

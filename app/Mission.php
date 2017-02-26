@@ -41,6 +41,39 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets all past missions (last played is in past and not null).
+     *
+     * @return Collection App\Mission
+     */
+    public static function allPast()
+    {
+        return self::whereRaw(
+            'last_played IS NOT NULL AND last_played < "'.
+            Carbon::now()->toDateTimeString().'"'
+        )->where('published', true)->orderBy('last_played', 'desc')->get();
+    }
+
+    /**
+     * Gets all new missions (last played is null).
+     *
+     * @return Collection App\Mission
+     */
+    public static function allNew()
+    {
+        return self::whereRaw('last_played IS NULL')->where('published', true)->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * Checks whether the mission is new.
+     *
+     * @return boolean
+     */
+    public function isNew()
+    {
+        return is_null($this->last_played);
+    }
+
+    /**
      * Gets the missions map.
      *
      * @return Map

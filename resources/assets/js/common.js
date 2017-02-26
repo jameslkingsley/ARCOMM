@@ -39,6 +39,7 @@ openBigWindow = function(content, delay) {
 
     $('.large-panel-container').waitForImages(function() {
         $('.large-panel-exit').fadeIn(delay);
+        $('.operations-mission-browser').animate({"bottom": "0"}, delay, "easeInOutCirc");
         $('.large-panel-container, .large-panel-sidebar').animate({"top": "0"}, delay, "easeInOutCirc");
 
         $('.large-panel-exit').bind('click', function(event) {
@@ -52,6 +53,8 @@ openBigWindow = function(content, delay) {
             $('.large-panel-exit').fadeOut(delay, function() {
                 $('.large-panel-exit').remove();
             });
+
+            $('.operations-mission-browser').animate({"bottom": "-1000px"}, delay, "easeInOutCirc");
 
             $('.large-panel-container, .large-panel-sidebar').animate({"top": "100%"}, delay, "easeInOutCirc", function() {
                 $('.large-panel-container').remove();

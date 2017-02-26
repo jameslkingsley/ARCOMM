@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use App\Mission;
 use App\MissionComment;
 use App\ArmaLexer;
+use App\OperationMission;
 use Storage;
 
 class MissionController extends Controller
@@ -98,6 +99,44 @@ class MissionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Removes the given operation item.
+     *
+     * @return void
+     */
+    public function removeOperationItem(Request $request)
+    {
+        $form = $request->all();
+        $id = $form['id'];
+
+        if ($id == -1) {
+            return;
+        }
+
+        OperationMission::destroy($id);
+    }
+
+    /**
+     * Adds the given mission as an operation item to the given operation.
+     *
+     * @return void
+     */
+    public function addOperationItem(Request $request)
+    {
+        $form = $request->all();
+        $mission_id = $form['mission_id'];
+        $operation_id = $form['operation_id'];
+        $play_order = $form['play_order'];
+
+        $item = new OperationMission();
+        $item->operation_id = $operation_id;
+        $item->mission_id = $mission_id;
+        $item->play_order = $play_order;
+        $item->save();
+
+        return $item->id;
     }
 
     public function saveComment(Request $request)

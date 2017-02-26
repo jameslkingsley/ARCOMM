@@ -18,22 +18,50 @@
     });
 </script>
 
-<ul class="mission-group">
-    @foreach (\App\Mission::orderBy('created_at', 'desc')->get() as $mission)
-        <a
-            href="{{ url('/hub/missions/' . $mission->id) }}"
-            class="mission-item"
-            style="background-image: url({{ $mission->thumbnail() }})"
-            data-id="{{ $mission->id }}">
-            <div class="mission-item-inner">
-                <span class="mission-item-title">
-                    {{ $mission->display_name }}
-                </span>
+<div class="missions-pinned">
+    <div class="missions-pinned-headers">
+        <h2>Next Operation</h2>
+        <h2>Past Operation</h2>
+    </div>
 
-                <span class="mission-item-mode mission-item-mode-{{ $mission->mode }}">
-                    {{ $mission->mode }}
-                </span>
-            </div>
-        </a>
+    <div class="missions-pinned-groups">
+        <ul class="mission-group mission-group-pinned mission-group-center">
+            @foreach (\App\Operation::nextWeek()->missions as $item)
+                @include('missions.mission-item', ['mission' => $item->mission])
+            @endforeach
+        </ul>
+
+        <ul class="mission-group mission-group-pinned mission-group-center">
+            @foreach (\App\Operation::lastWeek()->missions as $item)
+                @include('missions.mission-item', ['mission' => $item->mission])
+            @endforeach
+        </ul>
+    </div>
+</div>
+
+<h2 class="mission-section-heading">My Missions</h2>
+
+<ul class="mission-group">
+    @foreach (auth()->user()->missions() as $mission)
+        @include('missions.mission-item', [
+            'mission' => $mission,
+            'ignore_new_banner' => true
+        ])
+    @endforeach
+</ul>
+
+<h2 class="mission-section-heading">New Missions</h2>
+
+<ul class="mission-group">
+    @foreach (\App\Mission::allNew() as $mission)
+        @include('missions.mission-item', ['mission' => $mission])
+    @endforeach
+</ul>
+
+<h2 class="mission-section-heading">Past Missions</h2>
+
+<ul class="mission-group">
+    @foreach (\App\Mission::allPast() as $mission)
+        @include('missions.mission-item', ['mission' => $mission])
     @endforeach
 </ul>

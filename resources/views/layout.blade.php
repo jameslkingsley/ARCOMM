@@ -29,6 +29,8 @@
         <!-- Main -->
         <link rel="stylesheet" href="{{ url('/css/app.css') }}">
         <script src="{{ url('/js/all.js') }}"></script>
+
+        @yield('head')
     </head>
 
     <body>

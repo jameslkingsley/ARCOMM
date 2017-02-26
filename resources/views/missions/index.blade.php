@@ -4,7 +4,7 @@
     Missions
 @endsection
 
-@section('scripts')
+@section('head')
     <link rel="stylesheet" type="text/css" href="{{ url('/css/magnific-popup.css') }}">
     <script type="text/javascript" src="{{ url('/js/jquery.magnific-popup.min.js') }}"></script>
     <script type="text/javascript" src="{{ url('/js/dropzone.js') }}"></script>
@@ -15,17 +15,25 @@
                 var caller = $(this);
                 var panel = caller.data('panel');
                 var noAjax = caller.data('noajax');
+                var openWindow = caller.data('window') || false;
 
                 if (noAjax) return;
 
-                $('.subnav-link').removeClass('active');
-                caller.addClass('active');
+                if (!openWindow) {
+                    $('.subnav-link').removeClass('active');
+                    caller.addClass('active');
+                }
 
                 $.ajax({
                     type: 'POST',
                     url: '{{ url('/hub/missions/show-panel') }}',
                     data: {'panel': panel},
                     success: function(data) {
+                        if (openWindow) {
+                            openBigWindow(data);
+                            return;
+                        }
+
                         $('#mission-content').html(data);
                         setUrl('hub/missions/' + panel);
                     }
@@ -70,6 +78,15 @@
         data-panel="library"
         class="subnav-link {{ ('library' == $panel) ? 'active' : '' }}"
     >Library</a>
+
+    @if (auth()->user()->isAdmin())
+        <a
+            href="javascript:void(0)"
+            data-panel="operations"
+            data-window="true"
+            class="subnav-link {{ ('operations' == $panel) ? 'active' : '' }}"
+        >Operations</a>
+    @endif
 @endsection
 
 @section('controls')
