@@ -66,10 +66,13 @@ Route::group(['middleware' => 'member'], function() {
     Route::post('/hub/missions/delete-comment', 'MissionController@deleteComment');
     Route::post('/hub/missions/publish-comment', 'MissionController@publishComment');
     Route::post('/hub/missions/add-media', 'MissionController@uploadMedia');
+    Route::post('/hub/missions/delete-media', 'MissionController@deleteMedia');
     Route::post('/hub/missions/remove-operation-item', 'MissionController@removeOperationItem');
     Route::post('/hub/missions/add-operation-item', 'MissionController@addOperationItem');
     Route::get('/hub/missions/{panel}', 'MissionController@index');
     Route::post('/hub/missions/create', 'MissionController@upload');
     Route::resource('/hub/missions', 'MissionController');
-    Route::resource('/hub', 'HubController');
+    Route::resource('/hub', 'HubController', [
+        'only' => ['index']
+    ]);
 });

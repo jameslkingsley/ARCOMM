@@ -1,4 +1,4 @@
-<li
+<a
     href="{{ url('/hub/missions/' . $mission->id) }}"
     class="mission-item"
     style="background-image: url({{ $mission->thumbnail() }})"
@@ -6,6 +6,10 @@
     <div class="mission-item-inner">
         <span class="mission-item-title">
             {{ $mission->display_name }}
+        </span>
+
+        <span class="mission-item-author">
+            By {{ $mission->user->username }}
         </span>
 
         <span class="mission-item-mode mission-item-mode-{{ $mission->mode }}">
@@ -20,4 +24,4 @@
             @endif
         @endif
     </div>
-</li>
+</a>

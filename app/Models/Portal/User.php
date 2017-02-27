@@ -1,15 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models\Portal;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Models\Missions\Mission;
+use App\Models\Portal\SteamAPI;
 use Steam;
 use Auth;
-use App\SteamAPI;
-use App\Mission;
 
 class User extends Authenticatable implements HasMediaConversions
 {
@@ -49,7 +49,7 @@ class User extends Authenticatable implements HasMediaConversions
      */
     public function isMember()
     {
-        if (Auth::guest()) {
+        if (auth()->guest()) {
             return false;
         }
 
@@ -75,7 +75,7 @@ class User extends Authenticatable implements HasMediaConversions
      * Gets the user's missions.
      * Ordered from latest to oldest.
      *
-     * @return Collection
+     * @return Collection App\Models\Missions\Mission
      */
     public function missions()
     {

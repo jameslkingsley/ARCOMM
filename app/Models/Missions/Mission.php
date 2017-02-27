@@ -1,17 +1,18 @@
 <?php
 
-namespace App;
+namespace App\Models\Missions;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use App\Map;
-use App\User;
-use App\MissionComment;
-use Storage;
-use Log;
+use App\Models\Missions\MissionComment;
+use App\Helpers\ArmaConfigParser;
+use App\Models\Missions\Map;
+use App\Models\Portal\User;
 use Carbon\Carbon;
 use \stdClass;
+use Storage;
+use Log;
 
 class Mission extends Model implements HasMediaConversions
 {
@@ -31,7 +32,7 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Media library image conversions.
      *
-     * @return string
+     * @return void
      */
     public function registerMediaConversions()
     {
@@ -43,7 +44,7 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Gets all past missions (last played is in past and not null).
      *
-     * @return Collection App\Mission
+     * @return Collection App\Models\Missions\Mission
      */
     public static function allPast()
     {
@@ -56,7 +57,7 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Gets all new missions (last played is null).
      *
-     * @return Collection App\Mission
+     * @return Collection App\Models\Missions\Mission
      */
     public static function allNew()
     {
@@ -76,21 +77,21 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Gets the missions map.
      *
-     * @return Map
+     * @return App\Models\Missions\Map
      */
     public function map()
     {
-        return $this->belongsTo('App\Map');
+        return $this->belongsTo(Map::class);
     }
 
     /**
      * Gets the mission's user (author).
      *
-     * @return User
+     * @return App\Models\Portal\User
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -106,11 +107,11 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Gets all mission comments.
      *
-     * @return Collection
+     * @return Collection App\Models\Missions\MissionComment
      */
     public function comments()
     {
-        return $this->hasMany('App\MissionComment');
+        return $this->hasMany(MissionComment::class);
     }
 
     /**
@@ -152,7 +153,7 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Gets the user's draft for the mission.
      *
-     * @return MissionComment
+     * @return App\Models\Missions\MissionComment
      */
     public function draft()
     {
@@ -213,7 +214,7 @@ class Mission extends Model implements HasMediaConversions
     /**
      * Deletes the unpacked mission directory.
      *
-     * @return string
+     * @return void
      */
     public function deleteUnpacked()
     {
@@ -260,9 +261,9 @@ class Mission extends Model implements HasMediaConversions
     {
         $unpacked = $this->unpack();
 
-        request()->session()->put('mission_ext', ArmaLexer::convert($unpacked . '/description.ext'));
-        request()->session()->put('mission_sqm', ArmaLexer::convert($unpacked . '/mission.sqm'));
-        request()->session()->put('mission_config', ArmaLexer::convert($unpacked . '/config.hpp'));
+        request()->session()->put('mission_ext', ArmaConfigParser::convert($unpacked . '/description.ext'));
+        request()->session()->put('mission_sqm', ArmaConfigParser::convert($unpacked . '/mission.sqm'));
+        request()->session()->put('mission_config', ArmaConfigParser::convert($unpacked . '/config.hpp'));
         request()->session()->put('mission_version', file_get_contents($unpacked . '/version.txt'));
 
         $this->deleteUnpacked();
@@ -444,10 +445,12 @@ class Mission extends Model implements HasMediaConversions
         foreach ($factions as $faction => $locked) {
             if (!empty($this->briefing($faction)) && (!$locked || auth()->user()->isAdmin() || $this->isMine())) {
                 $name = str_replace('_', ' ', $faction);
+
                 $nav = new stdClass();
                 $nav->name = $name;
                 $nav->faction = $faction;
                 $nav->locked = $locked;
+
                 array_push($filledFactions, $nav);
             }
         }
@@ -497,6 +500,12 @@ class Mission extends Model implements HasMediaConversions
         return $filledSubjects;
     }
 
+    /**
+     * Checks whether the given faction's briefing is locked.
+     * Ignores user access level.
+     *
+     * @return boolean
+     */
     public function briefingLocked($faction)
     {
         return $this->{'locked_' . strtolower($faction) . '_briefing'} > 0;

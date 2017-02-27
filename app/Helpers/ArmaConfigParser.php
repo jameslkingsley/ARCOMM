@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Helpers;
 
 use Log;
 use \stdClass;
 
-class ArmaLexer
+class ArmaConfigParser
 {
     protected static $terminals = [
         '/^(class\s)/' => 'T_CLASS',

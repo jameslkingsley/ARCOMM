@@ -25,7 +25,7 @@ openPanel = function(content, d) {
     });
 }
 
-openBigWindow = function(content, delay) {
+openBigWindow = function(content, delay, callback) {
     delay = delay || 500;
 
     $('.large-panel-container, .large-panel-exit').remove();
@@ -40,7 +40,14 @@ openBigWindow = function(content, delay) {
     $('.large-panel-container').waitForImages(function() {
         $('.large-panel-exit').fadeIn(delay);
         $('.operations-mission-browser').animate({"bottom": "0"}, delay, "easeInOutCirc");
-        $('.large-panel-container, .large-panel-sidebar').animate({"top": "0"}, delay, "easeInOutCirc");
+        $('.large-panel-container, .large-panel-sidebar').animate(
+            {"top": "0"},
+            delay,
+            "easeInOutCirc",
+            function() {
+                if (typeof callback == "function") callback();
+            }
+        );
 
         $('.large-panel-exit').bind('click', function(event) {
             $('.mission-nav').css({
@@ -72,3 +79,25 @@ setUrl = function(url, title) {
 
     if (title) document.title = title;
 }
+
+;(function($) {
+    $.fn.missionSpinner = function(show) {
+        var caller = $(this);
+
+        caller
+            .removeClass('spinner')
+            .find('.mission-spinner')
+            .remove();
+
+        if (show) {
+            caller
+                .addClass('spinner')
+                .find('.mission-item-inner')
+                .prepend('\
+                    <div class="mission-spinner">\
+                        <i class="fa fa-spin fa-circle-o-notch"></i>\
+                    </div>\
+                ');
+        }
+    }
+})(jQuery);

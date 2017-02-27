@@ -67,17 +67,17 @@
 @section('subnav')
     <a
         href="javascript:void(0)"
+        data-panel="library"
+        class="subnav-link {{ ('library' == $panel) ? 'active' : '' }}"
+    >Library</a>
+
+    <a
+        href="javascript:void(0)"
         data-panel="upload"
         data-noajax="true"
         id="mission-upload-btn"
         class="subnav-link {{ ('upload' == $panel) ? 'active' : '' }}"
     >Upload</a>
-
-    <a
-        href="javascript:void(0)"
-        data-panel="library"
-        class="subnav-link {{ ('library' == $panel) ? 'active' : '' }}"
-    >Library</a>
 
     @if (auth()->user()->isAdmin())
         <a
@@ -94,6 +94,6 @@
 
 @section('content')
     <div id="mission-content">
-        {!! view('missions.' . $panel) !!}
+        @include('missions.' . $panel)
     </div>
 @endsection

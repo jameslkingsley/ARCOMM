@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use App\Mission;
-use App\MissionComment;
-use App\ArmaLexer;
-use App\OperationMission;
+use App\Models\Missions\Mission;
+use App\Models\Missions\MissionComment;
+use App\Helpers\ArmaConfigParser;
+use App\Models\Operations\OperationMission;
 use Storage;
 
 class MissionController extends Controller
@@ -22,12 +22,22 @@ class MissionController extends Controller
         return view('missions.index', compact('panel'));
     }
 
+    /**
+     * Gets the panel view via form input.
+     *
+     * @return view
+     */
     public function showPanel()
     {
         $panel = Input::get('panel');
         return view('missions.' . $panel);
     }
 
+    /**
+     * Shows the mission.
+     *
+     * @return view
+     */
     public function showMission()
     {
         $mission = Mission::find(Input::get('id'));
@@ -36,109 +46,10 @@ class MissionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Saves the mission comment.
      *
-     * @return \Illuminate\Http\Response
+     * @return view or integer
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * Removes the given operation item.
-     *
-     * @return void
-     */
-    public function removeOperationItem(Request $request)
-    {
-        $form = $request->all();
-        $id = $form['id'];
-
-        if ($id == -1) {
-            return;
-        }
-
-        OperationMission::destroy($id);
-    }
-
-    /**
-     * Adds the given mission as an operation item to the given operation.
-     *
-     * @return void
-     */
-    public function addOperationItem(Request $request)
-    {
-        $form = $request->all();
-        $mission_id = $form['mission_id'];
-        $operation_id = $form['operation_id'];
-        $play_order = $form['play_order'];
-
-        $item = new OperationMission();
-        $item->operation_id = $operation_id;
-        $item->mission_id = $mission_id;
-        $item->play_order = $play_order;
-        $item->save();
-
-        return $item->id;
-    }
-
     public function saveComment(Request $request)
     {
         $form = $request->all();
@@ -169,41 +80,62 @@ class MissionController extends Controller
         }
     }
 
+    /**
+     * Deletes the given comment.
+     *
+     * @return void
+     */
     public function deleteComment(Request $request)
     {
-        $form = $request->all();
-        MissionComment::destroy($form['comment_id']);
+        MissionComment::destroy($request->comment_id);
     }
 
+    /**
+     * Shows the briefing view.
+     *
+     * @return view
+     */
     public function showBriefing(Request $request)
     {
-        $form = $request->all();
-        $mission = Mission::find($form['mission_id']);
-        $faction = $form['faction'];
+        $mission = Mission::find($request->mission_id);
+        $faction = $request->faction;
         return view('missions.briefing', compact('mission', 'faction'));
     }
 
+    /**
+     * Locks the given briefing.
+     *
+     * @return void
+     */
     public function lockBriefing(Request $request)
     {
-        $form = $request->all();
-        $mission = Mission::find($form['mission_id']);
+        $mission = Mission::find($request->mission_id);
 
         if (!$mission->isMine() && !auth()->user()->isAdmin()) {
             abort(403, 'You are not authorised to edit this mission');
             return;
         }
 
-        $mission->{'locked_' . $form['faction'] . '_briefing'} = $form['locked'];
+        $mission->{'locked_' . $request->faction . '_briefing'} = $request->locked;
         $mission->save();
     }
 
+    /**
+     * Shows the mission comments.
+     *
+     * @return view
+     */
     public function showComments(Request $request)
     {
-        $form = $request->all();
-        $comments = Mission::find($form['mission_id'])->comments;
+        $comments = Mission::find($request->mission_id)->comments;
         return view('missions.comments', compact('comments'));
     }
 
+    /**
+     * Uploads the given mission.
+     *
+     * @return integer
+     */
     public function upload(Request $request)
     {
         if ($request->hasFile('file')) {
@@ -228,7 +160,7 @@ class MissionController extends Controller
             $mission->save();
 
             $unpacked = $mission->unpack();
-            $ext = ArmaLexer::convert($unpacked . '/description.ext');
+            $ext = ArmaConfigParser::convert($unpacked . '/description.ext');
             $mission->deleteUnpacked();
 
             $mission->display_name = $ext->onloadname;
@@ -239,11 +171,37 @@ class MissionController extends Controller
         }
     }
 
+    /**
+     * Uploads the given media to the mission.
+     *
+     * @return view
+     */
     public function uploadMedia(Request $request)
     {
         $mission = Mission::find($request->mission_id);
-        $mission->addMedia($request->file('file'))->toCollection('images');
+
+        $mission
+            ->addMedia($request->file('file'))
+            ->withCustomProperties(['user_id' => auth()->user()->id])
+            ->toCollection('images');
+
         $media = $mission->getMedia('images')->last();
-        return view('missions.media-item', compact('media'));
+
+        return view('missions.media-item', compact('media', 'mission'));
+    }
+
+    /**
+     * Deletes the given media item.
+     *
+     * @return any
+     */
+    public function deleteMedia(Request $request)
+    {
+        $mission = Mission::find($request->mission_id);
+        $images = $mission->getMedia('images', ['id' => $request->media_id]);
+
+        foreach ($images as $image) {
+            $image->delete();
+        }
     }
 }

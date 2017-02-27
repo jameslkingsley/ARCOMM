@@ -23,6 +23,6 @@ class HelperServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        require base_path() . '/app/Helpers/Bootstrap.php';
+        //
     }
 }

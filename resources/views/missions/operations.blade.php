@@ -30,6 +30,8 @@
         });
 
         $('.mission-item').click(function(event) {
+            event.preventDefault();
+
             var caller = $(this);
             var mission_id = caller.data('id');
             var operation_id = slot.parents('.operation-item').data('id');
@@ -53,17 +55,21 @@
                     }
                 });
             }
-
-            event.preventDefault();
         });
     });
 </script>
+
+@php
+    use App\Models\Operations\Operation;
+    use App\Models\Operations\OperationMission;
+    use App\Models\Missions\Mission;
+@endphp
 
 <div class="large-panel-content full-page">
     <h1 class="mt-0 mb-5">Operations</h1>
 
     <div class="operations">
-        @foreach (\App\Operation::orderBy('created_at', 'desc')->get() as $operation)
+        @foreach (Operation::orderBy('starts_at', 'desc')->take(4)->get() as $operation)
             <div class="operation-item" data-id="{{ $operation->id }}">
                 <span class="operation-item-date">
                     {{ $operation->starts_at->format('jS F') }}
@@ -76,7 +82,7 @@
                 <div class="operation-item-missions">
                     @for ($i = 1; $i <= 6; $i++)
                         @php
-                            $item = \App\OperationMission::where('play_order', $i)->where('operation_id', $operation->id)->first();
+                            $item = OperationMission::where('play_order', $i)->where('operation_id', $operation->id)->first();
                         @endphp
 
                         @if (is_null($item))
@@ -106,8 +112,18 @@
 </div>
 
 <div class="operations-mission-browser">
+    <h2 class="mission-section-heading" style="margin-top: 0 !important">New Missions</h2>
+
     <ul class="mission-group">
-        @foreach (\App\Mission::allNew() as $mission)
+        @foreach (Mission::allNew() as $mission)
+            @include('missions.mission-item', ['mission' => $mission])
+        @endforeach
+    </ul>
+
+    <h2 class="mission-section-heading">Past Missions</h2>
+
+    <ul class="mission-group">
+        @foreach (Mission::allPast() as $mission)
             @include('missions.mission-item', ['mission' => $mission])
         @endforeach
     </ul>

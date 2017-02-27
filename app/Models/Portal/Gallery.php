@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Portal;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
@@ -10,12 +10,22 @@ class Gallery extends Model implements HasMediaConversions
 {
     use HasMediaTrait;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'permalink',
         'container'
     ];
 
+    /**
+     * Media library image conversions.
+     *
+     * @return void
+     */
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')

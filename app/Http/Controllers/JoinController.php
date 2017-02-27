@@ -7,14 +7,18 @@ use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\JoinRequest;
-use App\JoinStatus;
+use App\Models\JoinRequests\JoinRequest;
+use App\Models\JoinRequests\JoinStatus;
 
 class JoinController extends Controller
 {
+    /**
+     * Constructor method for JoinController.
+     *
+     * @return void
+     */
     public function __construct()
     {
-        // Middleware
         $this->middleware('admin');
     }
 
@@ -31,30 +35,8 @@ class JoinController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(JoinRequest $jr)
@@ -62,6 +44,11 @@ class JoinController extends Controller
         return view('join.admin.show', compact('jr'));
     }
 
+    /**
+     * Shows the join requests by the given ID.
+     *
+     * @return view
+     */
     public function showByInput()
     {
         $id = Input::get('id');
@@ -71,39 +58,10 @@ class JoinController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Shows join request items with the given status and order.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return view
      */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function viewItems($s = '', $o = 'desc')
     {
         $status = Input::get('status', $s);
@@ -112,6 +70,11 @@ class JoinController extends Controller
         return view('join.admin.items', compact('joinRequests'));
     }
 
+    /**
+     * Creates the given status.
+     *
+     * @return integer
+     */
     public function createStatus()
     {
         $text = Input::get('text', '');
@@ -120,15 +83,22 @@ class JoinController extends Controller
 
         $permalink = str_slug($text, '-');
 
-        if (JoinStatus::where('permalink', '=', $permalink)->first() == null) {
+        if (JoinStatus::where('permalink', $permalink)->first() == null) {
             $status = new JoinStatus();
+
             $status->text = $text;
             $status->permalink = $permalink;
             $status->save();
+
             return $status->id;
         }
     }
 
+    /**
+     * Sets the status of the given join request.
+     *
+     * @return void
+     */
     public function setStatus()
     {
         $joinRequestID = Input::get('join_request_id', 0);
@@ -141,6 +111,11 @@ class JoinController extends Controller
         $jr->save();
     }
 
+    /**
+     * Gets the status list view.
+     *
+     * @return view
+     */
     public function getStatusView()
     {
         $id = Input::get('id');
@@ -149,6 +124,11 @@ class JoinController extends Controller
         return view('join.admin.status', compact('jr', 'joinStatuses'));
     }
 
+    /**
+     * Transfers old database records into the new database.
+     *
+     * @return void
+     */
     public function transferOldRecords()
     {
         $apps = DB::table('apps')->get();
@@ -170,7 +150,5 @@ class JoinController extends Controller
             $jr->status_id = JoinStatus::where('text', '=', $item->appStatus)->first()->id;
             $jr->save();
         }
-
-        return $apps;
     }
 }

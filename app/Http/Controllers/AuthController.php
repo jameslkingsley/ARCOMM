@@ -5,19 +5,34 @@ namespace App\Http\Controllers;
 use Invisnik\LaravelSteamAuth\SteamAuth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\User;
+use App\Models\Portal\User;
 use Auth;
 use Log;
 
 class AuthController extends Controller
 {
+    /**
+     * The SteamAuth instance.
+     *
+     * @var SteamAuth
+     */
     private $steam;
 
+    /**
+     * Constructor method for AuthController.
+     *
+     * @return void
+     */
     public function __construct(SteamAuth $steam)
     {
         $this->steam = $steam;
     }
 
+    /**
+     * Attempts to login the user.
+     *
+     * @return void
+     */
     public function login()
     {
         if ($this->steam->validate()) {

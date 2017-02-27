@@ -265,6 +265,26 @@
                     enabled: true
                 }
             });
+
+            $(document).on('click', '.mission-media-item-delete', function(event) {
+                var caller = $(this);
+                var media = caller.data('media');
+                var mission = caller.data('mission');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url('/hub/missions/delete-media') }}',
+                    data: {
+                        'media_id': media,
+                        'mission_id': mission
+                    },
+                    success: function(data) {
+                        caller.parents('.mission-media-item').remove();
+                    }
+                });
+
+                event.preventDefault();
+            });
         });
     </script>
 
@@ -274,7 +294,10 @@
         </a>
 
         @foreach ($mission->getMedia() as $media)
-            @include('missions.media-item', ['media' => $media])
+            @include('missions.media-item', [
+                'media' => $media,
+                'mission' => $mission
+            ])
         @endforeach
     </div>
 </div>

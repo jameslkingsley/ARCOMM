@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Operations;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,20 +9,20 @@ class OperationMission extends Model
     /**
      * Gets the mission.
      *
-     * @return App\Mission
+     * @return App\Models\Missions\Mission
      */
     public function mission()
     {
-        return $this->belongsTo('App\Mission');
+        return $this->belongsTo('App\Models\Missions\Mission');
     }
 
     /**
      * Gets the operation.
      *
-     * @return App\Operation
+     * @return App\Models\Operations\Operation
      */
     public function operation()
     {
-        return $this->hasOne('App\Operation');
+        return $this->hasOne('App\Models\Operations\Operation');
     }
 }

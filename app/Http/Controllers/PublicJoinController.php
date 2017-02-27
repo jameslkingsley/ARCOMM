@@ -6,13 +6,18 @@ use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\JoinRequest;
+use App\Models\JoinRequests\JoinRequest;
 
 class PublicJoinController extends Controller
 {
+    /**
+     * Constructor method for PublicJoinController.
+     *
+     * @return type
+     */
     public function __construct()
     {
-        // Middleware TODO
+        // TODO Middleware
     }
 
     /**
@@ -62,50 +67,5 @@ class PublicJoinController extends Controller
         JoinRequest::create($form);
 
         return view('join.public.confirmation', compact('form'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

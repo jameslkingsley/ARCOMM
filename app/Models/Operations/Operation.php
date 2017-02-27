@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Operations;
 
 use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
@@ -25,14 +25,15 @@ class Operation extends Model
      */
     public function startsIn()
     {
-        return 0; // TODO
+        $now = Carbon::now();
+        return $this->starts_at->diffForHumans();
     }
 
     /**
      * Gets the latest operation.
      * Will be the operation to next run.
      *
-     * @return App\Operation
+     * @return App\Models\Operations\Operation
      */
     public static function latest()
     {
@@ -43,7 +44,7 @@ class Operation extends Model
     /**
      * Gets next week's operation.
      *
-     * @return App\Operation
+     * @return App\Models\Operations\Operation
      */
     public static function nextWeek()
     {
@@ -53,7 +54,7 @@ class Operation extends Model
     /**
      * Gets last week's operation.
      *
-     * @return App\Operation
+     * @return App\Models\Operations\Operation
      */
     public static function lastWeek()
     {
@@ -63,10 +64,10 @@ class Operation extends Model
     /**
      * Gets all missions for the operation in ascending order.
      *
-     * @return Collection App\Mission
+     * @return Collection App\Models\Missions\Mission
      */
     public function missions()
     {
-        return $this->hasMany('App\OperationMission')->orderBy('play_order');
+        return $this->hasMany('App\Models\Operations\OperationMission')->orderBy('play_order');
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Missions;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model
+class Map extends Model
 {
     //
 }
