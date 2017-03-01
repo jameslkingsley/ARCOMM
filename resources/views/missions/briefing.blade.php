@@ -9,7 +9,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ url('/hub/missions/lock-briefing') }}',
+                    url: '{{ url('/hub/missions/briefing/update') }}',
                     data: {
                         'mission_id': id,
                         'faction': faction,

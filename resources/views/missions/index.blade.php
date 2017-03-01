@@ -21,17 +21,18 @@
                 }
 
                 $.ajax({
-                    type: 'POST',
-                    url: '{{ url('/hub/missions/show-panel') }}',
-                    data: {'panel': panel},
+                    type: 'GET',
+                    url: '{{ url('/hub/missions?panel=') }}' + panel,
                     success: function(data) {
                         if (openWindow) {
-                            openBigWindow(data);
+                            openBigWindow(data, 500, function() {}, function() {
+                                $('.subnav-link[data-panel="library"]').click();
+                            });
+
                             return;
                         }
 
                         $('#mission-content').html(data);
-                        setUrl('hub/missions/' + panel);
                     }
                 });
 
@@ -39,14 +40,13 @@
             });
 
             $('#mission-upload-btn').dropzone({
-                url: '{{ url('/hub/missions/create') }}',
+                url: '{{ url('/hub/missions') }}',
                 acceptedFiles: '',
                 addedfile: function(file) {},
                 success: function(file, data) {
                     $.ajax({
-                        type: 'POST',
-                        url: '{{ url('/hub/missions/show-mission') }}',
-                        data: {'id': data.trim()},
+                        type: 'GET',
+                        url: '{{ url("/hub/missions") }}/' + data.trim(),
                         success: function(data) {
                             openBigWindow(data);
                         }
@@ -58,13 +58,27 @@
             });
         });
     </script>
+
+    @if (isset($mission))
+        <script>
+            $(document).ready(function(e) {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ url('/hub/missions/' . $mission->id) }}',
+                    success: function(data) {
+                        openBigWindow(data);
+                    }
+                });
+            });
+        </script>
+    @endif
 @endsection
 
 @section('subnav')
     <a
         href="javascript:void(0)"
         data-panel="library"
-        class="subnav-link {{ ('library' == $panel) ? 'active' : '' }}"
+        class="subnav-link active"
     >Library</a>
 
     <a
@@ -72,7 +86,7 @@
         data-panel="upload"
         data-noajax="true"
         id="mission-upload-btn"
-        class="subnav-link {{ ('upload' == $panel) ? 'active' : '' }}"
+        class="subnav-link"
     >Upload</a>
 
     @if (auth()->user()->isAdmin())
@@ -80,7 +94,7 @@
             href="javascript:void(0)"
             data-panel="operations"
             data-window="true"
-            class="subnav-link {{ ('operations' == $panel) ? 'active' : '' }}"
+            class="subnav-link"
         >Operations</a>
     @endif
 @endsection
@@ -90,6 +104,6 @@
 
 @section('content')
     <div id="mission-content">
-        @include('missions.' . $panel)
+        @include('missions.library')
     </div>
 @endsection

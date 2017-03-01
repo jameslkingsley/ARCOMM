@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Missions;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Operations\Operation;
 use App\Models\Operations\OperationMission;
 
 class OperationController extends Controller
@@ -12,7 +14,7 @@ class OperationController extends Controller
      *
      * @return void
      */
-    public function deleteItem(Request $request)
+    public function removeMission(Request $request)
     {
         if ($request->id == -1) return;
         OperationMission::destroy($request->id);
@@ -23,7 +25,7 @@ class OperationController extends Controller
      *
      * @return integer
      */
-    public function createItem(Request $request)
+    public function addMission(Request $request)
     {
         $item = new OperationMission();
 

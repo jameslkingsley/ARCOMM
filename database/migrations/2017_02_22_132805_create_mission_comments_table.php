@@ -24,8 +24,8 @@ class CreateMissionCommentsTable extends Migration
         });
 
         Schema::table('mission_comments', function($table) {
-            $table->foreign('mission_id')->references('id')->on('missions');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('mission_id')->references('id')->on('missions')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -25,8 +25,8 @@ class CreateComments extends Migration
 
         //--- Create Foreign Keys
         Schema::table('comments', function($table) {
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('join_request_id')->references('id')->on('join_requests');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('join_request_id')->references('id')->on('join_requests')->onDelete('cascade');
         });
     }
 

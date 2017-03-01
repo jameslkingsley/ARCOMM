@@ -42,10 +42,10 @@
 
             $.ajax({
                 type: 'POST',
-                url: '{{ url('/hub/missions/show-briefing') }}',
+                url: '{{ url('/hub/missions/briefing') }}',
                 data: {
-                    'mission_id': {{ $mission->id }},
-                    'faction': faction
+                    mission_id: {{ $mission->id }},
+                    faction: faction
                 },
                 success: function(data) {
                     $('.mission-briefing-content').html(data);
@@ -56,32 +56,37 @@
 
             event.preventDefault();
         });
-
-        $('#download-mission').click(function(event) {
-            event.preventDefault();
-            window.location.href = $(this).data('filepath');
-        });
-
-        $('#update-mission').dropzone({
-            url: '{{ url('/hub/missions/update?mission_id=' . $mission->id) }}',
-            acceptedFiles: '',
-            addedfile: function(file) {},
-            success: function(file, data) {
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ url('/hub/missions/show-mission') }}',
-                    data: {'id': data.trim()},
-                    success: function(data) {
-                        openBigWindow(data);
-                    }
-                });
-            },
-            error: function(file, message) {
-                alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
-            }
-        });
     });
 </script>
+
+@if ($mission->isMine() || auth()->user()->isAdmin())
+    <script>
+        $(document).ready(function(e) {
+            $('#download-mission').click(function(event) {
+                event.preventDefault();
+                window.location.href = $(this).data('filepath');
+            });
+
+            $('#update-mission').dropzone({
+                url: '{{ url('/hub/missions/' . $mission->id . '/update') }}',
+                acceptedFiles: '',
+                addedfile: function(file) {},
+                success: function(file, data) {
+                    openBigWindow(data);
+                },
+                error: function(file, message) {
+                    alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
+                }
+            });
+
+            $('#delete-mission').click(function(event) {
+                event.preventDefault();
+                var canDelete = confirm("Are you sure you want to delete this mission?");
+                if (canDelete) window.location = $(this).attr('href');
+            });
+        });
+    </script>
+@endif
 
 @php
     $mission->briefingFactions = $mission->briefingFactions();
@@ -103,15 +108,23 @@
             <a href="javascript:void(0)" id="download-mission" class="mission-nav-item" data-filepath="{{ $mission->download() }}">
                 Download
             </a>
-        @endif
 
-        @if ($mission->isMine() || auth()->user()->isAdmin())
             <a href="javascript:void(0)" id="update-mission" class="mission-nav-item" title="Replace the mission file with an updated one">
                 Update PBO
+            </a>
+
+            <a
+                href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
+                id="delete-mission"
+                class="mission-nav-item"
+                title="Deletes the mission and all of its media, comments and files.">
+                Delete
             </a>
         @endif
 
         <span class="mission-version">
+            {{ $mission->created_at->diffForHumans() }}
+            /
             ARCMF {{ $mission->version() }}
         </span>
     </div>
@@ -159,7 +172,7 @@
     <h3 id="aar">After-Action Report</h3>
 
     <div class="mission-comments">
-        @include('missions.comments', ['comments' => $mission->comments])
+        @include('missions.comments.list', ['comments' => $mission->comments])
     </div>
 
     <div class="mission-comments-form">
@@ -185,9 +198,8 @@
                     var id = caller.data('id');
                     
                     $.ajax({
-                        type: 'POST',
-                        url: '{{ url('/hub/missions/delete-comment') }}',
-                        data: {'comment_id': id},
+                        type: 'DELETE',
+                        url: '{{ url("/hub/missions/comments") }}/' + id,
                         success: function(data) {
                             caller.parents('.mission-comment-item').remove();
                         }
@@ -202,7 +214,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ url('/hub/missions/save-comment') }}',
+                        url: '{{ url('/hub/missions/comments') }}',
                         data: $('#submit-mission-comment').serialize(),
                         success: function(data) {
                             $('#submit-mission-comment input[name="id"]').val(-1);
@@ -212,9 +224,8 @@
                             $('#submit-mission-comment #save-mission-comment').show();
 
                             $.ajax({
-                                type: 'POST',
-                                url: '{{ url('/hub/missions/show-comments') }}',
-                                data: {'mission_id': {{ $mission->id }}},
+                                type: 'GET',
+                                url: '{{ url('/hub/missions/comments?mission_id=' . $mission->id) }}',
                                 success: function(data) {
                                     $('.mission-comments').html(data);
                                 }
@@ -233,7 +244,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ url('/hub/missions/save-comment') }}',
+                        url: '{{ url('/hub/missions/comments') }}',
                         data: $('#submit-mission-comment').serialize(),
                         success: function(data) {
                             $('#submit-mission-comment input[name="id"]').val(data.trim());
@@ -272,7 +283,7 @@
     <script>
         $(document).ready(function(e) {
             $('.mission-media-upload').dropzone({
-                url: '{{ url('/hub/missions/add-media?mission_id=' . $mission->id) }}',
+                url: '{{ url('/hub/missions/media/add-photo?mission_id=' . $mission->id) }}',
                 acceptedFiles: 'image/*',
                 addedfile: function(file) {},
                 success: function(file, data) {
@@ -295,7 +306,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ url('/hub/missions/delete-media') }}',
+                    url: '{{ url('/hub/missions/media/delete-photo') }}',
                     data: {
                         'media_id': media,
                         'mission_id': mission
@@ -317,7 +328,7 @@
                 if (video_url != null) {
                     $.ajax({
                         type: 'POST',
-                        url: '{{ url('/hub/missions/add-video') }}',
+                        url: '{{ url('/hub/missions/media/add-video') }}',
                         data: {
                             'mission_id': mission_id,
                             'video_url': video_url
@@ -337,7 +348,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ url('/hub/missions/delete-video') }}',
+                    url: '{{ url('/hub/missions/media/delete-video') }}',
                     data: {
                         'video_id': video
                     },
@@ -362,13 +373,13 @@
         </a>
 
         @foreach ($mission->getVideos as $video)
-            @include('missions.video-item', [
+            @include('missions.media.video', [
                 'video' => $video
             ])
         @endforeach
 
         @foreach ($mission->getMedia() as $media)
-            @include('missions.media-item', [
+            @include('missions.media.photo', [
                 'media' => $media,
                 'mission' => $mission
             ])

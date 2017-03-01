@@ -18,7 +18,9 @@ Route::get('/', 'PageController@index');
 Route::get('/steamauth', 'AuthController@login');
 
 //--- Join Requests
-Route::resource('join', 'PublicJoinController', ['only' => ['index', 'store']]);
+Route::resource('join', 'PublicJoinController', [
+    'only' => ['index', 'store']
+]);
 
 //--- Media
 Route::resource('media', 'MediaController');
@@ -50,31 +52,38 @@ Route::group(['middleware' => 'admin'], function() {
     Route::post('/hub/applications/getStatusView', 'JoinController@getStatusView');
 
     Route::resource('/hub/applications', 'JoinController', [
-        'as' => 'admin',
-        'except' => [],
-        'names' => []
+        'as' => 'admin'
     ]);
 });
 
 Route::group(['middleware' => 'member'], function() {
-    Route::post('/hub/missions/show-panel', 'MissionController@showPanel');
-    Route::post('/hub/missions/show-mission', 'MissionController@showMission');
-    Route::post('/hub/missions/show-briefing', 'MissionController@showBriefing');
-    Route::post('/hub/missions/lock-briefing', 'MissionController@lockBriefing');
-    Route::post('/hub/missions/show-comments', 'MissionController@showComments');
-    Route::post('/hub/missions/save-comment', 'MissionController@saveComment');
-    Route::post('/hub/missions/delete-comment', 'MissionController@deleteComment');
-    Route::post('/hub/missions/publish-comment', 'MissionController@publishComment');
-    Route::post('/hub/missions/add-media', 'MissionController@uploadMedia');
-    Route::post('/hub/missions/delete-media', 'MissionController@deleteMedia');
-    Route::post('/hub/missions/add-video', 'MissionController@addVideo');
-    Route::post('/hub/missions/delete-video', 'MissionController@removeVideo');
-    Route::post('/hub/missions/remove-operation-item', 'MissionController@removeOperationItem');
-    Route::post('/hub/missions/add-operation-item', 'MissionController@addOperationItem');
-    Route::get('/hub/missions/{panel}', 'MissionController@index');
-    Route::post('/hub/missions/create', 'MissionController@upload');
-    Route::post('/hub/missions/update', 'MissionController@update');
-    Route::resource('/hub/missions', 'MissionController');
+    // Mission Media
+    Route::post('/hub/missions/media/add-photo', 'Missions\MediaController@uploadPhoto');
+    Route::post('/hub/missions/media/delete-photo', 'Missions\MediaController@deletePhoto');
+    Route::post('/hub/missions/media/add-video', 'Missions\MediaController@addVideo');
+    Route::post('/hub/missions/media/delete-video', 'Missions\MediaController@removeVideo');
+
+    // Mission Operations
+    Route::post('/hub/missions/operations/remove-mission', 'Missions\OperationController@removeMission');
+    Route::post('/hub/missions/operations/add-mission', 'Missions\OperationController@addMission');
+
+    // Mission Comments
+    Route::resource('/hub/missions/comments', 'Missions\CommentController', [
+        'except' => ['create', 'show', 'edit', 'update']
+    ]);
+
+    // Mission Briefings
+    Route::post('/hub/missions/briefing', 'Missions\MissionController@briefing');
+    Route::post('/hub/missions/briefing/update', 'Missions\MissionController@setBriefingLock');
+
+    // Missions
+    Route::get('/hub/missions/{mission}/delete', 'Missions\MissionController@destroy');
+    Route::post('/hub/missions/{mission}/update', 'Missions\MissionController@update');
+    Route::resource('/hub/missions', 'Missions\MissionController', [
+        'except' => ['create', 'edit']
+    ]);
+
+    // Hub Index
     Route::resource('/hub', 'HubController', [
         'only' => ['index']
     ]);

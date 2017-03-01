@@ -23,8 +23,8 @@ class CreateVideosTable extends Migration
         });
 
         Schema::table('videos', function($table) {
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('mission_id')->references('id')->on('missions');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('mission_id')->references('id')->on('missions')->onDelete('cascade');
         });
     }
 

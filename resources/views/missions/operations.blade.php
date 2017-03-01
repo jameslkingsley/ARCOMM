@@ -9,7 +9,7 @@
             if (isAssigned) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ url('/hub/missions/remove-operation-item') }}',
+                    url: '{{ url('/hub/missions/operations/remove-mission') }}',
                     data: {'id': caller.data('item') || -1},
                     success: function(data) {
                         caller.html('Assign Mission');
@@ -40,7 +40,7 @@
             if (slot != null) {
                 $.ajax({
                     type: 'POST',
-                    url: '{{ url('/hub/missions/add-operation-item') }}',
+                    url: '{{ url('/hub/missions/operations/add-mission') }}',
                     data: {
                         'mission_id': mission_id,
                         'operation_id': operation_id,
@@ -116,7 +116,7 @@
 
     <ul class="mission-group">
         @foreach (Mission::allNew() as $mission)
-            @include('missions.mission-item', ['mission' => $mission])
+            @include('missions.item', ['mission' => $mission])
         @endforeach
     </ul>
 
@@ -124,7 +124,7 @@
 
     <ul class="mission-group">
         @foreach (Mission::allPast() as $mission)
-            @include('missions.mission-item', ['mission' => $mission])
+            @include('missions.item', ['mission' => $mission])
         @endforeach
     </ul>
 </div>

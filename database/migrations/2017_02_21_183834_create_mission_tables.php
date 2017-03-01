@@ -25,7 +25,6 @@ class CreateMissionTables extends Migration
             $table->longText('summary');
             $table->integer('map_id')->unsigned();
             $table->string('pbo_path');
-            $table->integer('revisions')->default(0);
             $table->boolean('published')->default(false);
             $table->boolean('locked_blufor_briefing')->default(false);
             $table->boolean('locked_opfor_briefing')->default(false);
@@ -35,8 +34,8 @@ class CreateMissionTables extends Migration
         });
 
         Schema::table('missions', function($table) {
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('map_id')->references('id')->on('maps');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('map_id')->references('id')->on('maps')->onDelete('cascade');
         });
     }
 

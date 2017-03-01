@@ -152,26 +152,38 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
-     * Creates the downloadable file and returns its full URL.
+     * Gets the exported name of the file following the mission name format.
      *
      * @return string
      */
-    public function download()
+    public function exportedName()
     {
-        $download = 'downloads/ARC_' .
+        $download = 'ARC_' .
             strtoupper($this->mode == 'adversarial' ? 'tvt' : $this->mode) . '_' .
             studly_case($this->display_name) . '_' .
             trim(substr($this->user->username, 0, 4)) . '_' .
             $this->id . '.' .
             $this->map->class_name . '.pbo';
 
-        if (file_exists(public_path($download))) {
+        return $download;
+    }
+
+    /**
+     * Creates the downloadable file and returns its full URL.
+     *
+     * @return string
+     */
+    public function download()
+    {
+        $download = $this->exportedName();
+
+        if (file_exists(public_path('downloads/' . $download))) {
             Storage::disk('downloads')->delete($download);
         }
 
-        File::copy(storage_path('app/' . $this->pbo_path), public_path($download));
+        File::copy(storage_path('app/' . $this->pbo_path), public_path('downloads/' . $download));
 
-        return url($download);
+        return url('downloads/' . $download);
     }
 
     /**

@@ -26,7 +26,7 @@ openPanel = function(content, d) {
     });
 }
 
-openBigWindow = function(content, delay, callback) {
+openBigWindow = function(content, delay, callback, onClose) {
     delay = delay || 500;
 
     $('.large-panel-container, .large-panel-exit').remove();
@@ -51,6 +51,8 @@ openBigWindow = function(content, delay, callback) {
         );
 
         $('.large-panel-exit').bind('click', function(event) {
+            if (typeof onClose == "function") onClose();
+
             $('.mission-nav').css({
                 'position': 'absolute',
                 'top': 'calc(100vh / 1.618)',

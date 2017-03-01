@@ -30,8 +30,8 @@ class CreateOperationTable extends Migration
         });
 
         Schema::table('operation_missions', function($table) {
-            $table->foreign('operation_id')->references('id')->on('operations');
-            $table->foreign('mission_id')->references('id')->on('missions');
+            $table->foreign('operation_id')->references('id')->on('operations')->onDelete('cascade');
+            $table->foreign('mission_id')->references('id')->on('missions')->onDelete('cascade');
         });
     }
 

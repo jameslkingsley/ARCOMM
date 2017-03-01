@@ -2,7 +2,6 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
         <meta name="viewport" content="width=device-width">
@@ -15,8 +14,11 @@
             {{ env('SITE_NAME_PUBLIC', 'ARCOMM') }}
         </title>
 
+        <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
+        <script type="text/javascript" src="{{ url('/js/app.js') }}"></script>
+        <link rel="stylesheet" href="{{ url('/css/app.css') }}">
+
         <!-- Bootstrap Stylesheets -->
-        <link href="{{ url('/css/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ url('/css/landing-page.css') }}" rel="stylesheet">
 
         <!-- Fonts and icons -->
@@ -24,13 +26,6 @@
 
         <!-- Public Stylesheet -->
         <link rel="stylesheet" type="text/css" href="{{ url('/css/public.css') }}">
-
-        <!-- jQuery -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0-rc.2/jquery-ui.min.js"></script>
-
-        <!-- Bootstrap Scripts -->
-        <script src="{{ url('/js/bootstrap.js') }}" type="text/javascript"></script>
 
         <!-- Select2 -->
         <link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
@@ -64,7 +59,7 @@
                         <li><a href="{{ url('/media') }}">Media</a></li>
                         <li><a href="{{ url('/modset') }}">Modset</a></li>
                         <li><a href="{{ url('/roster') }}">Roster</a></li>
-                        <li><a href="{{ url('/join') }}">Join</a></li>
+                        <li><a href="{{ url('join') }}">Join</a></li>
 
                         @if(!auth()->guest() && auth()->user()->isMember())
                             <li><a href="{{ url('/hub') }}">Hub</a></li>
