@@ -5,10 +5,6 @@
 @endsection
 
 @section('head')
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/magnific-popup.css') }}">
-    <script type="text/javascript" src="{{ url('/js/jquery.magnific-popup.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url('/js/dropzone.js') }}"></script>
-
     <script>
         $(document).ready(function(e) {
             $('.subnav-link').click(function(event) {

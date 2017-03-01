@@ -8,27 +8,9 @@
         </title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
-
-        <!-- jQuery -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0-rc.2/jquery-ui.min.js"></script>
-
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="{{ url('/css/font-awesome.min.css') }}">
-
-        <!-- Dropit -->
-        <script src="{{ url('/js/dropit.js') }}"></script>
-
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.waitforimages/1.5.0/jquery.waitforimages.min.js"></script>
-
-        <!-- Main -->
+        <script type="text/javascript" src="{{ url('/js/app.js') }}"></script>
         <link rel="stylesheet" href="{{ url('/css/app.css') }}">
-        <script src="{{ url('/js/all.js') }}"></script>
 
         @yield('head')
     </head>
