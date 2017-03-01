@@ -9,7 +9,8 @@
         "laravel/framework": "5.4.*",
         "spatie/laravel-medialibrary": "^4.8",
         "syntax/steam-api": "^2.0",
-        "invisnik/laravel-steam-auth": "^2.3"
+        "invisnik/laravel-steam-auth": "^2.3",
+        "alaouy/youtube": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

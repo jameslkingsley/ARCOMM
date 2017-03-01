@@ -43,7 +43,7 @@ class MediaController extends Controller
      */
     public function destroy($gallery_id, $media_id)
     {
-        Gallery::find($gallery_id)->media->find($media_id)->delete();
+        Gallery::find($gallery_id)->deleteMedia($media_id);
     }
 
     /**
@@ -51,10 +51,8 @@ class MediaController extends Controller
      *
      * @return void
      */
-    public function deletePhoto()
+    public function deletePhoto(Request $request)
     {
-        $gallery_id = Input::get('gallery_id', -1);
-        $media_id = Input::get('media_id', -1);
-        self::destroy($gallery_id, $media_id);
+        self::destroy($request->gallery_id, $request->media_id);
     }
 }

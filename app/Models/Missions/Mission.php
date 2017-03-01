@@ -12,6 +12,7 @@ use App\Models\Portal\User;
 use Carbon\Carbon;
 use \stdClass;
 use Storage;
+use File;
 use Log;
 
 class Mission extends Model implements HasMediaConversions
@@ -148,6 +149,40 @@ class Mission extends Model implements HasMediaConversions
         }
 
         return '';
+    }
+
+    /**
+     * Creates the downloadable file and returns its full URL.
+     *
+     * @return string
+     */
+    public function download()
+    {
+        $download = 'downloads/ARC_' .
+            strtoupper($this->mode == 'adversarial' ? 'tvt' : $this->mode) . '_' .
+            studly_case($this->display_name) . '_' .
+            trim(substr($this->user->username, 0, 4)) . '_' .
+            $this->id . '.' .
+            $this->map->class_name . '.pbo';
+
+        if (file_exists(public_path($download))) {
+            Storage::disk('downloads')->delete($download);
+        }
+
+        File::copy(storage_path('app/' . $this->pbo_path), public_path($download));
+
+        return url($download);
+    }
+
+    /**
+     * Gets all videos for the mission.
+     * Sorted latest first.
+     *
+     * @return Collection App\Models\Portal\Video
+     */
+    public function getVideos()
+    {
+        return $this->hasMany('App\Models\Portal\Video')->orderBy('created_at', 'desc');
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
 use App\Helpers\ArmaConfigParser;
 use App\Models\Operations\OperationMission;
+use App\Models\Portal\Video;
 use Storage;
 
 class MissionController extends Controller
@@ -27,10 +28,9 @@ class MissionController extends Controller
      *
      * @return view
      */
-    public function showPanel()
+    public function showPanel(Request $request)
     {
-        $panel = Input::get('panel');
-        return view('missions.' . $panel);
+        return view('missions.' . $request->panel);
     }
 
     /**
@@ -38,9 +38,9 @@ class MissionController extends Controller
      *
      * @return view
      */
-    public function showMission()
+    public function showMission(Request $request)
     {
-        $mission = Mission::find(Input::get('id'));
+        $mission = Mission::find($request->id);
         $mission->storeConfigs();
         return view('missions.show', compact('mission'));
     }
@@ -172,6 +172,50 @@ class MissionController extends Controller
     }
 
     /**
+     * Updates the given mission with the given file.
+     *
+     * @return integer
+     */
+    public function update(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $details = Mission::getDetailsFromName($request->file->getClientOriginalName());
+            $mission = Mission::find($request->mission_id);
+
+            if (!is_null($mission)) {
+                $mission->file_name = $request->file->getClientOriginalName();
+                $mission->display_name = $request->file->getClientOriginalName();
+                $mission->mode = $details->mode;
+                $mission->map_id = $details->map->id;
+                $mission->save();
+
+                $updatedPath = $request->file->storeAs(
+                    'missions/' . auth()->user()->id,
+                    $mission->id . '_updated.pbo'
+                );
+
+                $publishedPath = 'missions/' . auth()->user()->id . '/' . $mission->id . '.pbo';
+
+                Storage::delete($mission->pbo_path);
+                Storage::move($updatedPath, $publishedPath);
+
+                $mission->pbo_path = $publishedPath;
+                $mission->save();
+
+                $unpacked = $mission->unpack();
+                $ext = ArmaConfigParser::convert($unpacked . '/description.ext');
+                $mission->deleteUnpacked();
+
+                $mission->display_name = $ext->onloadname;
+                $mission->summary = $ext->onloadmission;
+                $mission->save();
+
+                return $mission->id;
+            }
+        }
+    }
+
+    /**
      * Uploads the given media to the mission.
      *
      * @return view
@@ -193,15 +237,45 @@ class MissionController extends Controller
     /**
      * Deletes the given media item.
      *
-     * @return any
+     * @return void
      */
     public function deleteMedia(Request $request)
     {
         $mission = Mission::find($request->mission_id);
-        $images = $mission->getMedia('images', ['id' => $request->media_id]);
+        $media = $mission->media->find($request->media_id);
 
-        foreach ($images as $image) {
-            $image->delete();
+        if (($media->getCustomProperty('user_id', -1) == auth()->user()->id || auth()->user()->isAdmin())) {
+            $mission->deleteMedia($media);
         }
+    }
+
+    /**
+     * Adds the given video to the given mission.
+     *
+     * @return view
+     */
+    public function addVideo(Request $request)
+    {
+        $video_key = Video::parseUrl($request->video_url);
+        
+        $video = new Video();
+
+        $video->user_id = auth()->user()->id;
+        $video->mission_id = $request->mission_id;
+        $video->video_key = $video_key;
+
+        $video->save();
+
+        return view('missions.video-item', compact('video'));
+    }
+
+    /**
+     * Removes the given video from the given mission.
+     *
+     * @return void
+     */
+    public function removeVideo(Request $request)
+    {
+        Video::destroy($request->video_id);
     }
 }

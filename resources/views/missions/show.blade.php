@@ -56,6 +56,30 @@
 
             event.preventDefault();
         });
+
+        $('#download-mission').click(function(event) {
+            event.preventDefault();
+            window.location.href = $(this).data('filepath');
+        });
+
+        $('#update-mission').dropzone({
+            url: '{{ url('/hub/missions/update?mission_id=' . $mission->id) }}',
+            acceptedFiles: '',
+            addedfile: function(file) {},
+            success: function(file, data) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url('/hub/missions/show-mission') }}',
+                    data: {'id': data.trim()},
+                    success: function(data) {
+                        openBigWindow(data);
+                    }
+                });
+            },
+            error: function(file, message) {
+                alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
+            }
+        });
     });
 </script>
 
@@ -75,19 +99,17 @@
     </div>
 
     <div class="mission-nav">
-        <a href="javascript:void(0)" class="mission-nav-item active" data-section="overview">
-            Overview
-        </a>
-
-        @if (!empty($mission->briefingFactions))
-            <a href="javascript:void(0)" class="mission-nav-item" data-section="briefing">
-                Briefing
+        @if ($mission->isMine() || auth()->user()->isAdmin())
+            <a href="javascript:void(0)" id="download-mission" class="mission-nav-item" data-filepath="{{ $mission->download() }}">
+                Download
             </a>
         @endif
 
-        <a href="javascript:void(0)" class="mission-nav-item" data-section="aar">
-            After-Action Report
-        </a>
+        @if ($mission->isMine() || auth()->user()->isAdmin())
+            <a href="javascript:void(0)" id="update-mission" class="mission-nav-item" title="Replace the mission file with an updated one">
+                Update PBO
+            </a>
+        @endif
 
         <span class="mission-version">
             ARCMF {{ $mission->version() }}
@@ -283,6 +305,48 @@
                     }
                 });
 
+                event.stopPropagation();
+                event.preventDefault();
+            });
+
+            $('.mission-media-video-upload').click(function(event) {
+                var caller = $(this);
+                var mission_id = caller.data('mission');
+                var video_url = prompt("Please enter your YouTube video's full URL");
+
+                if (video_url != null) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ url('/hub/missions/add-video') }}',
+                        data: {
+                            'mission_id': mission_id,
+                            'video_url': video_url
+                        },
+                        success: function(data) {
+                            $('.mission-media').append(data);
+                        }
+                    });
+                }
+
+                event.preventDefault();
+            });
+
+            $(document).on('click', '.mission-video-item-delete', function(event) {
+                var caller = $(this);
+                var video = caller.data('video');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url('/hub/missions/delete-video') }}',
+                    data: {
+                        'video_id': video
+                    },
+                    success: function(data) {
+                        caller.parents('.mission-media-item-video').remove();
+                    }
+                });
+
+                event.stopPropagation();
                 event.preventDefault();
             });
         });
@@ -290,8 +354,18 @@
 
     <div class="mission-media">
         <a href="javascript:void(0)" class="mission-media-upload mission-media-item">
-            <i class="fa fa-upload" style="pointer-events: none"></i>
+            <i class="fa fa-picture-o" style="pointer-events: none"></i>
         </a>
+
+        <a href="javascript:void(0)" class="mission-media-video-upload mission-media-item" data-mission="{{ $mission->id }}">
+            <i class="fa fa-youtube" style="pointer-events: none"></i>
+        </a>
+
+        @foreach ($mission->getVideos as $video)
+            @include('missions.video-item', [
+                'video' => $video
+            ])
+        @endforeach
 
         @foreach ($mission->getMedia() as $media)
             @include('missions.media-item', [

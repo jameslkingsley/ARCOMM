@@ -1,26 +1,31 @@
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i);
-@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
 
 // Typography
 $font-family: 'Roboto Condensed', sans-serif;
-$font-family-secondary: 'Roboto', sans-serif;
 $font-size-base: 16px;
 $line-height-base: 1.6;
 $text-color-base: #333;
 $form-color: #888;
 
 // Body
-$body-bg: #100f0f;
+$body-bg: #000;
 $body-bg-light: #F2F2F2;
 
 // Brands
-$brand-primary: #bd2c2c;
+$brand-primary: #BD2C2C;
+$brand-primary-darker: darken($brand-primary, 5%);
 $brand-dark: #8E2121;
 $brand-info: #4084ec;
 $brand-success: #2ab27b;
 $brand-warning: #ff9d35;
 $brand-danger:  #ec3e3e;
+
+// Statuses
+$status-pending: #4084ec;
+$status-approved: #2ab27b;
+$status-declined: #ec3e3e;
+$status-blacklisted: #000;
 
 @mixin transition($transition...) {
     -moz-transition:    $transition;

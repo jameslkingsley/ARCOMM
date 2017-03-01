@@ -49,10 +49,9 @@ class JoinController extends Controller
      *
      * @return view
      */
-    public function showByInput()
+    public function showByInput(Request $request)
     {
-        $id = Input::get('id');
-        $jr = JoinRequest::find($id);
+        $jr = JoinRequest::find($request->id);
         $joinStatuses = JoinStatus::orderBy('position', 'asc')->get();
         return view('join.admin.show', compact('jr', 'joinStatuses'));
     }
@@ -116,10 +115,9 @@ class JoinController extends Controller
      *
      * @return view
      */
-    public function getStatusView()
+    public function getStatusView(Request $request)
     {
-        $id = Input::get('id');
-        $jr = JoinRequest::find($id);
+        $jr = JoinRequest::find($request->id);
         $joinStatuses = JoinStatus::orderBy('position', 'asc')->get();
         return view('join.admin.status', compact('jr', 'joinStatuses'));
     }
