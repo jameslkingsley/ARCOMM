@@ -372,13 +372,13 @@
             <i class="fa fa-youtube" style="pointer-events: none"></i>
         </a>
 
-        @foreach ($mission->getVideos as $video)
+        @foreach ($mission->videos as $video)
             @include('missions.media.video', [
                 'video' => $video
             ])
         @endforeach
 
-        @foreach ($mission->getMedia() as $media)
+        @foreach ($mission->photos() as $media)
             @include('missions.media.photo', [
                 'media' => $media,
                 'mission' => $mission

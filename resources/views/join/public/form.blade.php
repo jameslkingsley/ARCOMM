@@ -18,7 +18,9 @@
     <div class="content container">
         <h2>What makes a good member?</h2>
         <p class="bg-info">We're looking for well adjusted people who listen to and respect others. While a vast amount of experience in Arma is welcome, it's not required. Aspiring members should make an effort to attend the weekly operations, be accountable for their actions and generally have a good sense of humor.</p>
+
         <br />
+
         <form method="post" action="/join">
             <div class="form-group {{ empty($errors->first('name')) ? '' : 'has-error' }}">
                 <label class="control-label">Your Name</label>

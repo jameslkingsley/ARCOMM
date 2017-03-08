@@ -192,9 +192,30 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return Collection App\Models\Portal\Video
      */
-    public function getVideos()
+    public function videos()
     {
         return $this->hasMany('App\Models\Portal\Video')->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Gets all photos for the mission.
+     *
+     * @return Collection
+     */
+    public function photos()
+    {
+        return $this->getMedia();
+    }
+
+    /**
+     * Sets the given briefing faction to locked or unlocked.
+     *
+     * @return void
+     */
+    public function lockBriefing($faction, $state)
+    {
+        $this->{'locked_' . strtolower($faction) . '_briefing'} = $state;
+        $this->save();
     }
 
     /**

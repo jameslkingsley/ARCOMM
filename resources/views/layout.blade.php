@@ -63,12 +63,12 @@
             </div>
         </header>
 
-        <main>
+        <main id="app">
             <div class="subnav">
                 @yield('subnav')
             </div>
 
-            <div class="content">
+            <div class="archub-content">
                 <div class="controls">
                     @yield('controls')
                 </div>

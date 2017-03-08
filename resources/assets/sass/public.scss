@@ -1,7 +1,15 @@
 @import "variables";
 
+@import url(https://fonts.googleapis.com/css?family=Miriam+Libre:400,700|Source+Sans+Pro:200,400,700,600,400italic,700italic);
+
 * {
     font-family: $font-family-secondary !important;
+}
+
+.navbar-brand {
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 1 !important;
 }
 
 .brand-background {
@@ -105,6 +113,7 @@ body {
     background: $body-bg;
     color: #FFF;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .roster-item {
@@ -112,7 +121,7 @@ body {
     width: calc(33% - 40px);
     height: 50px;
     margin-bottom: 10px;
-    background: #000;
+    background: #111;
     padding: 15px;
     box-sizing: content-box;
     margin: 0 10px 10px 0;
@@ -137,4 +146,133 @@ body {
         padding-left: 20px;
         overflow: hidden;
     }
+}
+
+#images .thumb {
+    position: relative;
+}
+
+.photo-delete {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    color: #fff!important;
+    font-size: 32px;
+    z-index: 100;
+    display: none;
+}
+
+.section-fullpage {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.parallax-background {
+    background-attachment: fixed;
+    height: 100vh !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.archub-hero-screenshot {
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 15%;
+    right: 15%;
+    top: 48%;
+
+    img {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+    }
+}
+
+.section-footnote {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.925);
+    padding: 50px 0;
+}
+
+.archub-hero-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25%;
+    text-align: center;
+    margin: 0 !important;
+    font-size: 72px;
+    font-weight: 100;
+}
+
+.archub-hero-text {
+    position: absolute;
+    top: calc(25% + 100px);
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 32px !important;
+    margin: 0 !important;
+    font-weight: 100 !important;
+}
+
+.text-warm {
+    font-weight: 400 !important;
+}
+
+#mars-sword {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: calc(-100% / 1.618);
+    width: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    transform: rotate(180deg);
+}
+
+.shameless-plug {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 14px !important;
+    margin: 0 !important;
+    padding: 2.5rem 0;
+}
+
+.media-gallery {
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+.media-item-public {
+    float: left;
+    width: calc(20vw - 1px);
+    height: calc(20vw - 1px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.media-item-public:hover .photo-delete {
+    display: block;
 }

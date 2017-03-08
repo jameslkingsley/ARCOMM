@@ -7,8 +7,8 @@
 @section('scripts')
     <script>
         $(document).ready(function(e) {
-            $('#images').magnificPopup({
-                delegate: '.thumbnail',
+            $('.media-gallery').magnificPopup({
+                delegate: '.media-item-public',
                 type: 'image',
                 gallery: {
                     enabled: true
@@ -17,7 +17,7 @@
         });
     </script>
 
-    @if(auth()->user()->isAdmin())
+    @if (!auth()->guest() && auth()->user()->isAdmin())
         <script>
             $(document).ready(function(e) {
                 $('.photo-delete').click(function(event) {
@@ -33,7 +33,7 @@
                             'media_id': media_id
                         },
                         success: function(data) {
-                            caller.parents('.thumb').remove();
+                            caller.parents('.media-item-public').remove();
                         }
                     });
 
@@ -45,10 +45,9 @@
 @endsection
 
 @section('content')
-    <div class="content container">
-        <h2>
-            Media
-            @if(auth()->user()->isAdmin())
+    <div class="content p0 container-fluid">
+        @if (!auth()->guest() && auth()->user()->isAdmin())
+            <div class="container text-center mb-5">
                 <script>
                     $(document).ready(function(e) {
                         $('#btn-upload').dropzone({
@@ -57,30 +56,27 @@
                     });
                 </script>
 
-                <a href="javascript:void(0)" class="btn btn-primary btn-fill btn-dark pull-right" id="btn-upload">Upload</a>
-            @endif
-        </h2>
+                <a href="javascript:void(0)" class="btn btn-primary btn-fill btn-dark" id="btn-upload">Upload</a>
+            </div>
+        @endif
 
-        <br />
-
-        <div class="row" id="images">
+        <div class="media-gallery">
             @foreach ($galleries as $gallery)
                 @foreach ($gallery->getMedia() as $media)
-                    <div class="col-lg-3 col-md-4 thumb">
-                        @if(auth()->user()->isAdmin())
-                            <a
-                                href="javascript:void(0)"
+                    <a
+                        href="{{ url($media->getUrl()) }}"
+                        class="media-item-public"
+                        style="background-image: url({{ url($media->getUrl('thumb')) }})">
+
+                        @if (!auth()->guest() && auth()->user()->isAdmin())
+                            <span
                                 class="photo-delete"
                                 data-gallery="{{ $gallery->id }}"
                                 data-media="{{ $media->id }}"
                                 title="Delete"
-                            >&times;</a>
+                            >&times;</span>
                         @endif
-
-                        <a href="{{ url($media->getUrl()) }}" class="thumbnail">
-                            <img class="img-responsive" src="{{ url($media->getUrl('thumb')) }}" alt="{{ $media->name }}">
-                        </a>
-                    </div>
+                    </a>
                 @endforeach
             @endforeach
         </div>

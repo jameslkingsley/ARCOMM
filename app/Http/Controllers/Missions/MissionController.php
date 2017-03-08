@@ -169,7 +169,6 @@ class MissionController extends Controller
             return;
         }
 
-        $mission->{'locked_' . strtolower($request->faction) . '_briefing'} = $request->locked;
-        $mission->save();
+        $mission->lockBriefing($request->faction, $request->locked);
     }
 }
