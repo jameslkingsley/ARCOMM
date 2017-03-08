@@ -73,11 +73,10 @@ class MissionController extends Controller
      */
     public function show(Request $request, Mission $mission)
     {
-        $mission->storeConfigs();
-
         if (!$request->ajax()) {
             return view('missions.index', compact('mission'));
         } else {
+            $mission->storeConfigs();
             return view('missions.show', compact('mission'));
         }
     }

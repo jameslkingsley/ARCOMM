@@ -277,6 +277,11 @@ class ArmaConfigParser
 
     public static function convert($file)
     {
+        if (!file_exists($file)) {
+            abort(403, 'File ' . $file . ' does not exist.');
+            return;
+        }
+
         $contents = file_get_contents($file);
         $contents = preg_replace('!/\*.*?\*/!s', '', $contents);
         $lines = explode(PHP_EOL, $contents);

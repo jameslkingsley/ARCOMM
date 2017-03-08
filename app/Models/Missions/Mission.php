@@ -31,6 +31,38 @@ class Mission extends Model implements HasMediaConversions
     ];
 
     /**
+     * The loadout role map.
+     *
+     * @var array
+     */
+    protected $roles = [
+        'all' => 'Everyone',
+        'co' => 'Commander',
+        'dc' => 'Squad Leader',
+        'ftl' => 'Fireteam Leader',
+        'm' => 'Medic',
+        'fac' => 'Forward Air Controller',
+        'r' => 'Rifleman',
+        'ar' => 'Automatic Rifleman',
+        'aar' => 'Assistant Automatic Rifleman',
+        'rat' => 'Rifleman (AT)',
+        'mmgtl' => 'Medium MG Team Leader',
+        'mmgg' => 'Medium MG Gunner',
+        'mmgab' => 'Medium MG Ammo Bearer',
+        'mattl' => 'Medium AT Team Leader',
+        'matg' => 'Medium AT Missile Specialist',
+        'matab' => 'Medium AT Assistant Missile Specialist',
+        'mtrl' => 'Mortar Team Leader',
+        'mtrg' => 'Mortar Gunner',
+        'mtra' => 'Mortar Assistant',
+        'p' => 'Pilot',
+        'cp' => 'Co-Pilot',
+        'vc' => 'Vehicle Commander',
+        'vd' => 'Vehicle Driver',
+        'vg' => 'Vehicle Gunner'
+    ];
+
+    /**
      * Media library image conversions.
      *
      * @return void
@@ -258,6 +290,9 @@ class Mission extends Model implements HasMediaConversions
             $this->id .
             '_unpacked'
         );
+
+        // Delete the directory if it exists
+        File::deleteDirectory($unpacked);
 
         // Unpack the PBO
         shell_exec(
@@ -631,5 +666,62 @@ class Mission extends Model implements HasMediaConversions
         $details->map = $map;
 
         return $details;
+    }
+
+    /**
+     * Gets the ACRE languages for the given faction as a string.
+     *
+     * @return string
+     */
+    public function acreLanguages($faction = 'blufor')
+    {
+        $lang = (array)$this->config()->acre->{strtolower($faction)}->languages;
+
+        $mutated = array_map(function($item) {
+            return title_case($item);
+        }, $lang);
+
+        return implode(', ', $mutated);
+    }
+
+    /**
+     * Gets the ACRE role list for the given radio classname and faction.
+     *
+     * @return string
+     */
+    public function acreRoles($faction, $radio)
+    {
+        $roles = (array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)};
+
+        $mutated = array_map(function($item) {
+            return $this->roles[strtolower($item)];
+        }, $roles);
+
+        return implode(', ', $mutated);
+    }
+
+    /**
+     * Gets an overall description of the comm plan for the given faction.
+     * Can be full, limited or none.
+     *
+     * @return string
+     */
+    public function acreOverview($faction)
+    {
+        $radio_343 = (array)$this->config()->acre->{strtolower($faction)}->an_prc_343;
+
+        if (!empty($radio_343)) {
+            if (in_array('all', array_map('strtolower', $radio_343))) {
+                return 'Full';
+            }
+        }
+
+        foreach (['AN_PRC_148', 'AN_PRC_152', 'AN_PRC_117F', 'AN_PRC_77'] as $radio) {
+            if (!empty((array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)})) {
+                return 'Limited';
+            }
+        }
+
+        return 'None';
     }
 }

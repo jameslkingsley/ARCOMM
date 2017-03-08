@@ -194,18 +194,21 @@
                 });
 
                 $(document).on('click', '.mission-comment-control-delete', function(event) {
-                    var caller = $(this);
-                    var id = caller.data('id');
-                    
-                    $.ajax({
-                        type: 'DELETE',
-                        url: '{{ url("/hub/missions/comments") }}/' + id,
-                        success: function(data) {
-                            caller.parents('.mission-comment-item').remove();
-                        }
-                    });
-
                     event.preventDefault();
+                    var canDelete = confirm("Are you sure you want to delete this?");
+
+                    if (canDelete) {
+                        var caller = $(this);
+                        var id = caller.data('id');
+                        
+                        $.ajax({
+                            type: 'DELETE',
+                            url: '{{ url("/hub/missions/comments") }}/' + id,
+                            success: function(data) {
+                                caller.parents('.mission-comment-item').remove();
+                            }
+                        });
+                    }
                 });
 
                 $('#submit-mission-comment').submit(function(event) {

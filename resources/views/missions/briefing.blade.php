@@ -34,6 +34,7 @@
         <a
             href="javascript:void(0)"
             class="btn hub-btn btn-primary pull-right"
+            style="margin-top: -50px;padding: 5px 10px;"
             id="lock-briefing"
             data-faction="{{ $faction }}"
             data-id="{{ $mission->id }}"
@@ -54,3 +55,26 @@
         <p>{!! $paragraph !!}</p>
     @endforeach
 @endforeach
+
+<h4 class="mb-0">Comm Plan &mdash; {{ $mission->acreOverview($faction) }}</h4>
+<span class="text-muted">Languages:</span> {{ $mission->acreLanguages($faction) }}<br />
+
+@if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_343))
+    <span class="text-muted">AN/PRC-343:</span> {{ $mission->acreRoles($faction, 'AN_PRC_343') }}<br />
+@endif
+
+@if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_148))
+    <span class="text-muted">AN/PRC-148:</span> {{ $mission->acreRoles($faction, 'AN_PRC_148') }}<br />
+@endif
+
+@if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_152))
+    <span class="text-muted">AN/PRC-152:</span> {{ $mission->acreRoles($faction, 'AN_PRC_152') }}<br />
+@endif
+
+@if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_117f))
+    <span class="text-muted">AN/PRC-117F:</span> {{ $mission->acreRoles($faction, 'AN_PRC_117F') }}<br />
+@endif
+
+@if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_77))
+    <span class="text-muted">AN/PRC-77:</span> {{ $mission->acreRoles($faction, 'AN_PRC_77') }}
+@endif
