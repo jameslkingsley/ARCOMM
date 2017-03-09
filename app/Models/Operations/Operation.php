@@ -19,6 +19,15 @@ class Operation extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'starts_at'
+    ];
+
+    /**
      * Gets the number of seconds away from the operation start time.
      *
      * @return numeric

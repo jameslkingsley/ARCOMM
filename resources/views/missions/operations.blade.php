@@ -65,11 +65,15 @@
     use App\Models\Missions\Mission;
 @endphp
 
-<div class="large-panel-content full-page">
-    <h1 class="mt-0 mb-5">Operations</h1>
+<div class="large-panel-content full-page" id="app">
+    <h1 class="mt-0 mb-5">
+        Operations
+
+        <a href="javascript:void(0)" class="btn hub-btn btn-primary pull-right" @click="createOperation">Create Operation</a>
+    </h1>
 
     <div class="operations">
-        @foreach (Operation::orderBy('starts_at', 'desc')->take(4)->get() as $operation)
+        {{-- @foreach (Operation::orderBy('starts_at', 'desc')->take(4)->get() as $operation)
             <div class="operation-item" data-id="{{ $operation->id }}">
                 <span class="operation-item-date">
                     {{ $operation->starts_at->format('jS F') }}
@@ -107,11 +111,19 @@
                     @endfor
                 </div>
             </div>
-        @endforeach
+        @endforeach --}}
+
+        <div class="operation-item" v-for="(op, index) in operations">
+            <tr>
+                <td>@{{ op.id }}</td>
+                <td>@{{ op.starts_at }}</td>
+                <td><button @click="removeOperation(op)">&times;</button></td>
+            </tr>
+        </div>
     </div>
 </div>
 
-<div class="operations-mission-browser">
+{{-- <div class="operations-mission-browser">
     <h2 class="mission-section-heading" style="margin-top: 0 !important">New Missions</h2>
 
     <ul class="mission-group">
@@ -127,4 +139,40 @@
             @include('missions.item', ['mission' => $mission])
         @endforeach
     </ul>
-</div>
+</div> --}}
+
+<script>
+    new Vue({
+        el: '#app',
+
+        data: {
+            operations: []
+        },
+
+        created: function() {
+            axios.get('/api/operations')
+                .then(response => {
+                    this.operations = response.data;
+                })
+                .catch(e => {
+                    this.errors.push(e);
+                });
+        },
+
+        methods: {
+            createOperation: function() {
+                axios.post('/api/operations')
+                    .then(response => {
+                        this.operations.push(response.data);
+                    });
+            },
+
+            removeOperation: function(op) {
+                axios.delete('/api/operations/' + op.id)
+                    .then(response => {
+                        this.operations.splice(this.operations.indexOf(op), 1);
+                    });
+            }
+        }
+    });
+</script>

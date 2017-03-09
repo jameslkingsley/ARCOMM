@@ -35,24 +35,38 @@
     });
 </script>
 
+@php
+    $nextOperation = Operation::nextWeek();
+    $prevOperation = Operation::lastWeek();
+@endphp
+
 <div class="missions-pinned">
     <div class="missions-pinned-headers">
-        <h2>Next Operation &mdash; {{ Operation::nextWeek()->startsIn() }}</h2>
-        <h2>Past Operation</h2>
+        @if ($nextOperation)
+            <h2>Next Operation &mdash; {{ $nextOperation->startsIn() }}</h2>
+        @endif
+
+        @if ($prevOperation)
+            <h2>Past Operation</h2>
+        @endif
     </div>
 
     <div class="missions-pinned-groups">
-        <ul class="mission-group mission-group-pinned mission-group-center">
-            @foreach (Operation::nextWeek()->missions as $item)
-                @include('missions.item', ['mission' => $item->mission])
-            @endforeach
-        </ul>
+        @if ($nextOperation)
+            <ul class="mission-group mission-group-pinned mission-group-center">
+                @foreach ($nextOperation->missions as $item)
+                    @include('missions.item', ['mission' => $item->mission])
+                @endforeach
+            </ul>
+        @endif
 
-        <ul class="mission-group mission-group-pinned mission-group-center">
-            @foreach (Operation::lastWeek()->missions as $item)
-                @include('missions.item', ['mission' => $item->mission])
-            @endforeach
-        </ul>
+        @if ($prevOperation)
+            <ul class="mission-group mission-group-pinned mission-group-center">
+                @foreach ($prevOperation->missions as $item)
+                    @include('missions.item', ['mission' => $item->mission])
+                @endforeach
+            </ul>
+        @endif
     </div>
 </div>
 

@@ -54,6 +54,8 @@ Route::group(['middleware' => 'admin'], function() {
     Route::resource('/hub/applications', 'JoinController', [
         'as' => 'admin'
     ]);
+
+    Route::resource('/api/operations', 'API\OperationController');
 });
 
 Route::group(['middleware' => 'member'], function() {
