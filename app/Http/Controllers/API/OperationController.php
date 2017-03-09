@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Operations\Operation;
+use App\Models\Operations\OperationMission;
 use \Carbon\Carbon;
 
 class OperationController extends Controller
@@ -17,13 +18,21 @@ class OperationController extends Controller
     protected $operation;
 
     /**
+     * The operation mission instance.
+     *
+     * @var App\Models\Operations\OperationMission
+     */
+    protected $operation_mission;
+
+    /**
      * Constructor method.
      *
      * @return any
      */
-    public function __construct(Operation $operation)
+    public function __construct(Operation $operation, OperationMission $operation_mission)
     {
         $this->operation = $operation;
+        $this->operation_mission = $operation_mission;
 
         return $this;
     }
@@ -35,7 +44,15 @@ class OperationController extends Controller
      */
     public function index()
     {
-        return response()->json($this->operation->all());
+        $list = $this->operation->all()->map(function($item) {
+            $item->missions = $this->operation->find($item->id)->missions->map(function($mission) {
+                return $mission->mission;
+            });
+
+            return $item;
+        });
+
+        return response()->json($list);
     }
 
     /**

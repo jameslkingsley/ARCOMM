@@ -113,13 +113,27 @@
             </div>
         @endforeach --}}
 
-        <div class="operation-item" v-for="(op, index) in operations">
-            <tr>
-                <td>@{{ op.id }}</td>
+        <table class="table">
+            <tr v-for="(op, index) in operations">
                 <td>@{{ op.starts_at }}</td>
-                <td><button @click="removeOperation(op)">&times;</button></td>
+
+                <td v-for="i in range(0, 3)">
+                    <span v-if="typeof op.missions[i] !== 'undefined'" @click="removeMission(op, op.missions[i])">
+                        @{{ op.missions[i].display_name }}
+                    </span>
+
+                    <span v-else>
+                        Assign Mission
+                    </span>
+                </td>
+
+                <td>
+                    <a href="javascript:void(0)" class="btn hub-btn" @click="removeOperation(op)">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
             </tr>
-        </div>
+        </table>
     </div>
 </div>
 
@@ -142,7 +156,7 @@
 </div> --}}
 
 <script>
-    new Vue({
+    window.vm = new Vue({
         el: '#app',
 
         data: {
@@ -172,6 +186,20 @@
                     .then(response => {
                         this.operations.splice(this.operations.indexOf(op), 1);
                     });
+            },
+
+            removeMission: function(op, mission) {
+                axios.delete('/api/operations/missions/' + mission.id);
+                var index_op = this.operations.indexOf(op);
+                var index_mission = this.operations[index_op].missions.indexOf(mission);
+                this.operations[index_op].missions.splice(index_mission, 1);
+            },
+
+            range: function(s, e) {
+                var a = [];
+                for (var i = s; i < e; i++)
+                    a.push(i);
+                return a;
             }
         }
     });
