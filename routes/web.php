@@ -56,6 +56,7 @@ Route::group(['middleware' => 'admin'], function() {
     ]);
 
     Route::resource('/api/operations', 'API\OperationController');
+    Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
 
 Route::group(['middleware' => 'member'], function() {
@@ -68,6 +69,8 @@ Route::group(['middleware' => 'member'], function() {
     // Mission Operations
     Route::post('/hub/missions/operations/remove-mission', 'Missions\OperationController@removeMission');
     Route::post('/hub/missions/operations/add-mission', 'Missions\OperationController@addMission');
+    Route::post('/hub/missions/operations/create-operation', 'Missions\OperationController@create');
+    Route::post('/hub/missions/operations/delete-operation', 'Missions\OperationController@destroy');
 
     // Mission Comments
     Route::resource('/hub/missions/comments', 'Missions\CommentController', [

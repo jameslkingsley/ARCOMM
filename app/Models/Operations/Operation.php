@@ -79,4 +79,14 @@ class Operation extends Model
     {
         return $this->hasMany('App\Models\Operations\OperationMission')->orderBy('play_order');
     }
+
+    /**
+     * Checks whether the operation is the next one to run.
+     *
+     * @return boolean
+     */
+    public function isNextToRun()
+    {
+        return $this == $this->nextWeek();
+    }
 }

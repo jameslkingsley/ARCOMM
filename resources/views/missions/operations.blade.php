@@ -2,7 +2,7 @@
     $(document).ready(function(e) {
         var slot = null;
 
-        $('.operation-item-mission-item').click(function(event) {
+        $(document).on('click', '.operation-item-mission-item', function(event) {
             var caller = $(this);
             var isAssigned = caller.hasClass('assigned');
 
@@ -26,6 +26,8 @@
             caller.html('Pick a mission below');
             slot = caller;
 
+            $('.operations-mission-browser').removeClass('hide');
+
             event.preventDefault();
         });
 
@@ -36,7 +38,7 @@
             var mission_id = caller.data('id');
             var operation_id = slot.parents('.operation-item').data('id');
             var order = slot.data('order');
-            
+
             if (slot != null) {
                 $.ajax({
                     type: 'POST',
@@ -52,9 +54,38 @@
                         slot.html('<b>' + caller.find('.mission-item-title').html() + '</b>');
                         slot.removeClass('unassigned');
                         slot.addClass('assigned');
+                        $('.operations-mission-browser').addClass('hide');
                     }
                 });
             }
+        });
+
+        $('#create-operation-form').submit(function(event) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('/hub/missions/operations/create-operation') }}',
+                data: $('#create-operation-form').serialize(),
+                success: function(data) {
+                    $('.operations').prepend(data);
+                }
+            });
+
+            event.preventDefault();
+        });
+
+        $(document).on('click', '.oc-delete', function(event) {
+            var caller = $(this);
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('/hub/missions/operations/delete-operation') }}',
+                data: {operation_id: caller.data('id')},
+                success: function(data) {
+                    caller.parents('.operation-item').remove();
+                }
+            });
+
+            event.preventDefault();
         });
     });
 </script>
@@ -65,79 +96,24 @@
     use App\Models\Missions\Mission;
 @endphp
 
-<div class="large-panel-content full-page" id="app">
+<div class="large-panel-content full-page">
     <h1 class="mt-0 mb-5">
         Operations
 
-        <a href="javascript:void(0)" class="btn hub-btn btn-primary pull-right" @click="createOperation">Create Operation</a>
+        <form id="create-operation-form" class="pull-right">
+            <input type="submit" value="Create Operation" class="btn hub-btn btn-primary pull-right ml-1">
+            <input type="datetime-local" name="starts_at" id="create-operation-starts-at">
+        </form>
     </h1>
 
     <div class="operations">
-        {{-- @foreach (Operation::orderBy('starts_at', 'desc')->take(4)->get() as $operation)
-            <div class="operation-item" data-id="{{ $operation->id }}">
-                <span class="operation-item-date">
-                    {{ $operation->starts_at->format('jS F') }}
-                </span>
-
-                <span class="operation-item-time">
-                    {{ $operation->starts_at->format('H:i') }}
-                </span>
-
-                <div class="operation-item-missions">
-                    @for ($i = 1; $i <= 6; $i++)
-                        @php
-                            $item = OperationMission::where('play_order', $i)->where('operation_id', $operation->id)->first();
-                        @endphp
-
-                        @if (is_null($item))
-                            <a
-                                href="javascript:void(0)"
-                                class="operation-item-mission-item unassigned"
-                                data-item="-1"
-                                data-mission="-1"
-                                data-order="{{ $i }}">
-                                Assign Mission
-                            </a>
-                        @else
-                            <a
-                                href="javascript:void(0)"
-                                class="operation-item-mission-item assigned"
-                                data-item="{{ $item->id }}"
-                                data-mission="{{ $item->mission->id }}"
-                                data-order="{{ $i }}">
-                                <b>{{ $item->mission->display_name }}</b>
-                            </a>
-                        @endif
-                    @endfor
-                </div>
-            </div>
-        @endforeach --}}
-
-        <table class="table">
-            <tr v-for="(op, index) in operations">
-                <td>@{{ op.starts_at }}</td>
-
-                <td v-for="i in range(0, 3)">
-                    <span v-if="typeof op.missions[i] !== 'undefined'" @click="removeMission(op, op.missions[i])">
-                        @{{ op.missions[i].display_name }}
-                    </span>
-
-                    <span v-else>
-                        Assign Mission
-                    </span>
-                </td>
-
-                <td>
-                    <a href="javascript:void(0)" class="btn hub-btn" @click="removeOperation(op)">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </td>
-            </tr>
-        </table>
+        @foreach (Operation::orderBy('starts_at', 'desc')->get() as $operation)
+            @include('missions.operations.item', ['operation' => $operation])
+        @endforeach
     </div>
 </div>
 
-{{-- <div class="operations-mission-browser">
+<div class="operations-mission-browser hide">
     <h2 class="mission-section-heading" style="margin-top: 0 !important">New Missions</h2>
 
     <ul class="mission-group">
@@ -153,54 +129,4 @@
             @include('missions.item', ['mission' => $mission])
         @endforeach
     </ul>
-</div> --}}
-
-<script>
-    window.vm = new Vue({
-        el: '#app',
-
-        data: {
-            operations: []
-        },
-
-        created: function() {
-            axios.get('/api/operations')
-                .then(response => {
-                    this.operations = response.data;
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                });
-        },
-
-        methods: {
-            createOperation: function() {
-                axios.post('/api/operations')
-                    .then(response => {
-                        this.operations.push(response.data);
-                    });
-            },
-
-            removeOperation: function(op) {
-                axios.delete('/api/operations/' + op.id)
-                    .then(response => {
-                        this.operations.splice(this.operations.indexOf(op), 1);
-                    });
-            },
-
-            removeMission: function(op, mission) {
-                axios.delete('/api/operations/missions/' + mission.id);
-                var index_op = this.operations.indexOf(op);
-                var index_mission = this.operations[index_op].missions.indexOf(mission);
-                this.operations[index_op].missions.splice(index_mission, 1);
-            },
-
-            range: function(s, e) {
-                var a = [];
-                for (var i = s; i < e; i++)
-                    a.push(i);
-                return a;
-            }
-        }
-    });
-</script>
+</div>

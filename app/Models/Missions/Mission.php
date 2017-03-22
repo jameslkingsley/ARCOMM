@@ -622,6 +622,11 @@ class Mission extends Model implements HasMediaConversions
      */
     public static function getDetailsFromName($name)
     {
+        if (substr(strtolower($name), -3) != 'pbo') {
+            abort(403, 'Mission file must be a PBO');
+            return;
+        }
+
         if (strpos($name, '_') === false) {
             abort(403, 'Mission name is invalid');
             return;

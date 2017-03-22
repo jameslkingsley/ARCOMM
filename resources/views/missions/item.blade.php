@@ -3,6 +3,7 @@
     class="mission-item"
     style="background-image: url({{ $mission->thumbnail() }})"
     data-id="{{ $mission->id }}">
+
     <div class="mission-item-inner">
         <span class="mission-item-title">
             {{ $mission->display_name }}

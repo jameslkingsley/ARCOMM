@@ -45,8 +45,9 @@ class OperationController extends Controller
     public function index()
     {
         $list = $this->operation->all()->map(function($item) {
-            $item->missions = $this->operation->find($item->id)->missions->map(function($mission) {
-                return $mission->mission;
+            $item->items = $item->missions->map(function($item) {
+                $item->mission = $item->mission;
+                return $item;
             });
 
             return $item;
@@ -77,20 +78,22 @@ class OperationController extends Controller
         $latest = $this->operation->orderBy('starts_at', 'desc')->first();
 
         if ($latest) {
-            return response()->json(
-                $this->operation->create(['starts_at' => $latest->starts_at->addWeek()])
-            );
+            $op = $this->operation->create(['starts_at' => $latest->starts_at->addWeek()]);
+            $op->items = [];
+            return response()->json($op);
         } else {
-            return response()->json(
-                $this->operation->create([
-                    'starts_at' => Carbon::now()
-                        ->endOfWeek()
-                        ->subDay()
-                        ->hour(config('operation.hour'))
-                        ->minute(config('operation.minute'))
-                        ->second(0)
-                ])
-            );
+            $op = $this->operation->create([
+                'starts_at' => Carbon::now()
+                    ->endOfWeek()
+                    ->subDay()
+                    ->hour(config('operation.hour'))
+                    ->minute(config('operation.minute'))
+                    ->second(0)
+            ]);
+
+            $op->items = [];
+            
+            return response()->json($op);
         }
     }
 
