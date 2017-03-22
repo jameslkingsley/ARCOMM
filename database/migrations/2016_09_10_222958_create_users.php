@@ -20,7 +20,7 @@ class CreateUsers extends Migration
             $table->timestamp('updated_at')->useCurrent();
             $table->string('steam_id');
             $table->string('username');
-            $table->string('email').nullable();
+            $table->string('email')->nullable();
             $table->string('avatar');
             $table->integer('access_level')->default(1);
             $table->rememberToken();
