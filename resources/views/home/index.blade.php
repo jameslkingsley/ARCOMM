@@ -202,8 +202,6 @@
                 <a href="{{ url('/join') }}" class="btn btn-primary btn-lg btn-fill">
                     Submit Your Application
                 </a>
-
-                <p class="shameless-plug">Site created by <a href="https://smallstone.co.uk" target="_newtab">Small Stone</a></p>
             </div>
         </div>
     </div>
