@@ -276,7 +276,7 @@ class Mission extends Model implements HasMediaConversions
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             return resource_path('utils/armake.exe');
         } else {
-            return resource_path('utils/armake');
+            return resource_path('utils/armake.sh');
         }
     }
 
