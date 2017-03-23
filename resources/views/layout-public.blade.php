@@ -40,7 +40,7 @@
                         </a>
                     </div>
 
-                    <div class="collapse navbar-collapse" id="example" >
+                    <div class="collapse navbar-collapse" id="example">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{{ url('/media') }}">Media</a></li>
                             <li><a href="{{ url('/modset') }}">Modset</a></li>
