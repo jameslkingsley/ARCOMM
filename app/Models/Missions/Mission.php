@@ -706,7 +706,11 @@ class Mission extends Model implements HasMediaConversions
         $roles = (array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)};
 
         $mutated = array_map(function($item) {
-            return $this->roles[strtolower($item)];
+            if (array_key_exists(strtolower($item), $this->roles)) {
+                return $this->roles[strtolower($item)];
+            } else {
+                return strtoupper($item);
+            };
         }, $roles);
 
         return implode(', ', $mutated);
