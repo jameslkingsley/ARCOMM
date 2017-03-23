@@ -88,6 +88,8 @@ Route::group(['middleware' => 'member'], function() {
         'except' => ['create', 'edit']
     ]);
 
+    Route::resource('/hub/settings', 'Users\SettingsController');
+
     // Hub Index
     Route::resource('/hub', 'HubController', [
         'only' => ['index']

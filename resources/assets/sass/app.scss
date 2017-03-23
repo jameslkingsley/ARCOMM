@@ -1248,3 +1248,14 @@ header .nav .nav-link.active {
     padding: 8px 10px;
     outline: 0;
 }
+
+.hub-label {
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 1rem;
+}
+
+.hub-control {
+    border-radius: 0 !important;
+    min-height: 43px;
+}
