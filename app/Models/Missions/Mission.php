@@ -307,12 +307,15 @@ class Mission extends Model implements HasMediaConversions
             $unpacked
         );
 
+        chdir($unpacked);
+
         // Debinarize mission.sqm
         // If it's not binned, armake exits gracefully
         shell_exec(
             static::armake() .
-            ' derapify -f ' . $unpacked . '\mission.sqm ' .
-            $unpacked . '\mission.sqm'
+            // ' derapify -f ' . $unpacked . '\mission.sqm ' .
+            ' derapify -f mission.sqm mission.sqm'
+            // $unpacked . '\mission.sqm'
         );
 
         return $unpacked;
