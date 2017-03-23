@@ -137,6 +137,10 @@ class MissionController extends Controller
      */
     public function destroy(Mission $mission)
     {
+        if ($mission->existsInOperation()) {
+            return redirect('/hub/missions/' . $mission->id);
+        }
+
         $mission->delete();
 
         return redirect('/hub/missions');

@@ -8,6 +8,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Missions\MissionComment;
 use App\Helpers\ArmaConfigParser;
 use App\Models\Missions\Map;
+use App\Models\Operations\OperationMission;
 use App\Models\Portal\User;
 use Carbon\Carbon;
 use \stdClass;
@@ -264,6 +265,22 @@ class Mission extends Model implements HasMediaConversions
             ->first();
 
         return $comment;
+    }
+
+    /**
+     * Checks whether the given mission exists in an operation.
+     *
+     * @return boolean
+     */
+    public function existsInOperation()
+    {
+        $item = OperationMission::where('mission_id', $this->id)->first();
+
+        if ($item) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
