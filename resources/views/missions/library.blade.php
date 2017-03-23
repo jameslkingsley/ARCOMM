@@ -66,7 +66,7 @@
         @if ($prevOperation)
             <ul class="mission-group mission-group-pinned mission-group-center">
                 @foreach ($prevOperation->missions as $item)
-                    @include('missions.item', ['mission' => $item->mission])
+                    @include('missions.item', ['mission' => $item->mission, 'ignore_new_banner' => true])
                 @endforeach
             </ul>
         @endif
@@ -97,7 +97,7 @@
 
     <ul class="mission-group">
         @foreach (Mission::allPast() as $mission)
-            @include('missions.item', ['mission' => $mission])
+            @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
         @endforeach
     </ul>
 @endif

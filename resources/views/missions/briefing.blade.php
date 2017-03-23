@@ -77,6 +77,8 @@
     @endif
 
     @if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_77))
-        <span class="text-muted">AN/PRC-77:</span> {{ $mission->acreRoles($faction, 'AN_PRC_77') }}
+        <span class="text-muted">AN/PRC-77:</span> {{ $mission->acreRoles($faction, 'AN_PRC_77') }}<br />
     @endif
+
+    <span class="text-muted" style="color:#F00">* Comm plan does not indicate available units.</span>
 @endif

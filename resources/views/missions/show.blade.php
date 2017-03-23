@@ -269,7 +269,7 @@
                 class="form-control hub-form-control mb-3"
                 style="color: black"
                 rows="10"
-                placeholder="Your thoughts on the mission..."
+                placeholder="Your mission experience..."
             >{{ (!is_null($mission->draft())) ? $mission->draft()->text : '' }}</textarea>
 
             <input type="submit" name="post" value="Publish" class="btn hub-btn btn-primary pull-right ml-3">
