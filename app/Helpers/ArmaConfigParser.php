@@ -33,7 +33,7 @@ class ArmaConfigParser
                 $result = static::match($line, $number, $offset);
 
                 if ($result === false) {
-                    Log::error("Unable to parse line " . ($line + 1) . ": " . $line);
+                    Log::error("Unable to parse line " . ($number + 1) . ": " . $line);
                     return $tokens;
                 }
 
@@ -284,6 +284,7 @@ class ArmaConfigParser
 
         $contents = file_get_contents($file);
         $contents = preg_replace('!/\*.*?\*/!s', '', $contents);
+
         $lines = explode(PHP_EOL, $contents);
         return static::arrayToObject(static::run($lines));
     }

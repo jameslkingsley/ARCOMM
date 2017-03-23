@@ -313,10 +313,12 @@ class Mission extends Model implements HasMediaConversions
         // If it's not binned, armake exits gracefully
         shell_exec(
             static::armake() .
-            // ' derapify -f ' . $unpacked . '\mission.sqm ' .
             ' derapify -f mission.sqm mission.sqm'
-            // $unpacked . '\mission.sqm'
         );
+
+        // Refresh the file encoding to handle weird Eden nuances
+        // shell_exec(static::armake() . ' binarize -f mission.sqm mission.sqm');
+        // shell_exec(static::armake() . ' derapify -f mission.sqm mission.sqm');
 
         return $unpacked;
     }
@@ -371,8 +373,15 @@ class Mission extends Model implements HasMediaConversions
     {
         $unpacked = $this->unpack();
 
+        // Removes entity data in sqm to avoid Eden string nuances
+        $sqm_file = $unpacked . '/mission.sqm';
+        $sqm_contents = file_get_contents($sqm_file);
+        $sqm_contents = preg_replace('!/\*.*?\*/!s', '', $sqm_contents);
+        $sqm_contents = preg_replace('/(class Entities[\s\S]+)/', '};', $sqm_contents);
+        file_put_contents($sqm_file, $sqm_contents);
+
+        request()->session()->put('mission_sqm', ArmaConfigParser::convert($sqm_file));
         request()->session()->put('mission_ext', ArmaConfigParser::convert($unpacked . '/description.ext'));
-        request()->session()->put('mission_sqm', ArmaConfigParser::convert($unpacked . '/mission.sqm'));
         request()->session()->put('mission_config', ArmaConfigParser::convert($unpacked . '/config.hpp'));
         request()->session()->put('mission_version', file_get_contents($unpacked . '/version.txt'));
 
