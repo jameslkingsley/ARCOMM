@@ -180,7 +180,7 @@ class Mission extends Model implements HasMediaConversions
             return url($this->map->image_2d);
         }
 
-        return '';
+        return url('/images/arcomm-placeholder.jpg');
     }
 
     /**

@@ -84,18 +84,20 @@
     @endforeach
 </ul>
 
-{{-- <h2 class="mission-section-heading">New Missions</h2>
+@if (auth()->user()->isAdmin())
+    <h2 class="mission-section-heading">New Missions</h2>
 
-<ul class="mission-group">
-    @foreach (Mission::allNew() as $mission)
-        @include('missions.item', ['mission' => $mission])
-    @endforeach
-</ul>
+    <ul class="mission-group">
+        @foreach (Mission::allNew() as $mission)
+            @include('missions.item', ['mission' => $mission])
+        @endforeach
+    </ul>
 
-<h2 class="mission-section-heading">Past Missions</h2>
+    <h2 class="mission-section-heading">Past Missions</h2>
 
-<ul class="mission-group">
-    @foreach (Mission::allPast() as $mission)
-        @include('missions.item', ['mission' => $mission])
-    @endforeach
-</ul> --}}
+    <ul class="mission-group">
+        @foreach (Mission::allPast() as $mission)
+            @include('missions.item', ['mission' => $mission])
+        @endforeach
+    </ul>
+@endif

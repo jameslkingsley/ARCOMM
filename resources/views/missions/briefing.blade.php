@@ -1,4 +1,4 @@
-@if ($mission->isMine())
+@if ($mission->isMine() || auth()->user()->isAdmin())
     <script>
         $(document).ready(function(e) {
             $('#lock-briefing').click(function(event) {
