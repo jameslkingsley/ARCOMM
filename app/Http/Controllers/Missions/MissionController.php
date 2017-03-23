@@ -137,7 +137,7 @@ class MissionController extends Controller
      */
     public function destroy(Mission $mission)
     {
-        if ($mission->existsInOperation()) {
+        if ($mission->existsInOperation() && !auth()->user()->isAdmin()) {
             return redirect('/hub/missions/' . $mission->id);
         }
 
