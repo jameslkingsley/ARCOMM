@@ -29,6 +29,9 @@
                     });
 
                     setUrl('hub/missions/' + id);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
                 }
             });
         });
