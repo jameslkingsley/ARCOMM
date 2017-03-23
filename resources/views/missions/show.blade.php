@@ -281,8 +281,6 @@
 </div>
 
 <div class="large-panel-sidebar">
-    <h2 class="mt-0">Media</h2>
-
     <script>
         $(document).ready(function(e) {
             $('.mission-media-upload').dropzone({
@@ -366,15 +364,19 @@
         });
     </script>
 
-    <div class="mission-media">
-        <a href="javascript:void(0)" class="mission-media-upload mission-media-item">
-            <i class="fa fa-picture-o" style="pointer-events: none"></i>
-        </a>
+    <h2 class="mt-0">
+        Media
 
-        <a href="javascript:void(0)" class="mission-media-video-upload mission-media-item" data-mission="{{ $mission->id }}">
+        <a href="javascript:void(0)" class="mission-media-video-upload btn btn-primary hub-btn pull-right ml-1" data-mission="{{ $mission->id }}">
             <i class="fa fa-youtube" style="pointer-events: none"></i>
         </a>
 
+        <a href="javascript:void(0)" class="mission-media-upload btn btn-primary hub-btn pull-right">
+            <i class="fa fa-picture-o" style="pointer-events: none"></i>
+        </a>
+    </h2>
+
+    <div class="mission-media">
         @foreach ($mission->videos as $video)
             @include('missions.media.video', [
                 'video' => $video
