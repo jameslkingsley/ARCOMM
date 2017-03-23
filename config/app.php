@@ -188,6 +188,8 @@ return [
 
         Alaouy\Youtube\YoutubeServiceProvider::class,
 
+        Laravel\Tinker\TinkerServiceProvider::class,
+
     ],
 
     /*
