@@ -66,7 +66,9 @@
                     type: 'GET',
                     url: '{{ url('/hub/missions/' . $mission->id) }}',
                     success: function(data) {
-                        openBigWindow(data);
+                        openBigWindow(data, 500, function() {}, function() {
+                            setUrl('hub/missions');
+                        });
                     }
                 });
             });
