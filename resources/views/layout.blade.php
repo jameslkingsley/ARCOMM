@@ -37,12 +37,12 @@
                     <span class="brand-text"></span>
                 </a>
 
-                @if(auth()->user()->isAdmin())
+                {{-- @if (auth()->user()->isAdmin())
                     <a href="{{ url('/hub/applications') }}" class="nav-link" data-page="applications">
                         <i class="glyphicon glyphicon-inbox"></i>
                         <span>Applications</span>
                     </a>
-                @endif
+                @endif --}}
 
                 <a href="{{ url('/hub/missions') }}" class="nav-link" data-page="missions">
                     <i class="fa fa-map"></i>
