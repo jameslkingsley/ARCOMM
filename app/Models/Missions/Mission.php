@@ -160,7 +160,7 @@ class Mission extends Model implements HasMediaConversions
         if (count($media) > 0) {
             return $media[rand(0, count($media) - 1)]->getUrl();
         } else {
-            return 'https://source.unsplash.com/category/nature';
+            return '';
         }
     }
 
