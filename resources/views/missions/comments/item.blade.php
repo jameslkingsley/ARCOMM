@@ -26,7 +26,7 @@
         @endif
 
         <span class="mission-comment-item-text">
-            {{ $comment->text }}
+            {!! nl2br(e($comment->text)) !!}
         </span>
     </div>
 @endif
