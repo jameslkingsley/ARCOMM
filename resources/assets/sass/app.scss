@@ -1344,3 +1344,16 @@ header .nav .nav-link.active {
     font-size: 16px;
     margin-left: 5px;
 }
+
+.hub-dropdown ul li span {
+    float: left;
+    width: 100%;
+    text-align: left;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none!important;
+    color: #fff;
+    padding: 0 25px;
+    cursor: default;
+    opacity: .5;
+}

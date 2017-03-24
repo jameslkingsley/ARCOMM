@@ -1,38 +1,5 @@
 <script>
     $(document).ready(function(e) {
-        /*setContentTop = function() {
-            $('#mission-content-break').css(
-                'margin-top',
-                $('.mission-nav').offset().top + 50 + 'px'
-            );
-        }
-
-        $(window).resize(function() {
-            setContentTop();
-        });
-
-        $('.large-panel-container').scroll(function() {
-            var top = $(this).scrollTop();
-            var left = $('.mission-nav').offset().left;
-            var right = $(window).innerWidth() - ($('.mission-nav').offset().left + $('.mission-nav').outerWidth());
-
-            if (top >= 590) {
-                $('.mission-nav').css({
-                    'position': 'fixed',
-                    'top': 0,
-                    'left': left,
-                    'right': right
-                });
-            } else {
-                $('.mission-nav').css({
-                    'position': 'absolute',
-                    'top': 'calc(100vh / 1.618)',
-                    'left': 0,
-                    'right': 0
-                });
-            }
-        });*/
-
         $('.mission-briefing-nav a').click(function(event) {
             var caller = $(this);
             var locked = caller.hasClass('locked');
@@ -134,6 +101,8 @@
                                 Delete
                             </a>
                         </li>
+                    @else
+                        <li><span title="You cannot delete this mission as it belongs to an operation">Delete</span></li>
                     @endif
                 </ul>
             </div>

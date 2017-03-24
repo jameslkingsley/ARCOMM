@@ -34,13 +34,6 @@ Route::get('/modset', function() {
 //--- Roster
 Route::get('/roster', 'PageController@roster');
 
-//--- Members
-Route::group(['middleware' => 'member'], function() {
-    Route::get('/guides', function() {
-        return view('home.index');
-    });
-});
-
 //--- Admins
 Route::group(['middleware' => 'admin'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
@@ -89,6 +82,10 @@ Route::group(['middleware' => 'member'], function() {
     ]);
 
     Route::resource('/hub/settings', 'Users\SettingsController');
+
+    Route::get('/hub/guides', function() {
+        return view('guides.index');
+    });
 
     // Hub Index
     Route::resource('/hub', 'HubController', [

@@ -49,6 +49,11 @@
                     <span>Missions</span>
                 </a>
 
+                {{-- <a href="{{ url('/hub/guides') }}" class="nav-link" data-page="guides">
+                    <i class="fa fa-book"></i>
+                    <span>Guides</span>
+                </a> --}}
+
                 <a href="{{ url('/hub/settings') }}" class="nav-link" data-page="settings">
                     <i class="fa fa-cog"></i>
                     <span>Settings</span>

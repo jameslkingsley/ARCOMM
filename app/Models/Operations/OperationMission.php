@@ -23,6 +23,6 @@ class OperationMission extends Model
      */
     public function operation()
     {
-        return $this->hasOne('App\Models\Operations\Operation');
+        return $this->belongsTo('App\Models\Operations\Operation');
     }
 }
