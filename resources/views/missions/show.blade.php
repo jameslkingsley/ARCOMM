@@ -109,7 +109,11 @@
         @endif
 
         <span class="mission-version">
-            {{ $mission->created_at->diffForHumans() }}
+            @if ($mission->isNew())
+                PUBLISHED {{ $mission->created_at->diffForHumans() }}
+            @else
+                LAST PLAYED {{ $mission->last_played->diffForHumans() }}
+            @endif
             /
             ARCMF {{ $mission->version() }}
         </span>
