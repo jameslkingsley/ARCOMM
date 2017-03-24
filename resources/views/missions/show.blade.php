@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function(e) {
-        setContentTop = function() {
+        /*setContentTop = function() {
             $('#mission-content-break').css(
                 'margin-top',
                 $('.mission-nav').offset().top + 50 + 'px'
@@ -31,7 +31,7 @@
                     'right': 0
                 });
             }
-        });
+        });*/
 
         $('.mission-briefing-nav a').click(function(event) {
             var caller = $(this);
@@ -62,7 +62,7 @@
 @if ($mission->isMine() || auth()->user()->isAdmin())
     <script>
         $(document).ready(function(e) {
-            $('#download-mission').click(function(event) {
+            $('.download-mission').click(function(event) {
                 event.preventDefault();
                 window.location.href = $(this).data('filepath');
             });
@@ -94,7 +94,7 @@
 
 <div class="large-panel-content">
     <div class="mission-banner" style="background-image: url({{ $mission->banner() }})">
-        <span class="mission-banner-heading">
+        <span class="mission-banner-heading {{ (strlen($mission->banner()) == 0) ? 'mission-banner-heading-nograd' : '' }}">
             {{ $mission->display_name }}
         </span>
 
@@ -105,21 +105,38 @@
 
     <div class="mission-nav">
         @if ($mission->isMine() || auth()->user()->isAdmin())
-            <a href="javascript:void(0)" id="download-mission" class="mission-nav-item" data-filepath="{{ $mission->download() }}">
-                Download
-            </a>
+            <div class="hub-dropdown">
+                <a href="javascript:void(0)">Download <i class="fa fa-angle-down"></i></a>
+                <ul>
+                    <li><a href="javascript:void(0)" class="download-mission" data-filepath="{{ $mission->download('pbo') }}">PBO</a></li>
+                    <li><a href="javascript:void(0)" class="download-mission" data-filepath="{{ $mission->download('zip') }}">ZIP</a></li>
+                </ul>
+            </div>
 
-            <a href="javascript:void(0)" id="update-mission" class="mission-nav-item" title="Replace the mission file with an updated one">
-                Update PBO
-            </a>
+            <div class="hub-dropdown">
+                <a href="javascript:void(0)">Manage <i class="fa fa-angle-down"></i></a>
+                <ul>
+                    <li>
+                        <a
+                            href="javascript:void(0)"
+                            id="update-mission"
+                            title="Replace the mission file with an updated one">
+                            Update
+                        </a>
+                    </li>
 
-            <a
-                href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
-                id="delete-mission"
-                class="mission-nav-item"
-                title="Deletes the mission and all of its media, comments and files.">
-                Delete
-            </a>
+                    @if (!$mission->existsInOperation() || !auth()->user()->isAdmin())
+                        <li>
+                            <a
+                                href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
+                                id="delete-mission"
+                                title="Deletes the mission and all of its media, comments and files">
+                                Delete
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
         @endif
 
         <span class="mission-version">

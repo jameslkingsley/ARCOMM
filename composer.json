@@ -11,7 +11,8 @@
         "syntax/steam-api": "^2.0",
         "invisnik/laravel-steam-auth": "^2.3",
         "alaouy/youtube": "dev-master",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "chumper/zipper": "1.0.x"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

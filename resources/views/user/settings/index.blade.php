@@ -28,9 +28,9 @@
 @section('subnav')
     <a
         href="javascript:void(0)"
-        data-panel="general"
+        data-panel="account"
         class="subnav-link active"
-    >General</a>
+    >Account</a>
 @endsection
 
 @section('controls')
@@ -38,6 +38,6 @@
 
 @section('content')
     <div id="settings-content">
-        @include('user.settings.general')
+        @include('user.settings.account')
     </div>
 @endsection

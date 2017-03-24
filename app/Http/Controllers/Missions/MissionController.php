@@ -76,7 +76,10 @@ class MissionController extends Controller
         if (!$request->ajax()) {
             return view('missions.index', compact('mission'));
         } else {
-            $mission->storeConfigs();
+            $mission->storeConfigs(function($mission, $unpacked) {
+                $mission->download('zip', $unpacked);
+            });
+
             return view('missions.show', compact('mission'));
         }
     }

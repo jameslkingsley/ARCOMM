@@ -181,7 +181,8 @@ class Mission extends Model implements HasMediaConversions
             return url($this->map->image_2d);
         }
 
-        return url('/images/arcomm-placeholder.jpg');
+        // return url('/images/arcomm-placeholder.jpg');
+        return '';
     }
 
     /**
@@ -189,34 +190,16 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return string
      */
-    public function exportedName()
+    public function exportedName($format = 'pbo')
     {
         $download = 'ARC_' .
             strtoupper($this->mode == 'adversarial' ? 'tvt' : $this->mode) . '_' .
             studly_case($this->display_name) . '_' .
             trim(substr($this->user->username, 0, 4)) . '_' .
             $this->id . '.' .
-            $this->map->class_name . '.pbo';
+            $this->map->class_name . '.' . $format;
 
         return $download;
-    }
-
-    /**
-     * Creates the downloadable file and returns its full URL.
-     *
-     * @return string
-     */
-    public function download()
-    {
-        $download = $this->exportedName();
-
-        if (file_exists(public_path('downloads/' . $download))) {
-            Storage::disk('downloads')->delete($download);
-        }
-
-        File::copy(storage_path('app/' . $this->pbo_path), public_path('downloads/' . $download));
-
-        return url('downloads/' . $download);
     }
 
     /**
@@ -298,19 +281,59 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Creates the downloadable file and returns its full URL.
+     *
+     * @return string
+     */
+    public function download($format = 'pbo', $unpacked = '')
+    {
+        $download = $this->exportedName($format);
+        $reldir = 'downloads/pbos';
+
+        if (file_exists(public_path('downloads/pbos/' . $download))) {
+            Storage::disk('downloads')->delete('pbos/' . $download);
+        }
+
+        if ($format == 'pbo') {
+            File::copy(storage_path('app/' . $this->pbo_path), public_path('downloads/pbos/' . $download));
+        } else {
+            if ($unpacked == '') {
+                return url('downloads/zips/' . $download);
+            } else {
+                $files = glob($unpacked . '/*');
+                $zip = new \Chumper\Zipper\Zipper;
+                $zip->make('downloads/zips/' . $download)->add($unpacked)->close();
+                $reldir = 'downloads/zips';
+                return;
+            }
+        }
+
+        return url($reldir . '/' . $download);
+    }
+
+    /**
      * Unpacks the mission PBO and returns the absolute path of the folder.
      *
      * @return string
      */
-    public function unpack()
+    public function unpack($dirname = '')
     {
-        $unpacked = storage_path(
+        $unpacked = ($dirname == '') ? storage_path(
             'app/missions/' .
             $this->user_id .
             '/' .
             $this->id .
             '_unpacked'
+        ) : storage_path(
+            'app/missions/' .
+            $this->user_id .
+            '/' .
+            $dirname
         );
+
+        if (file_exists($unpacked)) {
+            return $unpacked;
+        }
 
         // Delete the directory if it exists
         File::deleteDirectory($unpacked);
@@ -324,6 +347,7 @@ class Mission extends Model implements HasMediaConversions
             $unpacked
         );
 
+        $workingDir = getcwd();
         chdir($unpacked);
 
         // Debinarize mission.sqm
@@ -333,9 +357,7 @@ class Mission extends Model implements HasMediaConversions
             ' derapify -f mission.sqm mission.sqm'
         );
 
-        // Refresh the file encoding to handle weird Eden nuances
-        // shell_exec(static::armake() . ' binarize -f mission.sqm mission.sqm');
-        // shell_exec(static::armake() . ' derapify -f mission.sqm mission.sqm');
+        chdir($workingDir);
 
         return $unpacked;
     }
@@ -345,9 +367,21 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function deleteUnpacked()
+    public function deleteUnpacked($dirname = '')
     {
-        Storage::deleteDirectory('missions/' . $this->user_id . '/' . $this->id . '_unpacked');
+        Storage::deleteDirectory(
+            ($dirname == '') ?
+                'missions/' .
+                $this->user_id .
+                '/' .
+                $this->id .
+                '_unpacked'
+            :
+                'missions/' .
+                $this->user_id .
+                '/' .
+                $dirname
+        );
     }
 
     /**
@@ -386,9 +420,13 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function storeConfigs()
+    public function storeConfigs($closure = null)
     {
         $unpacked = $this->unpack();
+
+        if (!is_null($closure)) {
+            $closure($this, $unpacked);
+        }
 
         // Removes entity data in sqm to avoid Eden string nuances
         $sqm_file = $unpacked . '/mission.sqm';

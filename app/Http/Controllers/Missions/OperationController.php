@@ -52,7 +52,9 @@ class OperationController extends Controller
         $header = null;
 
         if ($latest) {
-            $header = $operation->create(['starts_at' => $latest->starts_at->addWeek()]);
+            $nextDate = $latest->starts_at->addWeek();
+            $nextDate->hour = config('operation.hour');
+            $header = $operation->create(['starts_at' => $nextDate]);
         } else {
             $header = $operation->create([
                 'starts_at' => Carbon::now()

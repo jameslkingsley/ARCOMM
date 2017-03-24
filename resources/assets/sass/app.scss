@@ -540,7 +540,7 @@ header .nav .nav-link.active {
     float: left;
     width: calc(16.6666vw - 78px);
     height: calc(16.6666vw - 78px);
-    background: #111;
+    background: $brand-primary;
     list-style-type: inherit;
     margin: 5px;
     background-position: center;
@@ -707,7 +707,7 @@ header .nav .nav-link.active {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    background-color: #bd2c2c;
+    background-color: #111;
 }
 
 .mission-banner-heading {
@@ -1040,7 +1040,7 @@ header .nav .nav-link.active {
     left: -10px;
     width: 20px;
     height: 20px;
-    background: #bd2c2c;
+    background: $brand-primary;
     border-radius: 100%;
     top: calc(50% - 10px);
     border: 3px solid white;
@@ -1213,7 +1213,7 @@ header .nav .nav-link.active {
 }
 
 .mission-item.spinner {
-    background-blend-mode: luminosity;
+    background-blend-mode: hard-light;
 }
 
 .mission-media-item-delete, .mission-video-item-delete {
@@ -1259,4 +1259,88 @@ header .nav .nav-link.active {
 .hub-control {
     border-radius: 0 !important;
     min-height: 43px;
+}
+
+.mission-section-label {
+    margin: -10px 0 0 0;
+    padding: 0 0 0 5px;
+    font-size: 18px;
+    color: white;
+    opacity: .75;
+}
+
+.mission-banner-heading-nograd {
+    background: transparent !important;
+}
+
+.hub-dropdown {
+    float: left;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: $brand-primary !important;
+    text-decoration: none!important;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.hub-dropdown a {
+    padding: 0 25px;
+    float: left;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+    line-height: 60px;
+    text-decoration: none!important;
+}
+
+.hub-dropdown ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 15px 0;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    background: $brand-primary;
+    min-width: 200px;
+    box-shadow: 0 5px 5px rgba(0,0,0,.1);
+    display: none;
+}
+
+.hub-dropdown ul li {
+    float: left;
+    width: 100%;
+}
+
+.hub-dropdown ul li a {
+    float: left;
+    width: 100%;
+    text-align: left;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none!important;
+    color: white;
+}
+
+.hub-dropdown ul li a:hover {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.hub-dropdown a:hover {
+    background: #f5f5f5;
+}
+
+.hub-dropdown a.open {
+    background: #bd2c2c;
+    color: white;
+}
+
+.hub-dropdown a:first-of-type i {
+    font-weight: 900;
+    font-size: 16px;
+    margin-left: 5px;
 }

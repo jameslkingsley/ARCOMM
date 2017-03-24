@@ -103,4 +103,35 @@ setUrl = function(url, title) {
                 ');
         }
     }
+
+    $.fn.offClick = function(a) {
+        var caller = $(this);
+        $(document).bind("mousedown.offClick", function(event) {
+            var target = $(event.target);
+            if (!target.is(caller) && !target.is(caller.find('*')))
+                if (typeof a == "function") a();
+        });
+    }
+
+    $.hubDropdown = function() {
+        $(document).on('click', '.hub-dropdown a:first-of-type', function(event) {
+            var caller = $(this);
+            var container = caller.parents('.hub-dropdown');
+            container.find('ul').toggleClass('show');
+            caller.toggleClass('open');
+
+            container.offClick(function() {
+                container.find('a:first-of-type').removeClass('open');
+                container.find('ul').removeClass('show');
+            });
+
+            event.preventDefault();
+        });
+
+        $(document).on('click', '.hub-dropdown ul li a', function(event) {
+            var container = $(this).parents('.hub-dropdown');
+            container.find('a:first-of-type').removeClass('open');
+            container.find('ul').removeClass('show');
+        });
+    }
 })(jQuery);

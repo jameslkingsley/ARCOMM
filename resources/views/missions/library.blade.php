@@ -35,12 +35,17 @@
                 }
             });
         });
+
+        $.hubDropdown();
     });
 </script>
 
 @php
     $nextOperation = Operation::nextWeek();
     $prevOperation = Operation::lastWeek();
+    $myMissions = auth()->user()->missions();
+    $newMissions = Mission::allNew();
+    $pastMissions = Mission::allPast();
 @endphp
 
 <div class="missions-pinned">
@@ -56,11 +61,15 @@
 
     <div class="missions-pinned-groups">
         @if ($nextOperation)
-            <ul class="mission-group mission-group-pinned mission-group-center">
-                @foreach ($nextOperation->missions as $item)
-                    @include('missions.item', ['mission' => $item->mission])
-                @endforeach
-            </ul>
+            @if (!$nextOperation->missions->isEmpty())
+                <ul class="mission-group mission-group-pinned mission-group-center">
+                    @foreach ($nextOperation->missions as $item)
+                        @include('missions.item', ['mission' => $item->mission])
+                    @endforeach
+                </ul>
+            @else
+                <p class="mission-section-label">No missions have been picked yet! Come back later.</p>
+            @endif
         @endif
 
         @if ($prevOperation)
@@ -76,28 +85,36 @@
 <h2 class="mission-section-heading">My Missions</h2>
 
 <ul class="mission-group">
-    @foreach (auth()->user()->missions() as $mission)
-        @include('missions.item', [
-            'mission' => $mission,
-            'ignore_new_banner' => true
-        ])
-    @endforeach
+    @if (!$myMissions->isEmpty())
+        @foreach ($myMissions as $mission)
+            @include('missions.item', [
+                'mission' => $mission,
+                'ignore_new_banner' => true
+            ])
+        @endforeach
+    @else
+        <p class="mission-section-label">You haven't uploaded any missions!<br />Upload your mission PBO files via the upload button on the left.</p>
+    @endif
 </ul>
 
 @if (auth()->user()->isAdmin())
-    <h2 class="mission-section-heading">New Missions</h2>
+    @if (!$newMissions->isEmpty())
+        <h2 class="mission-section-heading">New Missions</h2>
 
-    <ul class="mission-group">
-        @foreach (Mission::allNew() as $mission)
-            @include('missions.item', ['mission' => $mission])
-        @endforeach
-    </ul>
+        <ul class="mission-group">
+            @foreach ($newMissions as $mission)
+                @include('missions.item', ['mission' => $mission])
+            @endforeach
+        </ul>
+    @endif
 
-    <h2 class="mission-section-heading">Past Missions</h2>
+    @if (!$pastMissions->isEmpty())
+        <h2 class="mission-section-heading">Past Missions</h2>
 
-    <ul class="mission-group">
-        @foreach (Mission::allPast() as $mission)
-            @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
-        @endforeach
-    </ul>
+        <ul class="mission-group">
+            @foreach ($pastMissions as $mission)
+                @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
+            @endforeach
+        </ul>
+    @endif
 @endif

@@ -1,4 +1,4 @@
-<h1 class="mt-0 mb-5">General</h1>
+<h1 class="mt-0 mb-5">Account</h1>
 
 <script>
     $(document).ready(function(e) {

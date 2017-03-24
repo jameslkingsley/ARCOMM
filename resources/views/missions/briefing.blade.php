@@ -58,6 +58,9 @@
 
 @if (strtolower($faction) != 'civilian')
     <h4 class="mb-0">Comm Plan &mdash; {{ $mission->acreOverview($faction) }}</h4>
+
+    <span class="text-muted" style="color:#bd2c2c"><i>Comm plan does not indicate available units.</i></span><br />
+
     <span class="text-muted">Languages:</span> {{ $mission->acreLanguages($faction) }}<br />
 
     @if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_343))
@@ -77,8 +80,6 @@
     @endif
 
     @if (!empty((array)$mission->config()->acre->{strtolower($faction)}->an_prc_77))
-        <span class="text-muted">AN/PRC-77:</span> {{ $mission->acreRoles($faction, 'AN_PRC_77') }}<br />
+        <span class="text-muted">AN/PRC-77:</span> {{ $mission->acreRoles($faction, 'AN_PRC_77') }}
     @endif
-
-    <span class="text-muted" style="color:#F00">* Comm plan does not indicate available units.</span>
 @endif

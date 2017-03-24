@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'hour' => 18,
+    'hour' => 17,
     'minute' => 0
 ];
