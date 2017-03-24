@@ -41,9 +41,12 @@
 </script>
 
 @php
-    $nextOperation = Operation::nextWeek();
-    $prevOperation = Operation::lastWeek();
     $myMissions = auth()->user()->missions();
+
+    $nextOperation = Operation::nextWeek();
+    $nextOperationMissions = $nextOperation->missions;
+    $prevOperation = Operation::lastWeek();
+
     $newMissions = Mission::allNew();
     $pastMissions = Mission::allPast();
 @endphp
@@ -61,9 +64,9 @@
 
     <div class="missions-pinned-groups">
         @if ($nextOperation)
-            @if (!$nextOperation->missions->isEmpty())
+            @if (!$nextOperationMissions->isEmpty())
                 <ul class="mission-group mission-group-pinned mission-group-center">
-                    @foreach ($nextOperation->missions as $item)
+                    @foreach ($nextOperationMissions as $item)
                         @include('missions.item', ['mission' => $item->mission])
                     @endforeach
                 </ul>
