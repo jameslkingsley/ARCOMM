@@ -56,6 +56,8 @@
                     alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
                 }
             });
+
+            $.hubDropdown();
         });
     </script>
 

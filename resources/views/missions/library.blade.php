@@ -35,8 +35,6 @@
                 }
             });
         });
-
-        $.hubDropdown();
     });
 </script>
 
