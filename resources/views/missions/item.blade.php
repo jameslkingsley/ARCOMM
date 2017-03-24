@@ -17,6 +17,10 @@
             {{ $mission->mode }}
         </span>
 
+        @if (auth()->user()->isAdmin() && !$mission->verified)
+            <span class="mission-item-verified" title="Not verified yet"></span>
+        @endif
+
         {{-- @if (!isset($ignore_new_banner) || !$ignore_new_banner)
             @if ($mission->isNew())
                 <span class="mission-item-new-banner">

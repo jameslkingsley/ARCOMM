@@ -77,6 +77,7 @@ Route::group(['middleware' => 'member'], function() {
     // Missions
     Route::get('/hub/missions/{mission}/delete', 'Missions\MissionController@destroy');
     Route::post('/hub/missions/{mission}/update', 'Missions\MissionController@update');
+    Route::post('/hub/missions/{mission}/set-verification', 'Missions\MissionController@updateVerification');
     Route::resource('/hub/missions', 'Missions\MissionController', [
         'except' => ['create', 'edit']
     ]);

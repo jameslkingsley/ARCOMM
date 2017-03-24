@@ -108,6 +108,41 @@
             </div>
         @endif
 
+        @if (auth()->user()->isAdmin())
+            <script>
+                $(document).ready(function(e) {
+                    $('.mission-verification a').click(function(event) {
+                        var caller = $(this);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ url("/hub/missions/{$mission->id}/set-verification") }}',
+                            success: function(data) {
+                                if (caller.hasClass('verified')) {
+                                    caller.removeClass('verified');
+                                    caller.addClass('unverified');
+                                } else {
+                                    caller.removeClass('unverified');
+                                    caller.addClass('verified');
+                                }
+                            }
+                        });
+
+                        event.preventDefault();
+                    });
+                });
+            </script>
+
+            <span class="mission-verification">
+                <a
+                    href="javascript:void(0)"
+                    class="{{ ($mission->verified) ? 'verified' : 'unverified' }}"
+                    title="Mark this mission as {{ ($mission->verified) ? 'verified' : 'unverified' }}">
+                    <i class="fa fa-check"></i>
+                </a>
+            </span>
+        @endif
+
         <span class="mission-version">
             @if ($mission->isNew())
                 PUBLISHED {{ $mission->created_at->diffForHumans() }}

@@ -177,4 +177,15 @@ class MissionController extends Controller
 
         $mission->lockBriefing($request->faction, $request->locked);
     }
+
+    /**
+     * Updates the mission verification boolean.
+     *
+     * @return any
+     */
+    public function updateVerification(Request $request, Mission $mission)
+    {
+        $mission->verified = !$mission->verified;
+        $mission->save();
+    }
 }
