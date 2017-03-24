@@ -65,7 +65,7 @@
             @if (!$nextOperationMissions->isEmpty())
                 <ul class="mission-group mission-group-pinned mission-group-center">
                     @foreach ($nextOperationMissions as $item)
-                        @include('missions.item', ['mission' => $item->mission])
+                        @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned'])
                     @endforeach
                 </ul>
             @else

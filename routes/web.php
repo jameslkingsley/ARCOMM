@@ -81,6 +81,7 @@ Route::group(['middleware' => 'member'], function() {
         'except' => ['create', 'edit']
     ]);
 
+    Route::get('/hub/settings/avatar-sync', 'Users\SettingsController@avatarSync');
     Route::resource('/hub/settings', 'Users\SettingsController');
 
     Route::get('/hub/guides', function() {

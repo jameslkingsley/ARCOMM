@@ -1,6 +1,6 @@
 <a
     href="{{ url('/hub/missions/' . $mission->id) }}"
-    class="mission-item"
+    class="mission-item {{ (isset($classes)) ? $classes : '' }}"
     style="background-image: url({{ $mission->thumbnail() }})"
     data-id="{{ $mission->id }}">
 
@@ -17,12 +17,12 @@
             {{ $mission->mode }}
         </span>
 
-        @if (!isset($ignore_new_banner) || !$ignore_new_banner)
+        {{-- @if (!isset($ignore_new_banner) || !$ignore_new_banner)
             @if ($mission->isNew())
                 <span class="mission-item-new-banner">
                     New
                 </span>
             @endif
-        @endif
+        @endif --}}
     </div>
 </a>

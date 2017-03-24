@@ -1358,3 +1358,21 @@ header .nav .nav-link.active {
     cursor: default;
     opacity: .5;
 }
+
+.mission-item-pinned {
+    border: 5px solid #ffbe00;
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.user-avatar.user-avatar-medium {
+    width: 200px;
+    height: 200px;
+}
