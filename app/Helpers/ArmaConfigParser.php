@@ -34,6 +34,7 @@ class ArmaConfigParser
 
                 if ($result === false) {
                     Log::error("Unable to parse line " . ($number + 1) . ": " . $line);
+                    abort(403, 'Mission config has invalid syntax');
                     return $tokens;
                 }
 
