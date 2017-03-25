@@ -92,7 +92,7 @@
                         </a>
                     </li>
 
-                    @if (!$mission->existsInOperation() || !auth()->user()->isAdmin())
+                    @if (!$mission->existsInOperation() || auth()->user()->isAdmin())
                         <li>
                             <a
                                 href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
