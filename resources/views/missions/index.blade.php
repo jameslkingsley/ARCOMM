@@ -49,6 +49,7 @@
                         url: '{{ url("/hub/missions") }}/' + data.trim(),
                         success: function(data) {
                             openBigWindow(data);
+                            $('.subnav-link[data-panel="library"]').click();
                         }
                     });
                 },
