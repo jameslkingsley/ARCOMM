@@ -26,24 +26,29 @@ class ArmaConfigParser
 
     public static function run($source, $filepath) {
         $tokens = [];
+        $emptyLines = 0;
 
         foreach ($source as $number => $line) {
             $offset = 0;
 
-            while ($offset < strlen($line)) {
-                $result = static::match($line, $number, $offset);
+            if (strlen(trim($line)) == 0) {
+                $emptyLines++;
+            } else {
+                while ($offset < strlen($line)) {
+                    $result = static::match($line, $number, $offset);
 
-                if ($result === false) {
-                    $realLine = $number + 1;
-                    $basename = basename($filepath);
-                    $error = new ArmaConfigParserError();
-                    $error->message = "Unable to parse line {$realLine} in {$basename}";
-                    Log::error($error->message);
-                    return $error;
+                    if ($result === false) {
+                        $realLine = $number + $emptyLines;
+                        $basename = basename($filepath);
+                        $error = new ArmaConfigParserError();
+                        $error->message = "Unable to parse line {$realLine} in {$basename}";
+                        Log::error($error->message);
+                        return $error;
+                    }
+
+                    $tokens[] = $result;
+                    $offset += strlen($result['match']);
                 }
-
-                $tokens[] = $result;
-                $offset += strlen($result['match']);
             }
         }
 

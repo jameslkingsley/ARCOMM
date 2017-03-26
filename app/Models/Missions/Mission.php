@@ -442,7 +442,6 @@ class Mission extends Model implements HasMediaConversions
         $version = file_get_contents("{$unpacked}/version.txt");
 
         foreach ([$sqm_obj, $ext_obj, $cfg_obj] as $parsedObject) {
-            Log::info('Mission: ' . get_class($parsedObject));
             if (get_class($parsedObject) == 'App\Helpers\ArmaConfigParserError') {
                 $this->deleteUnpacked();
                 return $parsedObject;

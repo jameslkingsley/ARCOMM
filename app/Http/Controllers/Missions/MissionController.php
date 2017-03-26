@@ -55,7 +55,6 @@ class MissionController extends Controller
             $mission->save();
 
             $configs = $mission->storeConfigs();
-            Log::info('MissionController: ' . get_class($configs));
 
             if (get_class($configs) == 'App\Helpers\ArmaConfigParserError') {
                 // Mission has config errors
