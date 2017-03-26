@@ -159,7 +159,7 @@ class Mission extends Model implements HasMediaConversions
         $media = $this->getMedia();
 
         if (count($media) > 0) {
-            return $media[rand(0, count($media) - 1)]->getUrl();
+            return $media[0]->getUrl();
         } else {
             return '';
         }
