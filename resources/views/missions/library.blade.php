@@ -72,6 +72,18 @@
     </div>
 </div>
 
+@if (auth()->user()->isAdmin())
+    @if (!$newMissions->isEmpty())
+        <h2 class="mission-section-heading">New Missions</h2>
+
+        <ul class="mission-group">
+            @foreach ($newMissions as $mission)
+                @include('missions.item', ['mission' => $mission])
+            @endforeach
+        </ul>
+    @endif
+@endif
+
 <h2 class="mission-section-heading">My Missions</h2>
 
 <ul class="mission-group">
@@ -87,24 +99,12 @@
     @endif
 </ul>
 
-@if (auth()->user()->isAdmin())
-    @if (!$newMissions->isEmpty())
-        <h2 class="mission-section-heading">New Missions</h2>
+@if (!$pastMissions->isEmpty())
+    <h2 class="mission-section-heading">Past Missions</h2>
 
-        <ul class="mission-group">
-            @foreach ($newMissions as $mission)
-                @include('missions.item', ['mission' => $mission])
-            @endforeach
-        </ul>
-    @endif
-
-    @if (!$pastMissions->isEmpty())
-        <h2 class="mission-section-heading">Past Missions</h2>
-
-        <ul class="mission-group">
-            @foreach ($pastMissions as $mission)
-                @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
-            @endforeach
-        </ul>
-    @endif
+    <ul class="mission-group">
+        @foreach ($pastMissions as $mission)
+            @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
+        @endforeach
+    </ul>
 @endif
