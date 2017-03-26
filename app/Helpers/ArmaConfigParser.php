@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Log;
 use \stdClass;
+use App\Helpers\ArmaConfigParserError;
 
 class ArmaConfigParser
 {
@@ -23,7 +24,7 @@ class ArmaConfigParser
         '/^(#include[\s\S]+)/' => 'T_INCLUDE'
     ];
 
-    public static function run($source) {
+    public static function run($source, $filepath) {
         $tokens = [];
 
         foreach ($source as $number => $line) {
@@ -33,9 +34,12 @@ class ArmaConfigParser
                 $result = static::match($line, $number, $offset);
 
                 if ($result === false) {
-                    Log::error("Unable to parse line " . ($number + 1) . ": " . $line);
-                    abort(403, 'Mission config has invalid syntax');
-                    return $tokens;
+                    $realLine = $number + 1;
+                    $basename = basename($filepath);
+                    $error = new ArmaConfigParserError();
+                    $error->message = "Unable to parse line {$realLine} in {$basename}";
+                    Log::error($error->message);
+                    return $error;
                 }
 
                 $tokens[] = $result;
@@ -284,9 +288,15 @@ class ArmaConfigParser
         }
 
         $contents = file_get_contents($file);
-        $contents = preg_replace('!/\*.*?\*/!s', '', $contents);
-
+        $contents = preg_replace('!/\*.*?\*/!s', '', $contents); // Remove comments
         $lines = explode(PHP_EOL, $contents);
-        return static::arrayToObject(static::run($lines));
+
+        $result = static::run($lines, $file);
+
+        if ($result instanceof ArmaConfigParserError) {
+            return $result;
+        }
+
+        return static::arrayToObject($result);
     }
 }

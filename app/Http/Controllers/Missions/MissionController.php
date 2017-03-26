@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Helpers\ArmaConfigParser;
 use Storage;
+use Log;
 
 class MissionController extends Controller
 {
@@ -53,12 +54,18 @@ class MissionController extends Controller
             $mission->pbo_path = $path;
             $mission->save();
 
-            $unpacked = $mission->unpack();
-            $ext = ArmaConfigParser::convert($unpacked . '/description.ext');
-            $mission->deleteUnpacked();
+            $configs = $mission->storeConfigs();
+            Log::info('MissionController: ' . get_class($configs));
 
-            $mission->display_name = $ext->onloadname;
-            $mission->summary = $ext->onloadmission;
+            if (get_class($configs) == 'App\Helpers\ArmaConfigParserError') {
+                // Mission has config errors
+                $mission->delete();
+                abort(400, $configs->message);
+                return;
+            }
+
+            $mission->display_name = $configs->ext->onloadname;
+            $mission->summary = $configs->ext->onloadmission;
             $mission->save();
 
             return $mission->id;
@@ -121,7 +128,14 @@ class MissionController extends Controller
                 $mission->pbo_path = $publishedPath;
                 $mission->save();
 
-                $mission->storeConfigs();
+                $configs = $mission->storeConfigs();
+
+                if ($configs instanceof ArmaConfigParserError) {
+                    // Mission has config errors
+                    $mission->delete();
+                    abort(400, $configs->message);
+                    return;
+                }
 
                 $mission->display_name = $mission->ext()->onloadname;
                 $mission->summary = $mission->ext()->onloadmission;

@@ -14,25 +14,11 @@
             if (caller.hasClass('spinner')) {
                 return;
             }
-            
-            $.ajax({
-                type: 'GET',
-                url: '{{ url("/hub/missions") }}/' + id,
-                beforeSend: function() {
-                    caller.missionSpinner(true);
-                },
-                success: function(data) {
-                    openBigWindow(data, 500, function() {
-                        caller.missionSpinner(false);
-                    }, function() {
-                        setUrl('hub/missions');
-                    });
 
-                    setUrl('hub/missions/' + id);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert(textStatus);
-                }
+            caller.missionSpinner(true);
+
+            openMission(id, function() {
+                caller.missionSpinner(false);
             });
         });
     });

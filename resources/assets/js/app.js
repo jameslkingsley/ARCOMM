@@ -83,6 +83,25 @@ setUrl = function(url, title) {
     if (title) document.title = title;
 }
 
+openMission = function(id, success, error) {
+    $.ajax({
+        type: 'GET',
+        url: '/hub/missions/' + id,
+        success: function(data) {
+            openBigWindow(data, 500, function() {
+                if (typeof success == "function") success(data);
+                setUrl('hub/missions/' + id);
+            }, function() {
+                setUrl('hub/missions');
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            if (typeof error == "function") error(errorThrown);
+            alert(errorThrown);
+        }
+    });
+}
+
 ;(function($) {
     $.fn.missionSpinner = function(show) {
         var caller = $(this);

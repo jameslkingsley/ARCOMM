@@ -7,6 +7,7 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Missions\MissionComment;
 use App\Helpers\ArmaConfigParser;
+use App\Helpers\ArmaConfigParserError;
 use App\Models\Missions\Map;
 use App\Models\Operations\OperationMission;
 use App\Models\Portal\User;
@@ -429,18 +430,38 @@ class Mission extends Model implements HasMediaConversions
         }
 
         // Removes entity data in sqm to avoid Eden string nuances
-        $sqm_file = $unpacked . '/mission.sqm';
+        $sqm_file = "{$unpacked}/mission.sqm";
         $sqm_contents = file_get_contents($sqm_file);
         $sqm_contents = preg_replace('!/\*.*?\*/!s', '', $sqm_contents);
         $sqm_contents = preg_replace('/(class Entities[\s\S]+)/', '};', $sqm_contents);
         file_put_contents($sqm_file, $sqm_contents);
 
-        request()->session()->put('mission_sqm', ArmaConfigParser::convert($sqm_file));
-        request()->session()->put('mission_ext', ArmaConfigParser::convert($unpacked . '/description.ext'));
-        request()->session()->put('mission_config', ArmaConfigParser::convert($unpacked . '/config.hpp'));
-        request()->session()->put('mission_version', file_get_contents($unpacked . '/version.txt'));
+        $sqm_obj = ArmaConfigParser::convert($sqm_file);
+        $ext_obj = ArmaConfigParser::convert("{$unpacked}/description.ext");
+        $cfg_obj = ArmaConfigParser::convert("{$unpacked}/config.hpp");
+        $version = file_get_contents("{$unpacked}/version.txt");
+
+        foreach ([$sqm_obj, $ext_obj, $cfg_obj] as $parsedObject) {
+            Log::info('Mission: ' . get_class($parsedObject));
+            if (get_class($parsedObject) == 'App\Helpers\ArmaConfigParserError') {
+                $this->deleteUnpacked();
+                return $parsedObject;
+            }
+        }
+
+        request()->session()->put('mission_sqm', $sqm_obj);
+        request()->session()->put('mission_ext', $ext_obj);
+        request()->session()->put('mission_config', $cfg_obj);
+        request()->session()->put('mission_version', $version);
 
         $this->deleteUnpacked();
+
+        return (object)[
+            'sqm' => $sqm_obj,
+            'ext' => $ext_obj,
+            'cfg' => $cfg_obj,
+            'version' => $version
+        ];
     }
 
     /**
@@ -694,12 +715,12 @@ class Mission extends Model implements HasMediaConversions
     public static function getDetailsFromName($name)
     {
         if (substr(strtolower($name), -3) != 'pbo') {
-            abort(403, 'Mission file must be a PBO');
+            abort(400, 'Mission file must be a PBO');
             return;
         }
 
         if (strpos($name, '_') === false) {
-            abort(403, 'Mission name is invalid');
+            abort(400, 'Mission name must be in the format ARC_COOP/TVT/PREOP_Name_Author.Map');
             return;
         }
 
@@ -716,7 +737,7 @@ class Mission extends Model implements HasMediaConversions
         }
 
         if (sizeof($parts) < 3) {
-            abort(403, 'Mission name is invalid: ' . $name);
+            abort(400, 'Mission name must be in the format ARC_COOP/TVT/PREOP_Name_Author.Map');
             return;
         }
 
@@ -733,7 +754,7 @@ class Mission extends Model implements HasMediaConversions
                 $mode = 'adversarial';
             }
         } else {
-            abort(403, 'Mission mode is invalid: ' . $mode);
+            abort(400, 'Mission game mode is invalid. Must be one of COOP, TVT or PREOP');
             return;
         }
 

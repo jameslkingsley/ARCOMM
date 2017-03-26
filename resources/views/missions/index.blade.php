@@ -44,17 +44,12 @@
                 acceptedFiles: '',
                 addedfile: function(file) {},
                 success: function(file, data) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '{{ url("/hub/missions") }}/' + data.trim(),
-                        success: function(data) {
-                            openBigWindow(data);
-                            $('.subnav-link[data-panel="library"]').click();
-                        }
+                    openMission(data.trim(), function() {
+                        $('.subnav-link[data-panel="library"]').click();
                     });
                 },
                 error: function(file, message) {
-                    alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
+                    alert(message);
                 }
             });
 
@@ -65,15 +60,7 @@
     @if (isset($mission))
         <script>
             $(document).ready(function(e) {
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url('/hub/missions/' . $mission->id) }}',
-                    success: function(data) {
-                        openBigWindow(data, 500, function() {}, function() {
-                            setUrl('hub/missions');
-                        });
-                    }
-                });
+                openMission({{ $mission->id }});
             });
         </script>
     @endif
