@@ -124,6 +124,7 @@
                                 } else {
                                     caller.removeClass('unverified');
                                     caller.addClass('verified');
+                                    caller.find('em').html(data);
                                 }
                             }
                         });
@@ -138,6 +139,13 @@
                     href="javascript:void(0)"
                     class="{{ ($mission->verified) ? 'verified' : 'unverified' }}"
                     title="Mark this mission as {{ ($mission->verified) ? 'verified' : 'unverified' }}">
+
+                    <em>
+                        @if ($mission->verifiedByUser())
+                            Verified by {{ $mission->verifiedByUser()->username }}
+                        @endif
+                    </em>
+
                     <i class="fa fa-check"></i>
                 </a>
             </span>

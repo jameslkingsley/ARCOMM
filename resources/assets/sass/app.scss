@@ -1401,19 +1401,45 @@ header .nav .nav-link.active {
 
 .mission-verification {
     float: right;
-    height: 100%;
-    line-height: 60px;
+    height: 30px;
+    line-height: 30px;
     font-weight: 900;
-    font-size: 18px;
+    font-size: 14px;
     color: #000;
     text-transform: uppercase;
-    padding-left: 20px;
+    padding-left: 0;
+    margin-top: 15px;
+    margin-left: 20px;
 }
 
-.mission-verification a.unverified {
-    color: #AAA;
+.mission-verification a {
+    float: right;
+    height: 100%;
+    text-align: center;
+    line-height: 31px;
+    padding: 0 10px;
+    background: #a0b7c3;
+    border-radius: 3px;
+    color: white;
 }
 
 .mission-verification a.verified {
-    color: #08C;
+    background: #08C;
+}
+
+.mission-verification a.unverified em {
+    display: none;
+}
+
+.mission-verification a.verified em {
+    display: block;
+}
+
+.mission-verification a em {
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 500;
+    float: left;
+    color: #fff;
+    margin-right: 10px;
 }

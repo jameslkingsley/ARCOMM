@@ -120,6 +120,16 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets the verified by user model.
+     *
+     * @return App\Models\Portal\User
+     */
+    public function verifiedByUser()
+    {
+        return User::where('id', $this->verified_by)->first();
+    }
+
+    /**
      * Gets the mission's user (author).
      *
      * @return App\Models\Portal\User

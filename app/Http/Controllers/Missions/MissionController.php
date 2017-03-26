@@ -199,6 +199,17 @@ class MissionController extends Controller
     public function updateVerification(Request $request, Mission $mission)
     {
         $mission->verified = !$mission->verified;
+
+        if ($mission->verified) {
+            $mission->verified_by = auth()->user()->id;
+        } else {
+            $mission->verified_by = null;
+        }
+
         $mission->save();
+
+        $updated_by = auth()->user()->username;
+
+        return "Verified by {$updated_by}";
     }
 }
