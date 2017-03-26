@@ -50,6 +50,11 @@ class AuthController extends Controller
                 }
 
                 Auth::login($user, true);
+
+                if ($user->isMember()) {
+                    return redirect('/hub');
+                }
+
                 return redirect('/');
             }
         }
