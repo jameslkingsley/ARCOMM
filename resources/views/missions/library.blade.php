@@ -26,11 +26,13 @@
 
 @php
     $myMissions = auth()->user()->missions();
-
     $nextOperation = Operation::nextWeek();
-    $nextOperationMissions = $nextOperation->missions;
-    $prevOperation = Operation::lastWeek();
 
+    if ($nextOperation) {
+        $nextOperationMissions = $nextOperation->missions;
+    }
+
+    $prevOperation = Operation::lastWeek();
     $newMissions = Mission::allNew();
     $pastMissions = Mission::allPast();
 @endphp
