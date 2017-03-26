@@ -439,6 +439,12 @@ class Mission extends Model implements HasMediaConversions
             $closure($this, $unpacked);
         }
 
+        foreach (['mission.sqm', 'description.ext', 'config.hpp'] as $required_file) {
+            if (!file_exists("{$unpacked}/{$required_file}")) {
+                return new ArmaConfigParserError("{$required_file} is missing from the mission file");
+            }
+        }
+
         // Removes entity data in sqm to avoid Eden string nuances
         $sqm_file = "{$unpacked}/mission.sqm";
         $sqm_contents = file_get_contents($sqm_file);
