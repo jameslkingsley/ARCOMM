@@ -185,7 +185,7 @@ class Mission extends Model implements HasMediaConversions
         $media = $this->getMedia();
 
         if (count($media) > 0) {
-            return $media[rand(0, count($media) - 1)]->getUrl('thumb');
+            return $media[0]->getUrl('thumb');
         }
 
         if (!is_null($this->map->image_2d)) {
