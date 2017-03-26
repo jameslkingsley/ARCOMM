@@ -39,10 +39,10 @@
                 acceptedFiles: '',
                 addedfile: function(file) {},
                 success: function(file, data) {
-                    openBigWindow(data);
+                    openMission({{ $mission->id }});
                 },
                 error: function(file, message) {
-                    alert('Mission upload failed. Check the name of your mission and ensure it complies with the naming format of ARC_COOP/TVT_Name_Author.Map');
+                    alert(message);
                 }
             });
 
