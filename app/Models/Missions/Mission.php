@@ -323,9 +323,10 @@ class Mission extends Model implements HasMediaConversions
         $command = 'gsutil signurl -d 10m gcs.json gs://archub/'.$path_to_file;
         $workingDir = getcwd();
         chdir(base_path());
-        $signed_url = shell_exec($command);
+        $signed_url_arr = [];
+        exec($command, $signed_url_arr, $signed_url);
         chdir($workingDir);
-        return $path_to_file . '<br /><br />' . $command . '<br /><br />' . $signed_url;
+        return $path_to_file . '<br /><br />' . $command . '<br /><br />' . $signed_url . '<br /><br />' . json_encode($signed_url_arr);
         return trim(preg_replace('/([\s\S]+)https:\/\/storage/', 'https://storage', $signed_url));
     }
 
