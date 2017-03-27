@@ -70,7 +70,7 @@
         </span>
     </div>
 
-    <div class="mission-nav">
+    <div class="mission-nav" style="{{ (!$mission->isMine() && !auth()->user()->isAdmin()) ? 'box-shadow:none' : '' }}">
         @if ($mission->isMine() || auth()->user()->isAdmin())
             <div class="hub-dropdown">
                 <a href="javascript:void(0)">Download <i class="fa fa-angle-down"></i></a>
@@ -162,12 +162,20 @@
         </span>
     </div>
 
-    <div id="mission-content-break" class="pull-left full-width" style="margin-top: calc(108vh / 1.618)"></div>
+    <div
+        id="mission-content-break"
+        class="pull-left full-width"
+        style="margin-top: calc({{ (!$mission->isMine() && !auth()->user()->isAdmin()) ? '100vh' : '108vh' }} / 1.618)">
+    </div>
+
+    <div class="mission-overview-title">
+        {{ $mission->fulltextGamemode() }} on {{ $mission->map->display_name }}
+    </div>
 
     <div class="mission-overview">
         <div class="mission-weather">
             <span class="mission-weather-map">
-                {{ $mission->map->display_name }} &mdash; {{ $mission->date() }} &mdash; {{ $mission->time() }}
+                {{ $mission->date() }} &mdash; {{ $mission->time() }}
             </span>
 
             <span class="mission-weather-overcast">

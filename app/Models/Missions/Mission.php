@@ -65,6 +65,17 @@ class Mission extends Model implements HasMediaConversions
     ];
 
     /**
+     * Game mode full texts.
+     *
+     * @var array
+     */
+    protected $gamemodes = [
+        'coop' => 'Cooperative',
+        'adversarial' => 'Adversarial',
+        'preop' => 'Pre-Operation'
+    ];
+
+    /**
      * Media library image conversions.
      *
      * @return void
@@ -194,6 +205,16 @@ class Mission extends Model implements HasMediaConversions
 
         // return url('/images/arcomm-placeholder.jpg');
         return '';
+    }
+
+    /**
+     * Gets a full text string of the game mode.
+     *
+     * @return string
+     */
+    public function fulltextGamemode()
+    {
+        return $this->gamemodes[strtolower($this->mode)];
     }
 
     /**
