@@ -324,8 +324,8 @@ class Mission extends Model implements HasMediaConversions
         $workingDir = getcwd();
         chdir(base_path());
         $signed_url = shell_exec($command);
-        chdir($workingDir);
-        return $path_to_file . '<br /><br />' . $command . '<br /><br />' . $signed_url;
+        // chdir($workingDir);
+        return getcwd() . '<br /><br />' . $path_to_file . '<br /><br />' . $command . '<br /><br />' . $signed_url;
         return trim(preg_replace('/([\s\S]+)https:\/\/storage/', 'https://storage', $signed_url));
     }
 
