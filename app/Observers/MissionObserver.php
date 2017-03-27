@@ -15,12 +15,17 @@ class MissionObserver
      */
     public function deleting(Mission $mission)
     {
-        Storage::delete($mission->pbo_path);
+        $path = "missions/{$mission->user_id}/{$mission->id}";
 
-        $download = $mission->exportedName();
+        Storage::cloud()->delete("{$path}/{$mission->exportedName('pbo')}");
+        Storage::cloud()->delete("{$path}/{$mission->exportedName('zip')}");
 
-        if (file_exists(public_path('downloads/' . $download))) {
-            Storage::disk('downloads')->delete($download);
+        foreach (['pbos' => 'pbo', 'zips' => 'zip'] as $dir => $name) {
+            if (file_exists(public_path("downloads/{$dir}"))) {
+                Storage::disk('downloads')->delete("{$dir}/{$mission->exportedName($name)}");
+            }
         }
+
+        Storage::deleteDirectory($path);
     }
 }

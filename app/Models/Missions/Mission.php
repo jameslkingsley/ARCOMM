@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Missions\MissionComment;
-use App\Helpers\ArmaConfigParser;
-use App\Helpers\ArmaConfigParserError;
+use App\Helpers\ArmaConfig;
+use App\Helpers\ArmaConfigError;
 use App\Models\Missions\Map;
 use App\Models\Operations\OperationMission;
 use App\Models\Portal\User;
@@ -317,30 +317,11 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return string
      */
-    public function download($format = 'pbo', $unpacked = '')
+    public function download($format = 'pbo')
     {
-        $download = $this->exportedName($format);
-        $reldir = 'downloads/pbos';
-
-        if (file_exists(public_path('downloads/pbos/' . $download))) {
-            Storage::disk('downloads')->delete('pbos/' . $download);
-        }
-
-        if ($format == 'pbo') {
-            File::copy(storage_path('app/' . $this->pbo_path), public_path('downloads/pbos/' . $download));
-        } else {
-            if ($unpacked == '') {
-                return url('downloads/zips/' . $download);
-            } else {
-                $files = glob($unpacked . '/*');
-                $zip = new \Chumper\Zipper\Zipper;
-                $zip->make('downloads/zips/' . $download)->add($unpacked)->close();
-                $reldir = 'downloads/zips';
-                return;
-            }
-        }
-
-        return url($reldir . '/' . $download);
+        $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
+        $signed_url = shell_exec('gsutil signurl -d 10m '.base_path('gcs.json').' gs://archub/'.$path_to_file);
+        return trim(preg_replace('/([\s\S]+)https:\/\/storage/', 'https://storage', $signed_url));
     }
 
     /**
@@ -348,46 +329,28 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return string
      */
-    public function unpack($dirname = '')
+    public function unpack($dirname = '', $pbo_path = '')
     {
-        $unpacked = ($dirname == '') ? storage_path(
-            'app/missions/' .
-            $this->user_id .
-            '/' .
-            $this->id .
-            '_unpacked'
-        ) : storage_path(
-            'app/missions/' .
-            $this->user_id .
-            '/' .
-            $dirname
-        );
+        $pbo_path = ($pbo_path == '') ? storage_path("app/{$this->pbo_path}") : $pbo_path;
+        $unpacked = ($dirname == '') ?
+            storage_path("app/missions/{$this->user_id}/{$this->id}/unpacked") :
+            storage_path("app/missions/{$this->user_id}/{$dirname}");
 
+        // It should always be the most up-to-date
+        // as we delete unpacked after using them
         if (file_exists($unpacked)) {
             return $unpacked;
         }
 
-        // Delete the directory if it exists
-        File::deleteDirectory($unpacked);
-
         // Unpack the PBO
-        shell_exec(
-            static::armake() .
-            ' unpack -f ' .
-            storage_path('app/' . $this->pbo_path) .
-            ' ' .
-            $unpacked
-        );
+        shell_exec(static::armake().' unpack -f '.$pbo_path.' '.$unpacked);
 
         $workingDir = getcwd();
         chdir($unpacked);
 
         // Debinarize mission.sqm
         // If it's not binned, armake exits gracefully
-        shell_exec(
-            static::armake() .
-            ' derapify -f mission.sqm mission.sqm'
-        );
+        shell_exec(static::armake().' derapify -f mission.sqm mission.sqm');
 
         chdir($workingDir);
 
@@ -401,19 +364,11 @@ class Mission extends Model implements HasMediaConversions
      */
     public function deleteUnpacked($dirname = '')
     {
-        Storage::deleteDirectory(
-            ($dirname == '') ?
-                'missions/' .
-                $this->user_id .
-                '/' .
-                $this->id .
-                '_unpacked'
-            :
-                'missions/' .
-                $this->user_id .
-                '/' .
-                $dirname
-        );
+        $unpacked = ($dirname == '') ?
+            storage_path("missions/{$this->user_id}/{$this->id}/unpacked") :
+            storage_path("missions/{$this->user_id}/{$dirname}");
+
+        Storage::deleteDirectory($unpacked);
     }
 
     /**
@@ -423,7 +378,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function ext()
     {
-        return request()->session()->get('mission_ext');
+        return json_decode($this->ext_json);
     }
 
     /**
@@ -433,7 +388,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function sqm()
     {
-        return request()->session()->get('mission_sqm');
+        return json_decode($this->sqm_json);
     }
 
     /**
@@ -443,7 +398,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function config()
     {
-        return request()->session()->get('mission_config')->cfgarcmf;
+        return json_decode($this->cfg_json)->cfgarcmf;
     }
 
     /**
@@ -452,46 +407,64 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function storeConfigs($closure = null)
+    public function storeConfigs($before_closure = null, $after_closure = null, $pbo_path = '')
     {
-        $unpacked = $this->unpack();
+        $unpacked = $this->unpack('', $pbo_path);
 
-        if (!is_null($closure)) {
-            $closure($this, $unpacked);
+        // Run closure with raw unpacked directory
+        if (!is_null($before_closure)) {
+            $before_closure($this, $unpacked);
         }
 
+        // Return error if these files are missing
         foreach (['mission.sqm', 'description.ext', 'config.hpp'] as $required_file) {
             if (!file_exists("{$unpacked}/{$required_file}")) {
-                return new ArmaConfigParserError("{$required_file} is missing from the mission file");
+                return new ArmaConfigError("{$required_file} is missing from the mission file");
             }
         }
 
-        // Removes entity data in sqm to avoid Eden string nuances
-        $sqm_file = "{$unpacked}/mission.sqm";
-        $sqm_contents = file_get_contents($sqm_file);
-        $sqm_contents = preg_replace('!/\*.*?\*/!s', '', $sqm_contents);
-        $sqm_contents = preg_replace('/(class Entities[\s\S]+)/', '};', $sqm_contents);
-        file_put_contents($sqm_file, $sqm_contents);
-
-        $sqm_obj = ArmaConfigParser::convert($sqm_file);
-        $ext_obj = ArmaConfigParser::convert("{$unpacked}/description.ext");
-        $cfg_obj = ArmaConfigParser::convert("{$unpacked}/config.hpp");
+        // Try to convert configs
+        $ext_obj = ArmaConfig::convert("{$unpacked}/description.ext");
+        $cfg_obj = ArmaConfig::convert("{$unpacked}/config.hpp");
         $version = file_get_contents("{$unpacked}/version.txt");
 
-        foreach ([$sqm_obj, $ext_obj, $cfg_obj] as $parsedObject) {
-            if (get_class($parsedObject) == 'App\Helpers\ArmaConfigParserError') {
+        // If any errors with configs, return error object
+        foreach ([$ext_obj, $cfg_obj] as $parsedObject) {
+            if (get_class($parsedObject) == 'App\Helpers\ArmaConfigError') {
                 $this->deleteUnpacked();
                 return $parsedObject;
             }
         }
 
-        request()->session()->put('mission_sqm', $sqm_obj);
-        request()->session()->put('mission_ext', $ext_obj);
-        request()->session()->put('mission_config', $cfg_obj);
-        request()->session()->put('mission_version', $version);
+        // No errors so far, so store configs in mission as JSON
+        $this->ext_json = json_encode($ext_obj);
+        $this->cfg_json = json_encode($cfg_obj);
+        $this->version = $version;
+        $this->save();
 
+        // Run closure with raw unpacked directory
+        if (!is_null($after_closure)) {
+            $after_closure($this, $unpacked, $ext_obj, $cfg_obj);
+        }
+
+        // Handle Mission SQM
+        // - Removes entity data in sqm to avoid Eden string nuances
+        $sqm_file = "{$unpacked}/mission.sqm";
+
+        $sqm_contents = file_get_contents($sqm_file);
+        $sqm_contents = preg_replace('!/\*.*?\*/!s', '', $sqm_contents);
+        $sqm_contents = preg_replace('/(class Entities[\s\S]+)/', '};', $sqm_contents);
+        file_put_contents($sqm_file, $sqm_contents);
+
+        $sqm_obj = ArmaConfig::convert($sqm_file);
+
+        $this->sqm_json = json_encode($sqm_obj);
+        $this->save();
+
+        // Delete unpacked
         $this->deleteUnpacked();
 
+        // Return config objects
         return (object)[
             'sqm' => $sqm_obj,
             'ext' => $ext_obj,
@@ -501,13 +474,52 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Deploys the mission files to cloud storage.
+     * - PBO Download
+     * - ZIP Download
+     *
+     * @return any
+     */
+    public function deployCloudFiles($unpacked)
+    {
+        $qualified_pbo = "missions/{$this->user_id}/{$this->id}/{$this->exportedName()}";
+
+        // Mission PBO
+        Storage::disk('gcs')->put(
+            $qualified_pbo,
+            file_get_contents(storage_path("app/{$this->pbo_path}"))
+        );
+
+        // Mission ZIP
+        $files = glob("{$unpacked}/*");
+        $name = $this->exportedName('zip');
+        $path = "zips/{$name}";
+
+        $zip = new \Chumper\Zipper\Zipper;
+        $zip->make("downloads/{$path}")->add($unpacked)->close();
+
+        Storage::disk('gcs')->put(
+            "missions/{$this->user_id}/{$this->id}/{$name}",
+            file_get_contents(public_path("downloads/{$path}"))
+        );
+
+        if (file_exists(public_path("downloads/{$path}"))) {
+            unlink(public_path("downloads/{$path}"));
+        }
+
+        // Save the new PBO path in the mission
+        $this->pbo_path = $qualified_pbo;
+        $this->save();
+    }
+
+    /**
      * Gets the missions framework version.
      *
      * @return string
      */
     public function version()
     {
-        return request()->session()->get('mission_version');
+        return $this->version;
     }
 
     /**

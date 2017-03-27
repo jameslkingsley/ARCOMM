@@ -1452,3 +1452,24 @@ header .nav .nav-link.active {
     font-size: 28px;
     color: #333;
 }
+
+.hub-dropdown ul li a.pending {
+    opacity: .5;
+
+    i.fa {
+        float: left;
+        height: 38px;
+        line-height: 38px;
+        font-size: 12px;
+        margin-left: -16px;
+    }
+}
+
+#mission-upload-btn i.fa {
+    float: right;
+    height: 100%;
+    line-height: 70px;
+    font-size: 22px;
+    font-weight: 100;
+    opacity: .5;
+}

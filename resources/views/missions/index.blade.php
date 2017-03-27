@@ -43,7 +43,12 @@
                 url: '{{ url('/hub/missions') }}',
                 acceptedFiles: '',
                 addedfile: function(file) {},
+                sending: function() {
+                    $('#mission-upload-btn').prepend('<i class="fa fa-spin fa-circle-o-notch"></i>');
+                },
                 success: function(file, data) {
+                    $('#mission-upload-btn').find('i.fa').remove();
+
                     openMission(data.trim(), function() {
                         $('.subnav-link[data-panel="library"]').click();
                     });

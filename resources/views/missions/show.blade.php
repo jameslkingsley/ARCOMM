@@ -30,8 +30,31 @@
     <script>
         $(document).ready(function(e) {
             $('.download-mission').click(function(event) {
+                var caller = $(this);
+
+                // Exit if already getting download
+                if (caller.hasClass('pending')) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    return;
+                }
+
+                $.ajax({
+                    type: 'GET',
+                    url: "{{ url('/hub/missions/'.$mission->id.'/download') }}/" + caller.data('format'),
+                    beforeSend: function() {
+                        caller.prepend('<i class="fa fa-spin fa-circle-o-notch"></i>');
+                        caller.addClass('pending');
+                    },
+                    success: function(data) {
+                        caller.removeClass('pending');
+                        caller.find('i.fa').remove();
+                        window.location.href = data.trim();
+                    }
+                });
+
+                event.stopPropagation();
                 event.preventDefault();
-                window.location.href = $(this).data('filepath');
             });
 
             $('#update-mission').dropzone({
@@ -75,8 +98,8 @@
             <div class="hub-dropdown">
                 <a href="javascript:void(0)">Download <i class="fa fa-angle-down"></i></a>
                 <ul>
-                    <li><a href="javascript:void(0)" class="download-mission" data-filepath="{{ $mission->download('pbo') }}">PBO</a></li>
-                    <li><a href="javascript:void(0)" class="download-mission" data-filepath="{{ $mission->download('zip') }}">ZIP</a></li>
+                    <li><a href="javascript:void(0)" class="download-mission" data-format="pbo">PBO</a></li>
+                    <li><a href="javascript:void(0)" class="download-mission" data-format="zip">ZIP</a></li>
                 </ul>
             </div>
 

@@ -4,9 +4,9 @@ namespace App\Helpers;
 
 use Log;
 use \stdClass;
-use App\Helpers\ArmaConfigParserError;
+use App\Helpers\ArmaConfigError;
 
-class ArmaConfigParser
+class ArmaConfig
 {
     protected static $terminals = [
         '/^(class\s)/' => 'T_CLASS',
@@ -40,7 +40,7 @@ class ArmaConfigParser
                     if ($result === false) {
                         $realLine = $number + $emptyLines;
                         $basename = basename($filepath);
-                        $error = new ArmaConfigParserError();
+                        $error = new ArmaConfigError();
                         $error->message = "Unable to parse line {$realLine} in {$basename}";
                         Log::error($error->message);
                         return $error;
@@ -298,7 +298,7 @@ class ArmaConfigParser
 
         $result = static::run($lines, $file);
 
-        if ($result instanceof ArmaConfigParserError) {
+        if ($result instanceof ArmaConfigError) {
             return $result;
         }
 
