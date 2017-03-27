@@ -163,34 +163,20 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-        /*
-         * Package Service Providers...
-         */
-
-        //
-
-        /*
-         * Application Service Providers...
-         */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
         App\Providers\HelperServiceProvider::class,
 
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
-
         Invisnik\LaravelSteamAuth\SteamServiceProvider::class,
-
         Syntax\SteamApi\SteamApiServiceProvider::class,
-
         Alaouy\Youtube\YoutubeServiceProvider::class,
-
         Laravel\Tinker\TinkerServiceProvider::class,
-
         Chumper\Zipper\ZipperServiceProvider::class,
+        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
 
     ],
 

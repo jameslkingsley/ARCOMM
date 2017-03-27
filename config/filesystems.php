@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
@@ -28,7 +27,7 @@ return [
     |
     */
 
-    'cloud' => 's3',
+    'cloud' => 'gcs',
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +41,6 @@ return [
     */
 
     'disks' => [
-
         'media' => [
             'driver' => 'local',
             'root' => public_path() . '/_media',
@@ -77,6 +75,13 @@ return [
             'bucket' => 'your-bucket',
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
+            'key_file' => env('GOOGLE_CLOUD_KEY_FILE', null),
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null),
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
+        ],
     ],
-
 ];
