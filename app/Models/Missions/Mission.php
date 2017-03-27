@@ -320,12 +320,17 @@ class Mission extends Model implements HasMediaConversions
     public function download($format = 'pbo')
     {
         $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
+
+        $command = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ?
+            'gsutil ' :
+            '/usr/bin/python /usr/lib/google-cloud-sdk/bin/bootstrapping/gsutil.py ';
+
         $signed_url = shell_exec(
-            '/usr/bin/python /usr/lib/google-cloud-sdk/bin/bootstrapping/gsutil.py '.
+            $command.
             'signurl -d 10m '.
             base_path('gcs.json').
             ' gs://archub/'.$path_to_file.
-            ' 2>&1'
+            ' 2>&1' // Needed to get output
         );
 
         return trim(preg_replace('/([\s\S]+)https:\/\/storage/', 'https://storage', $signed_url));
