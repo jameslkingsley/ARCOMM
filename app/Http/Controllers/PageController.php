@@ -21,7 +21,7 @@ class PageController extends Controller
         
         if (auth()->guest()) {
             return view('home.beta-login');
-        } else {
+        } else if (auth()->user()->isMember()) {
             return redirect('/hub');
         }
 	}
