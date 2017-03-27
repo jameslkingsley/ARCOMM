@@ -322,7 +322,7 @@ class Mission extends Model implements HasMediaConversions
         $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
         $command = 'gsutil signurl -d 10m '.base_path('gcs.json').' gs://archub/'.$path_to_file;
         $signed_url = shell_exec($command);
-        return $path_to_file . '<br />' . $command . '<br />' . $signed_url;
+        return $path_to_file . '<br /><br />' . $command . '<br /><br />' . $signed_url;
         return trim(preg_replace('/([\s\S]+)https:\/\/storage/', 'https://storage', $signed_url));
     }
 
