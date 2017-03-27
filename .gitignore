@@ -9,3 +9,4 @@ Homestead.yaml
 .env
 !.env.example
 .phpintel/
+gcs.json
