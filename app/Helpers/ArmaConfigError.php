@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class ArmaConfigParserError
+class ArmaConfigError
 {
     /**
      * Message string.

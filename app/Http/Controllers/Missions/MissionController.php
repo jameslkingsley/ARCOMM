@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Missions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
-use App\Helpers\ArmaConfigParser;
+use App\Helpers\ArmaConfig;
 use Storage;
 use Log;
 
@@ -33,11 +33,13 @@ class MissionController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
+
         if ($request->hasFile('file')) {
             $details = Mission::getDetailsFromName($request->file->getClientOriginalName());
 
             $mission = new Mission();
-            $mission->user_id = auth()->user()->id;
+            $mission->user_id = $user->id;
             $mission->file_name = $request->file->getClientOriginalName();
             $mission->display_name = $request->file->getClientOriginalName();
             $mission->summary = '';
@@ -46,26 +48,34 @@ class MissionController extends Controller
             $mission->pbo_path = '';
             $mission->save();
 
+            // Store locally temporarily
             $path = $request->file->storeAs(
-                'missions/' . auth()->user()->id,
-                $mission->id . '.pbo'
+                "missions/{$user->id}/{$mission->id}",
+                "original.pbo"
             );
 
             $mission->pbo_path = $path;
             $mission->save();
 
-            $configs = $mission->storeConfigs();
+            // Unpack PBO and store configs in mission record as JSON objects
+            $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
+                $mission->display_name = $ext->onloadname;
+                $mission->summary = $ext->onloadmission;
+                $mission->save();
 
-            if (get_class($configs) == 'App\Helpers\ArmaConfigParserError') {
-                // Mission has config errors
+                // Move to cloud storage
+                $mission->deployCloudFiles($unpacked);
+            }, storage_path("app/{$path}"));
+
+            // If errors in configs, return message
+            if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
                 $mission->delete();
                 abort(400, $configs->message);
                 return;
             }
 
-            $mission->display_name = $configs->ext->onloadname;
-            $mission->summary = $configs->ext->onloadmission;
-            $mission->save();
+            // Delete local temp files
+            Storage::deleteDirectory("missions/{$user->id}");
 
             return $mission->id;
         }
@@ -82,10 +92,6 @@ class MissionController extends Controller
         if (!$request->ajax()) {
             return view('missions.index', compact('mission'));
         } else {
-            $mission->storeConfigs(function($mission, $unpacked) {
-                $mission->download('zip', $unpacked);
-            });
-
             return view('missions.show', compact('mission'));
         }
     }
@@ -99,15 +105,15 @@ class MissionController extends Controller
      */
     public function update(Request $request, Mission $mission)
     {
+        $user = auth()->user();
+
         if ($request->hasFile('file')) {
             $details = Mission::getDetailsFromName($request->file->getClientOriginalName());
 
             if ($mission) {
-                $download = $mission->exportedName();
-
-                if (file_exists(public_path('downloads/' . $download))) {
-                    Storage::disk('downloads')->delete($download);
-                }
+                $old_mission = clone $mission;
+                $old_mission_displayname = $mission->display_name;
+                $old_mission_summary = $mission->summary;
 
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
@@ -115,30 +121,60 @@ class MissionController extends Controller
                 $mission->map_id = $details->map->id;
                 $mission->save();
 
-                $updatedPath = $request->file->storeAs(
-                    'missions/' . auth()->user()->id,
-                    $mission->id . '_updated.pbo'
+                // Store locally temporarily
+                $path = $request->file->storeAs(
+                    "missions/{$user->id}/{$mission->id}",
+                    "original.pbo"
                 );
 
-                $publishedPath = 'missions/' . auth()->user()->id . '/' . $mission->id . '.pbo';
-                Storage::delete($mission->pbo_path);
-                Storage::move($updatedPath, $publishedPath);
-
-                $mission->pbo_path = $publishedPath;
+                $mission->pbo_path = $path;
                 $mission->save();
 
-                $configs = $mission->storeConfigs();
+                // Unpack PBO and store configs in mission record as JSON objects
+                $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
+                    $mission->display_name = $ext->onloadname;
+                    $mission->summary = $ext->onloadmission;
+                    $mission->save();
 
-                if ($configs instanceof ArmaConfigParserError) {
-                    // Mission has config errors
-                    $mission->delete();
+                    // Move to cloud storage
+                    $mission->deployCloudFiles($unpacked);
+                }, storage_path("app/{$path}"));
+
+                $path = "missions/{$mission->user_id}/{$mission->id}";
+
+                // If errors in configs, return message
+                if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
+                    Storage::cloud()->delete("{$path}/{$mission->exportedName('pbo')}");
+                    Storage::cloud()->delete("{$path}/{$mission->exportedName('zip')}");
+
+                    foreach (['pbos' => 'pbo', 'zips' => 'zip'] as $dir => $name) {
+                        if (file_exists(public_path("downloads/{$dir}"))) {
+                            Storage::disk('downloads')->delete("{$dir}/{$mission->exportedName($name)}");
+                        }
+                    }
+
+                    Storage::deleteDirectory($path);
+
+                    // Update the record with the old data
+                    $mission->file_name = $old_mission->file_name;
+                    $mission->display_name = $old_mission->display_name;
+                    $mission->mode = $old_mission->mode;
+                    $mission->map_id = $old_mission->map_id;
+                    $mission->pbo_path = $old_mission->pbo_path;
+                    $mission->display_name = $old_mission_displayname;
+                    $mission->summary = $old_mission_summary;
+                    $mission->save();
+
                     abort(400, $configs->message);
                     return;
                 }
 
-                $mission->display_name = $mission->ext()->onloadname;
-                $mission->summary = $mission->ext()->onloadmission;
-                $mission->save();
+                // Delete local temp files
+                Storage::deleteDirectory("missions/{$user->id}");
+
+                // Delete old cloud files
+                Storage::cloud()->delete("{$path}/{$old_mission->exportedName('pbo')}");
+                Storage::cloud()->delete("{$path}/{$old_mission->exportedName('zip')}");
 
                 return view('missions.show', compact('mission'));
             }
@@ -211,5 +247,15 @@ class MissionController extends Controller
         $updated_by = auth()->user()->username;
 
         return "Verified by {$updated_by}";
+    }
+
+    /**
+     * Gets the full download URL for the given mission and format.
+     *
+     * @return string
+     */
+    public function download(Mission $mission, $format = 'pbo')
+    {
+        return $mission->download($format);
     }
 }
