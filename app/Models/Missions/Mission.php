@@ -325,7 +325,7 @@ class Mission extends Model implements HasMediaConversions
         chdir(base_path());
         $signed_url_arr = [];
         // exec($command, $signed_url_arr, $signed_url);
-        return shell_exec('sudo who');
+        return shell_exec('who');
         $signed_url = shell_exec($command);
         chdir($workingDir);
         return $path_to_file . '<br /><br />' . $command . '<br /><br />' . $signed_url . '<br /><br />' . json_encode($signed_url_arr);
