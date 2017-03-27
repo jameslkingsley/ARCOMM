@@ -49,7 +49,7 @@
                     success: function(data) {
                         caller.removeClass('pending');
                         caller.find('i.fa').remove();
-                        window.location.href = data.trim();
+                        // window.location.href = data.trim();
                     }
                 });
 
