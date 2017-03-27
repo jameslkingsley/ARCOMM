@@ -93,6 +93,7 @@ openMission = function(id, success, error) {
                 setUrl('hub/missions/' + id);
             }, function() {
                 setUrl('hub/missions');
+                $('.subnav-link[data-panel="library"]').click();
             });
         },
         error: function(jqXHR, textStatus, errorThrown) {
