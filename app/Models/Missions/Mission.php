@@ -320,7 +320,7 @@ class Mission extends Model implements HasMediaConversions
     public function download($format = 'pbo')
     {
         $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
-        $command = 'gsutil signurl -d 10m gcs.json gs://archub/'.$path_to_file.' 2>&1';
+        $command = 'gsutil signurl -d 10m '.base_path(gcs.json).' gs://archub/'.$path_to_file.' 2>&1';
         $workingDir = getcwd();
         chdir(base_path());
         $signed_url_arr = [];
