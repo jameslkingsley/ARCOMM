@@ -115,6 +115,12 @@ class MissionController extends Controller
                 $old_mission_displayname = $mission->display_name;
                 $old_mission_summary = $mission->summary;
 
+                $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
+                $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
+
+                Storage::cloud()->move($old_mission_cloud_pbo_dir, "{$old_mission_cloud_pbo_dir}x");
+                Storage::cloud()->move($old_mission_cloud_zip_dir, "{$old_mission_cloud_zip_dir}x");
+
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
                 $mission->mode = $details->mode;
@@ -136,6 +142,8 @@ class MissionController extends Controller
                     $mission->summary = $ext->onloadmission;
                     $mission->save();
 
+                    $mission = $mission->fresh('map');
+
                     // Move to cloud storage
                     $mission->deployCloudFiles($unpacked);
                 }, storage_path("app/{$path}"));
@@ -144,16 +152,10 @@ class MissionController extends Controller
 
                 // If errors in configs, return message
                 if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
-                    Storage::cloud()->delete("{$path}/{$mission->exportedName('pbo')}");
-                    Storage::cloud()->delete("{$path}/{$mission->exportedName('zip')}");
-
-                    foreach (['pbos' => 'pbo', 'zips' => 'zip'] as $dir => $name) {
-                        if (file_exists(public_path("downloads/{$dir}"))) {
-                            Storage::disk('downloads')->delete("{$dir}/{$mission->exportedName($name)}");
-                        }
-                    }
-
                     Storage::deleteDirectory($path);
+
+                    Storage::cloud()->move("{$old_mission_cloud_pbo_dir}x", $old_mission_cloud_pbo_dir);
+                    Storage::cloud()->move("{$old_mission_cloud_zip_dir}x", $old_mission_cloud_zip_dir);
 
                     // Update the record with the old data
                     $mission->file_name = $old_mission->file_name;
@@ -173,8 +175,8 @@ class MissionController extends Controller
                 Storage::deleteDirectory("missions/{$user->id}");
 
                 // Delete old cloud files
-                Storage::cloud()->delete("{$path}/{$old_mission->exportedName('pbo')}");
-                Storage::cloud()->delete("{$path}/{$old_mission->exportedName('zip')}");
+                Storage::cloud()->delete("{$old_mission_cloud_pbo_dir}x");
+                Storage::cloud()->delete("{$old_mission_cloud_zip_dir}x");
 
                 return view('missions.show', compact('mission'));
             }
