@@ -54,6 +54,7 @@
                     });
                 },
                 error: function(file, message) {
+                    $('#mission-upload-btn').find('i.fa').remove();
                     alert(message);
                 }
             });
