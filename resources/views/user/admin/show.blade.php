@@ -38,7 +38,7 @@
     <input type="hidden" name="user_id" value="{{ $user->id }}">
 
     @foreach ($permissions as $permission)
-        <div class="form-group permission-item {{ ($permission->name == 'users:all') ? 'disabled' : '' }}">
+        <div class="form-group permission-item {{ ($permission->name == 'users:all' && $user->hasPermission($permission->name)) ? 'disabled' : '' }}">
             <label>
                 <input
                     type="checkbox"
