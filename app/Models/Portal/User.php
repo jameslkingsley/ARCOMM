@@ -6,6 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Models\Permissions\PermissionUser;
+use App\Models\Permissions\Permission;
 use App\Models\Missions\Mission;
 use App\Models\Portal\SteamAPI;
 use Steam;
@@ -80,5 +82,47 @@ class User extends Authenticatable implements HasMediaConversions
     public function missions()
     {
         return Mission::where('user_id', $this->id)->orderBy('created_at', 'desc')->get();
+    }
+
+    /**
+     * Checks if the user has the given permissions.
+     * All permissions must pass true.
+     *
+     * @return boolean
+     */
+    public function hasPermissions($names, $only_one = false)
+    {
+        foreach ($names as $name) {
+            $has_permission = $this->hasPermission($name);
+
+            if ($has_permission && $only_one) {
+                return true;
+            } else if (!$has_permission) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the user has the given permission.
+     *
+     * @return boolean
+     */
+    public function hasPermission($name)
+    {
+        $permission = Permission::where('name', $name)->first();
+
+        if (!$permission) {
+            $permission = Permission::create(['name' => $name]);
+            return false;
+        }
+
+        return !is_null(
+            PermissionUser::where('user_id', $this->id)
+                ->where('permission_id', $permission->id)
+                ->first()
+        );
     }
 }

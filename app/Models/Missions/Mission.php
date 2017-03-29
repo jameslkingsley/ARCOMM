@@ -707,7 +707,7 @@ class Mission extends Model implements HasMediaConversions
         ];
 
         foreach ($factions as $faction => $locked) {
-            if (!empty($this->briefing($faction)) && (!$locked || auth()->user()->isAdmin() || $this->isMine())) {
+            if (!empty($this->briefing($faction)) && (!$locked || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine())) {
                 $name = str_replace('_', ' ', $faction);
 
                 $nav = new stdClass();

@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class Administrator
+class Permission
 {
     /**
      * Handle an incoming request.
@@ -13,15 +13,15 @@ class Administrator
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $role)
     {
         if (auth()->guest()) {
             abort(404, 'Not logged in');
             return;
         }
 
-        if (!auth()->user()->hasPermission('global:all')) {
-            abort(404, 'Not an administrator');
+        if (!auth()->user()->hasPermission($role)) {
+            abort(404, 'You are not authorized');
             return;
         }
 

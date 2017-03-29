@@ -37,7 +37,7 @@
                     <span class="brand-text"></span>
                 </a>
 
-                {{-- @if (auth()->user()->isAdmin())
+                {{-- @if (auth()->user()->hasPermission('apps:all'))
                     <a href="{{ url('/hub/applications') }}" class="nav-link" data-page="applications">
                         <i class="glyphicon glyphicon-inbox"></i>
                         <span>Applications</span>
@@ -53,6 +53,13 @@
                     <i class="fa fa-book"></i>
                     <span>Guides</span>
                 </a> --}}
+
+                @if (auth()->user()->hasPermission('users:all'))
+                    <a href="{{ url('/hub/users') }}" class="nav-link" data-page="users">
+                        <i class="fa fa-user"></i>
+                        <span>Users</span>
+                    </a>
+                @endif
 
                 <a href="{{ url('/hub/settings') }}" class="nav-link" data-page="settings">
                     <i class="fa fa-cog"></i>

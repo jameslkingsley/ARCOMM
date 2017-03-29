@@ -26,7 +26,7 @@
     });
 </script>
 
-@if ($mission->isMine() || auth()->user()->isAdmin())
+@if ($mission->isMine() || auth()->user()->hasPermission('mission:download'))
     <script>
         $(document).ready(function(e) {
             $('.download-mission').click(function(event) {
@@ -56,7 +56,13 @@
                 event.stopPropagation();
                 event.preventDefault();
             });
+        });
+    </script>
+@endif
 
+@if ($mission->isMine() || auth()->user()->hasPermission('mission:update'))
+    <script>
+        $(document).ready(function(e) {
             $('#update-mission').dropzone({
                 url: '{{ url('/hub/missions/' . $mission->id . '/update') }}',
                 acceptedFiles: '',
@@ -68,7 +74,13 @@
                     alert(message);
                 }
             });
+        });
+    </script>
+@endif
 
+@if ($mission->isMine() || auth()->user()->hasPermission('mission:delete'))
+    <script>
+        $(document).ready(function(e) {
             $('#delete-mission').click(function(event) {
                 event.preventDefault();
                 var canDelete = confirm("Are you sure you want to delete this mission?");
@@ -93,8 +105,12 @@
         </span>
     </div>
 
-    <div class="mission-nav" style="{{ (!$mission->isMine() && !auth()->user()->isAdmin()) ? 'box-shadow:none' : '' }}">
-        @if ($mission->isMine() || auth()->user()->isAdmin())
+    @php
+        $can_see_nav = $mission->isMine() || auth()->user()->hasPermissions(['mission:download','mission:update','mission:delete'], true);
+    @endphp
+
+    <div class="mission-nav" style="{{ !$can_see_nav ? 'box-shadow:none' : '' }}">
+        @if ($mission->isMine() || auth()->user()->hasPermission('mission:download'))
             <div class="hub-dropdown">
                 <a href="javascript:void(0)">Download <i class="fa fa-angle-down"></i></a>
                 <ul>
@@ -102,36 +118,42 @@
                     <li><a href="javascript:void(0)" class="download-mission" data-format="zip">ZIP</a></li>
                 </ul>
             </div>
+        @endif
 
+        @if ($mission->isMine() || auth()->user()->hasPermission('mission:update') || auth()->user()->hasPermission('mission:delete'))
             <div class="hub-dropdown">
                 <a href="javascript:void(0)">Manage <i class="fa fa-angle-down"></i></a>
                 <ul>
-                    <li>
-                        <a
-                            href="javascript:void(0)"
-                            id="update-mission"
-                            title="Replace the mission file with an updated one">
-                            Update
-                        </a>
-                    </li>
-
-                    @if (!$mission->existsInOperation() || auth()->user()->isAdmin())
+                    @if ($mission->isMine() || auth()->user()->hasPermission('mission:update'))
                         <li>
                             <a
-                                href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
-                                id="delete-mission"
-                                title="Deletes the mission and all of its media, comments and files">
-                                Delete
+                                href="javascript:void(0)"
+                                id="update-mission"
+                                title="Replace the mission file with an updated one">
+                                Update
                             </a>
                         </li>
-                    @else
-                        <li><span title="You cannot delete this mission as it belongs to an operation">Delete</span></li>
+                    @endif
+
+                    @if ($mission->isMine() || auth()->user()->hasPermission('mission:delete'))
+                        @if (!$mission->existsInOperation() || auth()->user()->hasPermission('mission:delete'))
+                            <li>
+                                <a
+                                    href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
+                                    id="delete-mission"
+                                    title="Deletes the mission and all of its media, comments and files">
+                                    Delete
+                                </a>
+                            </li>
+                        @else
+                            <li><span title="You cannot delete this mission as it belongs to an operation">Delete</span></li>
+                        @endif
                     @endif
                 </ul>
             </div>
         @endif
 
-        @if (auth()->user()->isAdmin())
+        @if (auth()->user()->hasPermission('mission:verification'))
             <script>
                 $(document).ready(function(e) {
                     $('.mission-verification a').click(function(event) {
@@ -188,7 +210,7 @@
     <div
         id="mission-content-break"
         class="pull-left full-width"
-        style="margin-top: calc({{ (!$mission->isMine() && !auth()->user()->isAdmin()) ? '100vh' : '108vh' }} / 1.618)">
+        style="margin-top: calc({{ !$can_see_nav ? '100vh' : '108vh' }} / 1.618)">
     </div>
 
     <div class="mission-overview-title">

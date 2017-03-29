@@ -16,13 +16,19 @@ openPanel = function(content, d) {
     $('.panel-invisible').fadeIn(delay, "easeInOutCubic");
 
     $('.panel-invisible').bind("click", function(event) {
-        $('.panel-invisible').fadeOut(delay, "easeInOutCubic", function() {
-            $('.panel-invisible').remove();
-        });
+        closePanel(delay);
+    });
+}
 
-        $('.panel-container, .panel-child-container').animate({"right": "-1000px"}, delay, "easeInOutCubic", function() {
-            $('.panel-container, .panel-child-container').remove();
-        });
+closePanel = function(d) {
+    var delay = d || 150;
+
+    $('.panel-invisible').fadeOut(delay, "easeInOutCubic", function() {
+        $('.panel-invisible').remove();
+    });
+
+    $('.panel-container, .panel-child-container').animate({"right": "-1000px"}, delay, "easeInOutCubic", function() {
+        $('.panel-container, .panel-child-container').remove();
     });
 }
 

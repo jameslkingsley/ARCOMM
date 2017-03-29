@@ -17,7 +17,7 @@
         });
     </script>
 
-    @if (!auth()->guest() && auth()->user()->isAdmin())
+    @if (!auth()->guest() && auth()->user()->hasPermission('public_media:delete'))
         <script>
             $(document).ready(function(e) {
                 $('.photo-delete').click(function(event) {
@@ -46,7 +46,7 @@
 
 @section('content')
     <div class="content p0 container-fluid">
-        @if (!auth()->guest() && auth()->user()->isAdmin())
+        @if (!auth()->guest() && auth()->user()->hasPermission('public_media:upload'))
             <div class="container text-center mb-5">
                 <script>
                     $(document).ready(function(e) {
@@ -68,7 +68,7 @@
                         class="media-item-public"
                         style="background-image: url({{ url($media->getUrl('thumb')) }})">
 
-                        @if (!auth()->guest() && auth()->user()->isAdmin())
+                        @if (!auth()->guest() && auth()->user()->hasPermission('public_media:delete'))
                             <span
                                 class="photo-delete"
                                 data-gallery="{{ $gallery->id }}"

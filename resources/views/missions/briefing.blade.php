@@ -1,4 +1,4 @@
-@if ($mission->isMine() || auth()->user()->isAdmin())
+@if ($mission->isMine() || auth()->user()->hasPermission('mission:set_briefing_locks'))
     <script>
         $(document).ready(function(e) {
             $('#lock-briefing').click(function(event) {

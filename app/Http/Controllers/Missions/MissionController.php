@@ -191,7 +191,7 @@ class MissionController extends Controller
      */
     public function destroy(Mission $mission)
     {
-        if ($mission->existsInOperation() && !auth()->user()->isAdmin()) {
+        if ($mission->existsInOperation() && !auth()->user()->hasPermission('mission:delete')) {
             return redirect('/hub/missions/' . $mission->id);
         }
 
@@ -221,7 +221,7 @@ class MissionController extends Controller
     {
         $mission = Mission::find($request->mission_id);
 
-        if (!$mission->isMine() && !auth()->user()->isAdmin()) {
+        if (!$mission->isMine() && !auth()->user()->hasPermission('mission:set_briefing_locks')) {
             abort(403, 'You are not authorised to edit this mission');
             return;
         }

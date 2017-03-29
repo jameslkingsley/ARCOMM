@@ -35,7 +35,7 @@ Route::get('/modset', function() {
 Route::get('/roster', 'PageController@roster');
 
 //--- Admins
-Route::group(['middleware' => 'admin'], function() {
+Route::group(['middleware' => 'permission:apps:all'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
     Route::get('/hub/applications/viewItems', 'JoinController@viewItems');
     Route::get('/hub/applications/showByInput', 'JoinController@showByInput');
@@ -47,7 +47,9 @@ Route::group(['middleware' => 'admin'], function() {
     Route::resource('/hub/applications', 'JoinController', [
         'as' => 'admin'
     ]);
+});
 
+Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations', 'API\OperationController');
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
@@ -97,4 +99,8 @@ Route::group(['middleware' => 'member'], function() {
     Route::resource('/hub', 'HubController', [
         'only' => ['index']
     ]);
+});
+
+Route::group(['middleware' => 'permission:users:all'], function() {
+    Route::resource('/hub/users', 'Users\UserController');
 });

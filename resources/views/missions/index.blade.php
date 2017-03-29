@@ -87,7 +87,7 @@
         class="subnav-link"
     >Upload</a>
 
-    @if (auth()->user()->isAdmin())
+    @if (auth()->user()->hasPermission('operations:all'))
         <a
             href="javascript:void(0)"
             data-panel="operations"

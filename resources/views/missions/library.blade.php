@@ -72,7 +72,7 @@
     </div>
 </div>
 
-@if (auth()->user()->isAdmin())
+@if (auth()->user()->hasPermission('mission:see_new'))
     @if (!$newMissions->isEmpty())
         <h2 class="mission-section-heading">New Missions</h2>
 
