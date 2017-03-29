@@ -9,8 +9,8 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
-        <script type="text/javascript" src="{{ url('/js/app.js') }}"></script>
-        <link rel="stylesheet" href="{{ url('/css/app.css') }}">
+        <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
+        <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
         @yield('head')
     </head>

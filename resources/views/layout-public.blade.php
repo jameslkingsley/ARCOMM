@@ -14,13 +14,13 @@
             {{ env('SITE_NAME_PUBLIC', 'ARCOMM') }}
         </title>
 
-        <script type="text/javascript" src="{{ url('/js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
         <script type="text/javascript" src="{{ url('/js/select2.full.min.js') }}"></script>
 
         <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
-        <link rel="stylesheet" href="{{ url('/css/app.css') }}">
+        <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
         <link href="{{ url('/css/landing-page.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ url('/css/public.css') }}">
+        <link rel="stylesheet" href="{{ mix('/css/public.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
 
         @yield('head')
