@@ -449,7 +449,8 @@ class Mission extends Model implements HasMediaConversions
             }
         }
 
-        // Check all SQF files
+        // Check loadout files since these are common places for errors
+        // TODO Doesn't check whole directory until new ARCMF version is used
         $sqf_result = ArmaScript::check("{$unpacked}/f/assignGear/");
 
         if (strlen(trim($sqf_result)) != 0) {
