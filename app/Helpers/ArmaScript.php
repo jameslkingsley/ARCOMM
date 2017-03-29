@@ -27,10 +27,10 @@ class ArmaScript
                 }
 
                 $display_name = substr($file, strlen($source));
-                $output = "<b>{$display_name}</b><br />";
+                $output = "{$display_name}: ";
                 $result = shell_exec('python '.resource_path('utils/sqf_validator.py').' '.$file);
                 $lines = explode('\n', $result);
-                $lines = implode('<br />', $lines);
+                $lines = implode(', ', $lines);
                 $output = $output . $lines;
 
                 if (strlen(trim($lines)) != 0) {
