@@ -49,7 +49,7 @@
                         checked="true"
                     @endif
 
-                    @if ($permission->name == 'users:all')
+                    @if ($permission->name == 'users:all' && $user->hasPermission($permission->name))
                         data-disabled="true"
                     @endif>
                 {{ $permission->name }}
