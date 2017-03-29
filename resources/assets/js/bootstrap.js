@@ -11,7 +11,6 @@ window.$ = window.jQuery = require('jquery');
 
 require('jquery-ui-bundle');
 require('bootstrap-sass');
-require('dropit');
 require('jquery.waitforimages');
 require('dropzone');
 require('magnific-popup');

@@ -5,6 +5,9 @@
 @endsection
 
 @section('scripts')
+    <link rel="stylesheet" type="text/css" href="{{ url('/css/dropit.css') }}">
+    <script src="{{ url('/js/dropit.js') }}"></script>
+
     <script>
         $(document).ready(function(e) {
             window.jr = {
