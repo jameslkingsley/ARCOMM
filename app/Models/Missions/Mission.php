@@ -7,6 +7,7 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Missions\MissionComment;
 use App\Helpers\ArmaConfig;
+use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
 use App\Models\Missions\Map;
 use App\Models\Operations\OperationMission;
@@ -448,6 +449,13 @@ class Mission extends Model implements HasMediaConversions
             }
         }
 
+        // Check all SQF files
+        $sqf_result = ArmaScript::check($unpacked);
+
+        if (strlen(trim($sqf_result)) != 0) {
+            return new ArmaConfigError($sqf_result);
+        }
+
         // No errors so far, so store configs in mission as JSON
         $this->ext_json = json_encode($ext_obj);
         $this->cfg_json = json_encode($cfg_obj);
@@ -460,7 +468,7 @@ class Mission extends Model implements HasMediaConversions
         }
 
         // Handle Mission SQM
-        // - Removes entity data in sqm to avoid Eden string nuances
+        // Removes entity data in sqm to avoid Eden string nuances
         $sqm_file = "{$unpacked}/mission.sqm";
 
         $sqm_contents = file_get_contents($sqm_file);
