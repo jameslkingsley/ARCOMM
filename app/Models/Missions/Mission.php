@@ -450,7 +450,7 @@ class Mission extends Model implements HasMediaConversions
         }
 
         // Check all SQF files
-        $sqf_result = ArmaScript::check($unpacked);
+        $sqf_result = ArmaScript::check("{$unpacked}/f/assignGear/");
 
         if (strlen(trim($sqf_result)) != 0) {
             return new ArmaConfigError($sqf_result);
