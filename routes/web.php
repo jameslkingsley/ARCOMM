@@ -17,7 +17,7 @@ Route::get('/', 'PageController@index');
 //--- Steam Authentication
 Route::get('/steamauth', 'AuthController@login');
 
-//--- Join Requests
+//--- Public Applications
 Route::resource('join', 'PublicJoinController', [
     'only' => ['index', 'store']
 ]);
@@ -34,26 +34,29 @@ Route::get('/modset', function() {
 //--- Roster
 Route::get('/roster', 'PageController@roster');
 
-//--- Admins
-Route::group(['middleware' => 'permission:apps:all'], function() {
+//--- Applications
+Route::group(['middleware' => 'permission:apps:view'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
-    Route::get('/hub/applications/viewItems', 'JoinController@viewItems');
-    Route::get('/hub/applications/showByInput', 'JoinController@showByInput');
-    Route::get('/hub/applications/{status}', 'JoinController@index');
-    Route::post('/hub/applications/createStatus', 'JoinController@createStatus');
-    Route::post('/hub/applications/setStatus', 'JoinController@setStatus');
-    Route::post('/hub/applications/getStatusView', 'JoinController@getStatusView');
 
-    Route::resource('/hub/applications', 'JoinController', [
-        'as' => 'admin'
-    ]);
+    Route::get('/hub/applications/api/items', 'Join\JoinController@items');
+    Route::get('/hub/applications/api/show', 'Join\JoinController@show');
+    Route::get('/hub/applications/api/emails', 'Join\JoinController@emails');
+
+    // Statuses
+    Route::post('/hub/applications/api/status', 'Join\JoinStatusController@store');
+    Route::put('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@update');
+    Route::get('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@index');
+
+    Route::resource('/hub/applications', 'Join\JoinController');
 });
 
+//--- Operations
 Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations', 'API\OperationController');
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
 
+//--- Missions
 Route::group(['middleware' => 'member'], function() {
     // Mission Media
     Route::post('/hub/missions/media/add-photo', 'Missions\MediaController@uploadPhoto');
@@ -101,6 +104,7 @@ Route::group(['middleware' => 'member'], function() {
     ]);
 });
 
+//--- User Management
 Route::group(['middleware' => 'permission:users:all'], function() {
     Route::resource('/hub/users', 'Users\UserController');
 });

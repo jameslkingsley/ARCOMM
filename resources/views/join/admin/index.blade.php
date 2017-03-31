@@ -5,9 +5,6 @@
 @endsection
 
 @section('scripts')
-    <link rel="stylesheet" type="text/css" href="{{ url('/css/dropit.css') }}">
-    <script src="{{ url('/js/dropit.js') }}"></script>
-
     <script>
         $(document).ready(function(e) {
             window.jr = {
@@ -62,8 +59,6 @@
                 event.preventDefault();
             });
 
-            $('.status-filter[data-status="{{ (empty(Request::segment(2))) ? "pending" : Request::segment(2) }}"]').addClass("active");
-
             $('#search').keyup(function(event) {
                 var query = $(this).val().toLowerCase();
 
@@ -84,14 +79,43 @@
                     $('#join-requests').html(data);
                 });
             });
+
+            $.hubDropdown();
         });
     </script>
 @endsection
 
 @section('subnav')
     @foreach ($joinStatuses as $status)
-        <a href="javascript:void(0)" data-status="{{ $status->permalink }}" class="status-filter">{{ $status->text }}</a>
+        <a
+            href="javascript:void(0)"
+            data-status="{{ $status->permalink }}"
+            class="status-filter {{ (Request::segment(3) == $status->permalink) ? 'active' : '' }}">
+            {{ $status->text }}
+        </a>
     @endforeach
+
+    @if (auth()->user()->hasPermission('apps:emails'))
+        <span class="separator"></span>
+
+        <script>
+            $(document).ready(function(e) {
+                $('#app-emails').click(function(event) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url('') }}',
+                        success: function(data) {
+                            $('#join-requests').html(data);
+                        }
+                    });
+
+                    event.preventDefault();
+                });
+            });
+        </script>
+
+        <a href="javascript:void(0)" id="app-emails">Emails</a>
+    @endif
 @endsection
 
 @section('controls')
@@ -105,7 +129,7 @@
 @endsection
 
 @section('content')
-    <div id="join-requests">
+    <div id="join-requests" class="pull-left full-width mt-5">
         @include('join.admin.items', ['joinRequests', $joinRequests])
     </div>
 @endsection

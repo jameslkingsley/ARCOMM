@@ -3,6 +3,8 @@
 @import "node_modules/magnific-popup/dist/magnific-popup";
 @import "node_modules/font-awesome/css/font-awesome";
 
+@import "hub-dropdown";
+
 body {
     background: $body-bg;
     font-family: $font-family;
@@ -325,26 +327,6 @@ footer {
         &.dropit-open {
             border-radius: 3px 3px 0 0 !important;
             box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        &.pending {
-            background: $status-pending;
-            color: #FFF;
-        }
-
-        &.approved {
-            background: $status-approved;
-            color: #FFF;
-        }
-
-        &.declined {
-            background: $status-declined;
-            color: #FFF;
-        }
-
-        &.blacklisted {
-            background: $status-blacklisted;
-            color: #FFF;
         }
     }
 }
@@ -1279,91 +1261,6 @@ header .nav .nav-link.active {
     background: transparent !important;
 }
 
-.hub-dropdown {
-    float: left;
-    height: 100%;
-    margin: 0;
-    text-align: center;
-    line-height: 60px;
-    padding: 0;
-    font-weight: 600;
-    font-size: 14px;
-    color: $brand-primary !important;
-    text-decoration: none!important;
-    text-transform: uppercase;
-    position: relative;
-}
-
-.hub-dropdown a {
-    padding: 0 25px;
-    float: left;
-    height: 100%;
-    margin: 0;
-    text-align: center;
-    line-height: 60px;
-    text-decoration: none!important;
-}
-
-.hub-dropdown ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 15px 0;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    background: $brand-primary;
-    min-width: 200px;
-    box-shadow: 0 5px 5px rgba(0,0,0,.1);
-    display: none;
-}
-
-.hub-dropdown ul li {
-    float: left;
-    width: 100%;
-}
-
-.hub-dropdown ul li a {
-    float: left;
-    width: 100%;
-    text-align: left;
-    height: 40px;
-    line-height: 40px;
-    text-decoration: none!important;
-    color: white;
-}
-
-.hub-dropdown ul li a:hover {
-    background: rgba(0, 0, 0, 0.15);
-}
-
-.hub-dropdown a:hover {
-    background: #f5f5f5;
-}
-
-.hub-dropdown a.open {
-    background: #bd2c2c;
-    color: white;
-}
-
-.hub-dropdown a:first-of-type i {
-    font-weight: 900;
-    font-size: 16px;
-    margin-left: 5px;
-}
-
-.hub-dropdown ul li span {
-    float: left;
-    width: 100%;
-    text-align: left;
-    height: 40px;
-    line-height: 40px;
-    text-decoration: none!important;
-    color: #fff;
-    padding: 0 25px;
-    cursor: default;
-    opacity: .5;
-}
-
 .mission-item-pinned {
     border: 5px solid #ffbe00;
 }
@@ -1457,18 +1354,6 @@ header .nav .nav-link.active {
     color: #333;
 }
 
-.hub-dropdown ul li a.pending {
-    opacity: .5;
-
-    i.fa {
-        float: left;
-        height: 38px;
-        line-height: 38px;
-        font-size: 12px;
-        margin-left: -16px;
-    }
-}
-
 #mission-upload-btn i.fa {
     float: right;
     height: 100%;
@@ -1509,4 +1394,17 @@ header .nav .nav-link.active {
             margin-right: 10px;
         }
     }
+}
+
+.jr-status-dropdown {
+    background: $brand-primary;
+    color: white !important;
+}
+
+.subnav .separator {
+    float: left;
+    width: 100%;
+    height: 1px;
+    background: rgb(156, 35, 35);
+    margin: 2rem 0;
 }
