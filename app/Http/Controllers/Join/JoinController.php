@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Join;
 
 use DB;
 use Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\JoinRequests\JoinRequest;
 use App\Models\JoinRequests\JoinStatus;
+use App\Models\JoinRequests\EmailTemplate;
 
 class JoinController extends Controller
 {
@@ -27,14 +29,22 @@ class JoinController extends Controller
     protected $joinStatuses;
 
     /**
+     * Email templates model.
+     *
+     * @var App\Models\JoinRequests\EmailTemplate
+     */
+    protected $emails;
+
+    /**
      * Constructor method.
      *
      * @return any
      */
-    public function __construct(JoinRequest $joinRequests, JoinStatus $joinStatuses)
+    public function __construct(JoinRequest $joinRequests, JoinStatus $joinStatuses, EmailTemplate $emails)
     {
         $this->joinRequests = $joinRequests;
         $this->joinStatuses = $joinStatuses;
+        $this->emails = $emails;
 
         return $this;
     }
@@ -64,8 +74,9 @@ class JoinController extends Controller
     public function show(Request $request, JoinRequest $jr)
     {
         $joinStatuses = $this->joinStatuses->orderBy('position', 'asc')->get();
+        $emails = $this->emails->all();
 
-        return view('join.admin.show', compact('jr', 'joinStatuses'));
+        return view('join.admin.show', compact('jr', 'joinStatuses', 'emails'));
     }
 
     /**
@@ -78,18 +89,6 @@ class JoinController extends Controller
         $joinRequests = $this->joinRequests->items($status, $order);
 
         return view('join.admin.items', compact('joinRequests'));
-    }
-
-    /**
-     * Shows the preset email view.
-     *
-     * @return any
-     */
-    public function emails(Request $request)
-    {
-        $emails = [];
-
-        return view('join.admin.emails', compact('emails'));
     }
 
     /**

@@ -38,16 +38,22 @@ Route::get('/roster', 'PageController@roster');
 Route::group(['middleware' => 'permission:apps:view'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
 
-    Route::get('/hub/applications/api/items', 'Join\JoinController@items');
-    Route::get('/hub/applications/api/show', 'Join\JoinController@show');
-    Route::get('/hub/applications/api/emails', 'Join\JoinController@emails');
+    Route::get('/hub/applications/api/items/{status}/{order}', 'Join\JoinController@items');
+    Route::get('/hub/applications/api/show/{jr}', 'Join\JoinController@show');
 
     // Statuses
     Route::post('/hub/applications/api/status', 'Join\JoinStatusController@store');
     Route::put('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@update');
-    Route::get('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@index');
+    Route::get('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@show');
+
+    Route::get('/hub/applications/{status}', 'Join\JoinController@index');
 
     Route::resource('/hub/applications', 'Join\JoinController');
+});
+
+Route::group(['middleware' => 'permission:apps:emails'], function() {
+    // Email Templates
+    Route::resource('/hub/applications/api/emails', 'Join\EmailTemplateController');
 });
 
 //--- Operations

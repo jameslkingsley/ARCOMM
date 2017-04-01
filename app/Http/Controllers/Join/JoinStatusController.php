@@ -111,9 +111,6 @@ class JoinStatusController extends Controller
      */
     public function update(Request $request, JoinRequest $jr)
     {
-        $joinRequestID = Input::get('join_request_id', 0);
-        $newStatusID = Input::get('new_status_id', 0);
-
         if (!isset($request->join_request_id) || !isset($request->new_status_id)) return;
 
         $jr->status_id = $request->new_status_id;

@@ -4,6 +4,7 @@
 @import "node_modules/font-awesome/css/font-awesome";
 
 @import "hub-dropdown";
+@import "list-item";
 
 body {
     background: $body-bg;
@@ -229,51 +230,6 @@ footer {
     overflow-y: auto;
     overflow-x: hidden;
     color: white;
-}
-
-.jr-list {
-    padding: 0;
-    margin: 0;
-
-    li {
-        float: left;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-
-        .jr-item {
-            float: left;
-            width: 100%;
-            text-decoration: none !important;
-            color: #FFF !important;
-            padding: 25px 0;
-            border-bottom: 1px solid #252525;
-            -webkit-transition: all .15s ease;
-            transition: all .15s ease;
-
-            &:hover {
-                padding-left: 25px;
-            }
-
-            h1 {
-                font-size: 26px;
-                font-weight: 300;
-                margin: 0;
-            }
-
-            p {
-                color: #CCC;
-                font-size: 14px;
-                font-weight: 300;
-                margin: 5px 0 0 0;
-            }
-        }
-    }
-
-    li:first-of-type .jr-item {
-        padding-top: 0;
-    }
 }
 
 .panel-container {
@@ -1407,4 +1363,37 @@ header .nav .nav-link.active {
     height: 1px;
     background: rgb(156, 35, 35);
     margin: 2rem 0;
+}
+
+.jr-pending-theme {
+    background: $status-pending !important;
+    color: #FFF !important;
+}
+
+.jr-approved-theme {
+    background: $status-approved !important;
+    color: #FFF !important;
+}
+
+.jr-declined-theme {
+    background: $status-declined !important;
+    color: #FFF !important;
+}
+
+.jr-blacklisted-theme {
+    background: $status-blacklisted !important;
+    color: #FFF !important;
+}
+
+.jr-send-email {
+    height: 60px;
+    line-height: 60px;
+    padding: 0;
+    width: 60px;
+    margin-left: 1px;
+}
+
+.jr-send-email:active {
+    background: black !important;
+    color: white !important;
 }

@@ -14,11 +14,7 @@
             loadItems = function(status, order, callback) {
                 $.ajax({
                     type: 'GET',
-                    url: '{{ action("JoinController@viewItems") }}',
-                    data: {
-                        "status": status,
-                        "order": order
-                    },
+                    url: '{{ url('/hub/applications/api/items') }}/' + status + '/' + order,
                     success: function(data) {
                         if (typeof callback == "function")
                             callback(data);
@@ -39,6 +35,7 @@
                     $('#join-requests').html(data);
                     $('#search').val("");
                     $('.content').scrollTop(0);
+                    $('#join-filter-form').show();
                 });
 
                 event.preventDefault();
@@ -49,8 +46,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ action("JoinController@showByInput") }}',
-                    data: {"id": id},
+                    url: '{{ url('/hub/applications/api/show') }}/' + id,
                     success: function(data) {
                         openPanel(data);
                     }
@@ -100,15 +96,19 @@
 
         <script>
             $(document).ready(function(e) {
-                $('#app-emails').click(function(event) {
+                reloadEmails = function() {
                     $.ajax({
                         type: 'GET',
-                        url: '{{ url('') }}',
+                        url: '{{ url('/hub/applications/api/emails') }}',
                         success: function(data) {
                             $('#join-requests').html(data);
+                            $('#join-filter-form').hide();
                         }
                     });
+                }
 
+                $('#app-emails').click(function(event) {
+                    reloadEmails();
                     event.preventDefault();
                 });
             });
@@ -119,7 +119,7 @@
 @endsection
 
 @section('controls')
-    <form method="post">
+    <form method="post" id="join-filter-form">
         <input type="text" name="search" id="search" class="form-control" placeholder="Search" style="width:250px">
         <select name="order" class="form-control" id="order" style="width:150px">
             <option value="desc">Latest first</option>

@@ -132,7 +132,7 @@ openMission = function(id, success, error) {
 
     $.fn.offClick = function(a) {
         var caller = $(this);
-        $(document).bind("mousedown.offClick", function(event) {
+        $(document).bind("mouseup.offClick", function(event) {
             var target = $(event.target);
             if (!target.is(caller) && !target.is(caller.find('*')))
                 if (typeof a == "function") a();

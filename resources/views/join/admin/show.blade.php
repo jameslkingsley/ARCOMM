@@ -1,6 +1,30 @@
 <h1 class="jr-name">
     {{ $jr->name }}
 
+    @if (auth()->user()->hasPermission('apps:emails'))
+        <a
+            href="javascript:void(0)"
+            class="btn hub-btn jr-send-email pull-right jr-{{ strtolower($jr->status->permalink) }}-theme"
+            title="Choose an email to send"
+        ><i class="fa fa-paper-plane"></i></a>
+
+        {{-- <div class="hub-dropdown hub-dropdown-right hub-dropdown-fixed-color jr-status-dropdown pull-right ml-3 {{ strtolower($jr->status->permalink) }}">
+            <a href="javascript:void(0)">
+                Email <i class="fa fa-angle-down"></i>
+            </a>
+
+            <ul>
+                @foreach ($emails as $email)
+                    <li>
+                        <a href="javascript:void(0)" data-id="{{ $email->id }}">
+                            {{ $email->subject }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div> --}}
+    @endif
+
     @if (auth()->user()->hasPermission('apps:change_status'))
         <div id="status" class="pull-right">
             @include('join.admin.status', [

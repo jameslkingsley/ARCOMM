@@ -2,11 +2,8 @@
     $(document).ready(function() {
         reload = function() {
             $.ajax({
-                type: 'POST',
-                url: '{{ action("JoinController@getStatusView") }}',
-                data: {
-                    "id": {{ $jr->id }}
-                },
+                type: 'GET',
+                url: '{{ url('/hub/applications/api/'.$jr->id.'/status') }}',
                 success: function(data) {
                     $('#status').html(data);
                 }
@@ -16,10 +13,11 @@
         setStatus = function(id) {
             $.ajax({
                 type: 'POST',
-                url: '{{ action("JoinController@setStatus") }}',
+                url: '{{ url('/hub/applications/api/'.$jr->id.'/status') }}',
                 data: {
                     "join_request_id": {{ $jr->id }},
-                    "new_status_id": id
+                    "new_status_id": id,
+                    "_method": "put"
                 },
                 success: function(data) {
                     reload();
@@ -42,7 +40,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ action("JoinController@createStatus") }}',
+                    url: '{{ url('/hub/applications/api/status') }}',
                     data: {"text": text},
                     success: function(data) {
                         var newStatusID = data;

@@ -1,0 +1,44 @@
+.hub-list {
+    padding: 0;
+    margin: 0;
+
+    li {
+        float: left;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+
+        .hub-list-item {
+            float: left;
+            width: 100%;
+            text-decoration: none !important;
+            color: #FFF !important;
+            padding: 25px 0;
+            border-bottom: 1px solid #252525;
+            -webkit-transition: all .15s ease;
+            transition: all .15s ease;
+
+            &:hover {
+                padding-left: 25px;
+            }
+
+            h1 {
+                font-size: 26px;
+                font-weight: 300;
+                margin: 0;
+            }
+
+            p {
+                color: #CCC;
+                font-size: 14px;
+                font-weight: 300;
+                margin: 5px 0 0 0;
+            }
+        }
+    }
+
+    li:first-of-type .hub-list-item {
+        padding-top: 0;
+    }
+}
