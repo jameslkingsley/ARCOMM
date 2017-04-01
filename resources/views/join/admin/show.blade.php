@@ -2,27 +2,21 @@
     {{ $jr->name }}
 
     @if (auth()->user()->hasPermission('apps:emails'))
+        <script>
+            $(document).ready(function(e) {
+                $('#send-app-email').click(function(event) {
+                    $('#app-emails').slideDown(150);
+                    event.preventDefault();
+                });
+            });
+        </script>
+
         <a
             href="javascript:void(0)"
             class="btn hub-btn jr-send-email pull-right jr-{{ strtolower($jr->status->permalink) }}-theme"
             title="Choose an email to send"
+            id="send-app-email"
         ><i class="fa fa-paper-plane"></i></a>
-
-        {{-- <div class="hub-dropdown hub-dropdown-right hub-dropdown-fixed-color jr-status-dropdown pull-right ml-3 {{ strtolower($jr->status->permalink) }}">
-            <a href="javascript:void(0)">
-                Email <i class="fa fa-angle-down"></i>
-            </a>
-
-            <ul>
-                @foreach ($emails as $email)
-                    <li>
-                        <a href="javascript:void(0)" data-id="{{ $email->id }}">
-                            {{ $email->subject }}
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        </div> --}}
     @endif
 
     @if (auth()->user()->hasPermission('apps:change_status'))
@@ -34,6 +28,22 @@
         </div>
     @endif
 </h1>
+
+@if (auth()->user()->hasPermission('apps:emails'))
+    <div class="pull-left full-width" id="app-emails" style="display: none">
+        <ul>
+            @foreach ($emails as $email)
+                @unless ($email->id == 1)
+                    <li>
+                        <a href="javascript:void(0)" class="{{ strtolower($jr->status->permalink) }}" data-id="{{ $email->id }}">
+                            {{ $email->subject }}
+                        </a>
+                    </li>
+                @endunless
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <div class="row">
     <div class="col-md-6">
