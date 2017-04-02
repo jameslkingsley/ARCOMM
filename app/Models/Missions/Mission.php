@@ -794,8 +794,8 @@ class Mission extends Model implements HasMediaConversions
         }
 
         $name = rtrim($name, '.pbo');
-        $parts = explode('_', $name);
-        $mapName = last(explode('.', last($parts)));
+        $mapName = last(explode('.', $name));
+        $parts = explode('_', rtrim($name, ".{$mapName}"));
         $map = Map::whereRaw('LOWER(class_name) = ?', [strtolower($mapName)])->first();
 
         if (is_null($map)) {
