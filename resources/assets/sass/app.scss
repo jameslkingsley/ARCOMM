@@ -767,8 +767,9 @@ header .nav .nav-link.active {
 .mission-comment-item-text {
     float: left;
     width: calc(100% - 50px);
-    /* padding-left: 50px; */
     padding-top: 5px;
+    text-align: justify;
+    word-break: break-word;
 }
 
 .hub-form-control {
