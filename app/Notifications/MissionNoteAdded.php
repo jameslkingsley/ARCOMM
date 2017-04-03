@@ -65,6 +65,7 @@ class MissionNoteAdded extends Notification
     public function toArray($notifiable)
     {
         return [
+            'id' => $this->note->id,
             'user_id' => $this->note->user_id,
             'mission_id' => $this->note->mission_id,
             'text' => $this->note->text

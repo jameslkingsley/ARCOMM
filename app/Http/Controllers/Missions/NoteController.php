@@ -71,14 +71,6 @@ class NoteController extends Controller
             'text' => $request->text
         ]);
 
-        // $this->notification->new(
-        //     $note,
-        //     auth()->user()->id,
-        //     $mission->user->id,
-        //     auth()->user()->username.' has written a note on your mission '.$mission->display_name,
-        //     "{$mission->url()}?note={$note->id}"
-        // );
-
         $mission->user->notify(new MissionNoteAdded($note));
 
         return view('missions.notes.item', compact('note'));
@@ -127,6 +119,8 @@ class NoteController extends Controller
     public function destroy(Mission $mission, MissionNote $note)
     {
         if (!$note->isMine()) return;
+
+        // auth()->user()->notifications()->where('type', MissionNoteAdded::class);
 
         $note->delete();
     }

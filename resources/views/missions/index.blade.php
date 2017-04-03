@@ -98,6 +98,9 @@
 @endsection
 
 @section('controls')
+    @foreach (auth()->user()->notifications as $notification)
+        {{ $notification->type }}
+    @endforeach
 @endsection
 
 @section('content')
