@@ -153,6 +153,10 @@
             </div>
         @endif
 
+        @if (auth()->user()->hasPermission('mission:notes') || $mission->isMine())
+            @include('missions.notes.index', ['mission' => $mission])
+        @endif
+
         @if (auth()->user()->hasPermission('mission:verification'))
             <script>
                 $(document).ready(function(e) {
