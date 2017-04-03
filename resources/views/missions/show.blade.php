@@ -267,14 +267,19 @@
                 $(document).on('click', '.mission-comment-control-edit', function(event) {
                     var caller = $(this);
                     var id = caller.data('id');
-                    var text = caller.parents('.mission-comment-item').find('.mission-comment-item-text').html();
 
-                    $('#submit-mission-comment input[name="id"]').val(id);
-                    $('#submit-mission-comment textarea[name="text"]').val(text.trim());
-                    $('#submit-mission-comment input[type="submit"]').val('Save Changes');
-                    $('#submit-mission-comment #save-mission-comment').hide();
-                    $('#submit-mission-comment textarea[name="text"]').focus();
-                    $('.large-panel-container').scrollTop(10000);
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url('/hub/missions/comments') }}/' + id + '/edit',
+                        success: function(data) {
+                            $('#submit-mission-comment input[name="id"]').val(id);
+                            $('#submit-mission-comment textarea[name="text"]').val(data);
+                            $('#submit-mission-comment input[type="submit"]').val('Save Changes');
+                            $('#submit-mission-comment #save-mission-comment').hide();
+                            $('#submit-mission-comment textarea[name="text"]').focus();
+                            $('.large-panel-container').scrollTop(10000);
+                        }
+                    });
 
                     event.preventDefault();
                 });

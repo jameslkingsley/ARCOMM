@@ -69,7 +69,7 @@ Route::group(['middleware' => 'member'], function() {
 
     // Mission Comments
     Route::resource('/hub/missions/comments', 'Missions\CommentController', [
-        'except' => ['create', 'show', 'edit', 'update']
+        'except' => ['create', 'show', 'update']
     ]);
 
     // Mission Briefings
