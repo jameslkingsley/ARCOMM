@@ -1513,3 +1513,14 @@ header .nav .nav-link.active {
         }
     }
 }
+
+.subnav .subnav-link .label {
+    float: right;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    background: white;
+    color: black;
+    margin-top: 25px;
+    padding: 0 10px;
+}

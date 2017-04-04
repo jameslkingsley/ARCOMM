@@ -59,6 +59,23 @@
                 }
             });
 
+            $(document).on('click', '.mission-item, .mission-item-lite', function(event) {
+                event.preventDefault();
+
+                var caller = $(this);
+                var id = caller.data('id');
+
+                if (caller.hasClass('spinner')) {
+                    return;
+                }
+
+                caller.missionSpinner(true);
+
+                openMission(id, function() {
+                    caller.missionSpinner(false);
+                });
+            });
+
             $.hubDropdown();
         });
     </script>
@@ -73,6 +90,23 @@
 @endsection
 
 @section('subnav')
+    {{-- @php
+        $missionNotifications = auth()->user()->missionNotifications();
+    @endphp
+
+    @unless ($missionNotifications->isEmpty())
+        <a
+            href="javascript:void(0)"
+            data-panel="notifications"
+            class="subnav-link"
+            style="margin-top: -70px">
+            Notifications
+            <span class="label">
+                {{ $missionNotifications->count() }}
+            </span>
+        </a>
+    @endunless --}}
+
     <a
         href="javascript:void(0)"
         data-panel="library"
@@ -98,9 +132,6 @@
 @endsection
 
 @section('controls')
-    @foreach (auth()->user()->notifications as $notification)
-        {{ $notification->type }}
-    @endforeach
 @endsection
 
 @section('content')

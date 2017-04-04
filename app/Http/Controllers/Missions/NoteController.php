@@ -71,7 +71,9 @@ class NoteController extends Controller
             'text' => $request->text
         ]);
 
-        $mission->user->notify(new MissionNoteAdded($note));
+        if ($mission->user->id != auth()->user()->id) {
+            $mission->user->notify(new MissionNoteAdded($note));
+        }
 
         return view('missions.notes.item', compact('note'));
     }
@@ -105,7 +107,7 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Mission $mission)
     {
         //
     }
@@ -120,8 +122,18 @@ class NoteController extends Controller
     {
         if (!$note->isMine()) return;
 
-        // auth()->user()->notifications()->where('type', MissionNoteAdded::class);
-
         $note->delete();
+    }
+
+    /**
+     * Marks all note notifications for the mission as read.
+     *
+     * @return any
+     */
+    public function readNotifications(Request $request, Mission $mission)
+    {
+        foreach ($mission->noteNotifications() as $notification) {
+            $notification->markAsRead();
+        }
     }
 }

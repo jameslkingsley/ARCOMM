@@ -6,27 +6,27 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Models\Missions\MissionNote;
+use App\Models\Missions\MissionComment;
 
-class MissionNoteAdded extends Notification
+class MissionCommentAdded extends Notification
 {
     use Queueable;
 
     /**
-     * The note instance.
+     * The comment instance.
      *
-     * @var App\Models\Missions\MissionNote
+     * @var App\Models\Missions\MissionComment
      */
-    protected $note;
+    protected $comment;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(MissionNote $note)
+    public function __construct(MissionComment $comment)
     {
-        $this->note = $note;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -65,7 +65,7 @@ class MissionNoteAdded extends Notification
     public function toArray($notifiable)
     {
         return [
-            'note' => $this->note
+            'comment' => $this->comment
         ];
     }
 }

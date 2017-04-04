@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
+use App\Notifications\MissionCommentAdded;
 
 class CommentController extends Controller
 {
@@ -47,6 +48,12 @@ class CommentController extends Controller
             $comment->text = $request->text;
             $comment->published = $request->published;
             $comment->save();
+
+            $mission = Mission::findOrFail($request->mission_id);
+
+            if ($mission->user->id != auth()->user()->id) {
+                $mission->user->notify(new MissionCommentAdded($comment));
+            }
         } else {
             // Update an existing one
             $comment = MissionComment::find($request->id);

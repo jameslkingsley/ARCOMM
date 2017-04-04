@@ -7,6 +7,8 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Missions\MissionComment;
 use App\Models\Missions\MissionNote;
+use App\Notifications\MissionNoteAdded;
+use App\Notifications\MissionCommentAdded;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
@@ -914,5 +916,37 @@ class Mission extends Model implements HasMediaConversions
         }
 
         return 'None';
+    }
+
+    /**
+     * Gets the mission note notifications.
+     *
+     * @return Collection
+     */
+    public function noteNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionNoteAdded::class &&
+                $item->data['note']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission comments notifications.
+     *
+     * @return Collection
+     */
+    public function commentNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
     }
 }

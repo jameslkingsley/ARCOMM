@@ -1,8 +1,18 @@
 <script>
     $(document).ready(function(e) {
         $('.mission-notes-trigger').click(function(event) {
-            $(this).addClass('open');
-            $('.mission-notes').fadeIn(150);
+            var caller = $(this);
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ url('/hub/missions/'.$mission->id.'/notes/read-notifications') }}',
+                beforeSend: function() {
+                    caller.addClass('open');
+                    caller.find('.mission-notes-trigger-count').remove();
+                    $('.mission-notes').fadeIn(150);
+                }
+            });
+
             event.preventDefault();
         });
 
@@ -34,6 +44,7 @@
                 data: form.serialize(),
                 success: function(data) {
                     $('.mission-notes-list').append(data);
+                    form[0].reset();
                 }
             });
 
@@ -42,8 +53,16 @@
     });
 </script>
 
+@php
+    $notifications = $mission->noteNotifications();
+@endphp
+
 <a href="javascript:void(0)" class="mission-notes-trigger">
-    <span class="mission-notes-trigger-count"></span>
+    @unless ($notifications->isEmpty())
+        <span class="mission-notes-trigger-count">
+            {{ $notifications->count() > 10 ? '!' : $notifications->count() }}
+        </span>
+    @endunless
 
     <i class="fa fa-commenting"></i>
 </a>
