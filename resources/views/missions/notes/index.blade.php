@@ -71,9 +71,13 @@
     <h2>Notes</h2>
 
     <div class="mission-notes-list">
-        @foreach ($mission->notes as $note)
-            @include('missions.notes.item', ['note' => $note])
-        @endforeach
+        @if ($mission->notes->isEmpty())
+            <p class="m0">Submit notes back to the mission maker on how to improve their mission.</p>
+        @else
+            @foreach ($mission->notes as $note)
+                @include('missions.notes.item', ['note' => $note])
+            @endforeach
+        @endif
     </div>
 
     <div class="mission-notes-submission">
