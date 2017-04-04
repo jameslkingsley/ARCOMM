@@ -44,6 +44,7 @@
                 data: form.serialize(),
                 success: function(data) {
                     $('.mission-notes-list').append(data);
+                    $('#mission-notes-empty').remove();
                     form[0].reset();
                 }
             });
@@ -72,7 +73,7 @@
 
     <div class="mission-notes-list">
         @if ($mission->notes->isEmpty())
-            <p class="m0">Submit notes back to the mission maker on how to improve their mission.</p>
+            <p class="m0" id="mission-notes-empty">Submit notes back to the mission maker on how to improve their mission.</p>
         @else
             @foreach ($mission->notes as $note)
                 @include('missions.notes.item', ['note' => $note])
