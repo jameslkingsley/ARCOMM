@@ -3,27 +3,6 @@
     use App\Models\Missions\Mission;
 @endphp
 
-<script>
-    $(document).ready(function(e) {
-        $('.mission-item').click(function(event) {
-            event.preventDefault();
-
-            var caller = $(this);
-            var id = caller.data('id');
-
-            if (caller.hasClass('spinner')) {
-                return;
-            }
-
-            caller.missionSpinner(true);
-
-            openMission(id, function() {
-                caller.missionSpinner(false);
-            });
-        });
-    });
-</script>
-
 @php
     $myMissions = auth()->user()->missions();
     $nextOperation = Operation::nextWeek();

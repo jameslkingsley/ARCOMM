@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Permissions\PermissionUser;
 use App\Models\Permissions\Permission;
 use App\Models\Missions\Mission;
+use App\Notifications\MissionCommentAdded;
 use App\Models\Portal\SteamAPI;
 use Steam;
 use Auth;
@@ -124,5 +125,19 @@ class User extends Authenticatable implements HasMediaConversions
                 ->where('permission_id', $permission->id)
                 ->first()
         );
+    }
+
+    /**
+     * Gets unread mission comment notifications for the user.
+     *
+     * @return Collection
+     */
+    public function missionNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return $item->type == MissionCommentAdded::class;
+        });
+
+        return $filtered;
     }
 }

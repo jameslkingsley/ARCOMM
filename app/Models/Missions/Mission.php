@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Missions\MissionComment;
+use App\Models\Missions\MissionNote;
+use App\Notifications\MissionNoteAdded;
+use App\Notifications\MissionCommentAdded;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
@@ -152,6 +155,16 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets the full mission URL.
+     *
+     * @return string
+     */
+    public function url()
+    {
+        return url("/hub/missions/{$this->id}");
+    }
+
+    /**
      * Checks whether the mission belongs to the authenticated user.
      *
      * @return boolean
@@ -169,6 +182,16 @@ class Mission extends Model implements HasMediaConversions
     public function comments()
     {
         return $this->hasMany(MissionComment::class);
+    }
+
+    /**
+     * Gets all notes for the mission.
+     *
+     * @return Collection App\Models\Missions\MissionNote
+     */
+    public function notes()
+    {
+        return $this->hasMany(MissionNote::class);
     }
 
     /**
@@ -893,5 +916,37 @@ class Mission extends Model implements HasMediaConversions
         }
 
         return 'None';
+    }
+
+    /**
+     * Gets the mission note notifications.
+     *
+     * @return Collection
+     */
+    public function noteNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionNoteAdded::class &&
+                $item->data['note']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission comments notifications.
+     *
+     * @return Collection
+     */
+    public function commentNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
     }
 }

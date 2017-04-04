@@ -3,6 +3,8 @@
 @import "node_modules/magnific-popup/dist/magnific-popup";
 @import "node_modules/font-awesome/css/font-awesome";
 
+@import "mission-notes";
+
 body {
     background: $body-bg;
     font-family: $font-family;
@@ -1510,4 +1512,15 @@ header .nav .nav-link.active {
             margin-right: 10px;
         }
     }
+}
+
+.subnav .subnav-link .label {
+    float: right;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    background: white;
+    color: black;
+    margin-top: 25px;
+    padding: 0 10px;
 }

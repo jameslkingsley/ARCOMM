@@ -101,6 +101,13 @@ Route::group(['middleware' => 'member'], function() {
     ]);
 });
 
+//--- Notes
+Route::group(['middleware' => 'permission:mission:notes'], function() {
+    Route::get('/hub/missions/{mission}/notes/read-notifications', 'Missions\NoteController@readNotifications');
+    Route::resource('/hub/missions/{mission}/notes', 'Missions\NoteController');
+});
+
+//--- Users
 Route::group(['middleware' => 'permission:users:all'], function() {
     Route::resource('/hub/users', 'Users\UserController');
 });

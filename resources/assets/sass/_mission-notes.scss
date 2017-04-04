@@ -1,0 +1,156 @@
+.mission-notes-trigger {
+    height: 30px;
+    font-weight: 900;
+    font-size: 14px;
+    color: white !important;
+    text-transform: uppercase;
+    padding-left: 0;
+    margin-top: 15px;
+    margin-left: 10px;
+    float: right;
+    text-align: center;
+    line-height: 30px;
+    padding: 0 10px;
+    background: #a0b7c3;
+    border-radius: 3px;
+    transition: all .15s ease;
+    position: relative;
+
+    &.open {
+        background: #111;
+        height: 45px;
+        border-radius: 3px 3px 0 0;
+        padding: 0 20px;
+        font-size: 18px;
+        line-height: 45px;
+        transition: all .15s ease;
+
+        .mission-notes-trigger-count {
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+        }
+    }
+
+    .mission-notes-trigger-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: $brand-primary;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        color: white;
+        text-align: center;
+        line-height: 22px;
+        font-size: 14px !important;
+        transition: all .15s ease;
+    }
+}
+
+.mission-notes {
+    position: absolute;
+    right: 50px;
+    background: #111;
+    color: white;
+    padding: 3rem;
+    top: 60px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.15);
+    width: 400px;
+    display: none;
+    border-radius: 0 0 3px 3px;
+
+    h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .mission-notes-submission {
+        #mission-notes-form {
+            input {
+                border: 1px solid #CCC;
+                color: white;
+                font-size: 14px;
+
+                &::-webkit-input-placeholder {
+                    color: #FFF;
+                }
+
+                &:-moz-placeholder {
+                    color: #FFF;
+                }
+
+                &::-moz-placeholder {
+                    color: #FFF;
+                }
+
+                &:-ms-input-placeholder {
+                    color: #FFF;
+                }
+            }
+        }
+    }
+
+    .mission-notes-list {
+        float: left;
+        width: 100%;
+        margin: 20px 0;
+        padding-right: 10px;
+        overflow-y: scroll;
+        max-height: 600px;
+
+        &::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .mission-notes-item {
+            float: left;
+            width: 100%;
+            margin-bottom: 1rem;
+
+            .avatar {
+                float: left;
+                width: 30px;
+                height: 30px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border-radius: 100%;
+            }
+
+            .username {
+                float: left;
+                margin-left: 10px;
+                font-weight: 600;
+                font-size: 14px;
+                height: 30px;
+                line-height: 30px;
+            }
+
+            .timestamp {
+                float: right;
+                font-size: 12px;
+                height: 30px;
+                line-height: 30px;
+                opacity: .15;
+
+                a {
+                    color: white !important;
+                    text-decoration: none !important;
+                }
+            }
+
+            .text {
+                float: left;
+                width: 100%;
+                padding-left: 40px;
+                font-size: 14px;
+                margin-top: -5px;
+            }
+        }
+    }
+}

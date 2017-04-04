@@ -89,6 +89,11 @@ class MissionController extends Controller
      */
     public function show(Request $request, Mission $mission)
     {
+        // Mark comment notifications as read
+        foreach ($mission->commentNotifications() as $notification) {
+            $notification->markAsRead();
+        }
+
         if (!$request->ajax()) {
             return view('missions.index', compact('mission'));
         } else {
