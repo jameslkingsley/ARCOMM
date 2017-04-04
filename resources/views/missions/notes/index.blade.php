@@ -42,6 +42,9 @@
                 type: 'POST',
                 url: '{{ url('/hub/missions/'.$mission->id.'/notes') }}',
                 data: form.serialize(),
+                beforeSend: function() {
+                    $('*').blur();
+                },
                 success: function(data) {
                     $('.mission-notes-list').append(data);
                     $('#mission-notes-empty').remove();
