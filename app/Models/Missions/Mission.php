@@ -345,6 +345,10 @@ class Mission extends Model implements HasMediaConversions
     {
         $path_to_file = ($format == 'pbo') ? $this->cloud_pbo : $this->cloud_zip;
 
+        if (strlen($path_to_file) == 0) {
+            $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
+        }
+
         $command = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ?
             'gsutil ' :
             '/usr/bin/python /usr/lib/google-cloud-sdk/bin/bootstrapping/gsutil.py ';
