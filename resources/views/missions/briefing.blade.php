@@ -51,8 +51,18 @@
 @foreach ($mission->briefing($faction) as $subject)
     <h4 class="mb-0">{{ $subject->title }}</h4>
 
-    @foreach ($subject->paragraphs as $paragraph)
-        <p>{!! $paragraph !!}</p>
+    @foreach ($subject->paragraphs as $index => $paragraph)
+        @if (starts_with($paragraph, '-'))
+            <p style="{{
+                    (($index + 1) != sizeof($subject->paragraphs)) ?
+                    'margin: 0 !important;' :
+                    'margin-bottom: 20px !important'
+                }}">
+                {!! $paragraph !!}
+            </p>
+        @else
+            <p>{!! $paragraph !!}</p>
+        @endif
     @endforeach
 @endforeach
 
