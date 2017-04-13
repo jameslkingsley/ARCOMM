@@ -343,7 +343,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function download($format = 'pbo')
     {
-        $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
+        $path_to_file = ($format == 'pbo') ? $this->cloud_pbo : $this->cloud_zip;
 
         $command = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ?
             'gsutil ' :
@@ -534,6 +534,8 @@ class Mission extends Model implements HasMediaConversions
             file_get_contents(storage_path("app/{$this->pbo_path}"))
         );
 
+        $this->cloud_pbo = $qualified_pbo;
+
         // Mission ZIP
         $files = glob("{$unpacked}/*");
         $name = $this->exportedName('zip');
@@ -541,11 +543,14 @@ class Mission extends Model implements HasMediaConversions
 
         $zip = new \Chumper\Zipper\Zipper;
         $zip->make("downloads/{$path}")->add($unpacked)->close();
+        $qualified_zip = "missions/{$this->user_id}/{$this->id}/{$name}";
 
         Storage::disk('gcs')->put(
-            "missions/{$this->user_id}/{$this->id}/{$name}",
+            $qualified_zip,
             file_get_contents(public_path("downloads/{$path}"))
         );
+
+        $this->cloud_zip = $qualified_zip;
 
         if (file_exists(public_path("downloads/{$path}"))) {
             unlink(public_path("downloads/{$path}"));
