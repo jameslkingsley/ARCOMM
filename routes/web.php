@@ -84,6 +84,10 @@ Route::group(['middleware' => 'member'], function() {
     // Downlaod
     Route::get('/hub/missions/{mission}/download/{format}', 'Missions\MissionController@download');
 
+    // Notes
+    Route::get('/hub/missions/{mission}/notes/read-notifications', 'Missions\NoteController@readNotifications');
+    Route::resource('/hub/missions/{mission}/notes', 'Missions\NoteController');
+
     Route::resource('/hub/missions', 'Missions\MissionController', [
         'except' => ['create', 'edit']
     ]);
@@ -99,12 +103,6 @@ Route::group(['middleware' => 'member'], function() {
     Route::resource('/hub', 'HubController', [
         'only' => ['index']
     ]);
-});
-
-//--- Notes
-Route::group(['middleware' => 'permission:mission:notes'], function() {
-    Route::get('/hub/missions/{mission}/notes/read-notifications', 'Missions\NoteController@readNotifications');
-    Route::resource('/hub/missions/{mission}/notes', 'Missions\NoteController');
 });
 
 //--- Users
