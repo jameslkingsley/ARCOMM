@@ -21,6 +21,12 @@
             <span class="mission-item-verified" title="Not verified yet"></span>
         @endif
 
+        @unless ($mission->unreadComments()->isEmpty())
+            <span class="mission-notifications" title="New after-action reports available!">
+                {{ $mission->unreadComments()->count() }}
+            </span>
+        @endunless
+
         {{-- @if (!isset($ignore_new_banner) || !$ignore_new_banner)
             @if ($mission->isNew())
                 <span class="mission-item-new-banner">

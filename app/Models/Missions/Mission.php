@@ -92,6 +92,24 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets the unread comments on the mission.
+     *
+     * @return Collection App\Models\Missions\MissionComment
+     */
+    public function unreadComments()
+    {
+        $mission = $this;
+
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) use($mission) {
+            return
+                $item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $mission->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
      * Gets all past missions (last played is in past and not null).
      *
      * @return Collection App\Models\Missions\Mission
