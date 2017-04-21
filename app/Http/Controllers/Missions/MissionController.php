@@ -265,4 +265,18 @@ class MissionController extends Controller
     {
         return $mission->download($format);
     }
+
+    /**
+     * Shows the given panel for the given mission.
+     *
+     * @return any
+     */
+    public function panel(Request $request, Mission $mission, $panel)
+    {
+        if (!$request->ajax()) {
+            return view('missions.show', compact('mission', 'panel'));
+        } else {
+            return view('missions.show.' . strtolower($panel), compact('mission'));
+        }
+    }
 }

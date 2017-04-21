@@ -4,38 +4,63 @@
     Users
 @endsection
 
+@section('header-color')
+    primary
+@endsection
+
 @section('head')
     <script>
         $(document).ready(function(e) {
-            $(document).on('click', '#users-content ul li a', function(event) {
+            $(document).on('click', '#users-content .list-group-item', function(event) {
                 var caller = $(this);
 
                 $.ajax({
                     type: 'GET',
                     url: '{{ url('/hub/users') }}/' + caller.data('id'),
                     success: function(data) {
-                        openPanel(data);
+                        $('.user-permissions-modal').find('.modal-body').html(data);
+                        $('.user-permissions-modal').modal('show');
                     }
                 });
 
+                event.preventDefault();
+            });
+
+            $('#user-permissions-modal-submit').click(function(event) {
+                $('#permission-form').submit();
                 event.preventDefault();
             });
         });
     </script>
 @endsection
 
-@section('subnav')
-    <a
-        href="javascript:void(0)"
-        class="subnav-link active"
-    >Permissions</a>
-@endsection
-
-@section('controls')
-@endsection
-
 @section('content')
-    <div id="users-content">
-        @include('user.admin.list', ['users' => $users])
+    <div class="container" id="users-content">
+        <h5 class="m-t-0 m-b-2">{{ $users->count() }} Users</h5>
+
+        <div class="card">
+            @include('user.admin.list', ['users' => $users])
+        </div>
+    </div>
+
+    <div class="modal fade user-permissions-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <h4 class="modal-title">Edit User Permissions</h4>
+                </div>
+
+                <div class="modal-body"></div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="user-permissions-modal-submit">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

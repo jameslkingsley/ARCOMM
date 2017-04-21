@@ -45,7 +45,7 @@ body {
 }
 
 main {
-    padding: 3rem;
+    padding: 3rem 3rem 0 3rem;
 
     @media screen and (max-width: 768px) {
         padding: 1rem;
@@ -54,4 +54,31 @@ main {
     @media screen and (max-width: 512px) {
         padding: .5rem;
     }
+}
+
+.text-muted {
+    color: rgba(0,0,0,0.5) !important;
+}
+
+.mfp-figure:after {
+    box-shadow: none;
+}
+
+.mfp-bg {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.mfp-arrow-left:before {
+    border-right: 27px solid transparent;
+}
+
+.mfp-arrow-right:before {
+    border-left: 27px solid transparent;
+}
+
+.operations-mission-browser {
+    padding-top: 5rem;
+    border-top: 1px solid #ddd;
+    margin-top: 5rem;
 }

@@ -1,22 +1,18 @@
-<div class="operation-item" data-id="{{ $operation->id }}">
-    @if ($operation->isNextToRun())
-        <span class="operation-item-next-to-run"></span>
-    @endif
-
-    <span class="operation-item-date">
+<tr class="operation-item {{ (!$operation->isNextToRun()) ?: 'table-active' }}" data-id="{{ $operation->id }}">
+    <td>
         {{ $operation->starts_at->format('jS F') }}
-    </span>
+    </td>
 
-    <span class="operation-item-time">
+    <td>
         {{ $operation->starts_at->format('H:i') }}
-    </span>
+    </td>
 
-    <div class="operation-item-missions">
-        @for ($i = 1; $i <= 3; $i++)
-            @php
-                $item = \App\Models\Operations\OperationMission::where('play_order', $i)->where('operation_id', $operation->id)->first();
-            @endphp
+    @for ($i = 1; $i <= 3; $i++)
+        @php
+            $item = \App\Models\Operations\OperationMission::where('play_order', $i)->where('operation_id', $operation->id)->first();
+        @endphp
 
+        <td>
             @if (is_null($item))
                 <a
                     href="javascript:void(0)"
@@ -36,16 +32,16 @@
                     <b>{{ $item->mission->display_name }}</b>
                 </a>
             @endif
-        @endfor
-    </div>
+        </td>
+    @endfor
 
-    <div class="operation-item-controls">
-        <a href="javascript:void(0)" class="btn hub-btn btn-primary pull-right ml-1 oc-delete" data-id="{{ $operation->id }}"><i class="fa fa-trash"></i></a>
+    <td>
+        <a href="javascript:void(0)" class="btn btn-primary pull-right m-l-1 oc-delete" data-id="{{ $operation->id }}"><i class="fa fa-trash"></i></a>
 
         {{-- @if (!$operation->deployed)
             <a href="javascript:void(0)" class="btn hub-btn btn-primary pull-right oc-deploy" data-id="{{ $operation->id }}">Deploy</a>
         @else
             <a href="javascript:void(0)" class="btn hub-btn btn-primary pull-right oc-deployed">Deployed</a>
         @endif --}}
-    </div>
-</div>
+    </td>
+</tr>

@@ -42,9 +42,16 @@ class NoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Mission $mission)
     {
-        //
+        $this->readNotifications($request, $mission);
+
+        if (!$request->ajax()) {
+            $panel = 'notes';
+            return view('missions.show', compact('mission', 'panel'));
+        } else {
+            return view('missions.show.notes', compact('mission'));
+        }
     }
 
     /**

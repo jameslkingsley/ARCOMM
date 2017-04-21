@@ -88,6 +88,9 @@ Route::group(['middleware' => 'member'], function() {
     Route::get('/hub/missions/{mission}/notes/read-notifications', 'Missions\NoteController@readNotifications');
     Route::resource('/hub/missions/{mission}/notes', 'Missions\NoteController');
 
+    // Panels
+    Route::get('/hub/missions/{mission}/{panel}', 'Missions\MissionController@panel');
+
     Route::resource('/hub/missions', 'Missions\MissionController', [
         'except' => ['create', 'edit']
     ]);

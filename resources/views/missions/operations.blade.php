@@ -66,7 +66,7 @@
                 url: '{{ url('/hub/missions/operations/create-operation') }}',
                 data: $('#create-operation-form').serialize(),
                 success: function(data) {
-                    $('.operations').prepend(data);
+                    $('.operation-rows').prepend(data);
                 }
             });
 
@@ -97,19 +97,32 @@
 @endphp
 
 <div class="large-panel-content full-page">
-    <h1 class="mt-0 mb-5">
-        Operations
-
-        <form id="create-operation-form" class="pull-right">
-            <input type="submit" value="Create Operation" class="btn hub-btn btn-primary pull-right ml-1">
-            <input type="datetime-local" name="starts_at" id="create-operation-starts-at">
+    <div class="pull-left w-100 mb-5">
+        <form id="create-operation-form" class="pull-right form-inline">
+            <button type="submit" class="btn btn-raised btn-primary pull-right">Create Operation</button>
+            <input type="datetime-local" class="form-control m-r-2" name="starts_at" {{-- style="margin-top: -20px;margin-right: 1rem;" --}}>
         </form>
-    </h1>
+    </div>
 
     <div class="operations">
-        @foreach (Operation::orderBy('starts_at', 'desc')->get() as $operation)
-            @include('missions.operations.item', ['operation' => $operation])
-        @endforeach
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="150">Date</th>
+                    <th width="100">Time</th>
+                    <th>First</th>
+                    <th>Second</th>
+                    <th>Third</th>
+                    <th width="100">&nbsp;</th>
+                </tr>
+            </thead>
+
+            <tbody class="operation-rows">
+                @foreach (Operation::orderBy('starts_at', 'desc')->get() as $operation)
+                    @include('missions.operations.item', ['operation' => $operation])
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 

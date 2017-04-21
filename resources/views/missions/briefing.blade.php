@@ -30,11 +30,10 @@
         });
     </script>
 
-    <div class="pull-left full-width">
+    <div class="pull-left w-100">
         <a
             href="javascript:void(0)"
-            class="btn hub-btn btn-primary pull-right"
-            style="margin-top: -50px;padding: 5px 10px;"
+            class="btn btn-primary pull-right m-t-3"
             id="lock-briefing"
             data-faction="{{ $faction }}"
             data-id="{{ $mission->id }}"
@@ -45,11 +44,13 @@
 @endif
 
 @if ($mission->briefingLocked($faction))
-    <p class="mt-0 text-muted">This briefing is locked. Only the mission maker and admins can see it.</p>
+    <div class="alert alert-warning pull-left w-100 m-b-3 m-t-2" role="alert">
+        <strong>This briefing is locked!</strong> Only the mission maker and testers can see it.
+    </div>
 @endif
 
 @foreach ($mission->briefing($faction) as $subject)
-    <h4 class="mb-0">{{ $subject->title }}</h4>
+    <h5 class="m-b-0">{{ $subject->title }}</h5>
 
     @foreach ($subject->paragraphs as $index => $paragraph)
         @if (starts_with($paragraph, '-'))
@@ -67,7 +68,7 @@
 @endforeach
 
 @if (strtolower($faction) != 'civilian')
-    <h4 class="mb-0">Comm Plan &mdash; {{ $mission->acreOverview($faction) }}</h4>
+    <h5 class="m-b-0">Comm Plan &mdash; {{ $mission->acreOverview($faction) }}</h5>
 
     <span class="text-muted" style="color:#bd2c2c"><i>Comm plan does not indicate available units.</i></span><br />
 
