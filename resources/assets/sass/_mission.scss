@@ -1,0 +1,175 @@
+$mission-title-font-sizes: (
+    null: 12px,
+    480px: 14px,
+    640px: 16px,
+    1024px: 18px
+);
+
+$mission-subtitle-font-sizes: (
+    null: 8px,
+    480px: 9px,
+    640px: 10px,
+    1024px: 11px
+);
+
+$mission-summary-font-sizes: (
+    null: 9px,
+    480px: 10px,
+    640px: 11px,
+    1024px: 12px
+);
+
+.mission-section-heading {
+    @include font-size($mission-title-font-sizes);
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: .66;
+    padding: 0 .5rem;
+    margin: 0 0 .5rem 0;
+}
+
+.missions-pinned-headers h2 {
+    @include font-size($mission-title-font-sizes);
+    float: left;
+    width: calc(50% - .5rem);
+    padding: 0 .5rem;
+    margin: 0 0 .5rem 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: .66;
+}
+
+.mission-group {
+    padding: 0;
+    display: inline-block;
+    margin-bottom: 2.5rem;
+
+    @media screen and (max-width: 1024px) {
+        display: block;
+        float: left;
+        width: 100%;
+    }
+
+    &.mission-group-center {
+        text-align: center;
+    }
+
+    .mission-item {
+        @include background-image-defaults();
+        background-position: center -3vw;
+        display: inline-block;
+        width: calc(16.66vw - 2.5rem);
+        height: calc(16.66vw - 2.5rem);
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+        position: relative;
+        text-decoration: none !important;
+        color: white !important;
+        background-color: #ffffff;
+        border-radius: 3px;
+        text-align: left;
+        margin: .5rem;
+
+        @media screen and (max-width: 1024px) {
+            width: calc(33.33vw - 4rem);
+            height: calc(33.33vw - 4rem);
+        }
+
+        @media screen and (max-width: 768px) {
+            width: 100%;
+        }
+
+        .mission-item-pulse {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+        }
+
+        .mission-item-inner {
+            padding: 1rem;
+            background: $brand-primary;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: calc(100% / 1.618);
+            border-radius: 0 0 3px 3px;
+
+            &.coop {
+                background: $brand-info;
+            }
+
+            &.adversarial {
+                background: $brand-danger;
+            }
+
+            &.preop {
+                background: $brand-success;
+            }
+
+            .mission-item-title {
+                @include font-size($mission-title-font-sizes);
+                margin: 0;
+                font-weight: 500;
+                position: absolute;
+                left: 1rem;
+                right: 1rem;
+                top: 1rem;
+                color: inherit !important;
+            }
+
+            .mission-item-author {
+                @include font-size($mission-subtitle-font-sizes);
+                margin: 0;
+                font-weight: 100;
+                position: absolute;
+                left: 1rem;
+                right: 1rem;
+                top: 2.5rem;
+                color: inherit !important;
+            }
+
+            .mission-item-summary {
+                @include font-size($mission-summary-font-sizes);
+                margin: 0;
+                font-weight: 100;
+                position: absolute;
+                left: 1rem;
+                right: 1rem;
+                top: 3.5rem;
+                color: inherit !important;
+
+                @media screen and (max-width: 1900px) {
+                    display: none;
+                }
+            }
+
+            .mission-item-mode {
+                @include font-size($mission-subtitle-font-sizes);
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                text-transform: uppercase;
+                border: 1px solid white;
+                padding: .15rem .3rem;
+                border-radius: 2px;
+                color: white;
+                line-height: 15px;
+            }
+
+            .mission-item-verified {
+                position: absolute;
+                top: -1.25rem;
+                right: 0;
+                height: 1.25rem;
+                left: 0;
+                background: $brand-warning;
+                text-align: center;
+                color: white;
+                font-size: 12px;
+                text-transform: uppercase;
+                font-weight: 500;
+                line-height: 1.25rem;
+            }
+        }
+    }
+}

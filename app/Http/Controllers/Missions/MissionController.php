@@ -95,7 +95,7 @@ class MissionController extends Controller
         }
 
         if (!$request->ajax()) {
-            return view('missions.index', compact('mission'));
+            return view('missions.show', compact('mission'));
         } else {
             return view('missions.show', compact('mission'));
         }

@@ -1,98 +1,80 @@
 <!DOCTYPE html>
+
 <html lang="en">
     <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <title>
             @yield('title')
-            &mdash;
+            —
             {{ env('SITE_NAME', 'ARCHUB') }}
         </title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
-        <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
-        <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+        <link href="{{ url('/images/favicon.png') }}" rel="icon" type="image/png"></link>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="{{ url('/css/bootstrap.min.css') }}">
+        <link href="{{ mix('/css/app.css') }}" rel="stylesheet"></link>
+
+        <script src="{{ mix('/js/app.js') }}" type="text/javascript"></script>
+
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+            ]) !!};
+        </script>
 
         @yield('head')
     </head>
 
-    <body>
-        <header>
-            @yield('header')
+    <body class="bd-docs">
+        <div
+            class="banner @yield('banner-classes')"
+            style="background-image: url(@yield('banner'))">
+            <div class="banner-fade-top"></div>
+            <div class="banner-fade-bottom"></div>
+        </div>
 
-            <script>
-                $(document).ready(function(e) {
-                    var activeNav = $('.nav-link[data-page="{{ (empty(Request::segment(2))) ? "missions" : Request::segment(2) }}"]');
-                    activeNav.addClass('active');
-                    $('.subnav')
-                        .css('padding-top', activeNav.offset().top)
-                        .animate({
-                            'left': '80px'
-                        }, 500, 'easeInOutCirc');
-                });
-            </script>
+        <header
+            @if (trim($__env->yieldContent('header-color')))
+                class="header-colored header-{{ trim($__env->yieldContent('header-color')) }}"
+            @endif>
 
-            <div class="nav">
-                <a href="{{ url('/') }}" class="nav-link nav-link-disabled">
-                    <i class="brand-logo"></i>
-                    <span class="brand-text"></span>
-                </a>
+            <nav class="navbar navbar-light">
+                <div class="nav navbar-nav w-100">
+                    <div class="pull-left">
+                        @include('nav.brand')
+                        @include('nav.pages')
+                        @yield('nav-left')
+                    </div>
 
-                {{-- @if (auth()->user()->hasPermission('apps:all'))
-                    <a href="{{ url('/hub/applications') }}" class="nav-link" data-page="applications">
-                        <i class="glyphicon glyphicon-inbox"></i>
-                        <span>Applications</span>
-                    </a>
-                @endif --}}
+                    <div class="pull-right">
+                        @yield('nav-right')
+                        @include('nav.notifications')
+                        @include('nav.user')
+                    </div>
+                </div>
+            </nav>
 
-                <a href="{{ url('/hub/missions') }}" class="nav-link" data-page="missions">
-                    <i class="fa fa-map"></i>
-                    <span>Missions</span>
-                </a>
-
-                {{-- <a href="{{ url('/hub/guides') }}" class="nav-link" data-page="guides">
-                    <i class="fa fa-book"></i>
-                    <span>Guides</span>
-                </a> --}}
-
-                @if (auth()->user()->hasPermission('users:all'))
-                    <a href="{{ url('/hub/users') }}" class="nav-link" data-page="users">
-                        <i class="fa fa-user"></i>
-                        <span>Users</span>
-                    </a>
-                @endif
-
-                <a href="{{ url('/hub/settings') }}" class="nav-link" data-page="settings">
-                    <i class="fa fa-cog"></i>
-                    <span>Settings</span>
-                </a>
-
-                <a href="https://www.nfoservers.com/donate.pl?force_recipient=1&recipient=fbidude21@yahoo.com" target="_newtab" class="nav-link">
-                    <i class="fa fa-usd"></i>
-                    <span>Donate</span>
-                </a>
-
-                @yield('nav')
-            </div>
+            @if (trim($__env->yieldContent('subnav')))
+                <div class="subnav">
+                    @yield('subnav')
+                </div>
+            @endif
         </header>
 
-        <main id="app">
-            <div class="subnav">
-                @yield('subnav')
-            </div>
-
-            <div class="archub-content">
-                <div class="controls">
-                    @yield('controls')
-                </div>
-
-                @yield('content')
-            </div>
+        <main>
+            @yield('content')
         </main>
 
-        <footer>
-            @yield('footer')
-        </footer>
+        <script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
 
-        @yield('scripts')
+        <script>
+            $(function() {
+                $('body').bootstrapMaterialDesign();
+            });
+        </script>
     </body>
 </html>

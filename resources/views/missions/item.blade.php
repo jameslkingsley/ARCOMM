@@ -1,38 +1,34 @@
 <a
     href="{{ url('/hub/missions/' . $mission->id) }}"
-    class="mission-item {{ (isset($classes)) ? $classes : '' }}"
+    class="mission-item ripple {{ (isset($classes)) ? $classes : '' }}"
     style="background-image: url({{ $mission->thumbnail() }})"
     data-id="{{ $mission->id }}">
 
-    <div class="mission-item-inner">
-        <span class="mission-item-title">
-            {{ $mission->display_name }}
-        </span>
+    @if (isset($pulse) && $pulse)
+        <span class="mission-item-pulse pulse"></span>
+    @endif
 
-        <span class="mission-item-author">
-            By {{ $mission->user->username }}
-        </span>
+    <div class="mission-item-inner {{ $mission->mode }}">
+        <h4 class="mission-item-title">
+            {{ $mission->display_name }}
+        </h4>
+
+        <h6 class="mission-item-author">
+            By {{ $mission->user->username }} on {{ $mission->map->display_name }}
+        </h6>
+
+        <p class="mission-item-summary">
+            @unless (strlen($mission->summary) == 0)
+                {{ str_limit($mission->summary, 80) }}
+            @endunless
+        </p>
 
         <span class="mission-item-mode mission-item-mode-{{ $mission->mode }}">
             {{ $mission->mode }}
         </span>
 
         @if (auth()->user()->hasPermission('mission:verification') && !$mission->verified)
-            <span class="mission-item-verified" title="Not verified yet"></span>
+            <span class="mission-item-verified">Not verified</span>
         @endif
-
-        @unless ($mission->unreadComments()->isEmpty())
-            <span class="mission-notifications" title="New after-action reports available!">
-                {{ $mission->unreadComments()->count() }}
-            </span>
-        @endunless
-
-        {{-- @if (!isset($ignore_new_banner) || !$ignore_new_banner)
-            @if ($mission->isNew())
-                <span class="mission-item-new-banner">
-                    New
-                </span>
-            @endif
-        @endif --}}
     </div>
 </a>

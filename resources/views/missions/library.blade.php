@@ -32,7 +32,7 @@
             @if (!$nextOperationMissions->isEmpty())
                 <ul class="mission-group mission-group-pinned mission-group-center">
                     @foreach ($nextOperationMissions as $item)
-                        @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned'])
+                        @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned', 'pulse' => true])
                     @endforeach
                 </ul>
             @else
