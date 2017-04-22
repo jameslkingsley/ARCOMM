@@ -35,8 +35,16 @@
                         });
                     });
                 </script>
-                
-                <a href="javascript:void(0)" class="dropdown-item" id="delete-mission">Delete</a>
+
+                @if (!$mission->existsInOperation() || auth()->user()->hasPermission('mission:delete'))
+                    <a
+                        href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
+                        class="dropdown-item"
+                        id="delete-mission"
+                        title="Deletes the mission and all of its media, comments and files">
+                        Delete
+                    </a>
+                @endif
             @endif
         </div>
     </li>
