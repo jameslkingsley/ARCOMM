@@ -12,9 +12,9 @@
         <span class="mission-comment-item-timestamp">
             {{ $comment->created_at->diffForHumans() }}
 
-            &nbsp;&nbsp;&middot;
-
             @if ($comment->isMine())
+                &nbsp;&nbsp;&middot;
+
                 <a href="javascript:void(0)" class="btn btn-sm m-a-0 mission-comment-control mission-comment-control-edit" data-id="{{ $comment->id }}" title="Edit">
                     <i class="fa fa-pencil"></i>
                 </a>
