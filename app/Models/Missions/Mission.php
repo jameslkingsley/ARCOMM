@@ -9,6 +9,7 @@ use App\Models\Missions\MissionComment;
 use App\Models\Missions\MissionNote;
 use App\Notifications\MissionNoteAdded;
 use App\Notifications\MissionCommentAdded;
+use App\Notifications\MissionVerified;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
@@ -89,6 +90,24 @@ class Mission extends Model implements HasMediaConversions
         $this->addMediaConversion('thumb')
             ->setManipulations(['w' => 384, 'h' => 384, 'fit' => 'crop'])
             ->performOnCollections('images');
+    }
+
+    /**
+     * Gets the unread comments on the mission.
+     *
+     * @return Collection App\Models\Missions\MissionComment
+     */
+    public function unreadComments()
+    {
+        $mission = $this;
+
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) use($mission) {
+            return
+                $item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $mission->id;
+        });
+
+        return $filtered;
     }
 
     /**
@@ -954,6 +973,22 @@ class Mission extends Model implements HasMediaConversions
             return
                 $item->type == MissionCommentAdded::class &&
                 $item->data['comment']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission verification notifications.
+     *
+     * @return Collection
+     */
+    public function verifiedNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionVerified::class &&
+                $item->data['mission']['id'] == $this->id;
         });
 
         return $filtered;

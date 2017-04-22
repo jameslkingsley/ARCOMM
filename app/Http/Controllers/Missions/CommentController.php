@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
 use App\Notifications\MissionCommentAdded;
+use App\Models\Portal\User;
+use Notification;
 
 class CommentController extends Controller
 {
@@ -50,6 +52,9 @@ class CommentController extends Controller
             $comment->save();
 
             $mission = Mission::findOrFail($request->mission_id);
+
+            $users = User::where('id', '!=', auth()->user()->id)->get();
+            Notification::send($users, new MissionCommentAdded($comment));
 
             if ($mission->user->id != auth()->user()->id) {
                 $mission->user->notify(new MissionCommentAdded($comment));

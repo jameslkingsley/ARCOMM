@@ -6,11 +6,12 @@
 
 // window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
+window.Tether = require('tether');
 // window.Vue = require('vue');
 // window.axios = require('axios');
 
 require('jquery-ui-bundle');
-require('bootstrap-sass');
+require('bootstrap');
 require('jquery.waitforimages');
 require('dropzone');
 require('magnific-popup');

@@ -4,6 +4,10 @@
     Settings
 @endsection
 
+@section('header-color')
+    primary
+@endsection
+
 @section('head')
     <script>
         $(document).ready(function(e) {
@@ -25,19 +29,8 @@
     </script>
 @endsection
 
-@section('subnav')
-    <a
-        href="javascript:void(0)"
-        data-panel="account"
-        class="subnav-link active"
-    >Account</a>
-@endsection
-
-@section('controls')
-@endsection
-
 @section('content')
-    <div id="settings-content">
+    <div class="container" id="settings-content">
         @include('user.settings.account')
     </div>
 @endsection

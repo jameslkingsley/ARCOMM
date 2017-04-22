@@ -12,7 +12,7 @@
                 url: '{{ url('/hub/users') }}',
                 data: form.serialize(),
                 success: function(data) {
-                    closePanel();
+                    $('.user-permissions-modal').modal('hide');
                 }
             });
 
@@ -25,24 +25,24 @@
     });
 </script>
 
-<div class="form-group permission-item" style="margin-bottom: 2rem">
-    <label>
-        <input type="checkbox" name="select_all" id="select_all">
+<div class="form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" name="select_all" id="select_all">
         Select All
     </label>
 </div>
 
-<hr style="border-color: #ddd" />
+<hr>
 
 <form id="permission-form">
     <input type="hidden" name="user_id" value="{{ $user->id }}">
 
     @foreach ($permissions as $permission)
-        <div class="form-group permission-item {{ ($permission->name == 'users:all' && $user->hasPermission($permission->name)) ? 'disabled' : '' }}">
-            <label>
+        <div class="form-check {{ ($permission->name == 'users:all' && $user->hasPermission($permission->name)) ? 'disabled' : '' }}">
+            <label class="form-check-label">
                 <input
+                    class="form-check-input permission-item-check"
                     type="checkbox"
-                    class="permission-item-check"
                     name="{{ $permission->name }}"
                     value="1"
                     @if ($user->hasPermission($permission->name))
@@ -52,10 +52,9 @@
                     @if ($permission->name == 'users:all' && $user->hasPermission($permission->name))
                         data-disabled="true"
                     @endif>
+
                 {{ $permission->name }}
             </label>
         </div>
     @endforeach
-
-    <input type="submit" value="Save Changes" class="btn hub-btn btn-primary pull-left mt-5">
 </form>

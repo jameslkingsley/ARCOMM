@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Helpers\ArmaConfig;
+use App\Notifications\MissionVerified;
+use App\Models\Portal\User;
+use Notification;
 use Storage;
 use Log;
 
@@ -77,7 +80,7 @@ class MissionController extends Controller
             // Delete local temp files
             Storage::deleteDirectory("missions/{$user->id}");
 
-            return $mission->id;
+            return $mission->url();
         }
     }
 
@@ -94,8 +97,13 @@ class MissionController extends Controller
             $notification->markAsRead();
         }
 
+        // Mark verified notifications as read
+        foreach ($mission->verifiedNotifications() as $notification) {
+            $notification->markAsRead();
+        }
+
         if (!$request->ajax()) {
-            return view('missions.index', compact('mission'));
+            return view('missions.show', compact('mission'));
         } else {
             return view('missions.show', compact('mission'));
         }
@@ -251,6 +259,19 @@ class MissionController extends Controller
 
         $mission->save();
 
+        if ($mission->verified) {
+            $users = User::all()->filter(function($user) use($mission) {
+                return
+                    $user->id != auth()->user()->id &&
+                    (
+                        $user->hasPermission('mission:verification') ||
+                        $user->id == $mission->user->id
+                    );
+            });
+
+            Notification::send($users, new MissionVerified($mission));
+        }
+
         $updated_by = auth()->user()->username;
 
         return "Verified by {$updated_by}";
@@ -264,5 +285,19 @@ class MissionController extends Controller
     public function download(Mission $mission, $format = 'pbo')
     {
         return $mission->download($format);
+    }
+
+    /**
+     * Shows the given panel for the given mission.
+     *
+     * @return any
+     */
+    public function panel(Request $request, Mission $mission, $panel)
+    {
+        if (!$request->ajax()) {
+            return view('missions.show', compact('mission', 'panel'));
+        } else {
+            return view('missions.show.' . strtolower($panel), compact('mission'));
+        }
     }
 }
