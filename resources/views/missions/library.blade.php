@@ -30,18 +30,18 @@
     <div class="missions-pinned-groups">
         @if ($nextOperation)
             @if (!$nextOperationMissions->isEmpty())
-                <ul class="mission-group mission-group-pinned mission-group-center">
+                <ul class="mission-group mission-group-pinned">
                     @foreach ($nextOperationMissions as $item)
                         @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned', 'pulse' => true])
                     @endforeach
                 </ul>
             @else
-                <ul class="mission-group mission-group-pinned mission-group-center" style="height: 252px"></ul>
+                <ul class="mission-group mission-group-pinned" style="height: 252px"></ul>
             @endif
         @endif
 
         @if ($prevOperation)
-            <ul class="mission-group mission-group-pinned mission-group-center">
+            <ul class="mission-group mission-group-pinned">
                 @foreach ($prevOperation->missions as $item)
                     @include('missions.item', ['mission' => $item->mission, 'ignore_new_banner' => true])
                 @endforeach
