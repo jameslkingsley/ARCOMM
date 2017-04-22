@@ -140,4 +140,21 @@ class User extends Authenticatable implements HasMediaConversions
 
         return $filtered;
     }
+
+    /**
+     * Gets all mission testers.
+     *
+     * @return Collection App\Models\Portal\User
+     */
+    public function missionTesters($ignore_auth = true)
+    {
+        return static::all()->filter(function($user) {
+            if ($ignore_auth) {
+                return $user->hasPermission('mission:notes');
+            } else {
+                // TODO
+                return $user->hasPermission('mission:notes');
+            }
+        });
+    }
 }

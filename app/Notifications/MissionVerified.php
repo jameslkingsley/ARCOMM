@@ -108,4 +108,19 @@ class MissionVerified extends Notification
 
         return $sender->avatar;
     }
+
+    /**
+     * Checks whether the notification still exists.
+     *
+     * @return boolean
+     */
+    public function exists($notification)
+    {
+        $mission = Mission::find($notification->data['mission']['id']);
+        $sender = $mission->verifiedByUser();
+
+        if ($mission && $sender) return true;
+
+        return false;
+    }
 }

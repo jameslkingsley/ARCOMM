@@ -108,4 +108,20 @@ class MissionCommentAdded extends Notification
 
         return $sender->avatar;
     }
+
+    /**
+     * Checks whether the notification still exists.
+     *
+     * @return boolean
+     */
+    public function exists($notification)
+    {
+        $sender = User::find($notification->data['comment']['user_id']);
+        $comment = MissionComment::find($notification->data['comment']['id']);
+        $mission = Mission::find($notification->data['comment']['mission_id']);
+
+        if ($mission && $comment && $sender) return true;
+
+        return false;
+    }
 }

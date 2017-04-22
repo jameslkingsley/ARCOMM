@@ -108,4 +108,20 @@ class MissionNoteAdded extends Notification
 
         return $sender->avatar;
     }
+
+    /**
+     * Checks whether the notification still exists.
+     *
+     * @return boolean
+     */
+    public function exists($notification)
+    {
+        $sender = User::find($notification->data['note']['user_id']);
+        $note = MissionNote::find($notification->data['note']['id']);
+        $mission = Mission::find($notification->data['note']['mission_id']);
+
+        if ($mission && $note && $sender) return true;
+
+        return false;
+    }
 }
