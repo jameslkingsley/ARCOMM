@@ -39,10 +39,15 @@ $mission-summary-font-sizes: (
     opacity: .66;
 }
 
+.mission-section-label {
+    padding: 0 .5rem;
+}
+
 .mission-group {
     padding: 0;
     display: inline-block;
     margin-bottom: 2.5rem;
+    min-width: calc(50% - .75rem);
 
     @media screen and (max-width: 1024px) {
         display: block;
