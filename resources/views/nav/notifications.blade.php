@@ -1,5 +1,7 @@
 @php
-    $notifications = auth()->user()->unreadNotifications;
+    $notifications = auth()->user()->unreadNotifications->filter(function($notification) {
+        return $notification->type::exists($notification);
+    });
 @endphp
 
 <li id="nav-notifications" class="nav-item dropdown">
