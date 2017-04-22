@@ -80,7 +80,7 @@ class MissionCommentAdded extends Notification
     {
         $mission = Mission::findOrFail($notification->data['comment']['mission_id']);
 
-        return "{$mission->url()}/aar";
+        return "{$mission->url()}/aar#comment-{$notification->data['comment']['id']}";
     }
 
     /**

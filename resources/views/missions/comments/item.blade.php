@@ -1,5 +1,5 @@
 @if ($comment->published)
-    <div class="mission-comment-item">
+    <div id="comment-{{ $comment->id }}" class="mission-comment-item">
         <span
             class="mission-comment-item-avatar"
             style="background-image: url({{ $comment->user->avatar }})">
