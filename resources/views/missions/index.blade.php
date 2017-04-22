@@ -36,14 +36,11 @@
                 acceptedFiles: '',
                 addedfile: function(file) {},
                 sending: function() {
-                    $('#mission-upload-btn').prepend('<i class="fa fa-spin fa-circle-o-notch"></i>');
+                    $('#mission-upload-btn').prepend('<i class="fa fa-spin fa-refresh m-r-1"></i>');
                 },
                 success: function(file, data) {
                     $('#mission-upload-btn').find('i.fa').remove();
-
-                    openMission(data.trim(), function() {
-                        $('.subnav-link[data-panel="library"]').click();
-                    });
+                    window.location = data.trim();
                 },
                 error: function(file, message) {
                     $('#mission-upload-btn').find('i.fa').remove();

@@ -25,7 +25,7 @@
                     success: function(data) {
                         $('#submit-mission-comment input[name="id"]').val(id);
                         $('#submit-mission-comment textarea[name="text"]').val(data);
-                        $('#submit-mission-comment input[type="submit"]').val('Save Changes');
+                        $('#submit-mission-comment button[type="submit"]').html('Save Changes');
                         $('#submit-mission-comment #save-mission-comment').hide();
                         $('#submit-mission-comment textarea[name="text"]').focus();
                         $('.mission-container').scrollTop(10000);
@@ -55,7 +55,7 @@
 
             $('#submit-mission-comment').submit(function(event) {
                 $('#submit-mission-comment input[name="published"]').val(1);
-                $('#submit-mission-comment input[type="submit"]').prop('disabled', true);
+                $('#submit-mission-comment button[type="submit"]').prop('disabled', true);
 
                 $.ajax({
                     type: 'POST',
@@ -64,8 +64,8 @@
                     success: function(data) {
                         $('#submit-mission-comment input[name="id"]').val(-1);
                         $('#submit-mission-comment textarea[name="text"]').val('');
-                        $('#submit-mission-comment input[type="submit"]').val('Publish');
-                        $('#submit-mission-comment input[type="submit"]').prop('disabled', false);
+                        $('#submit-mission-comment button[type="submit"]').html('Publish');
+                        $('#submit-mission-comment button[type="submit"]').prop('disabled', false);
                         $('#submit-mission-comment #save-mission-comment').show();
 
                         $.ajax({
@@ -77,7 +77,7 @@
                         });
                     },
                     error: function() {
-                        $('#submit-mission-comment input[type="submit"]').prop('disabled', false);
+                        $('#submit-mission-comment button[type="submit"]').prop('disabled', false);
                     }
                 });
 

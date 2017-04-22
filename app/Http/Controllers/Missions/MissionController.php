@@ -80,7 +80,7 @@ class MissionController extends Controller
             // Delete local temp files
             Storage::deleteDirectory("missions/{$user->id}");
 
-            return $mission->id;
+            return $mission->url();
         }
     }
 

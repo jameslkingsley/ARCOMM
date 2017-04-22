@@ -12,6 +12,13 @@
     }
 }
 
+header.header-info {
+    .navbar .navbar-nav .nav-item.dropdown .nav-link .pulse.pulse-info {
+        background: $brand-warning;
+        box-shadow: rgba(255, 157, 53, 0.4);
+    }
+}
+
 @-webkit-keyframes pulse {
     0% {
         -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);

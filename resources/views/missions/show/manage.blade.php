@@ -13,7 +13,7 @@
                             acceptedFiles: '',
                             addedfile: function(file) {},
                             success: function(file, data) {
-                                openMission({{ $mission->id }});
+                                window.location = "{{ $mission->url() }}";
                             },
                             error: function(file, message) {
                                 alert(message);
