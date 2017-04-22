@@ -36,7 +36,6 @@
                     @endforeach
                 </ul>
             @else
-                <p class="mission-section-label">No missions have been picked yet! Come back later.</p>
                 <ul class="mission-group mission-group-pinned mission-group-center" style="height: 252px"></ul>
             @endif
         @endif
