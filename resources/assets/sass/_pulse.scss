@@ -5,6 +5,11 @@
     background: #ffda00;
     box-shadow: 0 0 0 rgba(204,169,44, 0.4);
     animation: pulse 2s infinite;
+
+    &.pulse-info {
+        background: $brand-info;
+        box-shadow: 0 0 0 rgba(64, 132, 236, 0.4);
+    }
 }
 
 @-webkit-keyframes pulse {

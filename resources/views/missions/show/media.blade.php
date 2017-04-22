@@ -95,16 +95,20 @@
 </div>
 
 <div class="pull-left w-100 mission-media">
-    @foreach ($mission->photos() as $media)
-        @include('missions.media.photo', [
-            'media' => $media,
-            'mission' => $mission
-        ])
-    @endforeach
+    @if ($mission->photos()->isEmpty() && $mission->videos->isEmpty())
+        <p class="text-xs-center text-muted">Upload a photo for the mission banner!</p>
+    @else
+        @foreach ($mission->photos() as $media)
+            @include('missions.media.photo', [
+                'media' => $media,
+                'mission' => $mission
+            ])
+        @endforeach
 
-    @foreach ($mission->videos as $video)
-        @include('missions.media.video', [
-            'video' => $video
-        ])
-    @endforeach
+        @foreach ($mission->videos as $video)
+            @include('missions.media.video', [
+                'video' => $video
+            ])
+        @endforeach
+    @endif
 </div>

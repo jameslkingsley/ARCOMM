@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Helpers\ArmaConfig;
+use App\Notifications\MissionVerified;
+use App\Models\Portal\User;
+use Notification;
 use Storage;
 use Log;
 
@@ -91,6 +94,11 @@ class MissionController extends Controller
     {
         // Mark comment notifications as read
         foreach ($mission->commentNotifications() as $notification) {
+            $notification->markAsRead();
+        }
+
+        // Mark verified notifications as read
+        foreach ($mission->verifiedNotifications() as $notification) {
             $notification->markAsRead();
         }
 
@@ -250,6 +258,19 @@ class MissionController extends Controller
         }
 
         $mission->save();
+
+        if ($mission->verified) {
+            $users = User::all()->filter(function($user) use($mission) {
+                return
+                    $user->id != auth()->user()->id &&
+                    (
+                        $user->hasPermission('mission:verification') ||
+                        $user->id == $mission->user->id
+                    );
+            });
+
+            Notification::send($users, new MissionVerified($mission));
+        }
 
         $updated_by = auth()->user()->username;
 

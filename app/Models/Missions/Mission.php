@@ -9,6 +9,7 @@ use App\Models\Missions\MissionComment;
 use App\Models\Missions\MissionNote;
 use App\Notifications\MissionNoteAdded;
 use App\Notifications\MissionCommentAdded;
+use App\Notifications\MissionVerified;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
@@ -972,6 +973,22 @@ class Mission extends Model implements HasMediaConversions
             return
                 $item->type == MissionCommentAdded::class &&
                 $item->data['comment']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission verification notifications.
+     *
+     * @return Collection
+     */
+    public function verifiedNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionVerified::class &&
+                $item->data['mission']['id'] == $this->id;
         });
 
         return $filtered;

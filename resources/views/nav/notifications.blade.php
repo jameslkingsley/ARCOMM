@@ -6,7 +6,7 @@
     <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-bell"></i>
         @unless ($notifications->isEmpty())
-            <span class="notifications-has-unread"></span>
+            <span class="notifications-has-unread pulse pulse-info"></span>
         @endunless
     </a>
 
