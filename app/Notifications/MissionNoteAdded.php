@@ -114,7 +114,7 @@ class MissionNoteAdded extends Notification
      *
      * @return boolean
      */
-    public function exists($notification)
+    public static function exists($notification)
     {
         $sender = User::find($notification->data['note']['user_id']);
         $note = MissionNote::find($notification->data['note']['id']);

@@ -114,7 +114,7 @@ class MissionCommentAdded extends Notification
      *
      * @return boolean
      */
-    public function exists($notification)
+    public static function exists($notification)
     {
         $sender = User::find($notification->data['comment']['user_id']);
         $comment = MissionComment::find($notification->data['comment']['id']);

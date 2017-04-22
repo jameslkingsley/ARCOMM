@@ -114,12 +114,11 @@ class MissionVerified extends Notification
      *
      * @return boolean
      */
-    public function exists($notification)
+    public static function exists($notification)
     {
         $mission = Mission::find($notification->data['mission']['id']);
-        $sender = $mission->verifiedByUser();
 
-        if ($mission && $sender) return true;
+        if ($mission && $mission->verifiedByUser()) return true;
 
         return false;
     }
