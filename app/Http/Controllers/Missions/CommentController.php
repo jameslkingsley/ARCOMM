@@ -53,7 +53,8 @@ class CommentController extends Controller
 
             $mission = Mission::findOrFail($request->mission_id);
 
-            Notification::send(User::all(), new MissionCommentAdded($comment));
+            $users = User::where('id', '!=', auth()->user()->id)->get();
+            Notification::send($users, new MissionCommentAdded($comment));
 
             if ($mission->user->id != auth()->user()->id) {
                 $mission->user->notify(new MissionCommentAdded($comment));

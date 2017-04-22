@@ -102,6 +102,8 @@ Route::group(['middleware' => 'member'], function() {
         return view('guides.index');
     });
 
+    Route::get('/hub/notifications', 'Users\NotificationsController@index');
+
     // Hub Index
     Route::resource('/hub', 'HubController', [
         'only' => ['index']

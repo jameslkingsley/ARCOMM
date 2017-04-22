@@ -50,7 +50,7 @@
 @endif
 
 @foreach ($mission->briefing($faction) as $subject)
-    <h5 class="m-b-0">{{ $subject->title }}</h5>
+    <h5>{{ $subject->title }}</h5>
 
     @foreach ($subject->paragraphs as $index => $paragraph)
         @if (starts_with($paragraph, '-'))

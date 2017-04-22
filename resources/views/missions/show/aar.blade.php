@@ -1,3 +1,9 @@
+@php
+    foreach ($mission->commentNotifications() as $notification) {
+        $notification->markAsRead();
+    }
+@endphp
+
 <div class="mission-comments">
     @if ($mission->comments->isEmpty())
         <p class="text-xs-center p-y-3 text-muted">There are no after-action reports yet. Be the first to submit one!</p>

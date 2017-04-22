@@ -6,7 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
+use App\Models\Portal\User;
 
 class MissionCommentAdded extends Notification
 {
@@ -67,5 +69,43 @@ class MissionCommentAdded extends Notification
         return [
             'comment' => $this->comment
         ];
+    }
+
+    /**
+     * Gets the computed full URL for the notification.
+     *
+     * @return string
+     */
+    public static function link($notification)
+    {
+        $mission = Mission::findOrFail($notification->data['comment']['mission_id']);
+
+        return "{$mission->url()}/aar";
+    }
+
+    /**
+     * Gets the computed text for the notification.
+     *
+     * @return string
+     */
+    public static function text($notification)
+    {
+        $sender = User::findOrFail($notification->data['comment']['user_id']);
+        $mission = Mission::findOrFail($notification->data['comment']['mission_id']);
+        $relation = $mission->isMine() ? 'your' : 'the';
+
+        return "{$sender->username} commented on {$relation} mission {$mission->display_name}";
+    }
+
+    /**
+     * Gets the full icon URL for the notification.
+     *
+     * @return string
+     */
+    public static function icon($notification)
+    {
+        $sender = User::findOrFail($notification->data['comment']['user_id']);
+
+        return $sender->avatar;
     }
 }

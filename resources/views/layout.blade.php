@@ -72,7 +72,7 @@
         <script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
 
         <script>
-            $(function() {
+            $(document).ready(function(e) {
                 $('body').bootstrapMaterialDesign();
             });
         </script>

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\MissionNote;
 use App\Models\Missions\Mission;
 use App\Notifications\MissionNoteAdded;
+use App\Models\Portal\User;
+use Notification;
 
 class NoteController extends Controller
 {
@@ -78,9 +80,16 @@ class NoteController extends Controller
             'text' => $request->text
         ]);
 
-        if ($mission->user->id != auth()->user()->id) {
-            $mission->user->notify(new MissionNoteAdded($note));
-        }
+        $users = User::all()->filter(function($user) use($mission) {
+            return
+                $user->id != auth()->user()->id &&
+                (
+                    $user->hasPermission('mission:notes') ||
+                    $user->id == $mission->user->id
+                );
+        });
+
+        Notification::send($users, new MissionNoteAdded($note));
 
         return view('missions.notes.item', compact('note'));
     }
