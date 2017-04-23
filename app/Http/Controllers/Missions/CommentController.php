@@ -53,18 +53,21 @@ class CommentController extends Controller
 
             $mission = Mission::findOrFail($request->mission_id);
 
-            $users = User::where('id', '!=', auth()->user()->id)->get();
-            Notification::send($users, new MissionCommentAdded($comment));
-
-            if ($mission->user->id != auth()->user()->id) {
-                $mission->user->notify(new MissionCommentAdded($comment));
+            if ($comment->published) {
+                static::notify($mission, $comment);
             }
         } else {
             // Update an existing one
             $comment = MissionComment::find($request->id);
+            $was_published = $comment->published;
+
             $comment->text = $request->text;
             $comment->published = $request->published;
             $comment->save();
+
+            if (!$was_published) {
+                static::notify($comment->mission, $comment);
+            }
         }
 
         if ($comment->published) {
@@ -94,5 +97,16 @@ class CommentController extends Controller
     public function destroy(MissionComment $comment)
     {
         $comment->delete();
+    }
+
+    /**
+     * Notifies all users of a new comment.
+     *
+     * @return any
+     */
+    public static function notify(Mission $mission, MissionComment $comment)
+    {
+        $users = User::where('id', '!=', auth()->user()->id)->get();
+        Notification::send($users, new MissionCommentAdded($comment));
     }
 }
