@@ -44,28 +44,30 @@
 @endif
 
 @if ($mission->briefingLocked($faction))
-    <div class="alert alert-warning pull-left w-100 m-b-3 m-t-2" role="alert">
+    <div class="alert alert-warning pull-left w-100 m-t-2" role="alert">
         <strong>This briefing is locked!</strong> Only the mission maker and testers can see it.
     </div>
 @endif
 
-@foreach ($mission->briefing($faction) as $subject)
-    <h5>{{ $subject->title }}</h5>
+<div class="pull-left w-100 m-t-3">
+    @foreach ($mission->briefing($faction) as $subject)
+        <h5>{{ $subject->title }}</h5>
 
-    @foreach ($subject->paragraphs as $index => $paragraph)
-        @if (starts_with($paragraph, '-'))
-            <p style="{{
-                    (($index + 1) != sizeof($subject->paragraphs)) ?
-                    'margin: 0 !important;' :
-                    'margin-bottom: 20px !important'
-                }}">
-                {!! $paragraph !!}
-            </p>
-        @else
-            <p>{!! $paragraph !!}</p>
-        @endif
+        @foreach ($subject->paragraphs as $index => $paragraph)
+            @if (starts_with($paragraph, '-'))
+                <p style="{{
+                        (($index + 1) != sizeof($subject->paragraphs)) ?
+                        'margin: 0 !important;' :
+                        'margin-bottom: 20px !important'
+                    }}">
+                    {!! $paragraph !!}
+                </p>
+            @else
+                <p>{!! $paragraph !!}</p>
+            @endif
+        @endforeach
     @endforeach
-@endforeach
+</div>
 
 @if (strtolower($faction) != 'civilian')
     <h5 class="m-b-0">Comm Plan &mdash; {{ $mission->acreOverview($faction) }}</h5>
