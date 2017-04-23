@@ -50,6 +50,10 @@ Route::group(['middleware' => 'permission:apps:all'], function() {
 });
 
 Route::group(['middleware' => 'permission:operations:all'], function() {
+    Route::get('/hub/operations', 'Missions\OperationController@index');
+});
+
+Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations', 'API\OperationController');
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });

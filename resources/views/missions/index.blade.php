@@ -11,26 +11,6 @@
 @section('head')
     <script>
         $(document).ready(function(e) {
-            $('.subnav-link').click(function(event) {
-                var caller = $(this);
-                var panel = caller.data('panel');
-                var noAjax = caller.data('noajax');
-
-                if (noAjax) return;
-
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url('/hub/missions?panel=') }}' + panel,
-                    success: function(data) {
-                        $('.subnav-link').removeClass('active');
-                        caller.addClass('active');
-                        $('#mission-content').html(data);
-                    }
-                });
-
-                event.preventDefault();
-            });
-
             $('#mission-upload-btn').dropzone({
                 url: '{{ url('/hub/missions') }}',
                 acceptedFiles: '',
@@ -59,23 +39,6 @@
         id="mission-upload-btn"
         class="nav-item nav-link"
     >Upload</a>
-@endsection
-
-@section('subnav')
-    <a
-        href="javascript:void(0)"
-        data-panel="library"
-        class="subnav-link active ripple"
-    >Library</a>
-
-    @if (auth()->user()->hasPermission('operations:all'))
-        <a
-            href="javascript:void(0)"
-            data-panel="operations"
-            data-window="true"
-            class="subnav-link ripple"
-        >Operations</a>
-    @endif
 @endsection
 
 @section('content')

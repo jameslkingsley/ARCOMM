@@ -11,6 +11,16 @@ use \Carbon\Carbon;
 class OperationController extends Controller
 {
     /**
+     * Shows the operations page.
+     *
+     * @return any
+     */
+    public function index()
+    {
+        return view('missions.operations');
+    }
+
+    /**
      * Deletes the given operation item.
      *
      * @return void

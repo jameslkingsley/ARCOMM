@@ -1,6 +1,12 @@
 
 <a href="{{ url('/hub/missions') }}" class="nav-item nav-link active">Missions</a>
 
+@if (auth()->user()->hasPermission('operations:all'))
+    <a href="{{ url('/hub/operations') }}" class="nav-item nav-link">
+        Operations
+    </a>
+@endif
+
 @if (auth()->user()->hasPermission('users:all'))
     <a href="{{ url('/hub/users') }}" class="nav-item nav-link">
         Users
