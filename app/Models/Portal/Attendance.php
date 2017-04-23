@@ -14,6 +14,7 @@ class Attendance extends Model
     protected $fillable = [
         'user_id',
         'mission_id',
-        'inbound'
+        'inbound',
+        'dump'
     ];
 }

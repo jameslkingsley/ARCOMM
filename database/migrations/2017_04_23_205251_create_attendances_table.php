@@ -16,7 +16,9 @@ class CreateAttendancesTable extends Migration
         Schema::create('attendances', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('mission_id')->unsigned();
+            $table->foreign('mission_id')->references('id')->on('missions')->onDelete('cascade');
             $table->boolean('inbound')->default(false);
             $table->timestamps();
         });

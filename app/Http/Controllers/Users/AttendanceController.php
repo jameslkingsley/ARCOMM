@@ -17,6 +17,12 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+        Attendance::create([
+            'dump' => json_encode($request->all())
+        ]);
+
+        return;
+
         $user = User::where('steam_id', $request->steam_id)->first();
 
         if (!$user) return;
