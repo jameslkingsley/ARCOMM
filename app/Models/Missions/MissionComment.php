@@ -101,8 +101,6 @@ class MissionComment extends Model
                         continue;
                     }
                 }
-
-                // array_push($result, $char);
             } else {
                 array_push($result, $char);
             }
@@ -145,6 +143,18 @@ class MissionComment extends Model
             }
         }
 
+        return $list;
+    }
+
+    /**
+     * Gets the mentions list as string.
+     *
+     * @return string
+     */
+    public function mentionsList()
+    {
+        $mentions = $this->mentionsAsUser();
+        $list = $mentions->implode('username', ',');
         return $list;
     }
 }

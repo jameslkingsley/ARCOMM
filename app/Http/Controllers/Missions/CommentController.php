@@ -89,7 +89,10 @@ class CommentController extends Controller
      */
     public function edit(MissionComment $comment)
     {
-        return $comment->text;
+        return json_encode([
+            'text' => $comment->text,
+            'mentions' => $comment->mentionsList()
+        ]);
     }
 
     /**
