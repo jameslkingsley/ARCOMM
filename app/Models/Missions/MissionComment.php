@@ -74,4 +74,26 @@ class MissionComment extends Model
 
         return $mentions;
     }
+
+    /**
+     * Gets the computed text of a comment.
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        $chars = explode(' ', $this->text);
+        $result = [];
+
+        foreach ($chars as $char) {
+            if (starts_with($char, '@')) {
+                $name = substr($char, 1);
+                array_push($result, "<strong class='text-mention'>@{$name}</strong>");
+            } else {
+                array_push($result, $char);
+            }
+        }
+
+        return implode(' ', $result);
+    }
 }
