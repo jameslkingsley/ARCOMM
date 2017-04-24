@@ -484,6 +484,10 @@ $mission-summary-font-sizes: (
             width: calc(100% - 4rem);
             word-break: break-word;
             text-align: justify;
+
+            @media screen and (max-width: 768px) {
+                font-weight: 500;
+            }
         }
     }
 }
