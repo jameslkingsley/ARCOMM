@@ -532,7 +532,7 @@ $mission-summary-font-sizes: (
     .mission-media-item {
         @include background-image-defaults();
         width: calc(25% - 1rem);
-        padding-top: 25%;
+        padding-top: calc(25% - 1rem);
         height: auto;
         background-position: center;
         background-size: cover;
@@ -543,12 +543,12 @@ $mission-summary-font-sizes: (
 
         @media screen and (max-width: 768px) {
             width: calc(50% - 1rem);
-            padding-top: 50%;
+            padding-top: calc(50% - 1rem);
         }
 
         @media screen and (max-width: 640px) {
             width: calc(100% - .5rem);
-            padding-top: 100%;
+            padding-top: calc(100% - .5rem);
         }
 
         .mission-media-item-delete, .mission-video-item-delete {
