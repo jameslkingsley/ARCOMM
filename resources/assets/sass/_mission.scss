@@ -486,7 +486,10 @@ $mission-summary-font-sizes: (
             text-align: justify;
 
             @media screen and (max-width: 768px) {
-                font-weight: 500;
+                font-size: .875rem;
+                font-weight: 400;
+                line-height: 1.5;
+                color: black;
             }
         }
     }
