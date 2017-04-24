@@ -52,9 +52,10 @@ class CommentController extends Controller
             $comment->published = $request->published;
             $comment->save();
 
-            $mission = Mission::findOrFail($request->mission_id);
+            $comment->updateMentions($request->mentions);
 
             if ($comment->published) {
+                $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
             }
         } else {
@@ -65,6 +66,8 @@ class CommentController extends Controller
             $comment->text = $request->text;
             $comment->published = $request->published;
             $comment->save();
+
+            $comment->updateMentions($request->mentions);
 
             if (!$was_published) {
                 static::notify($comment->mission, $comment);
@@ -111,7 +114,7 @@ class CommentController extends Controller
         Notification::send($users, new MissionCommentAdded($comment));
 
         // Notify mentions
-        $mentions = $comment->mentions();
+        $mentions = $comment->mentionsAsUser();
         Notification::send($mentions, new MentionedInComment($comment));
     }
 }

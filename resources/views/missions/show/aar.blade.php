@@ -109,6 +109,7 @@
         <input type="hidden" name="id" value="{{ (!is_null($mission->draft())) ? $mission->draft()->id : '-1' }}">
         <input type="hidden" name="mission_id" value="{{ $mission->id }}">
         <input type="hidden" name="published" value="0">
+        <input type="hidden" name="mentions" value="" id="mentions-list">
 
         {!! mention()->asTextArea(
             'text',
