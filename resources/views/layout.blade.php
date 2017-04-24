@@ -8,8 +8,10 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>
-            @yield('title')
-            —
+            @if (trim($__env->yieldContent('title')))
+                {{ trim($__env->yieldContent('title')) }}
+                —
+            @endif
             {{ env('SITE_NAME', 'ARCHUB') }}
         </title>
 

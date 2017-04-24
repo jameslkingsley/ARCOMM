@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
 use App\Notifications\MissionCommentAdded;
+use App\Notifications\MentionedInComment;
 use App\Models\Portal\User;
 use Notification;
 
@@ -108,5 +109,9 @@ class CommentController extends Controller
     {
         $users = User::where('id', '!=', auth()->user()->id)->get();
         Notification::send($users, new MissionCommentAdded($comment));
+
+        // Notify mentions
+        $mentions = $comment->mentions();
+        Notification::send($mentions, new MentionedInComment($comment));
     }
 }

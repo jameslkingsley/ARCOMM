@@ -17,37 +17,7 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
-        Attendance::create([
-            'dump' => json_encode($request->all())
-        ]);
-
-        return;
-
-        $user = User::where('steam_id', $request->steam_id)->first();
-
-        if (!$user) return;
-
-        $mission_id = $request->mission;
-
-        if (ends_with($mission_id, '.pbo')) {
-            $mission_id = rtrim($mission_id, '.pbo');
-        }
-
-        $mission_id = last(explode('_', $mission_id));
-
-        if (str_contains($mission_id, ['1','2','3','4','5','6','7','8','9','0'])) {
-            $mission_id = (int)$mission_id;
-        }
-
-        $mission = Mission::find($mission_id);
-
-        if (!$mission) return;
-
-        Attendance::create([
-            'user_id' => $user->id,
-            'mission_id' => $mission->id,
-            'inbound' => $request->direction == 'in'
-        ]);
+        //
     }
 
     /**

@@ -15,6 +15,8 @@ require('bootstrap');
 require('jquery.waitforimages');
 require('dropzone');
 require('magnific-popup');
+require('jquery.caret');
+require('at.js');
 
 // window.axios.defaults.headers.common = {
 //     'X-CSRF-TOKEN': window.Laravel.csrfToken,

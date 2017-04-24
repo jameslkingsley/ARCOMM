@@ -20,6 +20,8 @@
     "jquery.waitforimages": "^2.2.0",
     "dropzone": "^4.3.0",
     "magnific-popup": "^1.1.0",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "at.js": "^1.4.1",
+    "jquery.caret": "^0.3.1"
   }
 }

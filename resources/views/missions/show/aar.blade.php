@@ -98,6 +98,10 @@
 
                 event.preventDefault();
             });
+
+            $('.mission-aar-textarea')
+                .attr('placeholder', 'Your mission experience...')
+                .attr('rows', '6');
         });
     </script>
 
@@ -106,13 +110,13 @@
         <input type="hidden" name="mission_id" value="{{ $mission->id }}">
         <input type="hidden" name="published" value="0">
 
-        <textarea
-            name="text"
-            class="form-control m-b-3 m-t-3"
-            id="mission-aar-textarea"
-            rows="6"
-            placeholder="Your mission experience..."
-        >{{ (!is_null($mission->draft())) ? $mission->draft()->text : '' }}</textarea>
+        {!! mention()->asTextArea(
+            'text',
+            (!is_null($mission->draft())) ? $mission->draft()->text : '',
+            'users',
+            'username',
+            'mission-aar-textarea form-control m-b-3 m-t-3'
+        ) !!}
 
         <button type="submit" class="btn btn-raised btn-primary pull-right m-l-3 m-r-3">Publish</button>
         <button class="btn pull-right" id="save-mission-comment">Save Draft</button>

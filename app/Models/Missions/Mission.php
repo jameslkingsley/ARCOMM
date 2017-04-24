@@ -9,6 +9,7 @@ use App\Models\Missions\MissionComment;
 use App\Models\Missions\MissionNote;
 use App\Notifications\MissionNoteAdded;
 use App\Notifications\MissionCommentAdded;
+use App\Notifications\MentionedInComment;
 use App\Notifications\MissionVerified;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
@@ -971,8 +972,10 @@ class Mission extends Model implements HasMediaConversions
     {
         $filtered = auth()->user()->unreadNotifications->filter(function($item) {
             return
-                $item->type == MissionCommentAdded::class &&
-                $item->data['comment']['mission_id'] == $this->id;
+                ($item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $this->id) ||
+                ($item->type == MentionedInComment::class &&
+                $item->data['mission_id'] == $this->id);
         });
 
         return $filtered;
