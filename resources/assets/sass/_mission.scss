@@ -45,6 +45,53 @@ $mission-summary-font-sizes: (
     opacity: .66;
 }
 
+.mission-empty-group {
+    padding: 0;
+    display: inline-block;
+    margin-bottom: 2.5rem;
+    min-width: calc(50% - .75rem);
+    float: left;
+
+    &:before {
+        @include font-size($mission-title-font-sizes);
+        content: attr(data-title);
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: .66;
+        padding: 0 .5rem;
+        display: inline-block;
+        width: 100%;
+        text-align: inherit;
+    }
+
+    &:after {
+        @include font-size($mission-summary-font-sizes);
+        content: attr(data-subtitle);
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: .66;
+        padding: 0 .5rem;
+        margin: 0 0 .5rem 0;
+        display: inline-block;
+        width: 100%;
+        text-align: inherit;
+    }
+
+    @media screen and (max-width: 1024px) {
+        display: block;
+        width: 100%;
+    }
+
+    &.mission-group-pinned {
+        width: calc(50% - .5rem);
+
+        @media screen and (max-width: 1440px) {
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
+
 .mission-group {
     padding: 0;
     display: inline-block;
@@ -71,7 +118,7 @@ $mission-summary-font-sizes: (
     }
 
     &.mission-group-pinned {
-        width: calc(50% - .75rem);
+        width: calc(50% - .5rem);
 
         @media screen and (max-width: 1440px) {
             width: 100%;

@@ -26,7 +26,11 @@
                     @endforeach
                 </ul>
             @else
-                <ul class="mission-group mission-group-pinned" style="height: 252px"></ul>
+                <div
+                    class="mission-empty-group mission-group-pinned"
+                    data-title="Next Operation &mdash; {{ $nextOperation->startsIn() }}"
+                    data-subtitle="Missions haven't been picked yet!">
+                </div>
             @endif
         @endif
 
