@@ -23,7 +23,7 @@
     });
 </script>
 
-<li class="nav-item m-r-2">
+<li class="nav-item m-r-2 hidden-md-down">
     <a
         href="javascript:void(0)"
         id="mission-verification"

@@ -50,8 +50,7 @@
     <form method="post" id="submit-mission-comment">
         <textarea
             name="text"
-            class="form-control m-b-3 m-t-3"
-            id="mission-aar-textarea"
+            class="form-control m-b-3 m-t-3 mission-aar-textarea"
             rows="6"
             placeholder="Write a note"
         ></textarea>

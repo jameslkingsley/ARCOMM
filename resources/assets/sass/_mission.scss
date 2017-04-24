@@ -26,6 +26,12 @@ $mission-summary-font-sizes: (
     opacity: .66;
     padding: 0 .5rem;
     margin: 0 0 .5rem 0;
+
+    @media screen and (max-width: 1024px) {
+        display: block;
+        float: left;
+        width: 100%;
+    }
 }
 
 .missions-pinned-headers h2 {
@@ -45,10 +51,32 @@ $mission-summary-font-sizes: (
     margin-bottom: 2.5rem;
     min-width: calc(50% - .75rem);
 
+    &:before {
+        @include font-size($mission-title-font-sizes);
+        content: attr(data-title);
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: .66;
+        padding: 0 .5rem;
+        margin: 0 0 .5rem 0;
+        display: inline-block;
+        width: 100%;
+        text-align: inherit;
+    }
+
     @media screen and (max-width: 1024px) {
         display: block;
         float: left;
         width: 100%;
+    }
+
+    &.mission-group-pinned {
+        width: calc(50% - .75rem);
+
+        @media screen and (max-width: 1440px) {
+            width: 100%;
+            text-align: center;
+        }
     }
 
     &.mission-group-center {
@@ -60,7 +88,9 @@ $mission-summary-font-sizes: (
         background-position: center -3vw;
         display: inline-block;
         width: calc(16.66vw - 2.5rem);
-        height: calc(16.66vw - 2.5rem);
+        // height: calc(16.66vw - 2.5rem);
+        height: auto;
+        padding-top: calc(16.66vw - 2.5rem);
         box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
         position: relative;
         text-decoration: none !important;
@@ -70,13 +100,19 @@ $mission-summary-font-sizes: (
         text-align: left;
         margin: .5rem;
 
+        @media screen and (max-width: 1440px) {
+            width: calc(25vw - 2.7rem);
+            padding-top: calc(25vw - 2.7rem);
+        }
+
         @media screen and (max-width: 1024px) {
             width: calc(33.33vw - 4rem);
-            height: calc(33.33vw - 4rem);
+            padding-top: calc(33.33vw - 4rem);
         }
 
         @media screen and (max-width: 768px) {
-            width: 100%;
+            width: calc(100% - 1rem);
+            padding-top: 50%;
         }
 
         .mission-item-pulse {
@@ -179,6 +215,10 @@ $mission-summary-font-sizes: (
     min-height: calc(100vh - 5rem - 128px);
     margin-bottom: 0 !important;
 
+    @media screen and (max-width: 768px) {
+        margin-top: 9rem !important;
+    }
+
     .mission-title, .mission-author {
         position: absolute;
         left: 0;
@@ -209,6 +249,10 @@ $mission-summary-font-sizes: (
         display: inline-block;
         width: 100%;
         height: 100%;
+
+        @media screen and (max-width: 1024px) {
+            padding-top: 3rem;
+        }
     }
 
     .mission-nav {
@@ -216,6 +260,18 @@ $mission-summary-font-sizes: (
         width: calc((100% + 2rem) - 2px);
         border: none;
         border-bottom: 1px solid #eee;
+
+        @media screen and (max-width: 1024px) {
+            display: inline-block;
+        }
+
+        .subnav {
+            .subnav-link {
+                @media screen and (max-width: 1024px) {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 

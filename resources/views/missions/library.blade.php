@@ -17,20 +17,10 @@
 @endphp
 
 <div class="missions-pinned">
-    <div class="missions-pinned-headers">
-        @if ($nextOperation)
-            <h2>Next Operation &mdash; {{ $nextOperation->startsIn() }}</h2>
-        @endif
-
-        @if ($prevOperation)
-            <h2>Past Operation</h2>
-        @endif
-    </div>
-
     <div class="missions-pinned-groups">
         @if ($nextOperation)
             @if (!$nextOperationMissions->isEmpty())
-                <ul class="mission-group mission-group-pinned">
+                <ul class="mission-group mission-group-pinned" data-title="Next Operation &mdash; {{ $nextOperation->startsIn() }}">
                     @foreach ($nextOperationMissions as $item)
                         @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned', 'pulse' => true])
                     @endforeach
@@ -41,7 +31,7 @@
         @endif
 
         @if ($prevOperation)
-            <ul class="mission-group mission-group-pinned">
+            <ul class="mission-group mission-group-pinned" data-title="Past Operation">
                 @foreach ($prevOperation->missions as $item)
                     @include('missions.item', ['mission' => $item->mission, 'ignore_new_banner' => true])
                 @endforeach
@@ -52,9 +42,7 @@
 
 @if (auth()->user()->hasPermission('mission:see_new'))
     @if (!$newMissions->isEmpty())
-        <h2 class="mission-section-heading">New Missions</h2>
-
-        <ul class="mission-group">
+        <ul class="mission-group" data-title="New Missions">
             @foreach ($newMissions as $mission)
                 @include('missions.item', ['mission' => $mission])
             @endforeach
@@ -62,9 +50,7 @@
     @endif
 @endif
 
-<h2 class="mission-section-heading">My Missions</h2>
-
-<ul class="mission-group">
+<ul class="mission-group" data-title="My Missions">
     @if (!$myMissions->isEmpty())
         @foreach ($myMissions as $mission)
             @include('missions.item', [
@@ -78,9 +64,7 @@
 </ul>
 
 @if (!$pastMissions->isEmpty())
-    <h2 class="mission-section-heading">Past Missions</h2>
-
-    <ul class="mission-group">
+    <ul class="mission-group" data-title="Past Missions">
         @foreach ($pastMissions as $mission)
             @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
         @endforeach
