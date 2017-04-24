@@ -39,3 +39,47 @@
         </p>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-4 mission-overview-card">
+        @php
+            $commentCount = $mission->comments->count();
+        @endphp
+
+        <h4 class="text-xs-center">
+            {{ $commentCount }} After-Action Report{{ $commentCount != 1 ? 's' : '' }}
+        </h4>
+
+        <span class="mission-weather-image">
+            <i class="fa fa-comments"></i>
+        </span>
+    </div>
+
+    <div class="col-md-4 mission-overview-card">
+        @php
+            $imageCount = $mission->photos()->count();
+        @endphp
+
+        <h4 class="text-xs-center">
+            {{ $imageCount }} Photo{{ $imageCount != 1 ? 's' : '' }}
+        </h4>
+
+        <span class="mission-weather-image">
+            <i class="fa fa-camera" style="font-size: 6rem"></i>
+        </span>
+    </div>
+
+    <div class="col-md-4 mission-overview-card">
+        @php
+            $videoCount = $mission->videos->count();
+        @endphp
+
+        <h4 class="text-xs-center">
+            {{ $videoCount }} Video{{ $videoCount != 1 ? 's' : '' }}
+        </h4>
+
+        <span class="mission-weather-image">
+            <i class="fa fa-video-camera"></i>
+        </span>
+    </div>
+</div>
