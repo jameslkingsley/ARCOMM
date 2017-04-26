@@ -52,8 +52,13 @@ class CommentController extends Controller
             $comment->published = $request->published;
             $comment->save();
 
+            $mentions = $comment->mention($request->mentions, false);
+
             if ($comment->published) {
-                $comment->mention($request->mentions);
+                $mentions->each(function($mention) {
+                    $mention->notify();
+                });
+
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
             }
@@ -68,9 +73,13 @@ class CommentController extends Controller
 
             // Reset the mentions
             $comment->unmention($comment->mentions());
-            $comment->mention($request->mentions);
+            $mentions = $comment->mention($request->mentions, false);
 
             if (!$was_published) {
+                $mentions->each(function($mention) {
+                    $mention->notify();
+                });
+
                 static::notify($comment->mission, $comment);
             }
         }
@@ -92,7 +101,7 @@ class CommentController extends Controller
     {
         return json_encode([
             'text' => $comment->text,
-            'mentions' => $comment->mentions()
+            'mentions' => $comment->mentionsEncoded()
         ]);
     }
 

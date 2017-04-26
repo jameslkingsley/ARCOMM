@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6639dec4fcbd996d7095fd2791617896",
-    "content-hash": "6c79dfdc7f6cc1591b71f16169896fbe",
+    "hash": "c39cc93ee7cea586d08d9bd31a787575",
+    "content-hash": "a84cfa30d090e28dbe5ed633fbb9cf4a",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -848,16 +848,16 @@
         },
         {
             "name": "jameslkingsley/laravel-mentions",
-            "version": "0.0.2",
+            "version": "0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jameslkingsley/laravel-mentions.git",
-                "reference": "8f0ea878292a8a0dcc8e11adb05372258d978e78"
+                "reference": "ce389a5e5b9361a1c966fdffef7a58c3a3861819"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/8f0ea878292a8a0dcc8e11adb05372258d978e78",
-                "reference": "8f0ea878292a8a0dcc8e11adb05372258d978e78",
+                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/ce389a5e5b9361a1c966fdffef7a58c3a3861819",
+                "reference": "ce389a5e5b9361a1c966fdffef7a58c3a3861819",
                 "shasum": ""
             },
             "require": {
@@ -891,7 +891,7 @@
                 "laravel",
                 "mentions"
             ],
-            "time": "2017-04-26 18:30:31"
+            "time": "2017-04-26 19:00:14"
         },
         {
             "name": "laravel/framework",
