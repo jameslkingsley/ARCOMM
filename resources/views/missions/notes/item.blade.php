@@ -21,6 +21,6 @@
     </span>
 
     <span class="mission-comment-item-text">
-        {!! nl2br(e($note->text)) !!}
+        {!! nl2br($note->text) !!}
     </span>
 </div>

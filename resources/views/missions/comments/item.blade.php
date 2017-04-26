@@ -26,7 +26,7 @@
         </span>
 
         <span class="mission-comment-item-text">
-            {!! nl2br($comment->getText()) !!}
+            {!! nl2br($comment->text) !!}
         </span>
     </div>
 @endif

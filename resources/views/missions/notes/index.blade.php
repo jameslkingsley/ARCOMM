@@ -26,12 +26,20 @@
                 },
                 success: function(data) {
                     $('.mission-comments').append(data);
+                    $('.has-mentions').html('');
                     form[0].reset();
                 }
             });
 
             event.preventDefault();
         });
+
+        $('.has-mentions').mentions([{
+            trigger: '@',
+            pool: 'users',
+            display: 'username',
+            reference: 'id'
+        }]);
     });
 </script>
 
@@ -48,12 +56,13 @@
 
 <div class="mission-comments-form pull-left w-100">
     <form method="post" id="submit-mission-comment">
-        <textarea
-            name="text"
-            class="form-control m-b-3 m-t-3 mission-aar-textarea"
-            rows="6"
-            placeholder="Write a note"
-        ></textarea>
+        <input type="hidden" name="mentions" value="">
+        <textarea class="form-control" name="text" style="display:none"></textarea>
+
+        <div
+            class="form-control-editable has-mentions mission-aar-textarea form-control m-b-3 m-t-3"
+            contenteditable="plaintext-only"
+            for="text"></div>
 
         <button type="submit" class="btn btn-raised btn-primary pull-right m-r-3">Submit</button>
     </form>

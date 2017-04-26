@@ -3,10 +3,13 @@
 namespace App\Models\Missions;
 
 use Illuminate\Database\Eloquent\Model;
+use Kingsley\Mentions\HasMentionsTrait;
 use App\Models\Portal\User;
 
 class MissionNote extends Model
 {
+    use HasMentionsTrait;
+
     /**
      * The attributes that are mass assignable.
      *

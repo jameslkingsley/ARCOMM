@@ -528,6 +528,7 @@ $mission-summary-font-sizes: (
             font-size: 16px;
             font-weight: 100;
             line-height: 22px;
+            min-height: 10rem;
             @include placeholder-color(rgba(0,0,0,0.5));
 
             &:focus {

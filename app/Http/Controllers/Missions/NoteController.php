@@ -80,6 +80,8 @@ class NoteController extends Controller
             'text' => $request->text
         ]);
 
+        $note->mention($request->mentions, false);
+
         $users = User::all()->filter(function($user) use($mission) {
             return
                 $user->id != auth()->user()->id &&
@@ -137,6 +139,8 @@ class NoteController extends Controller
     public function destroy(Mission $mission, MissionNote $note)
     {
         if (!$note->isMine()) return;
+
+        $note->unmention($note->mentions());
 
         $note->delete();
     }

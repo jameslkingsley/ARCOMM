@@ -52,9 +52,13 @@ class CommentController extends Controller
             $comment->published = $request->published;
             $comment->save();
 
-            $comment->updateMentions($request->mentions);
+            $mentions = $comment->mention($request->mentions, false);
 
             if ($comment->published) {
+                $mentions->each(function($mention) {
+                    $mention->notify();
+                });
+
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
             }
@@ -67,9 +71,15 @@ class CommentController extends Controller
             $comment->published = $request->published;
             $comment->save();
 
-            $comment->updateMentions($request->mentions);
+            // Reset the mentions
+            $comment->unmention($comment->mentions());
+            $mentions = $comment->mention($request->mentions, false);
 
             if (!$was_published) {
+                $mentions->each(function($mention) {
+                    $mention->notify();
+                });
+
                 static::notify($comment->mission, $comment);
             }
         }
@@ -91,7 +101,7 @@ class CommentController extends Controller
     {
         return json_encode([
             'text' => $comment->text,
-            'mentions' => $comment->mentionsList()
+            'mentions' => $comment->mentionsEncoded()
         ]);
     }
 
@@ -103,6 +113,8 @@ class CommentController extends Controller
      */
     public function destroy(MissionComment $comment)
     {
+        $comment->unmention($comment->mentions());
+
         $comment->delete();
     }
 
@@ -115,9 +127,5 @@ class CommentController extends Controller
     {
         $users = User::where('id', '!=', auth()->user()->id)->get();
         Notification::send($users, new MissionCommentAdded($comment));
-
-        // Notify mentions
-        $mentions = $comment->mentionsAsUser();
-        Notification::send($mentions, new MentionedInComment($comment));
     }
 }

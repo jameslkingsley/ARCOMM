@@ -22,6 +22,10 @@
 
         <script src="{{ mix('/js/app.js') }}" type="text/javascript"></script>
 
+        {{-- Laravel Mentions --}}
+        <script type="text/javascript" src="{{ url('/js/laravel-mentions.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url('/css/laravel-mentions.css') }}">
+
         <script>
             window.Laravel = {!! json_encode([
                 'csrfToken' => csrf_token(),
