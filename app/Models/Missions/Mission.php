@@ -5,6 +5,7 @@ namespace App\Models\Missions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Kingsley\Mentions\HasMentionsTrait;
 use App\Models\Missions\MissionComment;
 use App\Models\Missions\MissionNote;
 use App\Notifications\MissionNoteAdded;
@@ -25,7 +26,7 @@ use Log;
 
 class Mission extends Model implements HasMediaConversions
 {
-    use HasMediaTrait;
+    use HasMediaTrait, HasMentionsTrait;
 
     /**
      * The attributes that should be mutated to dates.

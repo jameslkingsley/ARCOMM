@@ -26,7 +26,8 @@
                         data = JSON.parse(data);
                         $('#submit-mission-comment input[name="id"]').val(id);
                         $('#submit-mission-comment textarea[name="text"]').val(data.text);
-                        $('#submit-mission-comment #mentions-list').val(data.mentions);
+                        $('#submit-mission-comment .mission-aar-textarea').html(data.text);
+                        // $('#submit-mission-comment #mentions-list').val(data.mentions);
                         $('#submit-mission-comment button[type="submit"]').html('Save Changes');
                         $('#submit-mission-comment #save-mission-comment').hide();
                         $('#submit-mission-comment textarea[name="text"]').focus();
@@ -66,6 +67,7 @@
                     success: function(data) {
                         $('#submit-mission-comment input[name="id"]').val(-1);
                         $('#submit-mission-comment textarea[name="text"]').val('');
+                        $('#submit-mission-comment .mission-aar-textarea').html('');
                         $('#submit-mission-comment #mentions-list').val('');
                         $('#submit-mission-comment button[type="submit"]').html('Publish');
                         $('#submit-mission-comment button[type="submit"]').prop('disabled', false);
@@ -102,9 +104,12 @@
                 event.preventDefault();
             });
 
-            $('.mission-aar-textarea')
-                .attr('placeholder', 'Your mission experience...')
-                .attr('rows', '6');
+            $('.has-mentions').mentions([{
+                trigger: '@',
+                pool: 'users',
+                display: 'username',
+                reference: 'id'
+            }]);
         });
     </script>
 
@@ -112,15 +117,14 @@
         <input type="hidden" name="id" value="{{ (!is_null($mission->draft())) ? $mission->draft()->id : '-1' }}">
         <input type="hidden" name="mission_id" value="{{ $mission->id }}">
         <input type="hidden" name="published" value="0">
-        <input type="hidden" name="mentions" value="{{ (!is_null($mission->draft())) ? $mission->draft()->mentionsList() : '' }}" id="mentions-list">
+        <input type="hidden" name="mentions" value="" id="mentions-list">
 
-        {!! mention()->asTextArea(
-            'text',
-            (!is_null($mission->draft())) ? $mission->draft()->text : '',
-            'users',
-            'username',
-            'mission-aar-textarea form-control m-b-3 m-t-3'
-        ) !!}
+        <textarea class="form-control" name="text" style="display:none"></textarea>
+
+        <div
+            class="form-control-editable has-mentions mission-aar-textarea form-control m-b-3 m-t-3"
+            contenteditable="plaintext-only"
+            for="text">{{ (!is_null($mission->draft())) ? $mission->draft()->text : '' }}</div>
 
         <button type="submit" class="btn btn-raised btn-primary pull-right m-l-3 m-r-3">Publish</button>
         <button class="btn pull-right" id="save-mission-comment">Save Draft</button>

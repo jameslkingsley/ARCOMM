@@ -4,10 +4,6 @@
     {{ $mission->display_name }}
 @endsection
 
-@section('head')
-    @include('mentions::assets')
-@endsection
-
 @if ($mission->banner() != '')
     @section('banner')
         {{ $mission->banner() }}

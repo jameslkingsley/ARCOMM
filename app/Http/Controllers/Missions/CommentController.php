@@ -52,9 +52,8 @@ class CommentController extends Controller
             $comment->published = $request->published;
             $comment->save();
 
-            $comment->updateMentions($request->mentions);
-
             if ($comment->published) {
+                $comment->mention($request->mentions);
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
             }
@@ -67,7 +66,9 @@ class CommentController extends Controller
             $comment->published = $request->published;
             $comment->save();
 
-            $comment->updateMentions($request->mentions);
+            // Reset the mentions
+            $comment->unmention($comment->mentions());
+            $comment->mention($request->mentions);
 
             if (!$was_published) {
                 static::notify($comment->mission, $comment);
@@ -91,7 +92,7 @@ class CommentController extends Controller
     {
         return json_encode([
             'text' => $comment->text,
-            'mentions' => $comment->mentionsList()
+            'mentions' => $comment->mentions()
         ]);
     }
 
@@ -103,6 +104,8 @@ class CommentController extends Controller
      */
     public function destroy(MissionComment $comment)
     {
+        $comment->unmention($comment->mentions());
+
         $comment->delete();
     }
 
@@ -115,9 +118,5 @@ class CommentController extends Controller
     {
         $users = User::where('id', '!=', auth()->user()->id)->get();
         Notification::send($users, new MissionCommentAdded($comment));
-
-        // Notify mentions
-        $mentions = $comment->mentionsAsUser();
-        Notification::send($mentions, new MentionedInComment($comment));
     }
 }
