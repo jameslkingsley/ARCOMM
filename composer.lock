@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e76879147816a7731ca3ad8b23dda62a",
-    "content-hash": "437338332b172605b988e1b70a4a892b",
+    "hash": "6639dec4fcbd996d7095fd2791617896",
+    "content-hash": "6c79dfdc7f6cc1591b71f16169896fbe",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -848,16 +848,16 @@
         },
         {
             "name": "jameslkingsley/laravel-mentions",
-            "version": "0.0.1",
+            "version": "0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jameslkingsley/laravel-mentions.git",
-                "reference": "b0e815279de40964cf5537542f6ee8ded6cd0f38"
+                "reference": "8f0ea878292a8a0dcc8e11adb05372258d978e78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/b0e815279de40964cf5537542f6ee8ded6cd0f38",
-                "reference": "b0e815279de40964cf5537542f6ee8ded6cd0f38",
+                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/8f0ea878292a8a0dcc8e11adb05372258d978e78",
+                "reference": "8f0ea878292a8a0dcc8e11adb05372258d978e78",
                 "shasum": ""
             },
             "require": {
@@ -891,7 +891,7 @@
                 "laravel",
                 "mentions"
             ],
-            "time": "2017-04-26 17:03:13"
+            "time": "2017-04-26 18:30:31"
         },
         {
             "name": "laravel/framework",
@@ -1082,16 +1082,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.38",
+            "version": "1.0.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "4ba6e13f5116204b21c3afdf400ecf2b9eb1c482"
+                "reference": "2474325ee924134bb05848663b12531f6f2e9fbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4ba6e13f5116204b21c3afdf400ecf2b9eb1c482",
-                "reference": "4ba6e13f5116204b21c3afdf400ecf2b9eb1c482",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/2474325ee924134bb05848663b12531f6f2e9fbe",
+                "reference": "2474325ee924134bb05848663b12531f6f2e9fbe",
                 "shasum": ""
             },
             "require": {
@@ -1161,7 +1161,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-04-22 18:59:19"
+            "time": "2017-04-25 15:24:43"
         },
         {
             "name": "league/glide",
@@ -3333,60 +3333,6 @@
             "time": "2015-05-11 14:41:42"
         },
         {
-            "name": "laravelcollective/html",
-            "version": "v5.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "7570f25d58a00fd6909c0563808590f9cdb14d47"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/7570f25d58a00fd6909c0563808590f9cdb14d47",
-                "reference": "7570f25d58a00fd6909c0563808590f9cdb14d47",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/http": "5.4.*",
-                "illuminate/routing": "5.4.*",
-                "illuminate/session": "5.4.*",
-                "illuminate/support": "5.4.*",
-                "illuminate/view": "5.4.*",
-                "php": ">=5.6.4"
-            },
-            "require-dev": {
-                "illuminate/database": "5.4.*",
-                "mockery/mockery": "~0.9.4",
-                "phpunit/phpunit": "~5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Collective\\Html\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                },
-                {
-                    "name": "Adam Engebretson",
-                    "email": "adam@laravelcollective.com"
-                }
-            ],
-            "description": "HTML and Form Builders for the Laravel Framework",
-            "homepage": "http://laravelcollective.com",
-            "time": "2017-01-26 19:27:05"
-        },
-        {
             "name": "mockery/mockery",
             "version": "0.9.9",
             "source": {
@@ -3492,53 +3438,6 @@
                 "object graph"
             ],
             "time": "2017-04-12 18:52:22"
-        },
-        {
-            "name": "nizarii/arma-rcon-class",
-            "version": "2.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Nizarii/arma-rcon-class-php.git",
-                "reference": "f1a8f3476bc00e3cc6f5ef73daf8a33ec9622fd5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Nizarii/arma-rcon-class-php/zipball/f1a8f3476bc00e3cc6f5ef73daf8a33ec9622fd5",
-                "reference": "f1a8f3476bc00e3cc6f5ef73daf8a33ec9622fd5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "arc.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Felix Schäfer",
-                    "role": "Developer"
-                }
-            ],
-            "description": "ARC is a lightweight PHP class, that allows you connecting and sending commands easily to your BattlEye server, including Arma 3, Arma 2 and Arma 2: OA game servers.",
-            "homepage": "https://github.com/Nizarii/arma-rcon-class-php/",
-            "keywords": [
-                "arma2",
-                "arma3",
-                "battleye",
-                "class",
-                "client",
-                "dayz",
-                "lightweight",
-                "rcon"
-            ],
-            "time": "2017-02-28 13:57:35"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -4762,66 +4661,6 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-03-20 09:45:15"
-        },
-        {
-            "name": "unicodeveloper/laravel-mentions",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/unicodeveloper/laravel-mentions.git",
-                "reference": "e58e38b6b08f0d165cf9e7f5a510efc2eb0e635d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/unicodeveloper/laravel-mentions/zipball/e58e38b6b08f0d165cf9e7f5a510efc2eb0e635d",
-                "reference": "e58e38b6b08f0d165cf9e7f5a510efc2eb0e635d",
-                "shasum": ""
-            },
-            "require": {
-                "laravelcollective/html": "~5.0|~5.1",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Unicodeveloper\\Mention\\": "src"
-                },
-                "files": [
-                    "src/helper.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Prosper Otemuyiwa",
-                    "email": "prosperotemuyiwa@gmail.com",
-                    "homepage": "https://twitter.com/unicodeveloper",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel 5 package that provides facebook-like mention functionality",
-            "homepage": "https://github.com/unicodeveloper/laravel-mentions",
-            "keywords": [
-                "autocomplete",
-                "facebook-mentions",
-                "laravel",
-                "laravel 5",
-                "laravel-mentions",
-                "smart search"
-            ],
-            "time": "2016-02-25 16:41:07"
         },
         {
             "name": "webmozart/assert",
