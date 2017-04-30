@@ -111,6 +111,8 @@ $mission-banner-author-font-sizes: (
     display: inline-block;
     margin-bottom: 2.5rem;
     min-width: calc(50% - .75rem);
+    float: left;
+    width: 100%;
 
     &:before {
         @include font-size($mission-title-font-sizes);
@@ -132,11 +134,15 @@ $mission-banner-author-font-sizes: (
     }
 
     &.mission-group-pinned {
-        width: calc(50% - .5rem);
+        width: 50%;
 
         @media screen and (max-width: 1440px) {
             width: 100%;
             text-align: center;
+        }
+
+        .mission-item:last-of-type {
+            margin-right: 0 !important;
         }
     }
 
@@ -148,9 +154,9 @@ $mission-banner-author-font-sizes: (
         @include background-image-defaults();
         background-position: center -3vw;
         display: inline-block;
-        width: calc(33.3333% - 1rem);
+        width: calc(16.6666% - 1rem);
         height: auto;
-        padding-top: calc(33.3333% - 1rem);
+        padding-top: calc(16.6666% - 1rem);
         box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
         position: relative;
         text-decoration: none !important;
@@ -162,19 +168,19 @@ $mission-banner-author-font-sizes: (
         float: left;
 
         @media screen and (max-width: 1440px) {
-            width: calc(25vw - 2.7rem);
-            padding-top: calc(25vw - 2.7rem);
+            width: calc(25vw - 2.7rem) !important;
+            padding-top: calc(25vw - 2.7rem) !important;
             float: none;
         }
 
         @media screen and (max-width: 1024px) {
-            width: calc(33.33vw - 4rem);
-            padding-top: calc(33.33vw - 4rem);
+            width: calc(33.33vw - 4rem) !important;
+            padding-top: calc(33.33vw - 4rem) !important;
         }
 
         @media screen and (max-width: 768px) {
-            width: calc(100% - 1rem);
-            padding-top: 50%;
+            width: calc(100% - 1rem) !important;
+            padding-top: 50% !important;
         }
 
         .mission-item-pulse {
@@ -269,6 +275,13 @@ $mission-banner-author-font-sizes: (
                 font-weight: 500;
                 line-height: 1.25rem;
             }
+        }
+    }
+
+    &.mission-group-pinned {
+        .mission-item {
+            width: calc(33.3333% - 1rem);
+            padding-top: calc(33.3333% - 1rem);
         }
     }
 }
