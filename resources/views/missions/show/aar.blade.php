@@ -1,9 +1,3 @@
-@php
-    foreach ($mission->commentNotifications() as $notification) {
-        $notification->markAsRead();
-    }
-@endphp
-
 <div class="mission-comments">
     @if ($mission->comments->isEmpty())
         <p class="text-xs-center p-y-3 text-muted">There are no after-action reports yet. Be the first to submit one!</p>
@@ -104,12 +98,30 @@
                 event.preventDefault();
             });
 
-            $('.has-mentions').mentions([{
-                trigger: '@',
-                pool: 'users',
-                display: 'username',
-                reference: 'id'
-            }]);
+            new Mentions({
+                input: '.has-mentions',
+                mentions: '#mentions-list',
+                pools: [{
+                    trigger: '@',
+                    pool: 'users',
+                    display: 'username',
+                    reference: 'id'
+                }, {
+                    trigger: '#',
+                    pool: 'missions',
+                    display: 'display_name',
+                    reference: 'id'
+                }]
+            });
+
+            $('.mission-comments .mention-node[data-object*="missions"]').each(function(i, node) {
+                node = $(node);
+                text = node.html();
+                id = node.data('object').split(':')[1];
+                node.replaceWith('<a href="{{ url('/hub/missions') }}/' + id + '" class="mention-node">' + text + '</a>');
+            });
+
+            $('.mission-comments .mission-comment-item[id="' + window.location.hash.substr(1) + '"]').addClass('highlight');
         });
     </script>
 
@@ -117,16 +129,27 @@
         <input type="hidden" name="id" value="{{ (!is_null($mission->draft())) ? $mission->draft()->id : '-1' }}">
         <input type="hidden" name="mission_id" value="{{ $mission->id }}">
         <input type="hidden" name="published" value="0">
-        <input type="hidden" name="mentions" value="{{ (!is_null($mission->draft())) ? $mission->draft()->mentionsEncoded() : '' }}" id="mentions-list">
+        <input type="hidden" name="mentions" value="{{ (!is_null($mission->draft())) ? $mission->draft()->mentions()->encoded() : '' }}" id="mentions-list">
 
-        <textarea class="form-control" name="text" style="display:none">{!! (!is_null($mission->draft())) ? $mission->draft()->text : '' !!}</textarea>
+        <textarea
+            class="form-control"
+            id="submit-mission-comment-text"
+            name="text"
+            style="display:none">{!! (!is_null($mission->draft())) ? $mission->draft()->text : '' !!}</textarea>
 
         <div
             class="form-control-editable has-mentions mission-aar-textarea form-control m-b-3 m-t-3"
             contenteditable="plaintext-only"
-            for="text">{!! (!is_null($mission->draft())) ? $mission->draft()->text : '' !!}</div>
+            placeholder="Your mission experience..."
+            for="#submit-mission-comment-text">{!! (!is_null($mission->draft())) ? $mission->draft()->text : '' !!}</div>
 
         <button type="submit" class="btn btn-raised btn-primary pull-right m-l-3 m-r-3">Publish</button>
         <button class="btn pull-right" id="save-mission-comment">Save Draft</button>
     </form>
 </div>
+
+@php
+    foreach ($mission->commentNotifications() as $notification) {
+        $notification->delete();
+    }
+@endphp

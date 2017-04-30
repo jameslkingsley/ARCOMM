@@ -41,7 +41,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4 mission-overview-card">
+    <a href="{{ $mission->url('aar') }}" class="col-md-4 mission-overview-card">
         @php
             $commentCount = $mission->comments->count();
         @endphp
@@ -53,9 +53,9 @@
         <span class="mission-weather-image">
             <i class="fa fa-comments"></i>
         </span>
-    </div>
+    </a>
 
-    <div class="col-md-4 mission-overview-card">
+    <a href="{{ $mission->url('media') }}" class="col-md-4 mission-overview-card">
         @php
             $imageCount = $mission->photos()->count();
         @endphp
@@ -67,9 +67,9 @@
         <span class="mission-weather-image">
             <i class="fa fa-camera" style="font-size: 6rem"></i>
         </span>
-    </div>
+    </a>
 
-    <div class="col-md-4 mission-overview-card">
+    <a href="{{ $mission->url('media') }}" class="col-md-4 mission-overview-card">
         @php
             $videoCount = $mission->videos->count();
         @endphp
@@ -81,5 +81,5 @@
         <span class="mission-weather-image">
             <i class="fa fa-video-camera"></i>
         </span>
-    </div>
+    </a>
 </div>

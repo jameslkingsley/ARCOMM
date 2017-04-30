@@ -12,7 +12,7 @@
         @endunless
     </a>
 
-    <div class="dropdown-menu" style="width: 25rem;max-height: 40rem;overflow-y: auto;">
+    <div class="dropdown-menu" style="width: 25rem;max-height: 40rem;overflow-y: auto;max-width: calc(100vw - 3rem);">
         @include('nav.notifications-list', ['notifications' => $notifications])
     </div>
 </li>

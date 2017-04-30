@@ -79,8 +79,9 @@ class MissionNoteAdded extends Notification
     public static function link($notification)
     {
         $mission = Mission::findOrFail($notification->data['note']['mission_id']);
+        $noteID = $notification->data['note']['id'];
 
-        return "{$mission->url()}/notes";
+        return "{$mission->url()}/notes#note-{$noteID}";
     }
 
     /**

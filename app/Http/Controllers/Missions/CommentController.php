@@ -55,9 +55,9 @@ class CommentController extends Controller
             $mentions = $comment->mention($request->mentions, false);
 
             if ($comment->published) {
-                $mentions->each(function($mention) {
-                    $mention->notify();
-                });
+                if ($mentions) {
+                    $mentions->notify();
+                }
 
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
@@ -76,10 +76,10 @@ class CommentController extends Controller
             $mentions = $comment->mention($request->mentions, false);
 
             if (!$was_published) {
-                $mentions->each(function($mention) {
-                    $mention->notify();
-                });
-
+                if ($mentions) {
+                    $mentions->notify();
+                }
+                
                 static::notify($comment->mission, $comment);
             }
         }
@@ -101,7 +101,7 @@ class CommentController extends Controller
     {
         return json_encode([
             'text' => $comment->text,
-            'mentions' => $comment->mentionsEncoded()
+            'mentions' => $comment->mentions()->encoded()
         ]);
     }
 
