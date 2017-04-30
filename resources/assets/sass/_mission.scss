@@ -174,9 +174,7 @@ $mission-banner-author-font-sizes: (
 
         @media screen and (max-width: 768px) {
             width: calc(100% - 1rem);
-            padding-top: calc(100% - 1rem);
-            margin: .5rem 0;
-            float: left;
+            padding-top: 50%;
         }
 
         .mission-item-pulse {
