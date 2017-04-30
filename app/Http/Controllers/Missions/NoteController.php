@@ -74,11 +74,11 @@ class NoteController extends Controller
      */
     public function store(Request $request, Mission $mission)
     {
-        $note = $this->note->create([
-            'user_id' => auth()->user()->id,
-            'mission_id' => $mission->id,
-            'text' => $request->text
-        ]);
+        $note = new MissionNote;
+        $note->user_id = auth()->user()->id;
+        $note->mission_id = $mission->id;
+        $note->text = $request->text;
+        $note->save();
 
         $note->mention($request->mentions, false);
 
@@ -153,7 +153,7 @@ class NoteController extends Controller
     public function readNotifications(Request $request, Mission $mission)
     {
         foreach ($mission->noteNotifications() as $notification) {
-            $notification->markAsRead();
+            $notification->delete();
         }
     }
 }

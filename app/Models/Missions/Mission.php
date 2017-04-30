@@ -2,6 +2,7 @@
 
 namespace App\Models\Missions;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -26,7 +27,9 @@ use Log;
 
 class Mission extends Model implements HasMediaConversions
 {
-    use HasMediaTrait, HasMentionsTrait;
+    use Notifiable,
+        HasMediaTrait,
+        HasMentionsTrait;
 
     /**
      * The attributes that should be mutated to dates.
@@ -180,9 +183,9 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return string
      */
-    public function url()
+    public function url($uri = '')
     {
-        return url("/hub/missions/{$this->id}");
+        return url("/hub/missions/{$this->id}/{$uri}");
     }
 
     /**

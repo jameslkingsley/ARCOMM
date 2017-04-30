@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c39cc93ee7cea586d08d9bd31a787575",
-    "content-hash": "a84cfa30d090e28dbe5ed633fbb9cf4a",
+    "hash": "f3a65224648e26089b2def5d569e4674",
+    "content-hash": "f569dae49e755b2cbd0117ae9ce92735",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -848,16 +848,16 @@
         },
         {
             "name": "jameslkingsley/laravel-mentions",
-            "version": "0.0.5",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jameslkingsley/laravel-mentions.git",
-                "reference": "ce389a5e5b9361a1c966fdffef7a58c3a3861819"
+                "reference": "0557c5fc869f018a479271682d4ff74f5ea668e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/ce389a5e5b9361a1c966fdffef7a58c3a3861819",
-                "reference": "ce389a5e5b9361a1c966fdffef7a58c3a3861819",
+                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/0557c5fc869f018a479271682d4ff74f5ea668e6",
+                "reference": "0557c5fc869f018a479271682d4ff74f5ea668e6",
                 "shasum": ""
             },
             "require": {
@@ -866,6 +866,12 @@
                 "illuminate/routing": "~5.4.0",
                 "illuminate/support": "~5.4.0",
                 "php": "^7.0"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "~1.4",
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~5.7"
             },
             "type": "library",
             "autoload": {
@@ -891,20 +897,20 @@
                 "laravel",
                 "mentions"
             ],
-            "time": "2017-04-26 19:00:14"
+            "time": "2017-04-30 17:10:41"
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.19",
+            "version": "v5.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "02444b7450350db17a7607c8a52f7268ebdb0dad"
+                "reference": "2ed668f96d1a6ca42f50d5c87ee9ceecfc0a6eee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/02444b7450350db17a7607c8a52f7268ebdb0dad",
-                "reference": "02444b7450350db17a7607c8a52f7268ebdb0dad",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2ed668f96d1a6ca42f50d5c87ee9ceecfc0a6eee",
+                "reference": "2ed668f96d1a6ca42f50d5c87ee9ceecfc0a6eee",
                 "shasum": ""
             },
             "require": {
@@ -1020,7 +1026,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-04-16 13:33:34"
+            "time": "2017-04-28 15:40:01"
         },
         {
             "name": "laravel/tinker",
@@ -1082,16 +1088,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.39",
+            "version": "1.0.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "2474325ee924134bb05848663b12531f6f2e9fbe"
+                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/2474325ee924134bb05848663b12531f6f2e9fbe",
-                "reference": "2474325ee924134bb05848663b12531f6f2e9fbe",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3828f0b24e2c1918bb362d57a53205d6dc8fde61",
+                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61",
                 "shasum": ""
             },
             "require": {
@@ -1161,7 +1167,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-04-25 15:24:43"
+            "time": "2017-04-28 10:15:08"
         },
         {
             "name": "league/glide",
@@ -4716,7 +4722,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "alaouy/youtube": 20
+        "alaouy/youtube": 20,
+        "jameslkingsley/laravel-mentions": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

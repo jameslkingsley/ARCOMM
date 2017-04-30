@@ -1,4 +1,4 @@
-<div class="mission-comment-item">
+<div id="note-{{ $note->id }}" class="mission-comment-item">
     <span
         class="mission-comment-item-avatar"
         style="background-image: url({{ $note->user->avatar }})">

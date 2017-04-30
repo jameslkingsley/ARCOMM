@@ -1,56 +1,65 @@
-(function($) {
-    $.fn.mentions = function(pools, options) {
-        var node = $(this);
-        var collections = [];
+function Mentions(options) {
+    var node = document.querySelector(options.input);
+    var collections = [];
 
-        for (var i = 0; i < pools.length; i++) {
-            var pool = pools[i];
-
-            collections.push($.extend(true, {
-                trigger: '@',
-                lookup: pool.display,
-                allowSpaces: true,
-                selectTemplate: function(item) {
-                    return '<span class="mention-node" data-object="'
-                        + pool.pool + ':' + item.original[pool.reference] + '">'
-                        + (pool.trigger || '@')
-                        + item.original[pool.display] + '</span>';
-                },
-                values: function(text, callback) {
-                    if (text.length <= 1) return;
-
-                    $.post('/api/mentions', {
-                        p: [pool.pool],
-                        q: text
-                    }, function(data) {
-                        callback(data);
-                    }, 'json');
-                }
-            }, pool));
+    var selectTemplate = function(pool) {
+        return function(item) {
+            return '<span class="mention-node" data-object="'
+                + pool.pool + ':' + item.original[pool.reference] + '">'
+                + (pool.trigger || '@')
+                + item.original[pool.display] + '</span>';
         }
+    }
 
-        var tribute = new Tribute({
-            collection: collections
-        });
+    var values = function(pool) {
+        return function(text, callback) {
+            if (text.length <= 1) return;
 
-        tribute.attach(node);
+            var xhttp = new XMLHttpRequest();
 
-        node.keyup(function(event) {
-            var input = $(this);
-            var mentions = input.parents('form').find('input[name="mentions"]');
-            var objects = [];
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    callback(JSON.parse(this.responseText));
+                }
+            };
 
-            input.find('.mention-node').each(function() {
-                objects.push($(this).data('object'));
-            });
+            xhttp.open('post', '/api/mentions?p=' + pool.pool + '&q=' + text, true);
+            xhttp.send();
+        }
+    }
 
-            mentions.val(objects.join());
+    for (var i = 0; i < options.pools.length; i++) {
+        var pool = options.pools[i];
 
-            if (input.attr('for')) {
-                input.parents('form')
-                    .find('*[name="' + input.attr('for') + '"]')
-                    .val(input.html());
-            }
+        collections.push({
+            trigger: pool.trigger || '@',
+            lookup: pool.display,
+            allowSpaces: true,
+            selectTemplate: selectTemplate(pool),
+            values: values(pool)
         });
     }
-})(jQuery);
+
+    var tribute = new Tribute({
+        collection: collections
+    });
+
+    tribute.attach(node);
+
+    node.addEventListener('keyup', function(event) {
+        var input = event.target;
+        var mentions = document.querySelector(options.mentions);
+        var objects = [];
+
+        var nodes = input.getElementsByClassName('mention-node');
+        for (var i = 0; i < nodes.length; i++) {
+            objects.push(nodes[i].getAttribute('data-object'));
+        }
+
+        mentions.value = objects.join();
+
+        if (input.hasAttribute('for')) {
+            document.querySelector(input.getAttribute('for')).value = input.innerHTML;
+        }
+    });
+}

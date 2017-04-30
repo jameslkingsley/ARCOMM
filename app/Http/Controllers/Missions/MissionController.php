@@ -94,12 +94,12 @@ class MissionController extends Controller
     {
         // Mark comment notifications as read
         foreach ($mission->commentNotifications() as $notification) {
-            $notification->markAsRead();
+            $notification->delete();
         }
 
         // Mark verified notifications as read
         foreach ($mission->verifiedNotifications() as $notification) {
-            $notification->markAsRead();
+            $notification->delete();
         }
 
         if (!$request->ajax()) {
