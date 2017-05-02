@@ -11,9 +11,11 @@
                         $('#update-mission').dropzone({
                             url: '{{ url('/hub/missions/' . $mission->id . '/update') }}',
                             acceptedFiles: '',
-                            addedfile: function(file) {},
+                            addedfile: function(file) {
+                                $('body').prepend('<div class="mission-update-cover"><i class="fa fa-spin fa-refresh"></i></div>');
+                            },
                             success: function(file, data) {
-                                window.location = "{{ $mission->url() }}";
+                                window.location = "{{ $mission->url() }}?u=1";
                             },
                             error: function(file, message) {
                                 alert(message);

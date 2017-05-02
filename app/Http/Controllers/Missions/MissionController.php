@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Missions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
+use App\Models\Missions\MissionRevision;
 use App\Helpers\ArmaConfig;
 use App\Notifications\MissionVerified;
+use App\Notifications\MissionUpdated;
+use App\Notifications\MissionPublished;
 use App\Models\Portal\User;
 use Notification;
 use Storage;
@@ -62,7 +65,7 @@ class MissionController extends Controller
 
             // Unpack PBO and store configs in mission record as JSON objects
             $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
-                $mission->display_name = $ext->onloadname;
+                $mission->display_name = trim($ext->onloadname, '.');
                 $mission->summary = $ext->onloadmission;
                 $mission->save();
 
@@ -79,6 +82,15 @@ class MissionController extends Controller
 
             // Delete local temp files
             Storage::deleteDirectory("missions/{$user->id}");
+
+            $users = User::all()->filter(function($user) use($mission) {
+                return
+                    $user->id != auth()->user()->id &&
+                    ($user->hasPermission('mission:notes') ||
+                    $user->id == $mission->user->id);
+            });
+
+            Notification::send($users, new MissionPublished($mission));
 
             return $mission->url();
         }
@@ -99,6 +111,11 @@ class MissionController extends Controller
 
         // Mark verified notifications as read
         foreach ($mission->verifiedNotifications() as $notification) {
+            $notification->delete();
+        }
+
+        // Mark state notifications as read
+        foreach ($mission->stateNotifications() as $notification) {
             $notification->delete();
         }
 
@@ -151,7 +168,7 @@ class MissionController extends Controller
 
                 // Unpack PBO and store configs in mission record as JSON objects
                 $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
-                    $mission->display_name = $ext->onloadname;
+                    $mission->display_name = trim($ext->onloadname, '.');
                     $mission->summary = $ext->onloadmission;
                     $mission->save();
 
@@ -190,6 +207,21 @@ class MissionController extends Controller
                 // Delete old cloud files
                 Storage::cloud()->delete("{$old_mission_cloud_pbo_dir}x");
                 Storage::cloud()->delete("{$old_mission_cloud_zip_dir}x");
+
+                // Create revision item
+                $revision = MissionRevision::create([
+                    'mission_id' => $mission->id,
+                    'user_id' => auth()->user()->id
+                ]);
+
+                $users = User::all()->filter(function($user) use($mission) {
+                    return
+                        $user->id != auth()->user()->id &&
+                        ($user->hasPermission('mission:notes') ||
+                        $user->id == $mission->user->id);
+                });
+
+                Notification::send($users, new MissionUpdated($revision));
 
                 return view('missions.show', compact('mission'));
             }

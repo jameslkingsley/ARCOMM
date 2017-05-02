@@ -27,6 +27,10 @@
         @include('missions.show.verification')
     @endif
 
+    @if ($mission->isMine() || auth()->user()->hasPermission('mission:notes'))
+        @include('missions.show.revisions')
+    @endif
+
     @if ($mission->isMine() || auth()->user()->hasPermission('mission:download'))
         @include('missions.show.download')
     @endif
@@ -111,6 +115,12 @@
         </header>
 
         <div class="mission-inner">
+            @if (app('request')->input('u'))
+                <div class="alert alert-success m-b-2 m-t-2" role="alert">
+                    <strong>Mission Updated!</strong> Let the mission testers know what you changed by adding a note.
+                </div>
+            @endif
+
             @if (isset($panel))
                 @include('missions.show.'.$panel, ['mission' => $mission])
             @else

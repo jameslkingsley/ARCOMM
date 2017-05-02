@@ -30,7 +30,7 @@
     });
 </script>
 
-<li class="nav-item dropdown">
+<li class="nav-item dropdown m-l-2">
     <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-download"></i>
     </a>

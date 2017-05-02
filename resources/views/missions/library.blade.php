@@ -54,7 +54,13 @@
     @endif
 @endif
 
-<ul class="mission-group" data-title="My Missions">
+<ul
+    class="mission-group {{ ($myMissions->isEmpty()) ? 'mission-empty-group' : '' }}"
+    data-title="My Missions"
+    @if ($myMissions->isEmpty())
+        data-subtitle="You haven't uploaded any missions!"
+    @endif>
+
     @if (!$myMissions->isEmpty())
         @foreach ($myMissions as $mission)
             @include('missions.item', [
@@ -62,8 +68,6 @@
                 'ignore_new_banner' => true
             ])
         @endforeach
-    @else
-        <p class="mission-section-label">You haven't uploaded any missions!<br />Upload your mission PBO files via the upload button on the left.</p>
     @endif
 </ul>
 

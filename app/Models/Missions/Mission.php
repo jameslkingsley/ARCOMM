@@ -13,6 +13,8 @@ use App\Notifications\MissionNoteAdded;
 use App\Notifications\MissionCommentAdded;
 use App\Notifications\MentionedInComment;
 use App\Notifications\MissionVerified;
+use App\Notifications\MissionPublished;
+use App\Notifications\MissionUpdated;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
@@ -216,6 +218,16 @@ class Mission extends Model implements HasMediaConversions
     public function notes()
     {
         return $this->hasMany(MissionNote::class);
+    }
+
+    /**
+     * Gets all revisions for the mission.
+     *
+     * @return Collection App\Models\Missions\MissionRevision
+     */
+    public function revisions()
+    {
+        return $this->hasMany('App\Models\Missions\MissionRevision');
     }
 
     /**
@@ -996,6 +1008,24 @@ class Mission extends Model implements HasMediaConversions
             return
                 $item->type == MissionVerified::class &&
                 $item->data['mission']['id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission updated/published notifications.
+     *
+     * @return Collection
+     */
+    public function stateNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                ($item->type == MissionPublished::class &&
+                $item->data['mission']['id'] == $this->id) ||
+                ($item->type == MissionUpdated::class &&
+                $item->data['mission_id'] == $this->id);
         });
 
         return $filtered;
