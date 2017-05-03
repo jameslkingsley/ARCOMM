@@ -4,6 +4,13 @@
 
 <h1 align="center">Community Hub</h1>
 
+### Site Features
+- Full mobile support
+- Built in notifications
+- Steam authentication
+
+![Screenshot 1](http://i.imgur.com/PHG3FFl.png)
+
 ### Mission Features
 - Automated mission error checking
     - Checks configs for syntax errors
@@ -21,6 +28,23 @@
     - Create, edit and delete your posts
 - Update missions with a new PBO, keeping existing media/comments
 - Mission verification to ensure quality on the operation day
+- Mission updates will be logged as revisions
+- Discord notifications for basically everything
+- Mention other users in comments and notes
+- Hashtag missions in comments and notes
+
+![Screenshot 2](http://i.imgur.com/zFwuBXU.png)
+
+### Operation Features
+- Create operations for the given date/time
+- Assign missions to operations, in order
+
+### User Features
+- Sync avatar from Steam
+- Change username
+- Permissions system
+
+![Screenshot 3](http://i.imgur.com/NpEGOeH.png)
 
 ### Application Features
 - Sort apps into custom categories
