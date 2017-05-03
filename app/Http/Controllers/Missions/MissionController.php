@@ -104,6 +104,10 @@ class MissionController extends Controller
      */
     public function show(Request $request, Mission $mission)
     {
+        if (!$mission->verified && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+            return redirect('/hub/missions?403=1');
+        }
+
         // Mark comment notifications as read
         foreach ($mission->commentNotifications() as $notification) {
             $notification->delete();
@@ -214,6 +218,9 @@ class MissionController extends Controller
                     'user_id' => auth()->user()->id
                 ]);
 
+                // Discord Message
+                $mission->notify(new MissionUpdated($revision, true));
+
                 $users = User::all()->filter(function($user) use($mission) {
                     return
                         $user->id != auth()->user()->id &&
@@ -292,6 +299,9 @@ class MissionController extends Controller
         $mission->save();
 
         if ($mission->verified) {
+            // Discord Message
+            $mission->notify(new MissionVerified($mission, true));
+
             $users = User::all()->filter(function($user) use($mission) {
                 return
                     $user->id != auth()->user()->id &&
@@ -326,6 +336,10 @@ class MissionController extends Controller
      */
     public function panel(Request $request, Mission $mission, $panel)
     {
+        if (!$mission->verified && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+            return redirect('/hub/missions?403=1');
+        }
+
         if (!$request->ajax()) {
             return view('missions.show', compact('mission', 'panel'));
         } else {

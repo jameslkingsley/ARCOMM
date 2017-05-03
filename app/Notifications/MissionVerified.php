@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use NotificationChannels\Discord\DiscordChannel;
+use NotificationChannels\Discord\DiscordMessage;
 use App\Models\Missions\Mission;
 use App\Models\Portal\User;
 
@@ -20,14 +22,17 @@ class MissionVerified extends Notification
      */
     protected $mission;
 
+    protected $only_discord;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Mission $mission)
+    public function __construct(Mission $mission, bool $only_discord = false)
     {
         $this->mission = $mission;
+        $this->only_discord = $only_discord;
 
         return $this;
     }
@@ -40,7 +45,17 @@ class MissionVerified extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return $this->only_discord ? [DiscordChannel::class] : ['database'];
+    }
+
+    /**
+     * Discord message.
+     *
+     * @return any
+     */
+    public function toDiscord($notifiable)
+    {
+        return DiscordMessage::create("**{$this->mission->verifiedByUser()->username}** verified the mission **{$this->mission->display_name}**");
     }
 
     /**

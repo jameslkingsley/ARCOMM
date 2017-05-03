@@ -4,6 +4,7 @@ namespace App\Models\Missions;
 
 use Illuminate\Database\Eloquent\Model;
 use Kingsley\Mentions\HasMentionsTrait;
+use App\Models\Missions\Mission;
 use App\Models\Portal\User;
 
 class MissionNote extends Model
@@ -29,6 +30,16 @@ class MissionNote extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Gets the mission model the note belongs to.
+     *
+     * @return App\Models\Missions\Mission
+     */
+    public function mission()
+    {
+        return $this->belongsTo(Mission::class);
     }
 
     /**

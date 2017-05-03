@@ -125,6 +125,9 @@ class CommentController extends Controller
      */
     public static function notify(Mission $mission, MissionComment $comment)
     {
+        // Discord Message
+        $mission->notify(new MissionCommentAdded($comment, true));
+
         $users = User::where('id', '!=', auth()->user()->id)->get();
         Notification::send($users, new MissionCommentAdded($comment));
     }

@@ -88,6 +88,16 @@ class Mission extends Model implements HasMediaConversions
     ];
 
     /**
+     * Discord notification channel.
+     *
+     * @return any
+     */
+    public function routeNotificationForDiscord()
+    {
+        return config('services.discord.channel_id');
+    }
+
+    /**
      * Media library image conversions.
      *
      * @return void

@@ -72,6 +72,12 @@
         </header>
 
         <main>
+            @if (app('request')->input('403'))
+                <div class="alert alert-danger m-b-3 col-md-6 m-x-auto text-xs-center" role="alert">
+                    <strong>You're not a mission tester!</strong> You don't have the necessary permissions to access that.
+                </div>
+            @endif
+
             @yield('content')
         </main>
 

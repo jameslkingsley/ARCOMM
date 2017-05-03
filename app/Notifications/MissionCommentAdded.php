@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use NotificationChannels\Discord\DiscordChannel;
+use NotificationChannels\Discord\DiscordMessage;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
 use App\Models\Portal\User;
@@ -21,14 +23,17 @@ class MissionCommentAdded extends Notification
      */
     protected $comment;
 
+    protected $only_discord;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(MissionComment $comment)
+    public function __construct(MissionComment $comment, bool $only_discord = false)
     {
         $this->comment = $comment;
+        $this->only_discord = $only_discord;
 
         return $this;
     }
@@ -41,7 +46,19 @@ class MissionCommentAdded extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return $this->only_discord ? [DiscordChannel::class] : ['database'];
+    }
+
+    /**
+     * Discord message.
+     *
+     * @return any
+     */
+    public function toDiscord($notifiable)
+    {
+        return DiscordMessage::create(
+            "**{$this->comment->user->username}** commented on the mission **{$this->comment->mission->display_name}** {$this->comment->mission->url()}/aar#comment-{$this->comment->id}"
+        );
     }
 
     /**

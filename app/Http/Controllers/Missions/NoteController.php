@@ -48,6 +48,10 @@ class NoteController extends Controller
     {
         $this->readNotifications($request, $mission);
 
+        if (!auth()->user()->hasPermission('mission:notes') && !$mission->isMine()) {
+            return redirect($mission->url());
+        }
+
         if (!$request->ajax()) {
             $panel = 'notes';
             return view('missions.show', compact('mission', 'panel'));
@@ -81,6 +85,9 @@ class NoteController extends Controller
         $note->save();
 
         $note->mention($request->mentions, false);
+
+        // Discord Message
+        $mission->notify(new MissionNoteAdded($note, true));
 
         $users = User::all()->filter(function($user) use($mission) {
             return
