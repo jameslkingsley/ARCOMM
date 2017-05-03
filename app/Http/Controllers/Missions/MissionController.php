@@ -83,6 +83,9 @@ class MissionController extends Controller
             // Delete local temp files
             Storage::deleteDirectory("missions/{$user->id}");
 
+            // Discord Message
+            $mission->notify(new MissionPublished($mission, true));
+
             $users = User::all()->filter(function($user) use($mission) {
                 return
                     $user->id != auth()->user()->id &&
