@@ -47,7 +47,7 @@ class DiscordBot extends Command
             $discord->on('message', function($message, $discord) {
                 $rand = mt_rand() / mt_getrandmax();
 
-                if ($rand > 0.03 && (!str_contains($message, '309300058669449217') || $message->author->user->id == '309300058669449217')) return;
+                if ($rand > 0.02 && (!str_contains($message, '309300058669449217') || $message->author->user->id == '309300058669449217')) return;
 
                 $query = http_build_query([
                     'key' => env('CLEVERBOT_API_KEY'),
