@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Discord\Discord;
+use App\Models\Operations\Operation;
 
 class DiscordBot extends Command
 {
@@ -44,7 +45,9 @@ class DiscordBot extends Command
 
         $discord->on('ready', function($discord) {
             $discord->on('message', function($message, $discord) {
-                if (!str_contains($message, '309300058669449217') || $message->author->user->id == '309300058669449217') return;
+                $rand = mt_rand() / mt_getrandmax();
+
+                if ($rand > 0.05 && (!str_contains($message, '309300058669449217') || $message->author->user->id == '309300058669449217')) return;
 
                 $query = http_build_query([
                     'key' => env('CLEVERBOT_API_KEY'),
