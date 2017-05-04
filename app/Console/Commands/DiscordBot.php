@@ -44,6 +44,7 @@ class DiscordBot extends Command
 
         $discord->on('ready', function($discord) {
             $discord->on('message', function($message, $discord) {
+                echo $message;
                 if (!str_contains($message, '@309300058669449217')) return;
 
                 $query = http_build_query([
