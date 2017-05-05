@@ -140,17 +140,17 @@
     </div>
 
     <div class="operations-mission-browser hide">
-        <h2 class="mission-section-heading" style="margin-top: 0 !important">New Missions</h2>
+        <h2 class="mission-section-heading pull-left" style="margin-top: 0 !important">New Missions</h2>
 
-        <ul class="mission-group">
+        <ul class="mission-group pull-left">
             @foreach (Mission::allNew() as $mission)
                 @include('missions.item', ['mission' => $mission])
             @endforeach
         </ul>
 
-        <h2 class="mission-section-heading">Past Missions</h2>
+        <h2 class="mission-section-heading pull-left">Past Missions</h2>
 
-        <ul class="mission-group">
+        <ul class="mission-group pull-left">
             @foreach (Mission::allPast() as $mission)
                 @include('missions.item', ['mission' => $mission])
             @endforeach
