@@ -18,8 +18,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+        $unregistered = User::unregistered();
 
-        return view('user.admin.index', compact('users'));
+        return view('user.admin.index', compact('users', 'unregistered'));
     }
 
     /**

@@ -38,8 +38,21 @@
     <div class="container" id="users-content">
         <h5 class="m-t-0 m-b-2">{{ $users->count() }} Users</h5>
 
-        <div class="card">
+        <div class="card m-b-3">
             @include('user.admin.list', ['users' => $users])
+        </div>
+
+        <h5 class="m-t-3 m-b-2">{{ $unregistered->count() }} Unregistered Members</h5>
+
+        <div class="card">
+            <div class="list-group">
+                @foreach ($unregistered as $user)
+                    <li class="list-group-item list-group-item-action">
+                        <img src="{{ $user->avatarUrl }}" class="img-circle m-r-2" width="32">
+                        {{ $user->personaName }}
+                    </li>
+                @endforeach
+            </div>
         </div>
     </div>
 

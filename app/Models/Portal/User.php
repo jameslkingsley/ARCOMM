@@ -167,4 +167,23 @@ class User extends Authenticatable implements HasMediaConversions
             }
         });
     }
+
+    /**
+     * Gets all unregistered users from the Steam group.
+     *
+     * @return Collection Steam API User Summaries
+     */
+    public static function unregistered()
+    {
+        $users = static::all();
+        $filtered = [];
+
+        foreach (SteamAPI::members() as $id) {
+            if (!$users->contains('steam_id', $id)) {
+                $filtered[] = $id;
+            }
+        }
+
+        return collect(Steam::user($filtered)->GetPlayerSummaries());
+    }
 }
