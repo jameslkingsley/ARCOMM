@@ -92,6 +92,10 @@
                     data: $('#submit-mission-comment').serialize(),
                     success: function(data) {
                         $('#submit-mission-comment input[name="id"]').val(data.trim());
+                        $('#auto-save-hint').fadeIn().html('Saved Draft');
+                        setTimeout(function() {
+                            $('#auto-save-hint').fadeOut();
+                        }, 3000);
                     }
                 });
 
@@ -122,6 +126,12 @@
             });
 
             $('.mission-comments .mission-comment-item[id="' + window.location.hash.substr(1) + '"]').addClass('highlight');
+
+            setInterval(function() {
+                if ($('#submit-mission-comment-text').val().length > 0) {
+                    $('#save-mission-comment').click();
+                }
+            }, 10000);
         });
     </script>
 
@@ -142,6 +152,8 @@
             contenteditable="plaintext-only"
             placeholder="Your mission experience..."
             for="#submit-mission-comment-text">{!! (!is_null($mission->draft())) ? $mission->draft()->text : '' !!}</div>
+
+        <span id="auto-save-hint" class="pull-left text-muted p-l-3"></span>
 
         <button type="submit" class="btn btn-raised btn-primary pull-right m-l-3 m-r-3">Publish</button>
         <button class="btn pull-right" id="save-mission-comment">Save Draft</button>

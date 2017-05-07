@@ -75,7 +75,7 @@ class CommentController extends Controller
             $comment->unmention($comment->mentions());
             $mentions = $comment->mention($request->mentions, false);
 
-            if (!$was_published) {
+            if (!$was_published && $comment->published) {
                 if ($mentions) {
                     $mentions->notify();
                 }
