@@ -105,8 +105,8 @@ class Mission extends Model implements HasMediaConversions
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-            ->setManipulations(['w' => 384, 'h' => 384, 'fit' => 'crop'])
-            ->performOnCollections('images');
+            ->width(384)
+            ->height(384);
     }
 
     /**

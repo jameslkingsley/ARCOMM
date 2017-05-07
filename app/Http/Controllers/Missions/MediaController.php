@@ -18,20 +18,16 @@ class MediaController extends Controller
      */
     public function uploadPhoto(Request $request)
     {
-        try {
-            $mission = Mission::find($request->mission_id);
+        $mission = Mission::find($request->mission_id);
 
-            $mission
-                ->addMedia($request->file('file'))
-                ->withCustomProperties(['user_id' => auth()->user()->id])
-                ->toMediaCollection('images');
+        $mission
+            ->addMedia($request->file('file'))
+            ->withCustomProperties(['user_id' => auth()->user()->id])
+            ->toMediaCollection('images');
 
-            $media = $mission->getMedia('images')->last();
+        $media = $mission->getMedia('images')->last();
 
-            return view('missions.media.photo', compact('media', 'mission'));
-        } catch (Exception $e) {
-            return json_encode($e);
-        }
+        return view('missions.media.photo', compact('media', 'mission'));
     }
 
     /**
