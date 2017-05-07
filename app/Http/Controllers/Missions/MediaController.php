@@ -89,7 +89,7 @@ class MediaController extends Controller
             foreach ($mission->getMedia('images') as $media) {
                 $hash = Hash::make($media->file_name);
                 $url = url($media->getUrl());
-                $contents .= "{$url}    {$media->size}  {$hash}".PHP_EOL;
+                $contents .= "{$url}\t{$media->size}\t{$hash}".PHP_EOL;
             }
         });
 
