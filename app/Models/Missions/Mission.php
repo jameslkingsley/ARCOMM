@@ -106,7 +106,10 @@ class Mission extends Model implements HasMediaConversions
     {
         $this->addMediaConversion('thumb')
             ->width(384)
-            ->height(384);
+            ->height(384)
+            ->quality(100)
+            ->nonQueued()
+            ->performOnCollections('images');
     }
 
     /**
