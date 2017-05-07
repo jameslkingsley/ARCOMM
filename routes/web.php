@@ -61,13 +61,16 @@ Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
 
+Route::group(['middleware' => 'etag'], function() {
+    Route::get('/hub/missions/media/tsv', 'Missions\MediaController@tsv');
+});
+
 Route::group(['middleware' => 'member'], function() {
     // Mission Media
     Route::post('/hub/missions/media/add-photo', 'Missions\MediaController@uploadPhoto');
     Route::post('/hub/missions/media/delete-photo', 'Missions\MediaController@deletePhoto');
     Route::post('/hub/missions/media/add-video', 'Missions\MediaController@addVideo');
     Route::post('/hub/missions/media/delete-video', 'Missions\MediaController@removeVideo');
-    Route::get('/hub/missions/media/tsv', 'Missions\MediaController@tsv');
 
     // Mission Operations
     Route::post('/hub/missions/operations/remove-mission', 'Missions\OperationController@removeMission');
