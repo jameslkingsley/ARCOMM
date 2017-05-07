@@ -247,7 +247,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function banner()
     {
-        $media = $this->getMedia();
+        $media = $this->photos();
 
         if (count($media) > 0) {
             return $media[0]->getUrl();
@@ -263,7 +263,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function thumbnail()
     {
-        $media = $this->getMedia();
+        $media = $this->photos();
 
         if (count($media) > 0) {
             return $media[0]->getUrl('thumb');
@@ -322,7 +322,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function photos()
     {
-        return $this->getMedia();
+        return $this->getMedia('images');
     }
 
     /**

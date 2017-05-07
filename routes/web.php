@@ -61,9 +61,9 @@ Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
 
-Route::group(['middleware' => 'etag'], function() {
-    Route::get('/hub/missions/media/tsv', 'Missions\MediaController@tsv');
-});
+// Route::group(['middleware' => 'etag'], function() {
+//     Route::get('/hub/missions/media/tsv', 'Missions\MediaController@tsv');
+// });
 
 Route::group(['middleware' => 'member'], function() {
     // Mission Media
