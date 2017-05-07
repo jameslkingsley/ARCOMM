@@ -87,33 +87,37 @@ class DiscordBot extends Command
 
         $discord->on('ready', function($discord) use($command) {
             $discord->on('message', function($message, $discord) use($command) {
-                if (starts_with($message->content, '!')) {
-                    $parts = explode(' ', substr($message->content, 1));
+                try {
+                    if (starts_with($message->content, '!')) {
+                        $parts = explode(' ', substr($message->content, 1));
 
-                    if (method_exists($command, $parts[0])) {
-                        $message->channel->sendMessage(
-                            $command->{$parts[0]}($parts)
-                        );
-                    } else {
+                        if (method_exists($command, $parts[0])) {
+                            $message->channel->sendMessage(
+                                $command->{$parts[0]}($parts)
+                            );
+                        } else {
+                            return;
+                        }
+
                         return;
                     }
 
-                    return;
+                    $bot_id = '309300058669449217';
+                    $rand = mt_rand() / mt_getrandmax();
+
+                    if ($rand > 0.02 && (!str_contains($message, $bot_id) || $message->author->user->id == $bot_id)) return;
+
+                    $query = http_build_query([
+                        'key' => env('CLEVERBOT_API_KEY'),
+                        'input' => $message->content
+                    ]);
+
+                    $json = file_get_contents('https://www.cleverbot.com/getreply?'.$query);
+                    $obj = json_decode($json);
+                    $message->channel->sendMessage($obj->output);
+                } catch (Exception $e) {
+                    //
                 }
-
-                $bot_id = '309300058669449217';
-                $rand = mt_rand() / mt_getrandmax();
-
-                if ($rand > 0.02 && (!str_contains($message, $bot_id) || $message->author->user->id == $bot_id)) return;
-
-                $query = http_build_query([
-                    'key' => env('CLEVERBOT_API_KEY'),
-                    'input' => $message->content
-                ]);
-
-                $json = file_get_contents('https://www.cleverbot.com/getreply?'.$query);
-                $obj = json_decode($json);
-                $message->channel->sendMessage($obj->output);
             });
         });
 
