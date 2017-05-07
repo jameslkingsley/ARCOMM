@@ -32,7 +32,7 @@ class MediaController extends Controller
         // Record 1 is the default gallery
         if (auth()->user()->hasPermission('public_media:upload')) {
             $gallery = Gallery::find(1);
-            $gallery->addMedia($request->file('file'))->toCollection('images');
+            $gallery->addMedia($request->file('file'))->toMediaCollection('images');
         }
     }
 

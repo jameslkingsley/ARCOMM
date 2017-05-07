@@ -67,6 +67,7 @@ Route::group(['middleware' => 'member'], function() {
     Route::post('/hub/missions/media/delete-photo', 'Missions\MediaController@deletePhoto');
     Route::post('/hub/missions/media/add-video', 'Missions\MediaController@addVideo');
     Route::post('/hub/missions/media/delete-video', 'Missions\MediaController@removeVideo');
+    Route::get('/hub/missions/media/tsv', 'Missions\MediaController@tsv');
 
     // Mission Operations
     Route::post('/hub/missions/operations/remove-mission', 'Missions\OperationController@removeMission');
