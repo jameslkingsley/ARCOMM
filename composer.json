@@ -16,7 +16,8 @@
         "superbalist/laravel-google-cloud-storage": "^1.0.2",
         "jameslkingsley/laravel-mentions": "dev-master",
         "laravel-notification-channels/discord": "^0.0.1",
-        "team-reflex/discord-php": "^4.0"
+        "team-reflex/discord-php": "^4.0",
+        "sentry/sentry-laravel": "^0.7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -179,6 +179,7 @@ return [
         Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
         Kingsley\Mentions\MentionServiceProvider::class,
         NotificationChannels\Discord\DiscordServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
         'Zipper' => Chumper\Zipper\Zipper::class,
+        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
 
     ],
 
