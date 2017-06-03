@@ -65,7 +65,6 @@ class CommentController extends Controller
         } else {
             // Update an existing one
             $comment = MissionComment::find($request->id);
-            $was_published = $comment->published;
 
             $comment->text = $request->text;
             $comment->published = $request->published;
@@ -74,14 +73,6 @@ class CommentController extends Controller
             // Reset the mentions
             $comment->unmention($comment->mentions());
             $mentions = $comment->mention($request->mentions, false);
-
-            if (!$was_published && $comment->published) {
-                if ($mentions) {
-                    $mentions->notify();
-                }
-                
-                static::notify($comment->mission, $comment);
-            }
         }
 
         if ($comment->published) {

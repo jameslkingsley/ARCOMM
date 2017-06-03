@@ -39,7 +39,7 @@
                 if (canDelete) {
                     var caller = $(this);
                     var id = caller.data('id');
-                    
+
                     $.ajax({
                         type: 'DELETE',
                         url: '{{ url("/hub/missions/comments") }}/' + id,
@@ -132,6 +132,12 @@
                     $('#save-mission-comment').click();
                 }
             }, 10000);
+
+            document.querySelector('.mission-aar-textarea').addEventListener('paste', function(e) {
+                e.preventDefault();
+                let text = e.clipboardData.getData('text/plain');
+                document.execCommand('insertHTML', false, text);
+            });
         });
     </script>
 
