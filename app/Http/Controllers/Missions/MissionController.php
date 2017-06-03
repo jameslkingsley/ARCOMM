@@ -107,7 +107,7 @@ class MissionController extends Controller
      */
     public function show(Request $request, Mission $mission)
     {
-        if (!$mission->verified && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
             return redirect('/hub/missions?403=1');
         }
 
