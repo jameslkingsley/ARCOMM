@@ -339,7 +339,7 @@ class MissionController extends Controller
      */
     public function panel(Request $request, Mission $mission, $panel)
     {
-        if (!$mission->verified && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
             return redirect('/hub/missions?403=1');
         }
 
