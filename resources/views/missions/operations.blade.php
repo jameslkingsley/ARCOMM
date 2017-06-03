@@ -131,7 +131,7 @@
                 </thead>
 
                 <tbody class="operation-rows">
-                    @foreach (Operation::orderBy('starts_at', 'desc')->get() as $operation)
+                    @foreach (Operation::orderBy('starts_at', 'desc')->take(6)->get() as $operation)
                         @include('missions.operations.item', ['operation' => $operation])
                     @endforeach
                 </tbody>
