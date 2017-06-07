@@ -2,36 +2,36 @@
 
 namespace App\Models\Missions;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Kingsley\Mentions\HasMentionsTrait;
-use App\Models\Missions\MissionComment;
-use App\Models\Missions\MissionNote;
-use App\Notifications\MissionNoteAdded;
-use App\Notifications\MissionCommentAdded;
-use App\Notifications\MentionedInComment;
-use App\Notifications\MissionVerified;
-use App\Notifications\MissionPublished;
-use App\Notifications\MissionUpdated;
+use Log;
+use File;
+use Storage;
+use \stdClass;
+use Carbon\Carbon;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
-use App\Helpers\ArmaConfigError;
-use App\Models\Missions\Map;
-use App\Models\Operations\OperationMission;
 use App\Models\Portal\User;
-use Carbon\Carbon;
-use \stdClass;
-use Storage;
-use File;
-use Log;
+use App\Models\Missions\Map;
+use App\Helpers\ArmaConfigError;
+use App\Models\Missions\MissionNote;
+use App\Notifications\MissionUpdated;
+use App\Notifications\MissionVerified;
+use App\Models\Missions\MissionComment;
+use App\Notifications\MissionNoteAdded;
+use App\Notifications\MissionPublished;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\MentionedInComment;
+use Kingsley\Mentions\Traits\HasMentions;
+use App\Notifications\MissionCommentAdded;
+use App\Models\Operations\OperationMission;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
 class Mission extends Model implements HasMediaConversions
 {
     use Notifiable,
         HasMediaTrait,
-        HasMentionsTrait;
+        HasMentions;
 
     /**
      * The attributes that should be mutated to dates.
