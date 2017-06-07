@@ -13,7 +13,7 @@
 @endif
 
 <li class="nav-item dropdown hidden-sm-down">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" style="padding:0" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
         Guides
     </a>
 
