@@ -12,6 +12,22 @@
     </a>
 @endif
 
+<li class="nav-item dropdown hidden-sm-down">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
+        Guides
+    </a>
+
+    <div class="dropdown-menu">
+        @foreach (Storage::disk('guides')->files() as $file)
+            <a
+                href="{{ url("/guides/$file") }}"
+                class="dropdown-item">
+                {{ rtrim($file, '.pdf') }}
+            </a>
+        @endforeach
+    </div>
+</li>
+
 {{-- <a href="https://www.nfoservers.com/donate.pl?force_recipient=1&recipient=fbidude21@yahoo.com" target="_newtab" class="nav-item nav-link">
     Donate
 </a> --}}
