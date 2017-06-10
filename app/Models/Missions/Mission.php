@@ -14,6 +14,7 @@ use App\Models\Missions\Map;
 use App\Helpers\ArmaConfigError;
 use App\Models\Missions\MissionNote;
 use App\Notifications\MissionUpdated;
+use App\Models\Missions\ChecklistItem;
 use App\Notifications\MissionVerified;
 use App\Models\Missions\MissionComment;
 use App\Notifications\MissionNoteAdded;
@@ -1042,5 +1043,15 @@ class Mission extends Model implements HasMediaConversions
         });
 
         return $filtered;
+    }
+
+    /**
+     * Gets the missions checklisted items.
+     *
+     * @return Collection App\Models\Missions\ChecklistItem
+     */
+    public function checklistCompleted()
+    {
+        return $this->hasMany(ChecklistItem::class);
     }
 }

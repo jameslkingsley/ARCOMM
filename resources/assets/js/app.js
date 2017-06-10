@@ -1,7 +1,7 @@
 require('./bootstrap');
 
 $(document).ready(function(event) {
-    $.ajax({
+    /*$.ajax({
         type: 'GET',
         url: (window.location.protocol + "//" + window.location.hostname + "/") + 'hub/notifications',
         success: function(data) {
@@ -14,12 +14,12 @@ $(document).ready(function(event) {
                 container.find('.nav-link .notifications-has-unread').show();
             }
         }
-    });
+    });*/
 });
 
 setUrl = function(url, title) {
     var url = (window.location.protocol + "//" + window.location.hostname + "/") + url;
-    
+
     window.history.replaceState({
         archubPush: true
     }, document.title, url);

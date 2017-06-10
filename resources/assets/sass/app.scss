@@ -104,3 +104,25 @@ main {
     display: block;
     opacity: .5;
 }
+
+#checklist-form {
+    margin: 0 !important;
+    color: white;
+    .checkbox {
+        cursor: pointer;
+        label {
+            color: white !important;
+            line-height: 20px;
+            margin-bottom: 12px;
+            padding-left: 30px;
+            cursor: pointer;
+            .checkbox-decorator .check {
+                border-color: white;
+                color: white !important;
+                &:before {
+                    color: white !important;
+                }
+            }
+        }
+    }
+}

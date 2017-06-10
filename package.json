@@ -8,19 +8,17 @@
     "production": "node node_modules/cross-env/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "axios": "^0.15.3",
-    "lodash": "^4.17.4",
-    "vue": "^2.1.10",
     "bootstrap": "4.0.0-alpha.6",
+    "dropit": "^1.0.0",
+    "dropzone": "^4.3.0",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
     "jquery-ui-bundle": "^1.11.4",
-    "laravel-mix": "^0.8.1",
-    "dropit": "^1.0.0",
     "jquery.waitforimages": "^2.2.0",
-    "dropzone": "^4.3.0",
+    "laravel-mix": "^0.8.1",
     "magnific-popup": "^1.1.0",
-    "font-awesome": "^4.7.0",
+    "tether": "^1.4.0",
     "tributejs": "^2.3.4"
   }
 }

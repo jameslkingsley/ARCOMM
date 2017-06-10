@@ -15,7 +15,7 @@
                                 $('body').prepend('<div class="mission-update-cover"><i class="fa fa-spin fa-refresh"></i></div>');
                             },
                             success: function(file, data) {
-                                window.location = "{{ $mission->url() }}?u=1";
+                                // window.location = "{{ $mission->url() }}?u=1";
                             },
                             error: function(file, message) {
                                 alert(message);
@@ -51,7 +51,7 @@
         </div>
     </li>
 @endif
-{{-- 
+{{--
 <div class="mission-inner">
     <div class="mission-nav" style="{{ !$can_see_nav ? 'box-shadow:none' : '' }}">
         <span class="mission-version">
