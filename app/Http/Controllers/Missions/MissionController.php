@@ -155,8 +155,8 @@ class MissionController extends Controller
                 $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
                 $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
 
-                Storage::cloud()->move($old_mission_cloud_pbo_dir, "{$old_mission_cloud_pbo_dir}x");
-                Storage::cloud()->move($old_mission_cloud_zip_dir, "{$old_mission_cloud_zip_dir}x");
+                Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
+                Storage::cloud()->move($old_mission_cloud_zip_dir, "x{$old_mission_cloud_zip_dir}");
 
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
@@ -191,8 +191,8 @@ class MissionController extends Controller
                 if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
                     Storage::deleteDirectory($path);
 
-                    Storage::cloud()->move("{$old_mission_cloud_pbo_dir}x", $old_mission_cloud_pbo_dir);
-                    Storage::cloud()->move("{$old_mission_cloud_zip_dir}x", $old_mission_cloud_zip_dir);
+                    Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir);
+                    Storage::cloud()->move("x{$old_mission_cloud_zip_dir}", $old_mission_cloud_zip_dir);
 
                     // Update the record with the old data
                     $mission->file_name = $old_mission->file_name;
@@ -212,8 +212,8 @@ class MissionController extends Controller
                 Storage::deleteDirectory("missions/{$user->id}");
 
                 // Delete old cloud files
-                Storage::cloud()->delete("{$old_mission_cloud_pbo_dir}x");
-                Storage::cloud()->delete("{$old_mission_cloud_zip_dir}x");
+                Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
+                Storage::cloud()->delete("x{$old_mission_cloud_zip_dir}");
 
                 // Create revision item
                 $revision = MissionRevision::create([
