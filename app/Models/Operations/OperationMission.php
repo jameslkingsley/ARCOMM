@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class OperationMission extends Model
 {
     /**
+     * Guarded attributes.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * Gets the mission.
      *
      * @return App\Models\Missions\Mission

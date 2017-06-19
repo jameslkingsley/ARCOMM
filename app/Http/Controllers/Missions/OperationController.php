@@ -38,13 +38,19 @@ class OperationController extends Controller
      */
     public function addMission(Request $request)
     {
-        $item = new OperationMission();
+        $operation = Operation::findOrFail($request->operation_id);
 
-        $item->operation_id = $request->operation_id;
-        $item->mission_id = $request->mission_id;
-        $item->play_order = $request->play_order;
+        $exists = OperationMission::where('operation_id', $operation->id)
+            ->where('play_order', $request->play_order)
+            ->first();
 
-        $item->save();
+        if ($exists) return;
+
+        $item = OperationMission::create([
+            'operation_id' => $operation->id,
+            'mission_id' => $request->mission_id,
+            'play_order' => $request->play_order
+        ]);
 
         return $item->id;
     }
@@ -75,7 +81,7 @@ class OperationController extends Controller
                     ->second(0)
             ]);
         }
-        
+
         if (isset($request->starts_at) && strlen($request->starts_at) != 0) {
             $header->starts_at = Carbon::parse($request->starts_at);
             $header->save();
