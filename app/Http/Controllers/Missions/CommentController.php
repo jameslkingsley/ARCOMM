@@ -66,7 +66,7 @@ class CommentController extends Controller
             // Update an existing one
             $comment = MissionComment::find($request->id);
 
-            $shouldNotify = ! $comment->published;
+            $shouldNotify = ! $comment->published && $request->published;
 
             $comment->text = $request->text;
             $comment->published = $request->published;
