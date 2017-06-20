@@ -104,7 +104,7 @@
 
             new Mentions({
                 input: '.has-mentions',
-                mentions: '#mentions-list',
+                output: '#mentions-list',
                 pools: [{
                     trigger: '@',
                     pool: 'users',
