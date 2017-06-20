@@ -1137,12 +1137,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jameslkingsley/laravel-mentions.git",
-                "reference": "5abfed3956b9f843f42a0422e79238bdedce046f"
+                "reference": "503480835b23a7a5340b33e1517880361333a49b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/5abfed3956b9f843f42a0422e79238bdedce046f",
-                "reference": "5abfed3956b9f843f42a0422e79238bdedce046f",
+                "url": "https://api.github.com/repos/jameslkingsley/laravel-mentions/zipball/503480835b23a7a5340b33e1517880361333a49b",
+                "reference": "503480835b23a7a5340b33e1517880361333a49b",
                 "shasum": ""
             },
             "require": {
@@ -1159,6 +1159,13 @@
                 "phpunit/phpunit": "~5.7"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kingsley\\Mentions\\MentionServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Kingsley\\Mentions\\": "src/"
@@ -1182,7 +1189,7 @@
                 "laravel",
                 "mentions"
             ],
-            "time": "2017-06-05T18:22:17+00:00"
+            "time": "2017-06-20T18:05:51+00:00"
         },
         {
             "name": "laravel-notification-channels/discord",
