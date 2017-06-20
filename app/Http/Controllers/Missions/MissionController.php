@@ -148,16 +148,6 @@ class MissionController extends Controller
             $details = Mission::getDetailsFromName($request->file->getClientOriginalName());
 
             if ($mission) {
-                $old_mission = clone $mission;
-                $old_mission_displayname = $mission->display_name;
-                $old_mission_summary = $mission->summary;
-
-                $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
-                $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
-
-                Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
-                Storage::cloud()->move($old_mission_cloud_zip_dir, "x{$old_mission_cloud_zip_dir}");
-
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
                 $mission->mode = $details->mode;
@@ -185,35 +175,14 @@ class MissionController extends Controller
                     $mission->deployCloudFiles($unpacked);
                 }, storage_path("app/{$path}"));
 
-                $path = "missions/{$mission->user_id}/{$mission->id}";
-
                 // If errors in configs, return message
                 if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
-                    Storage::deleteDirectory($path);
-
-                    Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir);
-                    Storage::cloud()->move("x{$old_mission_cloud_zip_dir}", $old_mission_cloud_zip_dir);
-
-                    // Update the record with the old data
-                    $mission->file_name = $old_mission->file_name;
-                    $mission->display_name = $old_mission->display_name;
-                    $mission->mode = $old_mission->mode;
-                    $mission->map_id = $old_mission->map_id;
-                    $mission->pbo_path = $old_mission->pbo_path;
-                    $mission->display_name = $old_mission_displayname;
-                    $mission->summary = $old_mission_summary;
-                    $mission->save();
-
                     abort(400, $configs->message);
                     return;
                 }
 
                 // Delete local temp files
                 Storage::deleteDirectory("missions/{$user->id}");
-
-                // Delete old cloud files
-                Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
-                Storage::cloud()->delete("x{$old_mission_cloud_zip_dir}");
 
                 // Create revision item
                 $revision = MissionRevision::create([
