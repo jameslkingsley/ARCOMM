@@ -4,6 +4,16 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/maksimru/laravel-google-cloud-storage.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/maksimru/flysystem-google-cloud-storage.git"
+        }
+    ],
     "require": {
         "php": ">=5.6.4",
         "laravel/framework": "5.4.*",
@@ -13,11 +23,12 @@
         "alaouy/youtube": "dev-master",
         "laravel/tinker": "^1.0",
         "chumper/zipper": "1.0.x",
-        "superbalist/laravel-google-cloud-storage": "^1.0.4",
         "jameslkingsley/laravel-mentions": "dev-master",
         "laravel-notification-channels/discord": "^0.0.1",
         "team-reflex/discord-php": "^4.0",
-        "sentry/sentry-laravel": "^0.7.0"
+        "sentry/sentry-laravel": "^0.7.0",
+        "superbalist/laravel-google-cloud-storage": "dev-master#3cb952fd4599f31bacdf36379703e85dbd0f6157",
+        "superbalist/flysystem-google-storage": "dev-master#093b7e4b46f37720109e9efa594782cd0b3ced02"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
