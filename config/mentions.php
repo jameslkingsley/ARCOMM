@@ -6,16 +6,30 @@ return [
     'pools' => [
         'users' => [
             // Model that will be mentioned
-            'model' => 'App\User',
+            'model' => 'App\Models\Portal\User',
 
             // The column that will be used to search the model
-            'column' => 'name',
+            'column' => 'username',
 
             // Notification class to use when this model is mentioned
-            'notification' => 'App\Notifications\UserMentioned',
+            'notification' => 'App\Notifications\MentionedInComment',
 
             // Automatically notify upon mentions
             'auto_notify' => true
+        ],
+
+        'missions' => [
+            // Model that will be mentioned
+            'model' => 'App\Models\Missions\Mission',
+
+            // The column that will be used to search the model
+            'column' => 'display_name',
+
+            // Notification class to use when this model is mentioned
+            'notification' => 'App\Notifications\MentionedInComment',
+
+            // Automatically notify upon mentions
+            'auto_notify' => false
         ]
     ]
 ];
