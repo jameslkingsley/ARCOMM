@@ -125,3 +125,8 @@ Route::group(['middleware' => 'member'], function() {
 Route::group(['middleware' => 'permission:users:all'], function() {
     Route::resource('/hub/users', 'Users\UserController');
 });
+
+//--- Analytics
+Route::group(['middleware' => 'permission:analytics:all'], function() {
+    Route::resource('/hub/analytics', 'AnalyticsController');
+});

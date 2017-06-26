@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Missions;
 
 use Log;
 use Notification;
+use Carbon\Carbon;
 use App\Helpers\ArmaConfig;
 use App\Models\Portal\User;
 use Illuminate\Http\Request;
@@ -295,8 +296,10 @@ class MissionController extends Controller
 
         if ($mission->verified) {
             $mission->verified_by = auth()->user()->id;
+            $mission->verified_at = Carbon::now();
         } else {
             $mission->verified_by = null;
+            $mission->verified_at = null;
         }
 
         $mission->save();

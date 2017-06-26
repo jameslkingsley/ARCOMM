@@ -12,6 +12,12 @@
     </a>
 @endif
 
+@if (auth()->user()->hasPermission('analytics:all'))
+    <a href="{{ url('/hub/analytics') }}" class="nav-item nav-link hidden-sm-down">
+        Analytics
+    </a>
+@endif
+
 <li class="nav-item dropdown hidden-sm-down">
     <a class="nav-link dropdown-toggle" style="padding:0" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
         Guides
@@ -58,6 +64,14 @@
                     href="{{ url('/hub/users') }}"
                     class="list-group-item list-group-item-action">
                     Users
+                </a>
+            @endif
+
+            @if (auth()->user()->hasPermission('analytics:all'))
+                <a
+                    href="{{ url('/hub/analytics') }}"
+                    class="list-group-item list-group-item-action">
+                    Analytics
                 </a>
             @endif
 
