@@ -4,6 +4,7 @@ namespace App\Models\Portal;
 
 use Steam;
 use App\Models\Portal\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class SteamAPI extends Model
@@ -15,11 +16,14 @@ class SteamAPI extends Model
      */
     public static function members()
     {
-        try {
-            $members = simplexml_load_file('http://steamcommunity.com/groups/ARCOMM/memberslistxml/?xml=1')->members->steamID64;
-            return (array)$members;
-        } catch(\Exception $error) {
-            return User::all()->pluck('steam_id')->all();
-        }
+        return Cache::remember('steam_members', 60, function() {
+            try {
+                $members = simplexml_load_file('http://steamcommunity.com/groups/ARCOMM/memberslistxml/?xml=1')->members->steamID64;
+
+                return (array)$members;
+            } catch(\Exception $error) {
+                return User::all()->pluck('steam_id')->all();
+            }
+        });
     }
 }
