@@ -266,6 +266,10 @@ class Mission extends Model implements HasMediaConversions
      */
     public function thumbnail()
     {
+        if (env('APP_ENV', 'production') == 'debug') {
+            return '';
+        }
+
         $media = $this->photos();
 
         if (count($media) > 0) {
