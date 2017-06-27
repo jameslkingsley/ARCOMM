@@ -37,6 +37,8 @@ Route::get('/roster', 'PageController@roster');
 //--- Attendance
 Route::resource('/hub/attendance', 'Users\AttendanceController');
 
+Route::resource('/hub/documents', 'DocumentController');
+
 //--- Admins
 Route::group(['middleware' => 'permission:apps:all'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
