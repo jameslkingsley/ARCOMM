@@ -43,7 +43,7 @@
 <div class="row">
     <a href="{{ $mission->url('aar') }}" class="col-md-4 mission-overview-card">
         @php
-            $commentCount = $mission->comments->count();
+            $commentCount = $mission->comments->where('published', 1)->count();
         @endphp
 
         <h4 class="text-xs-center">
