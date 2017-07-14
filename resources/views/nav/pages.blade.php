@@ -28,6 +28,22 @@
     </div>
 </li>
 
+<li class="nav-item dropdown hidden-sm-down">
+    <a class="nav-link dropdown-toggle" style="padding:0" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
+        Tutorials
+    </a>
+
+    <div class="dropdown-menu">
+        @foreach (config('arcmf.videos') as $name => $url)
+            <a
+                href="{{ $url }}"
+                class="dropdown-item">
+                {{ $name }}
+            </a>
+        @endforeach
+    </div>
+</li>
+
 {{-- <a href="https://www.nfoservers.com/donate.pl?force_recipient=1&recipient=fbidude21@yahoo.com" target="_newtab" class="nav-item nav-link">
     Donate
 </a> --}}
