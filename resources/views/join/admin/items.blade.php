@@ -1,14 +1,16 @@
-<ul class="hub-list">
+<div class="list-group">
     @foreach ($joinRequests as $jr)
-        <li>
-            <a href="{{ url('/hub/applications/' . $jr->id) }}" class="hub-list-item jr-item" data-id="{{ $jr->id }}">
-                <h1>{{ $jr->name }}</h1>
-                <p>
-                    {{ $jr->created_at->diffForHumans() }}
-                    <br />
-                    {{ $jr->age }}, {{ $jr->location }}
-                </p>
-            </a>
-        </li>
+        <a
+            href="{{ url('/hub/applications/show/' . $jr->id) }}"
+            class="list-group-item list-group-item-action jr-item"
+            data-id="{{ $jr->id }}">
+
+            <span class="jr-item-title">{{ $jr->name }}</span>
+            <br />
+
+            <span class="jr-item-meta">
+                {{ $jr->age }}, {{ $jr->location }} &middot; {{ $jr->created_at->diffForHumans() }}
+            </span>
+        </a>
     @endforeach
-</ul>
+</div>

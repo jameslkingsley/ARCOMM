@@ -30,8 +30,8 @@ Route::resource('/hub/attendance', 'Users\AttendanceController');
 Route::group(['middleware' => 'permission:apps:all'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
 
-    Route::get('/hub/applications/api/items/{status}/{order}', 'Join\JoinController@items');
-    Route::get('/hub/applications/api/show/{jr}', 'Join\JoinController@show');
+    Route::get('/hub/applications/api/items', 'Join\JoinController@items');
+    Route::get('/hub/applications/show/{jr}', 'Join\JoinController@show');
 
     // Statuses
     Route::post('/hub/applications/api/status', 'Join\JoinStatusController@store');

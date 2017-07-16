@@ -84,9 +84,12 @@ class JoinController extends Controller
      *
      * @return view
      */
-    public function items(string $status = '', string $order = 'desc')
+    public function items(Request $request)
     {
-        $joinRequests = $this->joinRequests->items($status, $order);
+        $joinRequests = $this->joinRequests->items(
+            $request->get('status', 'pending'),
+            $request->get('order', 'desc')
+        );
 
         return view('join.admin.items', compact('joinRequests'));
     }
