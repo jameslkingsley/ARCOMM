@@ -92,7 +92,7 @@ class OperationController extends Controller
             ]);
 
             $op->items = [];
-            
+
             return response()->json($op);
         }
     }

@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
- */
-
 //--- Home
 Route::get('/', 'PageController@index');
 
@@ -34,8 +23,11 @@ Route::get('/modset', function() {
 //--- Roster
 Route::get('/roster', 'PageController@roster');
 
-//--- Applications
-Route::group(['middleware' => 'permission:apps:view'], function() {
+//--- Attendance
+Route::resource('/hub/attendance', 'Users\AttendanceController');
+
+//--- Admins
+Route::group(['middleware' => 'permission:apps:all'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
 
     Route::get('/hub/applications/api/items/{status}/{order}', 'Join\JoinController@items');
@@ -58,6 +50,10 @@ Route::group(['middleware' => 'permission:apps:emails'], function() {
 
 //--- Operations
 Route::group(['middleware' => 'permission:operations:all'], function() {
+    Route::get('/hub/operations', 'Missions\OperationController@index');
+});
+
+Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations', 'API\OperationController');
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
@@ -78,7 +74,7 @@ Route::group(['middleware' => 'member'], function() {
 
     // Mission Comments
     Route::resource('/hub/missions/comments', 'Missions\CommentController', [
-        'except' => ['create', 'show', 'edit', 'update']
+        'except' => ['create', 'show', 'update']
     ]);
 
     // Mission Briefings
@@ -93,6 +89,13 @@ Route::group(['middleware' => 'member'], function() {
     // Downlaod
     Route::get('/hub/missions/{mission}/download/{format}', 'Missions\MissionController@download');
 
+    // Notes
+    Route::get('/hub/missions/{mission}/notes/read-notifications', 'Missions\NoteController@readNotifications');
+    Route::resource('/hub/missions/{mission}/notes', 'Missions\NoteController');
+
+    // Panels
+    Route::get('/hub/missions/{mission}/{panel}', 'Missions\MissionController@panel');
+
     Route::resource('/hub/missions', 'Missions\MissionController', [
         'except' => ['create', 'edit']
     ]);
@@ -103,6 +106,8 @@ Route::group(['middleware' => 'member'], function() {
     Route::get('/hub/guides', function() {
         return view('guides.index');
     });
+
+    Route::get('/hub/notifications', 'Users\NotificationsController@index');
 
     // Hub Index
     Route::resource('/hub', 'HubController', [

@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'discord' => [
+        'token' => env('DISCORD_API_TOKEN'),
+        'channel_id' => env('DISCORD_CHANNEL_ID')
+    ]
+
 ];

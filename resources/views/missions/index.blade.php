@@ -4,100 +4,41 @@
     Missions
 @endsection
 
+@section('header-color')
+    primary
+@endsection
+
 @section('head')
     <script>
         $(document).ready(function(e) {
-            $('.subnav-link').click(function(event) {
-                var caller = $(this);
-                var panel = caller.data('panel');
-                var noAjax = caller.data('noajax');
-                var openWindow = caller.data('window') || false;
-
-                if (noAjax) return;
-
-                if (!openWindow) {
-                    $('.subnav-link').removeClass('active');
-                    caller.addClass('active');
-                }
-
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ url('/hub/missions?panel=') }}' + panel,
-                    success: function(data) {
-                        if (openWindow) {
-                            openBigWindow(data, 500, function() {}, function() {
-                                $('.subnav-link[data-panel="library"]').click();
-                            });
-
-                            return;
-                        }
-
-                        $('#mission-content').html(data);
-                    }
-                });
-
-                event.preventDefault();
-            });
-
             $('#mission-upload-btn').dropzone({
                 url: '{{ url('/hub/missions') }}',
                 acceptedFiles: '',
                 addedfile: function(file) {},
                 sending: function() {
-                    $('#mission-upload-btn').prepend('<i class="fa fa-spin fa-circle-o-notch"></i>');
+                    $('#mission-upload-btn').prepend('<i class="fa fa-spin fa-refresh m-r-1"></i>');
                 },
                 success: function(file, data) {
                     $('#mission-upload-btn').find('i.fa').remove();
-
-                    openMission(data.trim(), function() {
-                        $('.subnav-link[data-panel="library"]').click();
-                    });
+                    window.location = data.trim();
                 },
                 error: function(file, message) {
                     $('#mission-upload-btn').find('i.fa').remove();
                     alert(message);
                 }
             });
-
-            $.hubDropdown();
         });
     </script>
-
-    @if (isset($mission))
-        <script>
-            $(document).ready(function(e) {
-                openMission({{ $mission->id }});
-            });
-        </script>
-    @endif
 @endsection
 
-@section('subnav')
-    <a
-        href="javascript:void(0)"
-        data-panel="library"
-        class="subnav-link active"
-    >Library</a>
-
+@section('nav-right')
     <a
         href="javascript:void(0)"
         data-panel="upload"
         data-noajax="true"
         id="mission-upload-btn"
-        class="subnav-link"
+        class="nav-item nav-link"
     >Upload</a>
-
-    @if (auth()->user()->hasPermission('operations:all'))
-        <a
-            href="javascript:void(0)"
-            data-panel="operations"
-            data-window="true"
-            class="subnav-link"
-        >Operations</a>
-    @endif
-@endsection
-
-@section('controls')
 @endsection
 
 @section('content')

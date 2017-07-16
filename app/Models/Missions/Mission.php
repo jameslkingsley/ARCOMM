@@ -2,25 +2,36 @@
 
 namespace App\Models\Missions;
 
-use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use App\Models\Missions\MissionComment;
+use Log;
+use File;
+use Storage;
+use \stdClass;
+use Carbon\Carbon;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
-use App\Helpers\ArmaConfigError;
-use App\Models\Missions\Map;
-use App\Models\Operations\OperationMission;
 use App\Models\Portal\User;
-use Carbon\Carbon;
-use \stdClass;
-use Storage;
-use File;
-use Log;
+use App\Models\Missions\Map;
+use App\Helpers\ArmaConfigError;
+use App\Models\Missions\MissionNote;
+use App\Notifications\MissionUpdated;
+use App\Notifications\MissionVerified;
+use App\Models\Missions\MissionComment;
+use App\Notifications\MissionNoteAdded;
+use App\Notifications\MissionPublished;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\MentionedInComment;
+use Kingsley\Mentions\Traits\HasMentions;
+use App\Notifications\MissionCommentAdded;
+use App\Models\Operations\OperationMission;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
 class Mission extends Model implements HasMediaConversions
 {
-    use HasMediaTrait;
+    use Notifiable,
+        HasMediaTrait,
+        HasMentions;
 
     /**
      * The attributes that should be mutated to dates.
@@ -77,6 +88,16 @@ class Mission extends Model implements HasMediaConversions
     ];
 
     /**
+     * Discord notification channel.
+     *
+     * @return any
+     */
+    public function routeNotificationForDiscord()
+    {
+        return config('services.discord.channel_id');
+    }
+
+    /**
      * Media library image conversions.
      *
      * @return void
@@ -84,8 +105,29 @@ class Mission extends Model implements HasMediaConversions
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-            ->setManipulations(['w' => 384, 'h' => 384, 'fit' => 'crop'])
+            ->width(384)
+            ->height(384)
+            ->quality(100)
+            ->nonQueued()
             ->performOnCollections('images');
+    }
+
+    /**
+     * Gets the unread comments on the mission.
+     *
+     * @return Collection App\Models\Missions\MissionComment
+     */
+    public function unreadComments()
+    {
+        $mission = $this;
+
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) use($mission) {
+            return
+                $item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $mission->id;
+        });
+
+        return $filtered;
     }
 
     /**
@@ -152,6 +194,16 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets the full mission URL.
+     *
+     * @return string
+     */
+    public function url($uri = '')
+    {
+        return url("/hub/missions/{$this->id}/{$uri}");
+    }
+
+    /**
      * Checks whether the mission belongs to the authenticated user.
      *
      * @return boolean
@@ -172,13 +224,33 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets all notes for the mission.
+     *
+     * @return Collection App\Models\Missions\MissionNote
+     */
+    public function notes()
+    {
+        return $this->hasMany(MissionNote::class);
+    }
+
+    /**
+     * Gets all revisions for the mission.
+     *
+     * @return Collection App\Models\Missions\MissionRevision
+     */
+    public function revisions()
+    {
+        return $this->hasMany('App\Models\Missions\MissionRevision');
+    }
+
+    /**
      * Gets the mission banner URL.
      *
      * @return string
      */
     public function banner()
     {
-        $media = $this->getMedia();
+        $media = $this->photos();
 
         if (count($media) > 0) {
             return $media[0]->getUrl();
@@ -194,7 +266,11 @@ class Mission extends Model implements HasMediaConversions
      */
     public function thumbnail()
     {
-        $media = $this->getMedia();
+        if (env('APP_ENV', 'production') == 'debug') {
+            return '';
+        }
+
+        $media = $this->photos();
 
         if (count($media) > 0) {
             return $media[0]->getUrl('thumb');
@@ -253,7 +329,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function photos()
     {
-        return $this->getMedia();
+        return $this->getMedia('images');
     }
 
     /**
@@ -320,7 +396,11 @@ class Mission extends Model implements HasMediaConversions
      */
     public function download($format = 'pbo')
     {
-        $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
+        $path_to_file = ($format == 'pbo') ? $this->cloud_pbo : $this->cloud_zip;
+
+        if (strlen($path_to_file) == 0) {
+            $path_to_file = "missions/{$this->user_id}/{$this->id}/{$this->exportedName($format)}";
+        }
 
         $command = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ?
             'gsutil ' :
@@ -511,6 +591,8 @@ class Mission extends Model implements HasMediaConversions
             file_get_contents(storage_path("app/{$this->pbo_path}"))
         );
 
+        $this->cloud_pbo = $qualified_pbo;
+
         // Mission ZIP
         $files = glob("{$unpacked}/*");
         $name = $this->exportedName('zip');
@@ -518,11 +600,14 @@ class Mission extends Model implements HasMediaConversions
 
         $zip = new \Chumper\Zipper\Zipper;
         $zip->make("downloads/{$path}")->add($unpacked)->close();
+        $qualified_zip = "missions/{$this->user_id}/{$this->id}/{$name}";
 
         Storage::disk('gcs')->put(
-            "missions/{$this->user_id}/{$this->id}/{$name}",
+            $qualified_zip,
             file_get_contents(public_path("downloads/{$path}"))
         );
+
+        $this->cloud_zip = $qualified_zip;
 
         if (file_exists(public_path("downloads/{$path}"))) {
             unlink(public_path("downloads/{$path}"));
@@ -794,8 +879,8 @@ class Mission extends Model implements HasMediaConversions
         }
 
         $name = rtrim($name, '.pbo');
-        $parts = explode('_', $name);
-        $mapName = last(explode('.', last($parts)));
+        $mapName = last(explode('.', $name));
+        $parts = explode('_', rtrim($name, ".{$mapName}"));
         $map = Map::whereRaw('LOWER(class_name) = ?', [strtolower($mapName)])->first();
 
         if (is_null($map)) {
@@ -893,5 +978,73 @@ class Mission extends Model implements HasMediaConversions
         }
 
         return 'None';
+    }
+
+    /**
+     * Gets the mission note notifications.
+     *
+     * @return Collection
+     */
+    public function noteNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionNoteAdded::class &&
+                $item->data['note']['mission_id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission comments notifications.
+     *
+     * @return Collection
+     */
+    public function commentNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                ($item->type == MissionCommentAdded::class &&
+                $item->data['comment']['mission_id'] == $this->id) ||
+                ($item->type == MentionedInComment::class &&
+                $item->data['mission_id'] == $this->id);
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission verification notifications.
+     *
+     * @return Collection
+     */
+    public function verifiedNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                $item->type == MissionVerified::class &&
+                $item->data['mission']['id'] == $this->id;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets the mission updated/published notifications.
+     *
+     * @return Collection
+     */
+    public function stateNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return
+                ($item->type == MissionPublished::class &&
+                $item->data['mission']['id'] == $this->id) ||
+                ($item->type == MissionUpdated::class &&
+                $item->data['mission_id'] == $this->id);
+        });
+
+        return $filtered;
     }
 }

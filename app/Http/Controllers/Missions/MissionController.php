@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Missions;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Missions\Mission;
-use App\Helpers\ArmaConfig;
-use Storage;
 use Log;
+use Notification;
+use App\Helpers\ArmaConfig;
+use App\Models\Portal\User;
+use Illuminate\Http\Request;
+use App\Models\Missions\Mission;
+use App\Http\Controllers\Controller;
+use App\Notifications\MissionUpdated;
+use App\Notifications\MissionVerified;
+use App\Notifications\MissionPublished;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Missions\MissionRevision;
 
 class MissionController extends Controller
 {
@@ -59,7 +65,7 @@ class MissionController extends Controller
 
             // Unpack PBO and store configs in mission record as JSON objects
             $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
-                $mission->display_name = $ext->onloadname;
+                $mission->display_name = trim($ext->onloadname, '.');
                 $mission->summary = $ext->onloadmission;
                 $mission->save();
 
@@ -77,7 +83,19 @@ class MissionController extends Controller
             // Delete local temp files
             Storage::deleteDirectory("missions/{$user->id}");
 
-            return $mission->id;
+            // Discord Message
+            $mission->notify(new MissionPublished($mission, true));
+
+            $users = User::all()->filter(function($user) use($mission) {
+                return
+                    $user->id != auth()->user()->id &&
+                    ($user->hasPermission('mission:notes') ||
+                    $user->id == $mission->user->id);
+            });
+
+            Notification::send($users, new MissionPublished($mission));
+
+            return $mission->url();
         }
     }
 
@@ -89,8 +107,27 @@ class MissionController extends Controller
      */
     public function show(Request $request, Mission $mission)
     {
+        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+            return redirect('/hub/missions?403=1');
+        }
+
+        // Mark comment notifications as read
+        foreach ($mission->commentNotifications() as $notification) {
+            $notification->delete();
+        }
+
+        // Mark verified notifications as read
+        foreach ($mission->verifiedNotifications() as $notification) {
+            $notification->delete();
+        }
+
+        // Mark state notifications as read
+        foreach ($mission->stateNotifications() as $notification) {
+            $notification->delete();
+        }
+
         if (!$request->ajax()) {
-            return view('missions.index', compact('mission'));
+            return view('missions.show', compact('mission'));
         } else {
             return view('missions.show', compact('mission'));
         }
@@ -118,8 +155,8 @@ class MissionController extends Controller
                 $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
                 $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
 
-                Storage::cloud()->move($old_mission_cloud_pbo_dir, "{$old_mission_cloud_pbo_dir}x");
-                Storage::cloud()->move($old_mission_cloud_zip_dir, "{$old_mission_cloud_zip_dir}x");
+                Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
+                Storage::cloud()->move($old_mission_cloud_zip_dir, "x{$old_mission_cloud_zip_dir}");
 
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
@@ -138,7 +175,7 @@ class MissionController extends Controller
 
                 // Unpack PBO and store configs in mission record as JSON objects
                 $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
-                    $mission->display_name = $ext->onloadname;
+                    $mission->display_name = trim($ext->onloadname, '.');
                     $mission->summary = $ext->onloadmission;
                     $mission->save();
 
@@ -154,8 +191,8 @@ class MissionController extends Controller
                 if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
                     Storage::deleteDirectory($path);
 
-                    Storage::cloud()->move("{$old_mission_cloud_pbo_dir}x", $old_mission_cloud_pbo_dir);
-                    Storage::cloud()->move("{$old_mission_cloud_zip_dir}x", $old_mission_cloud_zip_dir);
+                    Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir);
+                    Storage::cloud()->move("x{$old_mission_cloud_zip_dir}", $old_mission_cloud_zip_dir);
 
                     // Update the record with the old data
                     $mission->file_name = $old_mission->file_name;
@@ -175,8 +212,26 @@ class MissionController extends Controller
                 Storage::deleteDirectory("missions/{$user->id}");
 
                 // Delete old cloud files
-                Storage::cloud()->delete("{$old_mission_cloud_pbo_dir}x");
-                Storage::cloud()->delete("{$old_mission_cloud_zip_dir}x");
+                Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
+                Storage::cloud()->delete("x{$old_mission_cloud_zip_dir}");
+
+                // Create revision item
+                $revision = MissionRevision::create([
+                    'mission_id' => $mission->id,
+                    'user_id' => auth()->user()->id
+                ]);
+
+                // Discord Message
+                $mission->notify(new MissionUpdated($revision, true));
+
+                $users = User::all()->filter(function($user) use($mission) {
+                    return
+                        $user->id != auth()->user()->id &&
+                        ($user->hasPermission('mission:notes') ||
+                        $user->id == $mission->user->id);
+                });
+
+                Notification::send($users, new MissionUpdated($revision));
 
                 return view('missions.show', compact('mission'));
             }
@@ -246,6 +301,22 @@ class MissionController extends Controller
 
         $mission->save();
 
+        if ($mission->verified) {
+            // Discord Message
+            $mission->notify(new MissionVerified($mission, true));
+
+            $users = User::all()->filter(function($user) use($mission) {
+                return
+                    $user->id != auth()->user()->id &&
+                    (
+                        $user->hasPermission('mission:verification') ||
+                        $user->id == $mission->user->id
+                    );
+            });
+
+            Notification::send($users, new MissionVerified($mission));
+        }
+
         $updated_by = auth()->user()->username;
 
         return "Verified by {$updated_by}";
@@ -259,5 +330,23 @@ class MissionController extends Controller
     public function download(Mission $mission, $format = 'pbo')
     {
         return $mission->download($format);
+    }
+
+    /**
+     * Shows the given panel for the given mission.
+     *
+     * @return any
+     */
+    public function panel(Request $request, Mission $mission, $panel)
+    {
+        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+            return redirect('/hub/missions?403=1');
+        }
+
+        if (!$request->ajax()) {
+            return view('missions.show', compact('mission', 'panel'));
+        } else {
+            return view('missions.show.' . strtolower($panel), compact('mission'));
+        }
     }
 }

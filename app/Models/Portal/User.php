@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use App\Models\Permissions\PermissionUser;
 use App\Models\Permissions\Permission;
 use App\Models\Missions\Mission;
+use App\Notifications\MissionCommentAdded;
 use App\Models\Portal\SteamAPI;
 use Steam;
 use Auth;
@@ -36,6 +37,16 @@ class User extends Authenticatable implements HasMediaConversions
      * @var array
      */
     protected $hidden = [];
+
+    /**
+     * Discord notification channel.
+     *
+     * @return any
+     */
+    public function routeNotificationForDiscord()
+    {
+        return config('services.discord.channel_id');
+    }
 
     /**
      * Media library image conversions.
@@ -124,5 +135,55 @@ class User extends Authenticatable implements HasMediaConversions
                 ->where('permission_id', $permission->id)
                 ->first()
         );
+    }
+
+    /**
+     * Gets unread mission comment notifications for the user.
+     *
+     * @return Collection
+     */
+    public function missionNotifications()
+    {
+        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+            return $item->type == MissionCommentAdded::class;
+        });
+
+        return $filtered;
+    }
+
+    /**
+     * Gets all mission testers.
+     *
+     * @return Collection App\Models\Portal\User
+     */
+    public function missionTesters($ignore_auth = true)
+    {
+        return static::all()->filter(function($user) {
+            if ($ignore_auth) {
+                return $user->hasPermission('mission:notes');
+            } else {
+                // TODO
+                return $user->hasPermission('mission:notes');
+            }
+        });
+    }
+
+    /**
+     * Gets all unregistered users from the Steam group.
+     *
+     * @return Collection Steam API User Summaries
+     */
+    public static function unregistered()
+    {
+        $users = static::all();
+        $filtered = [];
+
+        foreach (SteamAPI::members() as $id) {
+            if (!$users->contains('steam_id', $id)) {
+                $filtered[] = $id;
+            }
+        }
+
+        return collect(Steam::user($filtered)->GetPlayerSummaries());
     }
 }

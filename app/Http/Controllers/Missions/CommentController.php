@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
+use App\Notifications\MissionCommentAdded;
+use App\Notifications\MentionedInComment;
+use App\Models\Portal\User;
+use Notification;
 
 class CommentController extends Controller
 {
@@ -47,12 +51,35 @@ class CommentController extends Controller
             $comment->text = $request->text;
             $comment->published = $request->published;
             $comment->save();
+
+            $mentions = $comment->mention($request->mentions, false);
+
+            if ($comment->published) {
+                if ($mentions) {
+                    $mentions->notify();
+                }
+
+                $mission = Mission::findOrFail($request->mission_id);
+                static::notify($mission, $comment);
+            }
         } else {
             // Update an existing one
             $comment = MissionComment::find($request->id);
+
+            $shouldNotify = ! $comment->published && $request->published;
+
             $comment->text = $request->text;
             $comment->published = $request->published;
             $comment->save();
+
+            // Reset the mentions
+            $comment->unmention($comment->mentions());
+            $mentions = $comment->mention($request->mentions, false);
+
+            if ($shouldNotify) {
+                $mission = Mission::findOrFail($request->mission_id);
+                static::notify($mission, $comment);
+            }
         }
 
         if ($comment->published) {
@@ -63,6 +90,20 @@ class CommentController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(MissionComment $comment)
+    {
+        return json_encode([
+            'text' => $comment->text,
+            'mentions' => $comment->mentions()->encoded()
+        ]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -70,6 +111,22 @@ class CommentController extends Controller
      */
     public function destroy(MissionComment $comment)
     {
+        $comment->unmention($comment->mentions());
+
         $comment->delete();
+    }
+
+    /**
+     * Notifies all users of a new comment.
+     *
+     * @return any
+     */
+    public static function notify(Mission $mission, MissionComment $comment)
+    {
+        // Discord Message
+        $mission->notify(new MissionCommentAdded($comment, true));
+
+        $users = User::where('id', '!=', auth()->user()->id)->get();
+        Notification::send($users, new MissionCommentAdded($comment));
     }
 }

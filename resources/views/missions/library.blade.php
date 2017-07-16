@@ -3,27 +3,6 @@
     use App\Models\Missions\Mission;
 @endphp
 
-<script>
-    $(document).ready(function(e) {
-        $('.mission-item').click(function(event) {
-            event.preventDefault();
-
-            var caller = $(this);
-            var id = caller.data('id');
-
-            if (caller.hasClass('spinner')) {
-                return;
-            }
-
-            caller.missionSpinner(true);
-
-            openMission(id, function() {
-                caller.missionSpinner(false);
-            });
-        });
-    });
-</script>
-
 @php
     $myMissions = auth()->user()->missions();
     $nextOperation = Operation::nextWeek();
@@ -38,32 +17,25 @@
 @endphp
 
 <div class="missions-pinned">
-    <div class="missions-pinned-headers">
-        @if ($nextOperation)
-            <h2>Next Operation &mdash; {{ $nextOperation->startsIn() }}</h2>
-        @endif
-
-        @if ($prevOperation)
-            <h2>Past Operation</h2>
-        @endif
-    </div>
-
     <div class="missions-pinned-groups">
         @if ($nextOperation)
             @if (!$nextOperationMissions->isEmpty())
-                <ul class="mission-group mission-group-pinned mission-group-center">
+                <ul class="mission-group mission-group-pinned" data-title="Next Operation &mdash; {{ $nextOperation->startsIn() }}">
                     @foreach ($nextOperationMissions as $item)
-                        @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned'])
+                        @include('missions.item', ['mission' => $item->mission, 'classes' => 'mission-item-pinned', 'pulse' => true])
                     @endforeach
                 </ul>
             @else
-                <p class="mission-section-label">No missions have been picked yet! Come back later.</p>
-                <ul class="mission-group mission-group-pinned mission-group-center" style="height: 252px"></ul>
+                <div
+                    class="mission-empty-group mission-group-pinned"
+                    data-title="Next Operation &mdash; {{ $nextOperation->startsIn() }}"
+                    data-subtitle="Missions haven't been picked yet!">
+                </div>
             @endif
         @endif
 
         @if ($prevOperation)
-            <ul class="mission-group mission-group-pinned mission-group-center">
+            <ul class="mission-group mission-group-pinned" data-title="Past Operation">
                 @foreach ($prevOperation->missions as $item)
                     @include('missions.item', ['mission' => $item->mission, 'ignore_new_banner' => true])
                 @endforeach
@@ -74,9 +46,7 @@
 
 @if (auth()->user()->hasPermission('mission:see_new'))
     @if (!$newMissions->isEmpty())
-        <h2 class="mission-section-heading">New Missions</h2>
-
-        <ul class="mission-group">
+        <ul class="mission-group" data-title="New Missions">
             @foreach ($newMissions as $mission)
                 @include('missions.item', ['mission' => $mission])
             @endforeach
@@ -84,9 +54,13 @@
     @endif
 @endif
 
-<h2 class="mission-section-heading">My Missions</h2>
+<ul
+    class="mission-group {{ ($myMissions->isEmpty()) ? 'mission-empty-group' : '' }}"
+    data-title="My Missions"
+    @if ($myMissions->isEmpty())
+        data-subtitle="You haven't uploaded any missions!"
+    @endif>
 
-<ul class="mission-group">
     @if (!$myMissions->isEmpty())
         @foreach ($myMissions as $mission)
             @include('missions.item', [
@@ -94,15 +68,11 @@
                 'ignore_new_banner' => true
             ])
         @endforeach
-    @else
-        <p class="mission-section-label">You haven't uploaded any missions!<br />Upload your mission PBO files via the upload button on the left.</p>
     @endif
 </ul>
 
 @if (!$pastMissions->isEmpty())
-    <h2 class="mission-section-heading">Past Missions</h2>
-
-    <ul class="mission-group">
+    <ul class="mission-group" data-title="Past Missions">
         @foreach ($pastMissions as $mission)
             @include('missions.item', ['mission' => $mission, 'ignore_new_banner' => true])
         @endforeach

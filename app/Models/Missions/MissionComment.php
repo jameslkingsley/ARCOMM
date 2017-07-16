@@ -2,10 +2,14 @@
 
 namespace App\Models\Missions;
 
+use App\Models\Portal\User;
 use Illuminate\Database\Eloquent\Model;
+use Kingsley\Mentions\Traits\HasMentions;
 
 class MissionComment extends Model
 {
+    use HasMentions;
+
     /**
      * The attributes that are mass assignable.
      *

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Portal\Video;
+use Storage;
+use Hash;
 
 class MediaController extends Controller
 {
@@ -21,7 +23,7 @@ class MediaController extends Controller
         $mission
             ->addMedia($request->file('file'))
             ->withCustomProperties(['user_id' => auth()->user()->id])
-            ->toCollection('images');
+            ->toMediaCollection('images');
 
         $media = $mission->getMedia('images')->last();
 
@@ -71,5 +73,28 @@ class MediaController extends Controller
     public function removeVideo(Request $request)
     {
         Video::destroy($request->video_id);
+    }
+
+    /**
+     * Gets the TSV file for transfer to Google Cloud Storage.
+     *
+     * @return any
+     */
+    public function tsv(Request $request)
+    {
+        $contents = 'TsvHttpData-1.0'.PHP_EOL;
+        $missions = Mission::all();
+
+        $missions->each(function($mission) use(&$contents) {
+            foreach ($mission->getMedia('images') as $media) {
+                $hash = Hash::make($media->file_name);
+                $url = url($media->getUrl());
+                $contents .= "{$url}\t{$media->size}\t{$hash}".PHP_EOL;
+            }
+        });
+
+        Storage::disk('downloads')->put('media.tsv', $contents);
+
+        return response()->download(public_path('downloads/media.tsv'));
     }
 }

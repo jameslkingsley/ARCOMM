@@ -67,6 +67,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'guides' => [
+            'driver' => 'local',
+            'root' => public_path('guides'),
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',

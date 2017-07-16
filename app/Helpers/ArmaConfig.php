@@ -293,7 +293,8 @@ class ArmaConfig
         }
 
         $contents = file_get_contents($file);
-        $contents = preg_replace('!/\*.*?\*/!s', '', $contents); // Remove comments
+        $contents = preg_replace('#^\s*//.+$#m', '', $contents); // Remove single line comments
+        $contents = preg_replace('!/\*.*?\*/!s', '', $contents); // Remove multi line comments
         $lines = explode(PHP_EOL, $contents);
 
         $result = static::run($lines, $file);

@@ -29,7 +29,7 @@ Artisan::command('check-missions', function () {
         }
 
         $header = $item->operation;
-        $now = Carbon::now()->addHours(3);
+        $now = Carbon::now();
 
         if ($header->starts_at->lt($now)) {
             $mission->last_played = $header->starts_at;
