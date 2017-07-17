@@ -52,18 +52,29 @@
     });
 </script>
 
-<div class="hub-dropdown hub-dropdown-right hub-dropdown-fixed-color jr-status-dropdown pull-right {{ strtolower($jr->status->permalink) }}">
-    <a href="javascript:void(0)" data-id="{{ $jr->status->id }}" data-text="{{ $jr->status->text }}">
-        {{ $jr->status->text }} <i class="fa fa-angle-down"></i>
-    </a>
+<div class="btn-group m-t-0 jr-status-dropdown pull-right {{ strtolower($jr->status->permalink) }}">
+    <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        data-id="{{ $jr->status->id }}"
+        data-text="{{ $jr->status->text }}">
+        {{ $jr->status->text }}
+    </button>
 
-    <ul>
+    <div class="dropdown-menu">
         @foreach ($joinStatuses as $status)
             @unless ($status->id == $jr->status->id)
-                <li><a href="javascript:void(0)" onclick="javascript:setStatus({{ $status->id }})">{{ $status->text }}</a></li>
+                <a class="dropdown-item" onclick="javascript:setStatus({{ $status->id }})" href="javascript:void(0)">
+                    {{ $status->text }}
+                </a>
             @endunless
         @endforeach
-        <li class="separator"></li>
-        <li><input type="text" name="status" id="new_status" placeholder="New status" maxlength="12"></li>
-    </ul>
+
+        <div class="dropdown-divider"></div>
+
+        <input type="text" class="form-control" name="status" id="new_status" placeholder="New status" maxlength="12">
+    </div>
 </div>

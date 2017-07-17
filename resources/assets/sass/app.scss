@@ -105,3 +105,9 @@ main {
     display: block;
     opacity: .5;
 }
+
+.table.no-border {
+    td, th {
+        border: none;
+    }
+}

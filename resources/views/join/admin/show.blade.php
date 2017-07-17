@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    {{ $jr->name }} &mdash; Applications
+    {{ $jr->name }} &middot; Applications
 @endsection
 
 @section('header-color')
@@ -13,128 +13,123 @@
 
 @section('subnav')
     @if (auth()->user()->hasPermission('apps:change_status'))
-        @foreach ($joinStatuses as $status)
-            @unless ($status->id == $jr->status->id)
-                <li><a href="javascript:void(0)" onclick="javascript:setStatus({{ $status->id }})">{{ $status->text }}</a></li>
-            @endunless
-        @endforeach
-        <a
-            href="javascript:void(0)"
-            data-status="{{ $status->permalink }}"
-            class="subnav-link status-filter {{ (request()->segment(3) == $status->permalink) ? 'active' : '' }}">
-            {{ $status->text }}
-        </a>
     @endif
 @endsection
 
 @section('content')
     <div class="container">
         <div class="card p-a-3">
-            <h2 class="jr-name">
-                {{ $jr->name }}
-
-                @if (auth()->user()->hasPermission('apps:emails'))
-                    <script>
-                        $(document).ready(function(e) {
-                            $('#send-app-email').click(function(event) {
-                                $('#app-emails').slideDown(150);
-                                event.preventDefault();
-                            });
-                        });
-                    </script>
-
-                    <a
-                        href="javascript:void(0)"
-                        class="btn hub-btn jr-send-email pull-right jr-{{ strtolower($jr->status->permalink) }}-theme"
-                        title="Choose an email to send"
-                        id="send-app-email"
-                    ><i class="fa fa-paper-plane"></i></a>
-                @endif
-
-                @if (auth()->user()->hasPermission('apps:change_status'))
-                    <div id="status" class="pull-right">
-                        @include('join.admin.status', [
-                            'joinStatuses' => $joinStatuses,
-                            'jr' => $jr
-                        ])
-                    </div>
-                @endif
-            </h2>
-
             @if (auth()->user()->hasPermission('apps:emails'))
-                <div class="pull-left full-width" id="app-emails" style="display: none">
-                    <ul>
-                        @foreach ($emails as $email)
-                            @unless ($email->id == 1)
-                                <li>
-                                    <a href="javascript:void(0)" class="{{ strtolower($jr->status->permalink) }}" data-id="{{ $email->id }}">
-                                        {{ $email->subject }}
-                                    </a>
-                                </li>
-                            @endunless
-                        @endforeach
-                    </ul>
+                <script>
+                    $(document).ready(function(e) {
+                        $('#send-app-email').click(function(event) {
+                            $('#emailModal').modal('show');
+                            event.preventDefault();
+                        });
+                    });
+                </script>
+
+                <button
+                    class="btn btn-secondary pull-right"
+                    type="button"
+                    title="Choose an email to send"
+                    id="send-app-email">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+
+                <div class="modal fade" id="emailModal" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+                                <h4 class="modal-title">Email {{ $jr->name }}</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                @include('join.admin.email-modal')
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endif
 
-            <div class="row">
-                <div class="col-md-6">
-                    <i class="jr-icon fa fa-envelope"></i>
-                    <span class="jr-attr">{{ $jr->email }}</span>
+            @if (auth()->user()->hasPermission('apps:change_status'))
+                <div id="status" class="pull-right">
+                    @include('join.admin.status', [
+                        'joinStatuses' => $joinStatuses,
+                        'jr' => $jr
+                    ])
                 </div>
+            @endif
 
-                <div class="col-md-6 {{ ($jr->age < env('JR_MIN_AGE')) ? 'error' : 'success' }}">
-                    <i class="jr-icon fa fa-calendar"></i>
-                    <span class="jr-attr">{{ $jr->age }}</span>
-                </div>
-            </div>
+            <h2>{{ $jr->name }}</h2>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <i class="jr-icon fa fa-map-marker"></i>
-                    <span class="jr-attr">{{ $jr->location }}</span>
-                </div>
+            <table class="table table-sm no-border pull-left" style="margin: 15px 0 30px 0">
+                <tr>
+                    <td width="50%">
+                        <i class="jr-icon fa fa-envelope"></i>
+                        {{ $jr->email }}
+                    </td>
 
-                <div class="col-md-6">
-                    <i class="jr-icon fa fa-steam-square"></i>
-                    <span class="jr-attr"><a href="{{ $jr->steam }}" target="_newtab" class="jr-link">Steam Account</a></span>
-                </div>
-            </div>
+                    <td width="50%" class="{{ ($jr->age < env('JR_MIN_AGE')) ? 'text-danger' : 'text-success' }}">
+                        <i class="jr-icon fa fa-calendar"></i>
+                        {{ $jr->age }}
+                    </td>
+                </tr>
 
-            <div class="row">
-                <div class="col-md-6 {{ ($jr->available) ? 'success' : 'error' }}">
-                    <i class="jr-icon fa fa-clock-o"></i>
-                    <span class="jr-attr">{{ ($jr->available) ? 'Available ' : 'Unavailable ' }} {{ env('SITE_OP_DAY') }}</span>
-                </div>
+                <tr>
+                    <td>
+                        <i class="jr-icon fa fa-map-marker"></i>
+                        {{ $jr->location }}
+                    </td>
 
-                <div class="col-md-6 {{ ($jr->groups) ? 'error' : 'success' }}">
-                    <i class="jr-icon fa fa-users"></i>
-                    <span class="jr-attr">{{ ($jr->groups) ? 'Other groups' : 'No other groups' }}</span>
-                </div>
-            </div>
+                    <td>
+                        <i class="jr-icon fa fa-steam-square"></i>
+                        <a href="{{ $jr->steam }}" target="_newtab">Steam Account</a>
+                    </td>
+                </tr>
 
-            <div class="row">
-                <div class="col-md-6 {{ ($jr->apex) ? 'success' : 'error' }}">
-                    <i class="jr-icon fa fa-gift"></i>
-                    <span class="jr-attr">{{ ($jr->apex) ? 'Owns Apex' : 'Does not own Apex' }}</span>
-                </div>
+                <tr>
+                    <td class="{{ ($jr->available) ? 'text-success' : 'text-danger' }}">
+                        <i class="jr-icon fa fa-clock-o"></i>
+                        {{ ($jr->available) ? 'Available ' : 'Unavailable ' }} {{ env('SITE_OP_DAY') }}
+                    </td>
 
-                <div class="col-md-6">
-                    <i class="jr-icon fa fa-globe"></i>
-                    <span class="jr-attr">
+                    <td class="{{ ($jr->groups) ? 'text-danger' : 'text-success' }}">
+                        <i class="jr-icon fa fa-users"></i>
+                        {{ ($jr->groups) ? 'Other groups' : 'No other groups' }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="{{ ($jr->apex) ? 'text-success' : 'text-danger' }}">
+                        <i class="jr-icon fa fa-gift"></i>
+                        {{ ($jr->apex) ? 'Owns Apex' : 'Does not own Apex' }}
+                    </td>
+
+                    <td>
+                        <i class="jr-icon fa fa-globe"></i>
                         {{ $jr->source->name }}
                         @if (strlen($jr->source_text))
                             ({{ $jr->source_text }})
                         @endif
-                    </span>
-                </div>
-            </div>
+                    </td>
+                </tr>
+            </table>
 
-            <h3 class="jr-subheading">Arma Experience</h3>
-            <p class="jr-content">{!! $jr->experience !!}</p>
+            <h5 class="m-t-3">Arma Experience</h5>
+            <p>{!! $jr->experience !!}</p>
 
-            <h3 class="jr-subheading">About</h3>
-            <p class="jr-content">{!! $jr->bio !!}</p>
+            <h5 class="m-t-3">About</h5>
+            <p class="m-b-0">{!! $jr->bio !!}</p>
         </div>
     </div>
 @endsection
