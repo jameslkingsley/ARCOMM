@@ -16,6 +16,8 @@ require('jquery.waitforimages');
 require('dropzone');
 require('magnific-popup');
 
+window.collect = require('collect.js');
+
 window.Tribute = require('tributejs');
 
 import Mentions from './laravel-mentions';

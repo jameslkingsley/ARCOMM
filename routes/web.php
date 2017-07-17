@@ -33,6 +33,8 @@ Route::group(['middleware' => 'permission:apps:all'], function() {
     Route::get('/hub/applications/api/items', 'Join\JoinController@items');
     Route::get('/hub/applications/show/{jr}', 'Join\JoinController@show');
 
+    Route::post('/hub/applications/api/send-email', 'Join\JoinController@email');
+
     // Statuses
     Route::post('/hub/applications/api/status', 'Join\JoinStatusController@store');
     Route::put('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@update');

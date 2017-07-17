@@ -1,6 +1,44 @@
-<form method="post">
+<script>
+    $(document).ready(function(e) {
+        var emails = {!! json_encode($emails) !!};
+        emails.push({ id: -1, subject: '', content: '' });
+
+        $('#f-template').change(function(event) {
+            var email = null;
+            var id = $(this).val();
+            for (var e of emails) if (e.id == id) email = e;
+
+            $('#f-subject').val(email.subject);
+            $('#f-body').val(email.content);
+
+            event.preventDefault();
+        });
+
+        $('#f-form').submit(function(event) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('/hub/applications/api/send-email') }}',
+                data: $('#f-form').serialize(),
+                success: function(data) {
+                    $('#emailModal').modal('hide');
+                }
+            });
+
+            event.preventDefault();
+        });
+
+        $('#email-modal-send').click(function(event) {
+            $('#f-form').submit();
+            event.preventDefault();
+        });
+    });
+</script>
+
+<form method="post" id="f-form">
+    <input type="hidden" name="jr_id" value="{{ $jr->id }}">
+
     <div class="form-group p-t-0">
-        <select name="template" class="form-control">
+        <select id="f-template" name="template" class="form-control">
             <option value="-1" selected="true">Select Preset (optional)</option>
             @foreach ($emails as $email)
                 <option value="{{ $email->id }}">
@@ -11,10 +49,10 @@
     </div>
 
     <div class="form-group p-t-0">
-        <input name="subject" type="text" class="form-control" placeholder="Subject">
+        <input name="subject" id="f-subject" type="text" class="form-control" placeholder="Subject">
     </div>
 
     <div class="form-group">
-        <textarea name="body" class="form-control" placeholder="Contents" rows="10"></textarea>
+        <textarea name="body" id="f-body" class="form-control" placeholder="Contents" rows="10"></textarea>
     </div>
 </form>

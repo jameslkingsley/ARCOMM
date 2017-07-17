@@ -121,4 +121,14 @@ class JoinController extends Controller
             $jr->save();
         }
     }
+
+    /**
+     * Sends the email.
+     *
+     * @return mixed
+     */
+    public function email(Request $request)
+    {
+        //
+    }
 }
