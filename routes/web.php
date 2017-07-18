@@ -15,11 +15,6 @@ Route::resource('join', 'PublicJoinController', [
 Route::resource('media', 'MediaController');
 Route::post('/media/delete', 'MediaController@deletePhoto');
 
-//--- Modset
-Route::get('/modset', function() {
-    return view('modset.index');
-});
-
 //--- Roster
 Route::get('/roster', 'PageController@roster');
 

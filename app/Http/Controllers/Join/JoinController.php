@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Join;
 
 use DB;
 use Validator;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Models\JoinRequests\JoinRequest;
+use Illuminate\Http\Request;
+use App\Mail\JoinRequestStatus;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Input;
 use App\Models\JoinRequests\JoinStatus;
+use App\Models\JoinRequests\JoinRequest;
 use App\Models\JoinRequests\EmailTemplate;
+use App\Models\JoinRequests\EmailSubmission;
 
 class JoinController extends Controller
 {
@@ -36,15 +39,23 @@ class JoinController extends Controller
     protected $emails;
 
     /**
+     * Email submission model.
+     *
+     * @var App\Models\JoinRequests\EmailSubmission
+     */
+    protected $emailSubmission;
+
+    /**
      * Constructor method.
      *
      * @return any
      */
-    public function __construct(JoinRequest $joinRequests, JoinStatus $joinStatuses, EmailTemplate $emails)
+    public function __construct(JoinRequest $joinRequests, JoinStatus $joinStatuses, EmailTemplate $emails, EmailSubmission $emailSubmission)
     {
         $this->joinRequests = $joinRequests;
         $this->joinStatuses = $joinStatuses;
         $this->emails = $emails;
+        $this->emailSubmission = $emailSubmission;
 
         return $this;
     }
@@ -75,8 +86,9 @@ class JoinController extends Controller
     {
         $joinStatuses = $this->joinStatuses->orderBy('position', 'asc')->get();
         $emails = $this->emails->all();
+        $emailSubmissions = $this->emailSubmission->where('join_request_id', $jr->id)->orderBy('created_at', 'asc')->get();
 
-        return view('join.admin.show', compact('jr', 'joinStatuses', 'emails'));
+        return view('join.admin.show', compact('jr', 'joinStatuses', 'emails', 'emailSubmissions'));
     }
 
     /**
@@ -129,6 +141,22 @@ class JoinController extends Controller
      */
     public function email(Request $request)
     {
-        //
+        $jr = $this->joinRequests->findOrFail($request->jr_id);
+
+        // Send email
+        Mail::to($jr->email)
+            ->send(new JoinRequestStatus(
+                $jr,
+                $request->subject,
+                $request->body
+            ));
+
+        // Store email submission
+        $this->emailSubmission->create([
+            'user_id' => auth()->user()->id,
+            'join_request_id' => $jr->id,
+            'subject' => $request->subject,
+            'content' => $request->body
+        ]);
     }
 }

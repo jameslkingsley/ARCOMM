@@ -43,7 +43,6 @@
                     <div class="collapse navbar-collapse" id="example">
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{{ url('/media') }}">Media</a></li>
-                            <li><a href="{{ url('/modset') }}">Modset</a></li>
                             <li><a href="{{ url('/roster') }}">Roster</a></li>
                             <li><a href="{{ url('join') }}">Join</a></li>
 

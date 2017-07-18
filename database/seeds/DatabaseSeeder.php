@@ -11,6 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\JoinRequests\JoinRequest::class, 10)->create();
+        factory(App\Models\JoinRequests\JoinRequest::class, 50)->create();
     }
 }

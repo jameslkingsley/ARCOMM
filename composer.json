@@ -28,7 +28,8 @@
         "team-reflex/discord-php": "^4.0",
         "sentry/sentry-laravel": "^0.7.0",
         "superbalist/laravel-google-cloud-storage": "dev-master#3cb952fd4599f31bacdf36379703e85dbd0f6157",
-        "superbalist/flysystem-google-storage": "dev-master#093b7e4b46f37720109e9efa594782cd0b3ced02"
+        "superbalist/flysystem-google-storage": "dev-master#093b7e4b46f37720109e9efa594782cd0b3ced02",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

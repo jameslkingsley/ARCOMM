@@ -18,7 +18,7 @@ class PageController extends Controller
 	public function index()
     {
 		// return view('home.index');
-        
+
         if (auth()->guest()) {
             return view('home.beta-login');
         } else if (auth()->user()->isMember()) {

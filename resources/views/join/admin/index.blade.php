@@ -31,7 +31,7 @@
                 var status = $(this).data("status");
                 window.jr.status = status;
 
-                $('.status-filter').removeClass("active");
+                $('.subnav-link').removeClass("active");
                 $this.addClass("active");
                 setUrl('hub/applications/' + status);
 
@@ -75,7 +75,7 @@
             href="javascript:void(0)"
             data-status="{{ $status->permalink }}"
             class="subnav-link status-filter {{ (request()->segment(3) == $status->permalink) ? 'active' : '' }}">
-            {{ $status->text }}
+            {{ $status->text }} &middot; {{ $status->count() }}
         </a>
     @endforeach
 
@@ -95,6 +95,8 @@
 
                 $('#app-emails').click(function(event) {
                     reloadEmails();
+                    $('.subnav-link').removeClass("active");
+                    $(this).addClass("active");
                     event.preventDefault();
                 });
             });

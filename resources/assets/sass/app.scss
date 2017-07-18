@@ -111,3 +111,9 @@ main {
         border: none;
     }
 }
+
+.p-b-0-lot {
+    &:last-of-type {
+        padding-bottom: 0 !important;
+    }
+}

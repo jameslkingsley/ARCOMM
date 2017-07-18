@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "01e5e6acfa61e9cb478fcde78c7aa3fa",
+    "content-hash": "e0c326ae39108f0d0eb995bc40d194b3",
     "packages": [
         {
             "name": "TrafficCophp/ByteBuffer",

@@ -28,18 +28,20 @@
     });
 </script>
 
-<a href="javascript:void(0)" class="btn hub-btn btn-primary pull-left mt-0 mb-5" id="create-email">
-    <i class="fa fa-plus mr-3"></i>
+{{-- <a href="javascript:void(0)" class="btn btn-primary pull-left m-t-0 m-b-5" id="create-email">
+    <i class="fa fa-plus m-r-3"></i>
     Create
-</a>
+</a> --}}
 
-<ul class="hub-list">
+<div class="list-group">
     @foreach ($emails as $email)
-        <li>
-            <a href="javascript:void(0)" class="hub-list-item email-item" data-id="{{ $email->id }}">
-                <h1>{{ $email->subject }}</h1>
-                <p>{{ substr($email->content, 0, 500) }}</p>
-            </a>
-        </li>
+        <a href="javascript:void(0)" class="list-group-item list-group-item-action email-item jr-item" data-id="{{ $email->id }}">
+        <span class="jr-item-title">{{ $email->subject }}</span>
+            <br />
+
+            <span class="jr-item-meta">
+                {{ substr($email->content, 0, 500) }}
+            </span>
+        </a>
     @endforeach
-</ul>
+</div>

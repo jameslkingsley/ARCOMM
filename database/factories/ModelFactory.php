@@ -25,6 +25,6 @@ $factory->define(App\Models\JoinRequests\JoinRequest::class, function(Faker\Gene
         'bio' => $faker->paragraphs(3, true),
         'source_id' => $faker->numberBetween(1, 10),
         'source_text' => '',
-        'status_id' => $faker->numberBetween(1, 4)
+        'status_id' => $faker->numberBetween(1, 3)
     ];
 });
