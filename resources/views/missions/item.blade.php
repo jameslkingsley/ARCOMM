@@ -5,7 +5,7 @@
     data-id="{{ $mission->id }}">
 
     @if (isset($pulse) && $pulse)
-        <span class="mission-item-pulse pulse"></span>
+        {{-- <span class="mission-item-pulse pulse"></span> --}}
     @endif
 
     <div class="mission-item-inner {{ $mission->mode }}">
@@ -23,12 +23,12 @@
             @endunless
         </p>
 
-        <span class="mission-item-mode mission-item-mode-{{ $mission->mode }}">
+        {{-- <span class="mission-item-mode mission-item-mode-{{ $mission->mode }}">
             {{ $mission->mode }}
-        </span>
+        </span> --}}
 
         @if (auth()->user()->hasPermission('mission:verification') && !$mission->verified)
-            <span class="mission-item-verified">Not verified</span>
+            <span class="mission-item-verified" title="Not verified">!</span>
         @endif
     </div>
 </a>
