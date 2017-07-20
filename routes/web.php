@@ -7,8 +7,9 @@ Route::get('/', 'PageController@index');
 Route::get('/steamauth', 'AuthController@login');
 
 //--- Public Applications
+Route::get('/join/acknowledged', 'PublicJoinController@acknowledged');
 Route::resource('join', 'PublicJoinController', [
-    'only' => ['index', 'store']
+    'only' => ['index', 'store', 'create']
 ]);
 
 //--- Media

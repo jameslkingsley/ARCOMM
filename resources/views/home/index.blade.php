@@ -5,12 +5,34 @@
 @endsection
 
 @section('content')
+    <script>
+        $(document).ready(function(e) {
+            var banners = {!! json_encode($banners) !!},
+                delay = 4500,
+                counter = 0;
+
+            banners.forEach(function(img) {
+                new Image().src = img;
+            });
+
+            setInterval(function() {
+                counter++; if (counter == banners.length) counter = 0;
+                $('.parallax-background').css({
+                    'background': 'url(' + banners[counter] + ')',
+                    'background-position': 'center',
+                    'background-size': 'cover',
+                    'background-repeat': 'no-repeat'
+                });
+            }, delay);
+        });
+    </script>
+
     <div class="wrapper">
         <div class="section section-fullpage">
             <div class="parallax">
                 <div
                     class="parallax-background front"
-                    style="background-image: url({{ url('/images/public/banners/1.jpg') }})">
+                    style="background-image: url({{ $banners[0] }})">
                 </div>
             </div>
 
@@ -64,7 +86,7 @@
                             <h4 class="header-text">Discussion</h4>
 
                             <p>
-                                Active discussions on our Steam group. Voice your opinions and ideas, keep up-to-date with events and collaborate with other members.
+                                Active discussions on our Discord. Voice your opinions and ideas, keep up-to-date with events and collaborate with other members.
                             </p>
                         </div>
                     </div>
@@ -157,9 +179,7 @@
                             <h4 class="header-text">After-Action Report</h4>
 
                             <p>
-                                Review your experience of the mission.
-                                <br />
-                                Provide constructive feedback and share your war stories.
+                                Review your experience of the mission; provide constructive feedback and share your war stories.
                             </p>
                         </div>
                     </div>
@@ -171,11 +191,11 @@
             class="section section-no-padding section-fullpage"
             style="background-attachment: fixed;background-image: url({{ url('/images/public/banners/3.jpg') }})">
             <div class="info text-xs-center">
-                <h1 style="font-weight: 100;font-size: 72px;margin-bottom: 40px;">
+                <h1 style="font-weight: 700;font-size: 64px;margin-bottom: 20px;text-transform: uppercase;">
                     Are you ready?
                 </h1>
 
-                <a href="{{ url('/join') }}" class="btn btn-primary btn-lg btn-fill" id="lp-join">
+                <a href="{{ url('/join') }}" class="btn btn-primary btn-lg btn-fill btn-dark" id="lp-join">
                     Submit Your Application
                 </a>
             </div>

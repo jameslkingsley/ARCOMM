@@ -25,7 +25,9 @@ class JoinRequest extends Model
         'apex',
         'groups',
         'experience',
-        'bio'
+        'bio',
+        'source_id',
+        'source_text'
     ];
 
     /**

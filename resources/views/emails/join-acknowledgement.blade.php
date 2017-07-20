@@ -1,2 +1,2 @@
-<h1>{{ $this->template->subject }}</h1>
-<p>{!! $this->template->content !!}</p>
+<h1>{{ $template->subject }}</h1>
+<p>{!! nl2br($template->content) !!}</p>

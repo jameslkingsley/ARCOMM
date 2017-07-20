@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\JoinRequest;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Models\Portal\SteamAPI;
 use Steam;
+use App\JoinRequest;
+use App\Http\Requests;
+use App\Models\Portal\User;
+use Illuminate\Http\Request;
+use App\Models\Portal\SteamAPI;
+use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
@@ -17,7 +19,12 @@ class PageController extends Controller
      */
 	public function index()
     {
-		return view('home.index');
+        $banners = Storage::disk('images')->allFiles('banners');
+        $banners = collect($banners)->map(function($file) {
+            return url('images/'.$file);
+        });
+
+		return view('home.index', compact('banners'));
 
         if (auth()->guest()) {
             return view('home.beta-login');
@@ -33,8 +40,8 @@ class PageController extends Controller
      */
     public function roster()
     {
-        $members = SteamAPI::members();
-        $summaries = Steam::user($members)->getPlayerSummaries();
-        return view('roster.index', compact('summaries'));
+        $members = User::all();
+
+        return view('roster.index', compact('members'));
     }
 }

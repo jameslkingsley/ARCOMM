@@ -26,7 +26,7 @@ class JoinRequestAcknowledged extends Mailable
      */
     public function __construct()
     {
-        $this->template = EmailTemplate::findOrFail(1);
+        $this->template = EmailTemplate::first();
     }
 
     /**
@@ -36,6 +36,8 @@ class JoinRequestAcknowledged extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.join-acknowledgement');
+        return $this
+            ->subject($this->template->subject)
+            ->view('emails.join-acknowledgement');
     }
 }

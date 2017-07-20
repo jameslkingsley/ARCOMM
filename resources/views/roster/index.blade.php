@@ -12,11 +12,11 @@
 
 @section('content')
     <div class="content container">
-        <h2>Roster &mdash; {{ count($summaries) }} Members</h2>
-        @foreach ($summaries as $member)
+        <h2>Roster &mdash; {{ count($members) }} Members</h2>
+        @foreach ($members as $member)
             <div class="roster-item">
-                <div class="ri-avatar" style="background-image: url({{ $member->avatarMediumUrl }})"></div>
-                <div class="ri-name">{{ $member->personaName }}</div>
+                <div class="ri-avatar" style="background-image: url({{ $member->avatar }})"></div>
+                <div class="ri-name">{{ $member->username }}</div>
             </div>
         @endforeach
     </div>

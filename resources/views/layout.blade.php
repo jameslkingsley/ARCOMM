@@ -61,7 +61,7 @@
             </nav>
 
             @if (trim($__env->yieldContent('subnav')))
-                <div class="subnav">
+                <div class="subnav subnav-upper">
                     @yield('subnav')
                 </div>
             @endif

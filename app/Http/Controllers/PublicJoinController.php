@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\JoinRequestAcknowledged;
+use Illuminate\Support\Facades\Input;
+use App\Models\JoinRequests\JoinSource;
 use App\Models\JoinRequests\JoinRequest;
 
 class PublicJoinController extends Controller
@@ -37,7 +40,9 @@ class PublicJoinController extends Controller
      */
     public function create()
     {
-        return view('join.public.form');
+        $sources = JoinSource::all();
+
+        return view('join.public.form', compact('sources'));
     }
 
     /**
@@ -52,20 +57,35 @@ class PublicJoinController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'age' => 'required|integer|between:'.env('JR_MIN_AGE', 16).',100',
+            'age' => 'required|integer',
             'location' => 'required',
             'email' => 'required|email',
             'steam' => 'required|url',
-            'available' => 'required',
+            'available' => 'required|integer',
             'apex' => 'required|integer',
-            'groups' => 'required',
+            'groups' => 'required|integer',
             'experience' => 'required',
-            'bio' => 'required'
+            'bio' => 'required',
+            'source_id' => 'required'
         ]);
 
         // Create the join request if there are no form errors
-        JoinRequest::create($form);
+        $jr = JoinRequest::create($form);
 
-        return view('join.public.confirmation', compact('form'));
+        Mail::to($jr->email)->send(new JoinRequestAcknowledged);
+
+        return redirect('/join/acknowledged?email='.$jr->email);
+    }
+
+    /**
+     * Shows the acknowledged view.
+     *
+     * @return view
+     */
+    public function acknowledged(Request $request)
+    {
+        $email = $request->email;
+
+        return view('join.public.confirmation', compact('email'));
     }
 }
