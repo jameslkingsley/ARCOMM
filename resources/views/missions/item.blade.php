@@ -28,7 +28,7 @@
         </span> --}}
 
         @if (auth()->user()->hasPermission('mission:verification') && !$mission->verified)
-            <span class="mission-item-verified">Not verified</span>
+            <span class="mission-item-verified" title="Not verified">!</span>
         @endif
     </div>
 </a>
