@@ -6,6 +6,19 @@
     font-family: $font-family-secondary !important;
 }
 
+.landing-page {
+    margin: 0;
+}
+
+#app {
+    padding: 0;
+}
+
+.navbar-nav li {
+    float: right;
+    margin-top: 6rem;
+}
+
 .navbar-brand {
     margin: 0 !important;
     padding: 0 !important;
@@ -275,4 +288,11 @@ body {
 
 .media-item-public:hover .photo-delete {
     display: block;
+}
+
+#lp-join {
+    border-radius: 3px;
+    background: $brand-primary !important;
+    color: white !important;
+    opacity: 1 !important;
 }

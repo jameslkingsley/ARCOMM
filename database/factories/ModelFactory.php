@@ -16,7 +16,7 @@ $factory->define(App\Models\JoinRequests\JoinRequest::class, function(Faker\Gene
         'name' => $faker->name,
         'age' => $faker->numberBetween(15, 45),
         'location' => $faker->country,
-        'email' => $faker->email,
+        'email' => 'jlkingsley97@gmail.com',
         'steam' => $faker->url,
         'available' => $faker->boolean,
         'apex' => $faker->boolean,

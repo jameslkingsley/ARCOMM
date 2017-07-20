@@ -102,22 +102,27 @@
             });
         </script>
 
-        <a href="javascript:void(0)" class="subnav-link" id="app-emails">Emails</a>
+        <a href="javascript:void(0)" class="subnav-link" id="app-emails">Email Templates</a>
     @endif
 @endsection
 
 @section('content')
     <div class="container">
-        <form method="post" id="join-filter-form">
-            <input type="text" name="search" id="search" class="form-control" placeholder="Search" style="width:250px">
-            <select name="order" class="form-control" id="order" style="width:150px">
-                <option value="desc">Latest first</option>
-                <option value="asc">Oldest first</option>
-            </select>
+        <form method="post" id="join-filter-form" class="form-inline" style="text-align: right">
+            <div class="form-group">
+                <input type="text" name="search" id="search" class="form-control" placeholder="Search" style="width:250px">
+            </div>
+
+            {{-- <div class="form-group" style="height: 71px">
+                <select name="order" class="form-control" id="order" style="width:150px">
+                    <option value="desc">Latest first</option>
+                    <option value="asc">Oldest first</option>
+                </select>
+            </div> --}}
         </form>
 
         <div class="card" id="join-requests">
-            @include('join.admin.items', ['joinRequests', $joinRequests])
+            @include('join.admin.items')
         </div>
     </div>
 @endsection

@@ -21,6 +21,8 @@
                 data: $('#f-form').serialize(),
                 success: function(data) {
                     $('#emailModal').modal('hide');
+                    $('#email-modal-send').prop('disabled', false);
+                    reloadSubmissions();
                 }
             });
 
@@ -28,6 +30,7 @@
         });
 
         $('#email-modal-send').click(function(event) {
+            $(this).prop('disabled', true);
             $('#f-form').submit();
             event.preventDefault();
         });

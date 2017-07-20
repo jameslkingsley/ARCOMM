@@ -21,6 +21,16 @@
                             $('#emailModal').modal('show');
                             event.preventDefault();
                         });
+
+                        reloadSubmissions = function() {
+                            $.ajax({
+                                type: 'GET',
+                                url: '{{ url('/hub/applications/api/email-submissions?jr_id='.$jr->id) }}',
+                                success: function(data) {
+                                    $('#email-submissions').html(data);
+                                }
+                            });
+                        }
                     });
                 </script>
 
@@ -130,21 +140,8 @@
         <div class="card p-a-3">
             <h4>Emails</h4>
 
-            <div class="list-group m-b-0 p-b-0.">
-                @if ($emailSubmissions->isEmpty())
-                    <p class="m-b-0">No emails have been sent yet.</p>
-                @else
-                    @foreach ($emailSubmissions as $sent)
-                        <li class="list-group-item jr-item p-x-0 p-b-0-lot">
-                            <span class="jr-item-title">{{ $sent->subject }}</span>
-                            <br />
-
-                            <span class="jr-item-meta">
-                                Sent by {{ $sent->user->username }} {{ $sent->created_at->diffForHumans() }}
-                            </span>
-                        </li>
-                    @endforeach
-                @endif
+            <div class="list-group m-b-0 p-b-0" id="email-submissions">
+                @include('join.admin.email-submissions')
             </div>
         </div>
     </div>

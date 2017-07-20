@@ -15,8 +15,8 @@
             </div>
 
             <div class="section-footnote">
-                <div class="container text-center">
-                    <h4 class="header-text">Serious, Tactical, Immersive Fun.</h4>
+                <div class="container text-xs-center">
+                    <h4 class="header-text">Challenging Gameplay, Community Fun.</h4>
 
                     <p>
                         We pride ourselves on the absence of ranks and social drama. Our players range from former mil-sim players to beginners of Arma. Everyone is considered an equal member. No one holds the power to command anyone else outside of gameplay.<br />
@@ -28,7 +28,7 @@
         <div class="section section-fullpage section-presentation brand-background">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Team</h4>
 
@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Gameplay</h4>
 
@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Missions</h4>
 
@@ -59,7 +59,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Discussion</h4>
 
@@ -68,16 +68,6 @@
                             </p>
                         </div>
                     </div>
-                </div>
-
-                <div class="row text-center">
-                    <br /><br /><br /><br />
-
-                    <p style="font-weight: 100;font-size: 32px;line-height: 46px;">
-                        Challenging Gameplay, Tactical Fun.
-                    </p>
-
-                    <br /><br /><br /><br />
                 </div>
             </div>
         </div>
@@ -93,7 +83,7 @@
                             <h4 class="header-text" style="font-weight: 600;opacity: .88;">ARCMF</h4>
 
                             <p class="text-warm">
-                                Our mission framework is based on <a href="https://github.com/ferstaberinde/F3" target="_newtab">F3</a> with some extra features and overhauls to improve our experience and provide robust missions. If you're new to mission making you'll find all the help you need with our video tutorial series and welcoming members.
+                                Built from scratch, our mission framework provides us with long-lasting, robust missions that are extensible for the veteran, but simple and concise for the beginner.
                             </p>
                         </div>
                     </div>
@@ -114,12 +104,12 @@
         </div>
 
         <div class="section section-no-padding section-fullpage brand-background">
-            <div class="text-center">
-                <h1 class="archub-hero-title">ARC<b>HUB</b></h1>
+            <div class="text-xs-center">
+                <h1 class="archub-hero-title">ARC<b style="font-weight: 700;">HUB</b></h1>
                 <p class="archub-hero-text">Built in-house, our community management system.</p>
 
                 <div class="archub-hero-screenshot" style="box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.15);border-radius: 10px 10px 0 0;">
-                    <img src="{{ url('/images/public/archub/1.jpg') }}">
+                    <img src="{{ url('/images/public/archub/image.png') }}">
                 </div>
             </div>
         </div>
@@ -127,7 +117,7 @@
         <div class="section section-no-padding section-dark section-fullpage" {{-- style="color:#000;" --}}>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Weather</h4>
 
@@ -139,7 +129,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Briefing</h4>
 
@@ -150,19 +140,19 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 text-center">
+                <div class="row m-t-3 p-t-3">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">Media</h4>
 
                             <p>
                                 Share your Arma moments with the rest of the group.
                                 <br />
-                                Upload your photos and link your videos to a mission's gallery.
+                                Upload your photos and link your videos.
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-6 text-xs-center">
                         <div class="description">
                             <h4 class="header-text">After-Action Report</h4>
 
@@ -174,26 +164,18 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="row text-center">
-                    <br /><br /><br /><br />
-
-                    <p style="font-weight: 100;font-size: 32px;line-height: 46px;">
-                        We're a group of leaders and engineers.
-                    </p>
-                </div>
             </div>
         </div>
 
         <div
             class="section section-no-padding section-fullpage"
             style="background-attachment: fixed;background-image: url({{ url('/images/public/banners/3.jpg') }})">
-            <div class="info text-center">
+            <div class="info text-xs-center">
                 <h1 style="font-weight: 100;font-size: 72px;margin-bottom: 40px;">
                     Are you ready?
                 </h1>
-                
-                <a href="{{ url('/join') }}" class="btn btn-primary btn-lg btn-fill">
+
+                <a href="{{ url('/join') }}" class="btn btn-primary btn-lg btn-fill" id="lp-join">
                     Submit Your Application
                 </a>
             </div>

@@ -1,5 +1,11 @@
 <script>
     $(document).ready(function(e) {
+        $('#email-modal-save').click(function(event) {
+            $(this).prop('disabled', true);
+            $('#create-email-form').submit();
+            event.preventDefault();
+        });
+
         $('#create-email-form').submit(function(event) {
             var form = $(this);
 
@@ -8,7 +14,8 @@
                 url: '{{ url('/hub/applications/api/emails') }}',
                 data: form.serialize(),
                 success: function(data) {
-                    closePanel();
+                    $('#emailCreateModal').modal('hide');
+                    $('.modal-backdrop').remove();
                     reloadEmails();
                 }
             });
@@ -18,8 +25,27 @@
     });
 </script>
 
-<h3 class="mt-0 mb-5">Create Email Template</h3>
+<div class="modal fade" id="emailCreateModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-<form id="create-email-form">
-    @include('join.admin.emails.form')
-</form>
+                <h4 class="modal-title">Create Email Template</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="create-email-form">
+                    @include('join.admin.emails.form')
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="email-modal-save">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

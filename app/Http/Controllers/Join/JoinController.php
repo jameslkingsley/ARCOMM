@@ -148,7 +148,7 @@ class JoinController extends Controller
             ->send(new JoinRequestStatus(
                 $jr,
                 $request->subject,
-                $request->body
+                nl2br($request->body)
             ));
 
         // Store email submission
@@ -158,5 +158,20 @@ class JoinController extends Controller
             'subject' => $request->subject,
             'content' => $request->body
         ]);
+    }
+
+    /**
+     * Gets the email submissions view.
+     *
+     * @return view
+     */
+    public function emailSubmissions(Request $request)
+    {
+        $emailSubmissions = $this->emailSubmission
+            ->where('join_request_id', $request->jr_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('join.admin.email-submissions', compact('emailSubmissions'));
     }
 }

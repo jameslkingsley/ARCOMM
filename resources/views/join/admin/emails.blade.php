@@ -5,7 +5,8 @@
                 type: 'GET',
                 url: '{{ url('/hub/applications/api/emails/create') }}',
                 success: function(data) {
-                    openPanel(data);
+                    $('#email-modal').html(data);
+                    $('#email-modal .modal').modal('show');
                 }
             });
 
@@ -19,7 +20,8 @@
                 type: 'GET',
                 url: '{{ url('/hub/applications/api/emails') }}/' + caller.data('id') + '/edit',
                 success: function(data) {
-                    openPanel(data);
+                    $('#email-modal').html(data);
+                    $('#email-modal .modal').modal('show');
                 }
             });
 
@@ -28,10 +30,14 @@
     });
 </script>
 
-{{-- <a href="javascript:void(0)" class="btn btn-primary pull-left m-t-0 m-b-5" id="create-email">
-    <i class="fa fa-plus m-r-3"></i>
-    Create
-</a> --}}
+<div class="row">
+    <div class="col-md-12 p-x-3 p-t-1">
+        <a href="javascript:void(0)" class="btn btn-primary pull-right m-t-0 m-b-5" id="create-email">
+            <i class="fa fa-plus m-r-1"></i>
+            Create
+        </a>
+    </div>
+</div>
 
 <div class="list-group">
     @foreach ($emails as $email)
@@ -40,8 +46,10 @@
             <br />
 
             <span class="jr-item-meta">
-                {{ substr($email->content, 0, 500) }}
+                {{ substr(strip_tags($email->content), 0, 500) }}
             </span>
         </a>
     @endforeach
 </div>
+
+<div id="email-modal"></div>

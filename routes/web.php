@@ -29,6 +29,7 @@ Route::group(['middleware' => 'permission:apps:all'], function() {
     Route::get('/hub/applications/show/{jr}', 'Join\JoinController@show');
 
     Route::post('/hub/applications/api/send-email', 'Join\JoinController@email');
+    Route::get('/hub/applications/api/email-submissions', 'Join\JoinController@emailSubmissions');
 
     // Statuses
     Route::post('/hub/applications/api/status', 'Join\JoinStatusController@store');
