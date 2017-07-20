@@ -95,6 +95,9 @@ Route::group(['middleware' => 'member'], function() {
     // Panels
     Route::get('/hub/missions/{mission}/{panel}', 'Missions\MissionController@panel');
 
+    // Absence
+    Route::resource('/hub/absence', 'AbsenceController');
+
     Route::resource('/hub/missions', 'Missions\MissionController', [
         'except' => ['create', 'edit']
     ]);

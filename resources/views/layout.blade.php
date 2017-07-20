@@ -55,7 +55,7 @@
                     <div class="pull-right">
                         @yield('nav-right')
                         {{-- @include('nav.notifications') --}}
-                        @include('nav.absence')
+                        @include('absence.nav')
                         @include('nav.user')
                     </div>
                 </div>
@@ -76,6 +76,8 @@
             @endif
 
             @yield('content')
+
+            <div class="dynamic-modal"></div>
         </main>
 
         <script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
