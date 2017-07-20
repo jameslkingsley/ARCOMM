@@ -107,34 +107,6 @@ class JoinController extends Controller
     }
 
     /**
-     * Transfers old database records into the new database.
-     *
-     * @return void
-     */
-    public function transferOldRecords()
-    {
-        $apps = DB::table('apps')->get();
-
-        foreach ($apps as $item) {
-            $jr = new JoinRequest();
-            $jr->created_at = $item->appTimestamp;
-            $jr->updated_at = $item->appTimestamp;
-            $jr->name = $item->appName;
-            $jr->age = (int)$item->appAge;
-            $jr->location = $item->appCountry;
-            $jr->email = $item->appEmail;
-            $jr->steam = $item->appSteam;
-            $jr->available = (str_contains(strtolower($item->appAvailable), 'yes')) ? true : false;
-            $jr->apex = (str_contains(strtolower($item->appApex), 'yes')) ? true : false;
-            $jr->groups = (str_contains(strtolower($item->appGroups), 'yes')) ? true : false;
-            $jr->experience = $item->appExperience;
-            $jr->bio = $item->appBio;
-            $jr->status_id = JoinStatus::where('text', '=', $item->appStatus)->first()->id;
-            $jr->save();
-        }
-    }
-
-    /**
      * Sends the email.
      *
      * @return mixed
