@@ -19,7 +19,7 @@ class CreateAbsencesTable extends Migration
             $table->integer('operation_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('operation_id')->references('id')->on('operations')->onDelete('cascade');
-            $table->longText('reason');
+            $table->longText('reason')->nullable();
             $table->timestamps();
         });
     }
