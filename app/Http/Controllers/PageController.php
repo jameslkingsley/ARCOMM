@@ -25,7 +25,9 @@ class PageController extends Controller
             return url('images/'.$file);
         });
 
-		return view('home.index', compact('banners'));
+        $nextOp = true;
+
+		return view('home.index', compact('banners', 'nextOp'));
 
         if (auth()->guest()) {
             return view('home.beta-login');
