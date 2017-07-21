@@ -464,6 +464,7 @@ a:focus, a:active {
   filter: alpha(opacity=80);
   font-weight: 500;
   background-color: transparent;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 .navbar-transparent .navbar-nav > .active > a,
 .navbar-transparent .navbar-nav > .active > a:hover,
