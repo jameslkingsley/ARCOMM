@@ -1,8 +1,6 @@
 @import "variables";
 @import "node_modules/magnific-popup/dist/magnific-popup";
-// @import "node_modules/at.js/dist/css/jquery.atwho.min";
 @import "node_modules/font-awesome/css/font-awesome";
-
 @import "laravel-mentions";
 
 body {
@@ -44,6 +42,7 @@ body {
 @import "pulse";
 @import "notifications";
 @import "atwho";
+@import "jr";
 
 .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active .list-group-item-text {
     color: rgba(255, 255, 255, 0.75) !important;
@@ -105,4 +104,20 @@ main {
     content: attr(placeholder);
     display: block;
     opacity: .5;
+}
+
+.table.no-border {
+    td, th {
+        border: none;
+    }
+}
+
+.p-b-0-lot {
+    &:last-of-type {
+        padding-bottom: 0 !important;
+    }
+}
+
+.w100 {
+    width: 100%;
 }

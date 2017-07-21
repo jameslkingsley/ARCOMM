@@ -138,6 +138,11 @@ header {
         height: 64px;
         text-align: center;
 
+        &.subnav-upper {
+            background: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) inset;
+        }
+
         .subnav-link {
             display: inline-block;
             height: 100%;

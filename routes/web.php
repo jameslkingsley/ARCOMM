@@ -1,35 +1,20 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
- */
-
 //--- Home
 Route::get('/', 'PageController@index');
 
 //--- Steam Authentication
 Route::get('/steamauth', 'AuthController@login');
 
-//--- Join Requests
+//--- Public Applications
+Route::get('/join/acknowledged', 'PublicJoinController@acknowledged');
 Route::resource('join', 'PublicJoinController', [
-    'only' => ['index', 'store']
+    'only' => ['index', 'store', 'create']
 ]);
 
 //--- Media
 Route::resource('media', 'MediaController');
 Route::post('/media/delete', 'MediaController@deletePhoto');
-
-//--- Modset
-Route::get('/modset', function() {
-    return view('modset.index');
-});
 
 //--- Roster
 Route::get('/roster', 'PageController@roster');
@@ -40,18 +25,29 @@ Route::resource('/hub/attendance', 'Users\AttendanceController');
 //--- Admins
 Route::group(['middleware' => 'permission:apps:all'], function() {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
-    Route::get('/hub/applications/viewItems', 'JoinController@viewItems');
-    Route::get('/hub/applications/showByInput', 'JoinController@showByInput');
-    Route::get('/hub/applications/{status}', 'JoinController@index');
-    Route::post('/hub/applications/createStatus', 'JoinController@createStatus');
-    Route::post('/hub/applications/setStatus', 'JoinController@setStatus');
-    Route::post('/hub/applications/getStatusView', 'JoinController@getStatusView');
 
-    Route::resource('/hub/applications', 'JoinController', [
-        'as' => 'admin'
-    ]);
+    Route::get('/hub/applications/api/items', 'Join\JoinController@items');
+    Route::get('/hub/applications/show/{jr}', 'Join\JoinController@show');
+
+    Route::post('/hub/applications/api/send-email', 'Join\JoinController@email');
+    Route::get('/hub/applications/api/email-submissions', 'Join\JoinController@emailSubmissions');
+
+    // Statuses
+    Route::post('/hub/applications/api/status', 'Join\JoinStatusController@store');
+    Route::put('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@update');
+    Route::get('/hub/applications/api/{jr}/status', 'Join\JoinStatusController@show');
+
+    Route::get('/hub/applications/{status}', 'Join\JoinController@index');
+
+    Route::resource('/hub/applications', 'Join\JoinController');
 });
 
+Route::group(['middleware' => 'permission:apps:emails'], function() {
+    // Email Templates
+    Route::resource('/hub/applications/api/emails', 'Join\EmailTemplateController');
+});
+
+//--- Operations
 Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::get('/hub/operations', 'Missions\OperationController@index');
 });
@@ -61,10 +57,7 @@ Route::group(['middleware' => 'permission:operations:all'], function() {
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
 
-Route::group(['middleware' => 'etag'], function() {
-    Route::get('/hub/missions/media/tsv', 'Missions\MediaController@tsv');
-});
-
+//--- Missions
 Route::group(['middleware' => 'member'], function() {
     // Mission Media
     Route::post('/hub/missions/media/add-photo', 'Missions\MediaController@uploadPhoto');
@@ -102,6 +95,9 @@ Route::group(['middleware' => 'member'], function() {
     // Panels
     Route::get('/hub/missions/{mission}/{panel}', 'Missions\MissionController@panel');
 
+    // Absence
+    Route::resource('/hub/absence', 'AbsenceController');
+
     Route::resource('/hub/missions', 'Missions\MissionController', [
         'except' => ['create', 'edit']
     ]);
@@ -121,7 +117,7 @@ Route::group(['middleware' => 'member'], function() {
     ]);
 });
 
-//--- Users
+//--- User Management
 Route::group(['middleware' => 'permission:users:all'], function() {
     Route::resource('/hub/users', 'Users\UserController');
 });

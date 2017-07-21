@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="content container">
-        <h2>Your application has been sent</h2>
-        <p>We have sent an acknowledgment email to <strong>{{ $form['email'] }}</strong>. It can take up to 2 weeks to process. You will either receive an approved or declined email.</p>
+        <h3>Your application has been sent</h3>
+        <p>We have sent an acknowledgment email to <strong>{{ $email }}</strong>. It can take up to 2 weeks to process.<br />You will either receive an approved or declined email.</p>
     </div>
 @endsection

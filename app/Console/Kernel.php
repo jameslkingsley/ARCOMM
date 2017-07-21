@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\DiscordBot::class
+        Commands\DiscordBot::class,
+        Commands\MigrateOldApps::class
     ];
 
     /**

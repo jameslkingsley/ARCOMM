@@ -6,6 +6,18 @@
     </a>
 @endif
 
+@if (auth()->user()->hasPermission('apps:view'))
+    <a href="{{ url('/hub/applications') }}" class="nav-item nav-link hidden-sm-down">
+        Applications
+    </a>
+@endif
+
+@if (auth()->user()->hasPermission('absences:view'))
+    <a href="{{ url('/hub/absence') }}" class="nav-item nav-link hidden-sm-down">
+        Absences
+    </a>
+@endif
+
 @if (auth()->user()->hasPermission('users:all'))
     <a href="{{ url('/hub/users') }}" class="nav-item nav-link hidden-sm-down">
         Users

@@ -16,4 +16,14 @@ class JoinStatus extends Model
         'permalink',
         'position'
     ];
+
+    /**
+     * Gets the count of apps in the status.
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        return JoinRequest::where('status_id', $this->id)->count();
+    }
 }

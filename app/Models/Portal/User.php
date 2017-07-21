@@ -2,17 +2,19 @@
 
 namespace App\Models\Portal;
 
+use Auth;
+use Steam;
+use Carbon\Carbon;
+use App\Models\Portal\SteamAPI;
+use App\Models\Missions\Mission;
+use App\Models\Operations\Absence;
+use App\Models\Permissions\Permission;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Permissions\PermissionUser;
+use App\Notifications\MissionCommentAdded;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use App\Models\Permissions\PermissionUser;
-use App\Models\Permissions\Permission;
-use App\Models\Missions\Mission;
-use App\Notifications\MissionCommentAdded;
-use App\Models\Portal\SteamAPI;
-use Steam;
-use Auth;
 
 class User extends Authenticatable implements HasMediaConversions
 {
@@ -185,5 +187,17 @@ class User extends Authenticatable implements HasMediaConversions
         }
 
         return collect(Steam::user($filtered)->GetPlayerSummaries());
+    }
+
+    /**
+     * Gets all absence announcements for the future.
+     *
+     * @return Collection App\Models\Operations\Absence
+     */
+    public function absences()
+    {
+        return Absence::where('user_id', $this->id)->get()->reject(function($absence) {
+            $absence->operation->starts_at >= Carbon::now();
+        });
     }
 }

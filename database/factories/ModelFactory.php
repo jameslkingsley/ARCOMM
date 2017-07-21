@@ -11,13 +11,20 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
-
+$factory->define(App\Models\JoinRequests\JoinRequest::class, function(Faker\Generator $faker) {
     return [
         'name' => $faker->name,
-        'email' => $faker->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'age' => $faker->numberBetween(15, 45),
+        'location' => $faker->country,
+        'email' => 'jlkingsley97@gmail.com',
+        'steam' => $faker->url,
+        'available' => $faker->boolean,
+        'apex' => $faker->boolean,
+        'groups' => $faker->boolean,
+        'experience' => $faker->paragraph,
+        'bio' => $faker->paragraphs(3, true),
+        'source_id' => $faker->numberBetween(1, 10),
+        'source_text' => '',
+        'status_id' => $faker->numberBetween(1, 3)
     ];
 });

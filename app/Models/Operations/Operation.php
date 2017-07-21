@@ -2,8 +2,10 @@
 
 namespace App\Models\Operations;
 
-use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
+use App\Models\Portal\User;
+use App\Models\Operations\Absence;
+use Illuminate\Database\Eloquent\Model;
 
 class Operation extends Model
 {
@@ -71,13 +73,36 @@ class Operation extends Model
     }
 
     /**
+     * Gets all future operations.
+     *
+     * @return Collection App\Models\Operations\Operation
+     */
+    public static function future()
+    {
+        return self::where('starts_at', '>', Carbon::now()->toDateTimeString())->orderBy('starts_at', 'asc')->get();
+    }
+
+    /**
      * Gets all missions for the operation in ascending order.
      *
-     * @return Collection App\Models\Missions\Mission
+     * @return Collection App\Models\Operations\OperationMission
      */
     public function missions()
     {
         return $this->hasMany('App\Models\Operations\OperationMission')->orderBy('play_order');
+    }
+
+    /**
+     * Gets all missions for the operation in ascending order.
+     * Resolved to the actual mission model.
+     *
+     * @return Collection App\Models\Missions\Mission
+     */
+    public function missionsResolved()
+    {
+        return $this->missions->map(function($mission) {
+            return $mission->mission;
+        });
     }
 
     /**
@@ -88,5 +113,28 @@ class Operation extends Model
     public function isNextToRun()
     {
         return $this == $this->nextWeek();
+    }
+
+    /**
+     * Gets all absences for the operation.
+     *
+     * @return Collection App\Models\Operations\Absence
+     */
+    public function absences()
+    {
+        return $this->hasMany(Absence::class);
+    }
+
+    /**
+     * Gets the expected turnout.
+     *
+     * @return integer
+     */
+    public function expectedTurnout()
+    {
+        $userCount = User::count();
+        $absenceCount = $this->absences->count();
+
+        return $userCount - $absenceCount;
     }
 }

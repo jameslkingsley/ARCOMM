@@ -5,6 +5,7 @@ namespace App\Models\JoinRequests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Input;
 use App\Models\JoinRequests\JoinStatus;
+use App\Models\JoinRequests\JoinSource;
 use Validator;
 
 class JoinRequest extends Model
@@ -24,7 +25,9 @@ class JoinRequest extends Model
         'apex',
         'groups',
         'experience',
-        'bio'
+        'bio',
+        'source_id',
+        'source_text'
     ];
 
     /**
@@ -35,6 +38,16 @@ class JoinRequest extends Model
     public function status()
     {
         return $this->hasOne(JoinStatus::class, 'id', 'status_id');
+    }
+
+    /**
+     * Gets the join source of the app.
+     *
+     * @return App\Models\JoinRequests\JoinSource
+     */
+    public function source()
+    {
+        return $this->hasOne(JoinSource::class, 'id', 'source_id');
     }
 
     /**

@@ -66,6 +66,20 @@ return [
             'engine' => 'InnoDB',
         ],
 
+        'mysql_old' => [
+            'driver' => 'mysql',
+            'host' => env('DB_OLD_HOST', 'localhost'),
+            'port' => env('DB_OLD_PORT', '3306'),
+            'database' => env('DB_OLD_DATABASE', 'forge'),
+            'username' => env('DB_OLD_USERNAME', 'forge'),
+            'password' => env('DB_OLD_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => 'InnoDB',
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use App\Http\Requests;
-use App\Models\Portal\Gallery;
 use App\Models\Portal\User;
+use Illuminate\Http\Request;
+use App\Models\Portal\Gallery;
+use App\Models\Missions\Mission;
+use Illuminate\Support\Facades\Input;
 
 class MediaController extends Controller
 {
@@ -17,8 +18,9 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::all();
-        return view('media.index', compact('galleries'));
+        $missions = Mission::all();
+
+        return view('media.index', compact('missions'));
     }
 
     /**

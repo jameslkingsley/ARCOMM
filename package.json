@@ -11,18 +11,19 @@
   },
   "devDependencies": {
     "axios": "^0.15.3",
-    "lodash": "^4.17.4",
-    "vue": "^2.1.10",
     "bootstrap": "4.0.0-alpha.6",
+    "collect.js": "^3.0.46",
+    "dropit": "^1.0.0",
+    "dropzone": "^4.3.0",
+    "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
     "jquery-ui-bundle": "^1.11.4",
-    "laravel-mix": "^0.8.1",
-    "dropit": "^1.0.0",
     "jquery.waitforimages": "^2.2.0",
-    "dropzone": "^4.3.0",
+    "laravel-mix": "^0.8.1",
+    "lodash": "^4.17.4",
     "magnific-popup": "^1.1.0",
-    "font-awesome": "^4.7.0",
-    "tributejs": "^2.3.4"
+    "tributejs": "^2.3.4",
+    "vue": "^2.1.10"
   }
 }

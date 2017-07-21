@@ -1,14 +1,9 @@
 <script>
     $(document).ready(function() {
-        $('.jr-status-menu').dropit();
-
         reload = function() {
             $.ajax({
-                type: 'POST',
-                url: '{{ action("JoinController@getStatusView") }}',
-                data: {
-                    "id": {{ $jr->id }}
-                },
+                type: 'GET',
+                url: '{{ url('/hub/applications/api/'.$jr->id.'/status') }}',
                 success: function(data) {
                     $('#status').html(data);
                 }
@@ -18,10 +13,11 @@
         setStatus = function(id) {
             $.ajax({
                 type: 'POST',
-                url: '{{ action("JoinController@setStatus") }}',
+                url: '{{ url('/hub/applications/api/'.$jr->id.'/status') }}',
                 data: {
                     "join_request_id": {{ $jr->id }},
-                    "new_status_id": id
+                    "new_status_id": id,
+                    "_method": "put"
                 },
                 success: function(data) {
                     reload();
@@ -37,15 +33,14 @@
             // Do nothing if there is no text
             if (text.length === 0) return;
 
+            // Enter key was pressed
             if (code == 13) {
-                // Enter key was pressed
-
                 // Disable the input to prevent multiple insertions
                 $this.prop("disabled", true);
 
                 $.ajax({
                     type: 'POST',
-                    url: '{{ action("JoinController@createStatus") }}',
+                    url: '{{ url('/hub/applications/api/status') }}',
                     data: {"text": text},
                     success: function(data) {
                         var newStatusID = data;
@@ -57,17 +52,29 @@
     });
 </script>
 
-<div class="jr-status-menu {{ strtolower($jr->status->permalink) }}">
-    <div>
-        <a href="javascript:void(0)" data-id="{{ $jr->status->id }}" data-text="{{ $jr->status->text }}">{{ $jr->status->text }}<i class="fa fa-sort"></i></a>
-        <ul>
-            @foreach ($joinStatuses as $status)
-                @unless ($status->id == $jr->status->id)
-                    <li><a href="javascript:void(0)" onclick="javascript:setStatus({{ $status->id }})">{{ $status->text }}</a></li>
-                @endunless
-            @endforeach
-            <li class="separator"></li>
-            <li><input type="text" name="status" id="new_status" placeholder="New status" maxlength="12"></li>
-        </ul>
+<div class="btn-group m-t-0 jr-status-dropdown pull-right {{ strtolower($jr->status->permalink) }}">
+    <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        data-id="{{ $jr->status->id }}"
+        data-text="{{ $jr->status->text }}">
+        {{ $jr->status->text }}
+    </button>
+
+    <div class="dropdown-menu">
+        @foreach ($joinStatuses as $status)
+            @unless ($status->id == $jr->status->id)
+                <a class="dropdown-item" onclick="javascript:setStatus({{ $status->id }})" href="javascript:void(0)">
+                    {{ $status->text }}
+                </a>
+            @endunless
+        @endforeach
+
+        <div class="dropdown-divider"></div>
+
+        <input type="text" class="form-control" name="status" id="new_status" placeholder="New status" maxlength="12">
     </div>
 </div>

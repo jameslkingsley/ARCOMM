@@ -55,13 +55,14 @@
                     <div class="pull-right">
                         @yield('nav-right')
                         {{-- @include('nav.notifications') --}}
+                        @include('absence.nav')
                         @include('nav.user')
                     </div>
                 </div>
             </nav>
 
             @if (trim($__env->yieldContent('subnav')))
-                <div class="subnav">
+                <div class="subnav subnav-upper">
                     @yield('subnav')
                 </div>
             @endif
@@ -75,6 +76,8 @@
             @endif
 
             @yield('content')
+
+            <div class="dynamic-modal"></div>
         </main>
 
         <script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
