@@ -105,10 +105,10 @@
             ])
         @endforeach
 
-        @foreach ($mission->videos as $video)
+        {{-- @foreach ($mission->videos as $video)
             @include('missions.media.video', [
                 'video' => $video
             ])
-        @endforeach
+        @endforeach --}}
     @endif
 </div>
