@@ -31,7 +31,7 @@
     <body class="landing-page">
         <main id="app">
             <nav class="navbar navbar-transparent navbar-top" role="navigation">
-                <div class="container" style="position: relative;">
+                <div class="container">
                     <div class="navbar-header">
                         <a href="{{ url('/') }}" class="navbar-brand">
                             <div class="logo-container">

@@ -8,7 +8,7 @@
     <script>
         $(document).ready(function(e) {
             var banners = {!! json_encode($banners) !!},
-                delay = 4500,
+                delay = 5000,
                 counter = 0;
 
             banners.forEach(function(img) {

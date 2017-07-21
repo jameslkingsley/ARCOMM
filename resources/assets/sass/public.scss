@@ -341,9 +341,9 @@ body {
 }
 
 .next-op {
-    position: absolute;
-    top: 150px;
-    right: 30px;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
     background: #000;
     width: 270px;
     border-radius: 3px;
@@ -369,7 +369,7 @@ body {
         float: left;
         width: 100%;
         text-align: center;
-        background: rgb(140, 32, 32);
+        background: rgba(189, 44, 44, 0.8);
         padding: .5rem 0;
         border-radius: 0 0 3px 3px;
     }
