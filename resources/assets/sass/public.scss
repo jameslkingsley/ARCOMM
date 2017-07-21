@@ -342,8 +342,8 @@ body {
 
 .next-op {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
+    top: 4rem;
+    right: 0;
     background: #000;
     width: 270px;
     border-radius: 3px;
@@ -361,7 +361,7 @@ body {
     .next-op-countdown {
         float: left;
         padding: .5rem 1rem;
-        border-radius: 0 3px 0 0;
+        border-radius: 0;
         text-transform: uppercase;
     }
 
@@ -371,6 +371,6 @@ body {
         text-align: center;
         background: rgba(189, 44, 44, 0.8);
         padding: .5rem 0;
-        border-radius: 0 0 3px 3px;
+        border-radius: 0 0 0 3px;
     }
 }
