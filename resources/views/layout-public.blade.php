@@ -31,7 +31,7 @@
     <body class="landing-page">
         <main id="app">
             <nav class="navbar navbar-transparent navbar-top" role="navigation">
-                <div class="container">
+                <div class="container" style="position: relative;">
                     <div class="navbar-header">
                         <a href="{{ url('/') }}" class="navbar-brand">
                             <div class="logo-container">
@@ -40,6 +40,20 @@
                                 </div>
                             </div>
                         </a>
+                    </div>
+
+                    <div class="next-op">
+                        <span class="next-op-pre">
+                            Next OP
+                        </span>
+
+                        <span class="next-op-countdown">
+                            {{ \App\Models\Operations\Operation::nextWeek()->starts_at->diffForHumans() }}
+                        </span>
+
+                        <span class="next-op-date">
+                            Every {{ env('SITE_OP_DAY') }} at {{ env('SITE_OP_TIME') }}
+                        </span>
                     </div>
 
                     <ul class="nav navbar-nav navbar-right">

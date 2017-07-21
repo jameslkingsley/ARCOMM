@@ -41,7 +41,7 @@
                     <h4 class="header-text">Challenging Gameplay, Community Fun.</h4>
 
                     <p>
-                        We pride ourselves on the absence of ranks and social drama. Our players range from former mil-sim players to beginners of Arma. Everyone is considered an equal member. No one holds the power to command anyone else outside of gameplay.<br />
+                        We pride ourselves on the absence of ranks and military structure. Our players range from former mil-sim players to beginners of Arma. Our goal is to take advantage of what Arma does best and provide a great experience to all involved.<br />Everyone is considered an equal member. No one holds the power to command anyone else outside of gameplay.<br />
                     </p>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                             <h4 class="header-text">Discussion</h4>
 
                             <p>
-                                Active discussions on our Discord. Voice your opinions and ideas, keep up-to-date with events and collaborate with other members.
+                                Active discussions on our Discord &amp; TS. Voice your opinions and ideas, keep up-to-date with events and collaborate with other members.
                             </p>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
         <div class="section section-no-padding section-fullpage brand-background">
             <div class="text-xs-center">
                 <h1 class="archub-hero-title">ARC<b style="font-weight: 700;">HUB</b></h1>
-                <p class="archub-hero-text">Built in-house, our community management system.</p>
+                <p class="archub-hero-text">Built in-house, our community mission suite.</p>
 
                 <div class="archub-hero-screenshot" style="box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.15);border-radius: 10px 10px 0 0;">
                     <img src="{{ url('/images/public/archub/image.png') }}">

@@ -16,5 +16,5 @@
 </script>
 
 <a href="javascript:void(0)" class="nav-link nav-item hidden-sm-down m-l-3" id="absence-opener">
-    Absence
+    Post Absence
 </a>

@@ -339,3 +339,38 @@ body {
     background-repeat: no-repeat;
     transition: 1s;
 }
+
+.next-op {
+    position: absolute;
+    top: 150px;
+    right: 30px;
+    background: #000;
+    width: 256px;
+    border-radius: 3px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+
+    .next-op-pre {
+        float: left;
+        background: $brand-primary;
+        padding: .5rem 1rem;
+        text-transform: uppercase;
+        font-weight: 500;
+        border-radius: 3px 0 0 0;
+    }
+
+    .next-op-countdown {
+        float: left;
+        padding: .5rem 1rem;
+        border-radius: 0 3px 0 0;
+        text-transform: uppercase;
+    }
+
+    .next-op-date {
+        float: left;
+        width: 100%;
+        text-align: center;
+        background: rgb(140, 32, 32);
+        padding: .5rem 0;
+        border-radius: 0 0 3px 3px;
+    }
+}

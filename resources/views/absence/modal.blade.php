@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Briefly say why you can't make it</label>
+                        <label>Briefly say why you can't make it (optional)</label>
                         <textarea name="reason" class="form-control" rows="5"></textarea>
                     </div>
                 </form>
