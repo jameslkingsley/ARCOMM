@@ -30,6 +30,13 @@
     </a>
 
     <div class="dropdown-menu">
+        <a
+            href="https://github.com/ARCOMM/ARCORE/wiki/Chat-Commands"
+            target="_newtab"
+            class="dropdown-item">
+            Chat Commands
+        </a>
+
         @foreach (Storage::disk('guides')->files() as $file)
             <a
                 href="{{ url("/guides/$file") }}"
