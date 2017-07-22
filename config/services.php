@@ -37,7 +37,8 @@ return [
 
     'discord' => [
         'token' => env('DISCORD_API_TOKEN'),
-        'channel_id' => env('DISCORD_CHANNEL_ID')
+        'channel_id' => env('DISCORD_CHANNEL_ID'),
+        'staff_channel_id' => env('DISCORD_STAFF_CHANNEL_ID')
     ]
 
 ];

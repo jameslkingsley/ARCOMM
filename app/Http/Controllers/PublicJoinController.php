@@ -10,6 +10,7 @@ use App\Mail\JoinRequestAcknowledged;
 use Illuminate\Support\Facades\Input;
 use App\Models\JoinRequests\JoinSource;
 use App\Models\JoinRequests\JoinRequest;
+use App\Notifications\JoinRequestReceived;
 
 class PublicJoinController extends Controller
 {
@@ -71,6 +72,9 @@ class PublicJoinController extends Controller
 
         // Create the join request if there are no form errors
         $jr = JoinRequest::create($form);
+
+        // Discord message
+        $jr->notify(new JoinRequestReceived($jr));
 
         Mail::to($jr->email)->send(new JoinRequestAcknowledged);
 

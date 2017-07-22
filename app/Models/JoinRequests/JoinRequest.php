@@ -2,14 +2,17 @@
 
 namespace App\Models\JoinRequests;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Input;
-use App\Models\JoinRequests\JoinStatus;
-use App\Models\JoinRequests\JoinSource;
 use Validator;
+use Illuminate\Support\Facades\Input;
+use App\Models\JoinRequests\JoinSource;
+use App\Models\JoinRequests\JoinStatus;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class JoinRequest extends Model
 {
+    use Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +32,16 @@ class JoinRequest extends Model
         'source_id',
         'source_text'
     ];
+
+    /**
+     * Discord notification channel.
+     *
+     * @return any
+     */
+    public function routeNotificationForDiscord()
+    {
+        return config('services.discord.staff_channel_id');
+    }
 
     /**
      * Gets the status of the join request.
