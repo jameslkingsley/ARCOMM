@@ -345,7 +345,7 @@ body {
     top: 4rem;
     right: 0;
     background: #000;
-    width: 270px;
+    width: 283px;
     border-radius: 3px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 
@@ -363,6 +363,7 @@ body {
         padding: .5rem 1rem;
         border-radius: 0;
         text-transform: uppercase;
+        max-width: 200px;
     }
 
     .next-op-date {
