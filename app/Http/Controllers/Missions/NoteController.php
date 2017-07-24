@@ -78,6 +78,11 @@ class NoteController extends Controller
      */
     public function store(Request $request, Mission $mission)
     {
+        if (strlen(trim($request->text)) == 0) {
+            abort(403, 'No note text provided');
+            return;
+        }
+
         $note = new MissionNote;
         $note->user_id = auth()->user()->id;
         $note->mission_id = $mission->id;

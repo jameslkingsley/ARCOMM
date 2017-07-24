@@ -62,11 +62,6 @@
 </script>
 
 <div class="mission-comments">
-    <div class="alert alert-info pull-left w-100 m-b-3 m-t-0" role="alert">
-        Submit notes back to the mission maker on how to improve their mission. Anything that is <strong>game breaking</strong> should be noted clearly.<br />
-        The mission maker will receive a notification for new notes on their mission; and testers will receive notifications for all notes on all missions.
-    </div>
-
     @foreach ($mission->notes as $note)
         @include('missions.notes.item', ['note' => $note])
     @endforeach
