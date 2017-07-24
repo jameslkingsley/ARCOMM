@@ -36,13 +36,7 @@
 
 @section('content')
     <div class="container" id="users-content">
-        <h5 class="m-t-0 m-b-2">{{ $users->count() }} Users</h5>
-
-        <div class="card m-b-3">
-            @include('user.admin.list', ['users' => $users])
-        </div>
-
-        <h5 class="m-t-3 m-b-2">{{ $unregistered->count() }} Unregistered Members</h5>
+        <h5 class="m-t-0 m-b-2">{{ $unregistered->count() }} Unregistered Members</h5>
 
         <div class="card">
             <div class="list-group">
@@ -53,6 +47,12 @@
                     </li>
                 @endforeach
             </div>
+        </div>
+
+        <h5 class="m-t-3 m-b-2">{{ $users->count() }} Users</h5>
+
+        <div class="card m-b-3">
+            @include('user.admin.list', ['users' => $users])
         </div>
     </div>
 
