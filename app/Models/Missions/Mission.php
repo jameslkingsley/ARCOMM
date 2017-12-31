@@ -11,14 +11,15 @@ use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Models\Portal\User;
 use App\Models\Missions\Map;
+use Spatie\MediaLibrary\Media;
 use App\Helpers\ArmaConfigError;
 use App\Models\Missions\MissionNote;
 use App\Notifications\MissionUpdated;
 use App\Notifications\MissionVerified;
-use App\Models\Missions\MissionComment;
 use App\Notifications\MissionNoteAdded;
-use App\Notifications\MissionPublished;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Missions\MissionComment;
+use App\Notifications\MissionPublished;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\MentionedInComment;
 use Kingsley\Mentions\Traits\HasMentions;
@@ -102,7 +103,7 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function registerMediaConversions()
+    public function registerMediaConversions(Media $media = NULL)
     {
         $this->addMediaConversion('thumb')
             ->width(384)

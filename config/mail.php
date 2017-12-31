@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM', 'debug@mail.jameskingsley.co.uk'),
+        'address' => env('MAIL_FROM', 'debug@mail.smallstone.uk'),
         'name' => env('SITE_NAME', 'ARCOMM'),
     ],
 
