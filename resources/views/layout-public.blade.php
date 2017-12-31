@@ -42,7 +42,7 @@
                         </a>
                     </div>
 
-                    @if (isset($nextOp))
+                    @if (isset($nextOp) && $nextOp)
                         <div class="next-op">
                             <span class="next-op-pre">
                                 Next OP

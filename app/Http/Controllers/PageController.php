@@ -25,7 +25,7 @@ class PageController extends Controller
             return url('images/'.$file);
         });
 
-        $nextOp = true;
+        $nextOp = false;
 
 		return view('home.index', compact('banners', 'nextOp'));
 

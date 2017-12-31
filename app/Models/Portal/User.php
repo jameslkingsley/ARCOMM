@@ -5,6 +5,7 @@ namespace App\Models\Portal;
 use Auth;
 use Steam;
 use Carbon\Carbon;
+use Spatie\MediaLibrary\Media;
 use App\Models\Portal\SteamAPI;
 use App\Models\Missions\Mission;
 use App\Models\Operations\Absence;
@@ -55,7 +56,7 @@ class User extends Authenticatable implements HasMediaConversions
      *
      * @return void
      */
-    public function registerMediaConversions() {}
+    public function registerMediaConversions(Media $media = null) {}
 
     /**
      * Checks whether the user is a member of the Steam group.
