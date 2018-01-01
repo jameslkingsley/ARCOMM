@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM', 'debug@mail.smallstone.uk'),
-        'name' => env('SITE_NAME', 'ARCOMM'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reply@mail.arcomm.co.uk'),
+        'name' => env('MAIL_FROM_NAME', 'ARCOMM'),
     ],
 
     /*

@@ -11,6 +11,7 @@ window.Tether = require('tether');
 // window.axios = require('axios');
 
 require('jquery-ui-bundle');
+require('popper.js');
 require('bootstrap');
 require('jquery.waitforimages');
 require('dropzone');

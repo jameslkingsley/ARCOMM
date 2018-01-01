@@ -69,9 +69,12 @@ class User extends Authenticatable implements HasMediaConversions
             return false;
         }
 
+        $members = (array) SteamAPI::members();
+        $members[] = config('steam-auth.webmaster_id');
+
         return in_array(
             Steam::convertId($this->steam_id, 'id64'),
-            SteamAPI::members()
+            $members
         );
     }
 
