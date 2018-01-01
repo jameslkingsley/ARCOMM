@@ -1,7 +1,8 @@
-@import "variables";
-@import "node_modules/magnific-popup/dist/magnific-popup";
-@import "node_modules/font-awesome/css/font-awesome";
-@import "laravel-mentions";
+@import 'variables';
+@import 'node_modules/bootstrap-material-design/scss/bootstrap-material-design';
+@import 'node_modules/magnific-popup/dist/magnific-popup';
+@import 'node_modules/font-awesome/css/font-awesome';
+@import 'laravel-mentions';
 
 body {
     overflow-y: scroll;
@@ -18,11 +19,13 @@ body {
         background-repeat: no-repeat;
         background-size: cover;
 
-        &.banner-fade-top .banner-fade-top, &.banner-fade-bottom .banner-fade-bottom {
+        &.banner-fade-top .banner-fade-top,
+        &.banner-fade-bottom .banner-fade-bottom {
             display: block;
         }
 
-        .banner-fade-top, .banner-fade-bottom {
+        .banner-fade-top,
+        .banner-fade-bottom {
             display: none;
             float: left;
             width: 100%;
@@ -36,15 +39,21 @@ body {
     }
 }
 
-@import "mixins";
-@import "header";
-@import "mission";
-@import "pulse";
-@import "notifications";
-@import "atwho";
-@import "jr";
+@import 'mixins';
+@import 'header';
+@import 'mission';
+@import 'pulse';
+@import 'notifications';
+@import 'atwho';
+@import 'jr';
 
-.navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active .list-group-item-text {
+.navbar
+    .navbar-nav
+    .nav-item.dropdown
+    .dropdown-menu
+    .list-group
+    .list-group-item.active
+    .list-group-item-text {
     color: rgba(255, 255, 255, 0.75) !important;
 }
 
@@ -56,12 +65,12 @@ main {
     }
 
     @media screen and (max-width: 512px) {
-        padding: .5rem;
+        padding: 0.5rem;
     }
 }
 
 .text-muted {
-    color: rgba(0,0,0,0.5) !important;
+    color: rgba(0, 0, 0, 0.5) !important;
 }
 
 .mfp-figure:after {
@@ -100,14 +109,15 @@ main {
     background-color: rgba(189, 44, 44, 0.05);
 }
 
-[contenteditable=true]:empty:before {
+[contenteditable='true']:empty:before {
     content: attr(placeholder);
     display: block;
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .table.no-border {
-    td, th {
+    td,
+    th {
         border: none;
     }
 }
@@ -120,4 +130,43 @@ main {
 
 .w100 {
     width: 100%;
+}
+
+.nav.navbar-nav {
+    display: block !important;
+
+    div.pull-left,
+    div.pull-right {
+        .nav-item {
+            .nav-link {
+                position: relative;
+            }
+
+            .dropdown-menu {
+                position: absolute;
+            }
+        }
+    }
+
+    div.pull-left {
+        .nav-item {
+            .dropdown-menu {
+                left: 0;
+                right: auto;
+            }
+        }
+    }
+
+    div.pull-right {
+        .nav-item {
+            .dropdown-menu {
+                right: 0;
+                left: auto;
+            }
+        }
+    }
+}
+
+.modal-header {
+    display: block !important;
 }

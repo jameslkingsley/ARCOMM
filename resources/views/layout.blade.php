@@ -19,7 +19,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="{{ url('/css/bootstrap.min.css') }}">
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet"></link>
-
         <script src="{{ mix('/js/app.js') }}" type="text/javascript"></script>
 
         <script>
@@ -79,9 +78,6 @@
 
             <div class="dynamic-modal"></div>
         </main>
-
-        <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/js/bootstrap-material-design.js" integrity="sha384-3xciOSDAlaXneEmyOo0ME/2grfpqzhhTcM4cE32Ce9+8DW/04AGoTACzQpphYGYe" crossorigin="anonymous"></script>
 
         <script>
             $(document).ready(function(e) {

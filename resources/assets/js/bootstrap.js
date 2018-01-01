@@ -6,15 +6,17 @@
 
 // window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
-window.Tether = require('tether');
+// window.Tether = require('tether');
 // window.Vue = require('vue');
 // window.axios = require('axios');
 
-require('jquery-ui-bundle');
-require('popper.js');
-require('bootstrap');
+// require('jquery-ui-bundle');
+import Popper from 'popper.js';
+window.Popper = Popper;
+
+require('bootstrap-material-design/js/bootstrapMaterialDesign');
 require('jquery.waitforimages');
-require('dropzone');
+require('dropzone/dist/dropzone-amd-module');
 require('magnific-popup');
 
 window.collect = require('collect.js');
