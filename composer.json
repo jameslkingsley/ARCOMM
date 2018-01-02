@@ -20,7 +20,7 @@
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
-        "spatie/laravel-medialibrary": "^6.6",
+        "spatie/laravel-medialibrary": "^6.6.6",
         "syntax/steam-api": "^2.0",
         "invisnik/laravel-steam-auth": "^2.3",
         "alaouy/youtube": "dev-master",

@@ -14,7 +14,7 @@ window.$ = window.jQuery = require('jquery');
 import Popper from 'popper.js';
 window.Popper = Popper;
 
-require('bootstrap-material-design/js/bootstrapMaterialDesign');
+require('bootstrap-material-design');
 require('jquery.waitforimages');
 require('dropzone/dist/dropzone-amd-module');
 require('magnific-popup');

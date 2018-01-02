@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 @import url(https://fonts.googleapis.com/css?family=Miriam+Libre:400,700|Source+Sans+Pro:200,400,700,600,400italic,700italic);
 
@@ -16,7 +16,7 @@
 
 .navbar-nav li {
     float: right;
-    margin-top: 6rem;
+    margin-top: 2rem;
 }
 
 .navbar-brand {
@@ -27,7 +27,7 @@
 
 .brand-background {
     background: $brand-primary;
-    color: #FFF;
+    color: #fff;
 }
 
 .brand-gradient {
@@ -40,7 +40,8 @@
     margin: 150px auto;
 }
 
-.darker .navbar-transparent .navbar-nav > li > a, [class*="navbar-ct"] .navbar-nav > li > a {
+.darker .navbar-transparent .navbar-nav > li > a,
+[class*='navbar-ct'] .navbar-nav > li > a {
     color: #333;
 }
 
@@ -48,7 +49,7 @@ label {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 0;
-    color: #AAA;
+    color: #aaa;
 }
 
 .form-group {
@@ -62,7 +63,9 @@ label {
 }
 
 .btn-dark {
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
         background: transparent !important;
         color: white !important;
         border-color: white !important;
@@ -80,12 +83,11 @@ label {
     color: #aaa;
 
     &:focus {
-        border-color: #AAA;
+        border-color: #aaa;
         box-shadow: none;
         -webkit-box-shadow: none;
     }
 }
-
 
 .footer:not(.footer-big) nav > ul li:first-of-type {
     margin-left: 0;
@@ -96,7 +98,7 @@ label {
     padding: 0;
     margin-bottom: 30px;
     border-radius: 2px;
-    transition: all .15s ease;
+    transition: all 0.15s ease;
 
     img {
         border-radius: 2px;
@@ -124,7 +126,7 @@ label {
 
 body {
     background: $body-bg;
-    color: #FFF;
+    color: #fff;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -173,7 +175,7 @@ body {
     width: 30px;
     text-align: center;
     line-height: 30px;
-    color: #fff!important;
+    color: #fff !important;
     font-size: 32px;
     z-index: 100;
     display: none;
@@ -311,7 +313,7 @@ body {
     float: left;
     width: 100%;
     font-size: 14px;
-    opacity: .75;
+    opacity: 0.75;
     margin: 3px 0 7px 0;
 }
 
@@ -352,7 +354,7 @@ body {
     .next-op-pre {
         float: left;
         background: $brand-primary;
-        padding: .5rem 1rem;
+        padding: 0.5rem 1rem;
         text-transform: uppercase;
         font-weight: 500;
         border-radius: 3px 0 0 0;
@@ -360,7 +362,7 @@ body {
 
     .next-op-countdown {
         float: left;
-        padding: .5rem 1rem;
+        padding: 0.5rem 1rem;
         border-radius: 0;
         text-transform: uppercase;
         max-width: 200px;
@@ -371,7 +373,7 @@ body {
         width: 100%;
         text-align: center;
         background: rgba(189, 44, 44, 0.8);
-        padding: .5rem 0;
+        padding: 0.5rem 0;
         border-radius: 0 0 0 3px;
     }
 }

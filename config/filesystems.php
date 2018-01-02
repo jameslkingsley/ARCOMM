@@ -43,17 +43,17 @@ return [
     'disks' => [
         'media' => [
             'driver' => 'local',
-            'root' => public_path() . '/_media',
+            'root' => public_path('/_media'),
         ],
 
         'images' => [
             'driver' => 'local',
-            'root' => public_path() . '/images',
+            'root' => public_path('/images'),
         ],
 
         'downloads' => [
             'driver' => 'local',
-            'root' => public_path() . '/downloads',
+            'root' => public_path('/downloads'),
         ],
 
         'local' => [

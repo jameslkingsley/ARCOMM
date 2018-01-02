@@ -2,7 +2,6 @@
 
 namespace App\Models\Missions;
 
-use Log;
 use File;
 use Storage;
 use \stdClass;
@@ -10,15 +9,12 @@ use Carbon\Carbon;
 use App\Helpers\ArmaConfig;
 use App\Helpers\ArmaScript;
 use App\Models\Portal\User;
-use App\Models\Missions\Map;
 use Spatie\MediaLibrary\Media;
 use App\Helpers\ArmaConfigError;
-use App\Models\Missions\MissionNote;
 use App\Notifications\MissionUpdated;
 use App\Notifications\MissionVerified;
 use App\Notifications\MissionNoteAdded;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Missions\MissionComment;
 use App\Notifications\MissionPublished;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\MentionedInComment;
@@ -103,7 +99,7 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function registerMediaConversions(Media $media = NULL)
+    public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')
             ->width(384)
@@ -122,7 +118,7 @@ class Mission extends Model implements HasMediaConversions
     {
         $mission = $this;
 
-        $filtered = auth()->user()->unreadNotifications->filter(function($item) use($mission) {
+        $filtered = auth()->user()->unreadNotifications->filter(function ($item) use ($mission) {
             return
                 $item->type == MissionCommentAdded::class &&
                 $item->data['comment']['mission_id'] == $mission->id;
@@ -138,10 +134,11 @@ class Mission extends Model implements HasMediaConversions
      */
     public static function allPast()
     {
-        return self::whereRaw(
-            'last_played IS NOT NULL AND last_played < "'.
-            Carbon::now()->toDateTimeString().'"'
-        )->where('published', true)->orderBy('last_played', 'desc')->get();
+        return static::where('last_played', '!=', null)
+            ->where('last_played', '<', Carbon::now()->toDateTimeString())
+            ->where('verified', true)
+            ->orderBy('last_played', 'desc')
+            ->get();
     }
 
     /**
@@ -151,7 +148,10 @@ class Mission extends Model implements HasMediaConversions
      */
     public static function allNew()
     {
-        return self::whereRaw('last_played IS NULL')->where('published', true)->orderBy('created_at', 'desc')->get();
+        return static::where('last_played', null)
+            ->where('verified', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     /**
@@ -408,10 +408,10 @@ class Mission extends Model implements HasMediaConversions
             '/usr/bin/python /usr/lib/google-cloud-sdk/bin/bootstrapping/gsutil.py ';
 
         $signed_url = shell_exec(
-            $command.
-            'signurl -d 10m '.
-            base_path('gcs.json').
-            ' gs://archub/'.$path_to_file.
+            $command .
+            'signurl -d 10m ' .
+            base_path('gcs.json') .
+            ' gs://archub/' . $path_to_file .
             ' 2>&1' // Needed to get output
         );
 
@@ -437,14 +437,14 @@ class Mission extends Model implements HasMediaConversions
         }
 
         // Unpack the PBO
-        shell_exec(static::armake().' unpack -f '.$pbo_path.' '.$unpacked);
+        shell_exec(static::armake() . ' unpack -f ' . $pbo_path . ' ' . $unpacked);
 
         $workingDir = getcwd();
         chdir($unpacked);
 
         // Debinarize mission.sqm
         // If it's not binned, armake exits gracefully
-        shell_exec(static::armake().' derapify -f mission.sqm mission.sqm');
+        shell_exec(static::armake() . ' derapify -f mission.sqm mission.sqm');
 
         chdir($workingDir);
 
@@ -929,7 +929,7 @@ class Mission extends Model implements HasMediaConversions
     {
         $lang = (array)$this->config()->acre->{strtolower($faction)}->languages;
 
-        $mutated = array_map(function($item) {
+        $mutated = array_map(function ($item) {
             return title_case($item);
         }, $lang);
 
@@ -945,7 +945,7 @@ class Mission extends Model implements HasMediaConversions
     {
         $roles = (array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)};
 
-        $mutated = array_map(function($item) {
+        $mutated = array_map(function ($item) {
             if (array_key_exists(strtolower($item), $this->roles)) {
                 return $this->roles[strtolower($item)];
             } else {
@@ -988,7 +988,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function noteNotifications()
     {
-        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+        $filtered = auth()->user()->unreadNotifications->filter(function ($item) {
             return
                 $item->type == MissionNoteAdded::class &&
                 $item->data['note']['mission_id'] == $this->id;
@@ -1004,7 +1004,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function commentNotifications()
     {
-        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+        $filtered = auth()->user()->unreadNotifications->filter(function ($item) {
             return
                 ($item->type == MissionCommentAdded::class &&
                 $item->data['comment']['mission_id'] == $this->id) ||
@@ -1022,7 +1022,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function verifiedNotifications()
     {
-        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+        $filtered = auth()->user()->unreadNotifications->filter(function ($item) {
             return
                 $item->type == MissionVerified::class &&
                 $item->data['mission']['id'] == $this->id;
@@ -1038,7 +1038,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function stateNotifications()
     {
-        $filtered = auth()->user()->unreadNotifications->filter(function($item) {
+        $filtered = auth()->user()->unreadNotifications->filter(function ($item) {
             return
                 ($item->type == MissionPublished::class &&
                 $item->data['mission']['id'] == $this->id) ||
