@@ -520,7 +520,7 @@ class Mission extends Model implements HasMediaConversions
         // Try to convert configs
         $ext_obj = ArmaConfig::convert("{$unpacked}/description.ext");
         $cfg_obj = ArmaConfig::convert("{$unpacked}/config.hpp");
-        $version = file_get_contents("{$unpacked}/version.txt");
+        $version = file_exists("{$unpacked}/version.txt") ? file_get_contents("{$unpacked}/version.txt") : '?.?.?';
 
         // If any errors with configs, return error object
         foreach ([$ext_obj, $cfg_obj] as $parsedObject) {
