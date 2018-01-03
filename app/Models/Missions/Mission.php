@@ -136,7 +136,7 @@ class Mission extends Model implements HasMediaConversions
     {
         return static::where('last_played', '!=', null)
             ->where('last_played', '<', Carbon::now()->toDateTimeString())
-            ->where('verified', true)
+            // ->where('verified', true)
             ->orderBy('last_played', 'desc')
             ->get();
     }
@@ -149,7 +149,7 @@ class Mission extends Model implements HasMediaConversions
     public static function allNew()
     {
         return static::where('last_played', null)
-            ->where('verified', true)
+            // ->where('verified', true)
             ->orderBy('created_at', 'desc')
             ->get();
     }
