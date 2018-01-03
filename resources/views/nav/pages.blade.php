@@ -31,7 +31,7 @@
 
     <div class="dropdown-menu">
         <a
-            href="https://github.com/ARCOMM/ARCORE/wiki/Chat-Commands"
+            href="https://github.com/jameslkingsley/ARCORE/wiki/Chat-Commands"
             target="_newtab"
             class="dropdown-item">
             Chat Commands
