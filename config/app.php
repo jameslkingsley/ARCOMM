@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -13,6 +12,7 @@ return [
     */
 
     'name' => env('APP_NAME'),
+    'op_time' => env('SITE_OP_TIME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -136,7 +136,6 @@ return [
     */
 
     'providers' => [
-
         /*
          * Laravel Framework Service Providers...
          */
@@ -180,7 +179,6 @@ return [
         Kingsley\Mentions\MentionServiceProvider::class,
         NotificationChannels\Discord\DiscordServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
-
     ],
 
     /*
@@ -195,7 +193,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -230,7 +227,5 @@ return [
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
         'Zipper' => Chumper\Zipper\Zipper::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
-
     ],
-
 ];

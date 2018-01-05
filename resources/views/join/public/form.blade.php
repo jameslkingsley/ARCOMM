@@ -99,7 +99,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group {{ empty($errors->first('available')) ? '' : 'has-error' }}">
-                        <label class="control-label">Are you available Saturdays at {{ env('SITE_OP_TIME', '--:--') }} time?</label>
+                        <label class="control-label">Are you available Saturdays at {{ config('app.op_time', '--:--') }} time?</label>
                         <span class="help-block">This is when main operations take place.</span>
                         <select class="form-control" name="available" data-placeholder="Select">
                             <option value="0" {{ (old('available') == '0') ? 'selected="true"' : '' }}>No</option>
