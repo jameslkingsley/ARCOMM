@@ -16,7 +16,7 @@
 
 .navbar-nav li {
     float: right;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .navbar-brand {
@@ -376,4 +376,8 @@ body {
         padding: 0.5rem 0;
         border-radius: 0 0 0 3px;
     }
+}
+
+.has-error {
+    color: #ffd037;
 }
