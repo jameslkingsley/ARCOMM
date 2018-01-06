@@ -38,7 +38,7 @@
 
             <div class="section-footnote">
                 <div class="container text-xs-center">
-                    <h4 class="header-text">Challenging Gameplay, Community Fun.</h4>
+                    <h4 class="header-text">Arma-Centric Family of Gamers</h4>
 
                     <p>
                         We pride ourselves on the absence of ranks and strict military structure. Our players range from former mil-sim players to beginners of Arma. Our goal is to take advantage of what Arma does best and provide a great experience to all involved.<br />Everyone is considered an equal member. No one holds the power to command anyone else outside of gameplay.<br />
