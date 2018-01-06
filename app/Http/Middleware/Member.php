@@ -19,13 +19,11 @@ class Member
     public function handle($request, Closure $next)
     {
         if (auth()->guest()) {
-            abort(404, "You are not logged in");
-            return;
+            return redirect('/');
         }
 
         if (!auth()->user()->isMember()) {
-            abort(404, "You are not a member");
-            return;
+            return redirect('/');
         }
 
         return $next($request);
