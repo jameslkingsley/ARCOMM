@@ -11,145 +11,125 @@ $mission-subtitle-font-sizes: (
     640px: 10px,
     1024px: 11px
 );
-
 $mission-summary-font-sizes: (
     null: 9px,
     480px: 10px,
     640px: 11px,
     1024px: 12px
 );
-
 $mission-banner-title-font-sizes: (
     null: 32px,
     480px: 36px,
     640px: 44px,
     1024px: 48px
 );
-
 $mission-banner-author-font-sizes: (
     null: 14px,
     480px: 14px,
     640px: 14px,
     1024px: 14px
 );
-
 .mission-section-heading {
     @include font-size($mission-title-font-sizes);
     font-weight: 600;
     text-transform: uppercase;
-    opacity: .66;
-    padding: 0 .5rem;
-    margin: 0 0 .5rem 0;
-
+    opacity: 0.66;
+    padding: 0 0.5rem;
+    margin: 0 0 0.5rem 0;
     @media screen and (max-width: 1024px) {
         display: block;
         float: left;
         width: 100%;
     }
 }
-
 .missions-pinned-headers h2 {
     @include font-size($mission-title-font-sizes);
     float: left;
-    width: calc(50% - .5rem);
-    padding: 0 .5rem;
-    margin: 0 0 .5rem 0;
+    width: calc(50% - 0.5rem);
+    padding: 0 0.5rem;
+    margin: 0 0 0.5rem 0;
     font-weight: 600;
     text-transform: uppercase;
-    opacity: .66;
+    opacity: 0.66;
 }
-
 .mission-empty-group {
     padding: 0;
     display: inline-block;
     margin-bottom: 2.5rem;
-    min-width: calc(50% - .75rem);
+    min-width: calc(50% - 0.75rem);
     float: left;
-
     &:before {
         @include font-size($mission-title-font-sizes);
         content: attr(data-title);
         font-weight: 600;
         text-transform: uppercase;
-        opacity: .66;
-        padding: 0 .5rem;
+        opacity: 0.66;
+        padding: 0 0.5rem;
         display: inline-block;
         width: 100%;
         text-align: inherit;
     }
-
     &:after {
         @include font-size($mission-summary-font-sizes);
         content: attr(data-subtitle);
         font-weight: 600;
         text-transform: uppercase;
-        opacity: .66;
-        padding: 0 .5rem;
-        margin: 0 0 .5rem 0;
+        opacity: 0.66;
+        padding: 0 0.5rem;
+        margin: 0 0 0.5rem 0;
         display: inline-block;
         width: 100%;
         text-align: inherit;
     }
-
     @media screen and (max-width: 1024px) {
         display: block;
         width: 100%;
     }
-
     &.mission-group-pinned {
-        width: calc(50% - .5rem);
-
+        width: calc(50% - 0.5rem);
         @media screen and (max-width: 1440px) {
             width: 100%;
             text-align: center;
         }
     }
 }
-
 .mission-group {
     padding: 0;
     display: inline-block;
     margin-bottom: 2.5rem;
-    min-width: calc(50% - .75rem);
+    min-width: calc(50% - 0.75rem);
     float: left;
     width: 100%;
-
     &:before {
         @include font-size($mission-title-font-sizes);
         content: attr(data-title);
         font-weight: 600;
         text-transform: uppercase;
-        opacity: .66;
-        padding: 0 .5rem;
-        margin: 0 0 .5rem 0;
+        opacity: 0.66;
+        padding: 0 0.5rem;
+        margin: 0 0 0.5rem 0;
         display: inline-block;
         width: 100%;
         text-align: inherit;
     }
-
     @media screen and (max-width: 1024px) {
         display: block;
         float: left;
         width: 100%;
     }
-
     &.mission-group-pinned {
         width: 50%;
-
         @media screen and (max-width: 1440px) {
             width: 100%;
             text-align: center;
         }
-
         .mission-item:last-of-type {
             margin-right: 0 !important;
         }
     }
-
     &.mission-group-center {
         text-align: center;
     }
-
     .mission-item {
         @include background-image-defaults();
         background-position: center -3vw;
@@ -157,38 +137,34 @@ $mission-banner-author-font-sizes: (
         width: calc(16.6666% - 1rem);
         height: auto;
         padding-top: calc(16.6666% - 1rem);
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+            0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
         position: relative;
         text-decoration: none !important;
         color: white !important;
-        background-color: #ffffff;
+        background-color: #111;
         border-radius: 3px;
         text-align: left;
-        margin: .5rem;
+        margin: 0.5rem;
         float: left;
-
         @media screen and (max-width: 1440px) {
             width: calc(25vw - 2.7rem) !important;
             padding-top: calc(25vw - 2.7rem) !important;
             float: none;
         }
-
         @media screen and (max-width: 1024px) {
             width: calc(33.33vw - 4rem) !important;
             padding-top: calc(33.33vw - 4rem) !important;
         }
-
         @media screen and (max-width: 768px) {
             width: calc(100% - 1rem) !important;
             padding-top: 50% !important;
         }
-
         .mission-item-pulse {
             position: absolute;
             top: -0.5rem;
             right: -0.5rem;
         }
-
         .mission-item-inner {
             padding: 1rem;
             background: $brand-primary;
@@ -198,19 +174,15 @@ $mission-banner-author-font-sizes: (
             right: 0;
             top: calc(100% / 1.618);
             border-radius: 0 0 3px 3px;
-
             &.coop {
                 background: $brand-info;
             }
-
             &.adversarial {
                 background: $brand-danger;
             }
-
             &.preop {
                 background: $brand-success;
             }
-
             .mission-item-title {
                 @include font-size($mission-title-font-sizes);
                 margin: 0;
@@ -221,7 +193,6 @@ $mission-banner-author-font-sizes: (
                 top: 1rem;
                 color: inherit !important;
             }
-
             .mission-item-author {
                 @include font-size($mission-subtitle-font-sizes);
                 margin: 0;
@@ -232,7 +203,6 @@ $mission-banner-author-font-sizes: (
                 top: 2.5rem;
                 color: inherit !important;
             }
-
             .mission-item-summary {
                 @include font-size($mission-summary-font-sizes);
                 margin: 0;
@@ -242,12 +212,10 @@ $mission-banner-author-font-sizes: (
                 right: 1rem;
                 top: 3.5rem;
                 color: inherit !important;
-
                 @media screen and (max-width: 1900px) {
                     display: none;
                 }
             }
-
             .mission-item-mode {
                 @include font-size($mission-subtitle-font-sizes);
                 position: absolute;
@@ -255,12 +223,11 @@ $mission-banner-author-font-sizes: (
                 right: 1rem;
                 text-transform: uppercase;
                 border: 1px solid white;
-                padding: .15rem .3rem;
+                padding: 0.15rem 0.3rem;
                 border-radius: 2px;
                 color: white;
                 line-height: 15px;
             }
-
             .mission-item-verified {
                 position: absolute;
                 top: -25px;
@@ -278,7 +245,6 @@ $mission-banner-author-font-sizes: (
             }
         }
     }
-
     &.mission-group-pinned {
         .mission-item {
             width: calc(33.3333% - 1rem);
@@ -286,16 +252,15 @@ $mission-banner-author-font-sizes: (
         }
     }
 }
-
 .mission-container {
+    color: black;
     min-height: calc(100vh - 5rem - 128px);
     margin-bottom: 0 !important;
-
     @media screen and (max-width: 768px) {
         margin-top: 9rem !important;
     }
-
-    .mission-title, .mission-author {
+    .mission-title,
+    .mission-author {
         @include font-size($mission-banner-title-font-sizes);
         position: absolute;
         left: 0;
@@ -307,40 +272,34 @@ $mission-banner-author-font-sizes: (
         font-weight: 600;
         margin: 0;
     }
-
     .mission-author {
         @include font-size($mission-banner-author-font-sizes);
         top: -3.5rem;
         font-weight: 500;
     }
-
     &.mission-without-banner {
-        .mission-title, .mission-author {
+        .mission-title,
+        .mission-author {
             color: #666 !important;
         }
     }
-
     .mission-inner {
         padding: 1rem 1rem 0 1rem;
         display: inline-block;
         width: 100%;
         height: 100%;
-
         @media screen and (max-width: 1024px) {
             padding-top: 3rem;
         }
     }
-
     .mission-nav {
         margin: -1rem 0 0 calc(-1rem + 1px);
         width: calc((100% + 2rem) - 2px);
         border: none;
         border-bottom: 1px solid #eee;
-
         @media screen and (max-width: 1024px) {
             display: inline-block;
         }
-
         .subnav {
             .subnav-link {
                 @media screen and (max-width: 1024px) {
@@ -350,7 +309,6 @@ $mission-banner-author-font-sizes: (
         }
     }
 }
-
 .mission-overview-card {
     border: 1px solid #eee;
     padding: 2rem;
@@ -361,39 +319,37 @@ $mission-banner-author-font-sizes: (
     min-height: 10vw;
     text-decoration: none !important;
     color: inherit !important;
-
     @media screen and (max-width: 1024px) {
         max-width: 100% !important;
         width: 100% !important;
         flex: 100% !important;
     }
-
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-weight: 100;
     }
-
     h4 {
         font-size: 22px;
     }
-
     h5 {
         font-size: 18px;
     }
-
     h6 {
         font-size: 16px;
     }
 }
-
 #mission-verification {
     em {
         font-style: normal;
         margin-right: 5px;
     }
-
     &.mission-verified {
         border: 1px solid white;
-        padding: 0 .75rem;
+        padding: 0 0.75rem;
         border-radius: 1rem;
         min-height: 0;
         height: 2rem;
@@ -401,14 +357,12 @@ $mission-banner-author-font-sizes: (
         margin-top: 8px;
         font-size: 10px;
     }
-
     &.mission-unverified {
         em {
             display: none;
         }
     }
 }
-
 .mission-weather-image {
     float: left;
     width: 100%;
@@ -416,7 +370,6 @@ $mission-banner-author-font-sizes: (
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-
     .fa {
         float: left;
         width: 100%;
@@ -427,24 +380,20 @@ $mission-banner-author-font-sizes: (
         color: #ddd;
     }
 }
-
 .mission-briefing {
     float: left;
     width: calc(100% + 4rem);
     height: 100%;
     margin-left: -2rem;
     margin-top: -1rem;
-
     .mission-briefing-content {
         float: left;
         width: 80%;
         padding: 0 2rem;
-
         @media screen and (max-width: 1024px) {
             width: 100% !important;
         }
     }
-
     .mission-briefing-nav {
         float: left;
         width: calc(20% - 1px);
@@ -452,45 +401,39 @@ $mission-banner-author-font-sizes: (
         padding: 2rem 0;
         min-height: calc(100vh - 5rem - 194px);
         margin-left: 1px;
-
         @media screen and (max-width: 1024px) {
             width: calc(100% - 2px) !important;
             border: none;
             border-bottom: 1px solid #eee;
             min-height: 0;
         }
-
         a {
             float: left;
             width: 100%;
-            padding: .66rem 2rem;
+            padding: 0.66rem 2rem;
             font-size: 14px;
             text-transform: uppercase;
             font-weight: 500;
             text-decoration: none !important;
             color: $brand-primary !important;
-
-            &:hover, &.active {
+            &:hover,
+            &.active {
                 background: #f5f5f5;
             }
         }
     }
 }
-
 .mission-comments {
     .mission-comment-item {
         float: left;
         width: 100%;
         margin-bottom: 2.5rem;
-
         &:first-of-type {
             margin-top: 1rem;
         }
-
         &:last-of-type {
             margin-bottom: 0;
         }
-
         .mission-comment-item-avatar {
             float: left;
             width: 3rem;
@@ -500,7 +443,6 @@ $mission-banner-author-font-sizes: (
             background-repeat: no-repeat;
             background-size: cover;
         }
-
         .mission-comment-item-username {
             float: left;
             font-size: 16px;
@@ -508,7 +450,6 @@ $mission-banner-author-font-sizes: (
             margin-left: 1rem;
             width: calc(100% - 4rem);
         }
-
         .mission-comment-item-timestamp {
             float: left;
             font-size: 12px;
@@ -516,7 +457,6 @@ $mission-banner-author-font-sizes: (
             margin-left: 1rem;
             width: calc(100% - 4rem);
         }
-
         .mission-comment-item-text {
             float: left;
             font-size: 16px;
@@ -525,9 +465,8 @@ $mission-banner-author-font-sizes: (
             width: calc(100% - 4rem);
             word-break: break-word;
             text-align: justify;
-
             @media screen and (max-width: 768px) {
-                font-size: .875rem;
+                font-size: 0.875rem;
                 font-weight: 400;
                 line-height: 1.5;
                 color: black;
@@ -538,18 +477,15 @@ $mission-banner-author-font-sizes: (
         }
     }
 }
-
 .mission-comments-form {
     margin: 0 calc(-2rem + 1px) 0 calc(-2rem + 1px);
     width: calc(100% + 4rem + -2px) !important;
     border-top: 1px solid #eee;
     margin-top: 2rem;
-
     #submit-mission-comment {
         float: left;
         width: 100%;
         margin: 0;
-
         .mission-aar-textarea {
             color: black;
             background: none;
@@ -562,14 +498,12 @@ $mission-banner-author-font-sizes: (
             line-height: 22px;
             min-height: 10rem;
             @include placeholder-color(rgba(0,0,0,0.5));
-
             &:focus {
                 @include placeholder-color(rgba(0,0,0,0.25));
             }
         }
     }
 }
-
 .mission-media {
     .mission-media-item {
         @include background-image-defaults();
@@ -580,32 +514,29 @@ $mission-banner-author-font-sizes: (
         background-size: cover;
         background-repeat: no-repeat;
         float: left;
-        margin: .5rem;
+        margin: 0.5rem;
         position: relative;
-
         @media screen and (max-width: 768px) {
             width: calc(50% - 1rem);
             padding-top: calc(50% - 1rem);
         }
-
         @media screen and (max-width: 640px) {
-            width: calc(100% - .5rem);
-            padding-top: calc(100% - .5rem);
+            width: calc(100% - 0.5rem);
+            padding-top: calc(100% - 0.5rem);
         }
-
-        .mission-media-item-delete, .mission-video-item-delete {
+        .mission-media-item-delete,
+        .mission-video-item-delete {
             position: absolute;
-            top: .5rem;
-            right: .5rem;
+            top: 0.5rem;
+            right: 0.5rem;
             color: white;
             border: 1px solid white;
-            padding: .5rem;
+            padding: 0.5rem;
             border-radius: 100%;
             cursor: pointer;
         }
     }
 }
-
 .mission-update-cover {
     position: fixed;
     left: 0;
@@ -617,7 +548,6 @@ $mission-banner-author-font-sizes: (
     z-index: 1000;
     text-align: center;
     line-height: 100vh;
-
     i {
         color: black;
         font-size: 64px;

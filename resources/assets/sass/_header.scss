@@ -1,12 +1,17 @@
 header {
     // background-color: rgba(255, 255, 255, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
 
     &.header-transparent {
         background-color: transparent !important;
         border-bottom: transparent !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: transparent;
             border-color: transparent;
         }
@@ -15,7 +20,12 @@ header {
     &.header-primary {
         background-color: $brand-primary !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: $brand-primary;
             border-color: $brand-primary;
         }
@@ -24,7 +34,12 @@ header {
     &.header-success {
         background-color: $brand-success !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: $brand-success;
             border-color: $brand-success;
         }
@@ -33,7 +48,12 @@ header {
     &.header-info {
         background-color: $brand-info !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: $brand-info;
             border-color: $brand-info;
         }
@@ -42,7 +62,12 @@ header {
     &.header-warning {
         background-color: $brand-warning !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: $brand-warning;
             border-color: $brand-warning;
         }
@@ -51,7 +76,12 @@ header {
     &.header-danger {
         background-color: $brand-danger !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: $brand-danger;
             border-color: $brand-danger;
         }
@@ -60,7 +90,12 @@ header {
     &.header-dark {
         background-color: black !important;
 
-        .navbar .navbar-nav .nav-item.dropdown .dropdown-menu .list-group .list-group-item.active {
+        .navbar
+            .navbar-nav
+            .nav-item.dropdown
+            .dropdown-menu
+            .list-group
+            .list-group-item.active {
             background-color: black;
             border-color: black;
         }
@@ -78,7 +113,8 @@ header {
                 display: inline-block;
             }
 
-            .nav-item, .nav-link {
+            .nav-item,
+            .nav-link {
                 color: white !important;
 
                 &.active {
@@ -100,18 +136,19 @@ header {
     .navbar {
         height: 64px;
         box-shadow: none;
-        padding: .25rem 1.5rem;
+        padding: 0.25rem 1.5rem;
 
         .navbar-nav {
             #logo-white {
                 display: none;
             }
 
-            .nav-item, .nav-link {
+            .nav-item,
+            .nav-link {
                 font-weight: 500;
                 min-height: 49px;
                 line-height: 49px;
-                padding: 0 .5321rem;
+                padding: 0 0.5321rem;
                 color: rgba(0, 0, 0, 0.66);
 
                 &.active {

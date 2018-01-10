@@ -6,7 +6,8 @@
 
 body {
     overflow-y: scroll;
-    background-color: #fafafa;
+    background-color: #000;
+    color: #fff;
 
     .banner {
         position: absolute;
@@ -14,7 +15,7 @@ body {
         left: 0;
         right: 0;
         z-index: -1;
-        height: calc(100% / 1.618);
+        height: 80%;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -34,7 +35,8 @@ body {
         }
 
         .banner-fade-bottom {
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.25));
+            display: block;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 1));
         }
     }
 }
@@ -170,4 +172,8 @@ main {
 .modal-header,
 .card {
     display: block !important;
+}
+
+.modal-content {
+    color: black;
 }
