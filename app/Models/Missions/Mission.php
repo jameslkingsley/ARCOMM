@@ -879,7 +879,7 @@ class Mission extends Model implements HasMediaConversions
             return;
         }
 
-        $name = rtrim($name, '.pbo');
+        $name = substr($name, 0, -4);
         $mapName = last(explode('.', $name));
         $parts = explode('_', rtrim($name, ".{$mapName}"));
         $map = Map::whereRaw('LOWER(class_name) = ?', [strtolower($mapName)])->first();
