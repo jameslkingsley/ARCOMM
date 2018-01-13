@@ -107,6 +107,12 @@
                 @if (auth()->user()->hasPermission('mission:notes') || $mission->isMine())
                     <a
                         href="javascript:void(0)"
+                        data-panel="addons"
+                        class="subnav-link ripple"
+                    >Addons</a>
+
+                    <a
+                        href="javascript:void(0)"
                         data-panel="notes"
                         class="subnav-link ripple"
                     >Notes</a>

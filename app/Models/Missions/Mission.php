@@ -42,6 +42,24 @@ class Mission extends Model implements HasMediaConversions
     ];
 
     /**
+     * Attribute casts.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'loadout_addons' => 'array'
+    ];
+
+    /**
+     * The addons that should be warned from using.
+     *
+     * @var array
+     */
+    public $addonWarnings = [
+        'rhs'
+    ];
+
+    /**
      * The loadout role map.
      *
      * @var array
@@ -107,6 +125,20 @@ class Mission extends Model implements HasMediaConversions
             ->quality(100)
             ->nonQueued()
             ->performOnCollections('images');
+    }
+
+    /**
+     * Gets the loadout addons attribute.
+     *
+     * @return array
+     */
+    public function getLoadoutAddonsAttribute($value)
+    {
+        if (is_null($value)) {
+            return [];
+        }
+
+        return json_decode(json_decode($value));
     }
 
     /**
@@ -496,6 +528,40 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Gets the mission's addon dependencies.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function addons()
+    {
+        $addons = $this->sqm()->addonsmetadata;
+
+        unset($addons->list->items);
+
+        $addons = collect($addons->list);
+
+        return $addons->groupBy('author');
+    }
+
+    /**
+     * Checks if the mission contains the given addon (loose)
+     *
+     * @return boolean
+     */
+    public function hasAddon($key)
+    {
+        foreach ($this->addons() as $group) {
+            foreach ($group as $addon) {
+                if (starts_with(strtolower($addon->classname), strtolower($key))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Stores the decoded mission config objects in the session.
      * Used for optimisation.
      *
@@ -532,10 +598,16 @@ class Mission extends Model implements HasMediaConversions
 
         // Check loadout files since these are common places for errors
         // TODO Doesn't check whole directory until new ARCMF version is used
-        $sqf_result = ArmaScript::check("{$unpacked}/f/assignGear/");
+        $sqf_result = ArmaScript::check("{$unpacked}/loadouts");
 
         if (strlen(trim($sqf_result)) != 0) {
             return new ArmaConfigError($sqf_result);
+        }
+
+        $loadoutAddons = ArmaScript::addons("{$unpacked}/loadouts", $this->addonWarnings);
+
+        if ($loadoutAddons->isNotEmpty()) {
+            $this->loadout_addons = $loadoutAddons->toJson();
         }
 
         // No errors so far, so store configs in mission as JSON

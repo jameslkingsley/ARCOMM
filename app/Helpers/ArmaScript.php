@@ -7,6 +7,43 @@ use File;
 class ArmaScript
 {
     /**
+     * Extracts the addons from the SQF files classnames.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function addons($source, $flagged = [])
+    {
+        $usedAddons = collect();
+        $files = File::allFiles($source);
+
+        foreach ($files as $file) {
+            $file = (string) $file;
+
+            if (!ends_with(strtolower($file), 'sqf')) {
+                continue;
+            }
+
+            $lines = explode('\n', file_get_contents($file));
+
+            foreach ($lines as $line) {
+                if (!starts_with(trim($line), 'comment')) {
+                    $matches = [];
+                    preg_match('/"([\S]+)"/', $line, $matches);
+                    $classname = $matches[1];
+
+                    foreach ($flagged as $flag) {
+                        if (starts_with(strtolower($classname), strtolower($flag))) {
+                            $usedAddons->push($flag);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $usedAddons->unique();
+    }
+
+    /**
      * Checks the given file for SQF syntax errors.
      * Returns any error messages, or empty string.
      *
@@ -15,12 +52,12 @@ class ArmaScript
     public static function check($source)
     {
         if (!is_dir($source)) {
-            return shell_exec('python '.resource_path('utils/sqf_validator.py').' '.$source);
+            return shell_exec('python ' . resource_path('utils/sqf_validator.py') . ' ' . $source);
         } else {
             $files = File::allFiles($source);
 
             foreach ($files as $file) {
-                $file = (string)$file;
+                $file = (string) $file;
 
                 if (!ends_with(strtolower($file), 'sqf')) {
                     continue;
@@ -28,7 +65,7 @@ class ArmaScript
 
                 $display_name = substr($file, strlen($source));
                 $output = "{$display_name}: ";
-                $result = shell_exec('python '.resource_path('utils/sqf_validator.py').' '.$file);
+                $result = shell_exec('python ' . resource_path('utils/sqf_validator.py') . ' ' . $file);
                 $lines = explode('\n', $result);
                 $lines = implode(', ', $lines);
                 $output = $output . $lines;
