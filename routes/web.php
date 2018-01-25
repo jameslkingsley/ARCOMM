@@ -3,6 +3,11 @@
 //--- Home
 Route::get('/', 'PageController@index');
 
+//--- Shared Missions
+Route::get('/share/{ref}', 'ShareController@show');
+Route::get('/share/{ref}/{panel}', 'SharePanelController@show');
+Route::get('/share/{ref}/briefing/{faction}', 'ShareBriefingController@show');
+
 //--- Steam Authentication
 Route::get('/steamauth', 'AuthController@login');
 

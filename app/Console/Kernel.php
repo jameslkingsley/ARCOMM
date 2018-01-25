@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\DiscordBot::class,
-        Commands\MigrateOldApps::class
+        Commands\MigrateOldApps::class,
+        Commands\GenerateRefs::class,
     ];
 
     /**
