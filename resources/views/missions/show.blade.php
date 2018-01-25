@@ -38,6 +38,10 @@
     @if ($mission->isMine() || auth()->user()->hasPermission('mission:update'))
         @include('missions.show.manage')
     @endif
+
+    @if (auth()->user()->hasPermission('mission:share'))
+        @include('missions.show.share')
+    @endif
 @endsection
 
 @section('content')

@@ -41,7 +41,7 @@
 </div>
 
 <div class="row">
-    <a href="{{ $mission->url('aar') }}" class="col-md-4 mission-overview-card">
+    <a href="javascript:void(0)" class="col-md-4 mission-overview-card">
         @php
             $commentCount = $mission->comments->where('published', 1)->count();
         @endphp
@@ -55,7 +55,7 @@
         </span>
     </a>
 
-    <a href="{{ $mission->url('media') }}" class="col-md-4 mission-overview-card">
+    <a href="javascript:void(0)" class="col-md-4 mission-overview-card">
         @php
             $imageCount = $mission->photos()->count();
         @endphp
@@ -69,7 +69,7 @@
         </span>
     </a>
 
-    <a href="{{ $mission->url('media') }}" class="col-md-4 mission-overview-card">
+    <a href="javascript:void(0)" class="col-md-4 mission-overview-card">
         @php
             $videoCount = $mission->videos->count();
         @endphp

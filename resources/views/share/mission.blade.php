@@ -34,6 +34,7 @@
                     success: function(data) {
                         $('.mission-nav .subnav .subnav-link').removeClass('active');
                         caller.addClass('active');
+                        setUrl('share/{{ $mission->ref }}/' + caller.data('panel'));
                         $('.mission-inner').html(data);
                     }
                 });
@@ -83,9 +84,9 @@
 
         <div class="mission-inner">
             @if (isset($panel))
-                @include('missions.show.'.$panel, ['mission' => $mission])
+                @include('share.'.$panel, ['mission' => $mission])
             @else
-                @include('missions.show.overview', ['mission' => $mission])
+                @include('share.overview', ['mission' => $mission])
             @endif
         </div>
     </div>
