@@ -32,7 +32,7 @@ class AbsenceController extends Controller
      */
     public function index()
     {
-        $operations = Operation::future()->reject(function($operation) {
+        $operations = Operation::orderBy('starts_at', 'desc')->get()->reject(function ($operation) {
             return $operation->absences->isEmpty();
         });
 

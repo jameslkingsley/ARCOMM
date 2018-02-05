@@ -15,7 +15,7 @@
         @else
             @foreach ($operations as $operation)
                 <h5 class="m-t-0 m-b-2" title="{{ $operation->starts_at }}">
-                    {{ $operation->starts_at->format('jS F') }}
+                    {{ $operation->starts_at->format('jS F Y') }}
                     &middot;
                     Expected Turnout: {{ $operation->expectedTurnout() }}
                     <span class="pull-right text-muted">
