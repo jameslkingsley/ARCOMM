@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
-use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\JoinRequestAcknowledged;
-use Illuminate\Support\Facades\Input;
 use App\Models\JoinRequests\JoinSource;
 use App\Models\JoinRequests\JoinRequest;
 use App\Notifications\JoinRequestReceived;
@@ -58,7 +55,7 @@ class PublicJoinController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'age' => 'required|integer',
+            'age' => 'required|integer|min:' . config('app.min_age'),
             'location' => 'required',
             'email' => 'required|email',
             'steam' => 'required|url',
@@ -78,7 +75,7 @@ class PublicJoinController extends Controller
 
         Mail::to($jr->email)->send(new JoinRequestAcknowledged);
 
-        return redirect('/join/acknowledged?email='.$jr->email);
+        return redirect('/join/acknowledged?email=' . $jr->email);
     }
 
     /**
