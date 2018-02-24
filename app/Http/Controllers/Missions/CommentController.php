@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
 use App\Notifications\MissionCommentAdded;
-use App\Notifications\MentionedInComment;
 use App\Models\Portal\User;
 use Notification;
 
@@ -61,12 +60,17 @@ class CommentController extends Controller
 
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
+
+                $comment->update([
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
         } else {
             // Update an existing one
             $comment = MissionComment::find($request->id);
 
-            $shouldNotify = ! $comment->published && $request->published;
+            $shouldNotify = !$comment->published && $request->published;
 
             $comment->text = $request->text;
             $comment->published = $request->published;
@@ -79,6 +83,11 @@ class CommentController extends Controller
             if ($shouldNotify) {
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
+
+                $comment->update([
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
         }
 

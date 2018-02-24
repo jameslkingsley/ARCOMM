@@ -17,10 +17,12 @@ class MissionComment extends Model
      */
     protected $fillable = [
         'id',
-        'mission_id',
-        'user_id',
         'text',
-        'published'
+        'user_id',
+        'published',
+        'mission_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
