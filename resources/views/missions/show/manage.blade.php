@@ -18,7 +18,8 @@
                                 window.location = "{{ $mission->url() }}?u=1";
                             },
                             error: function(file, message) {
-                                alert(message);
+                                alert(message.message);
+                                $('.mission-update-cover').remove();
                             }
                         });
                     });
