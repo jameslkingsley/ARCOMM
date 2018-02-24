@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\DiscordBot::class,
         Commands\MigrateOldApps::class,
         Commands\GenerateRefs::class,
+        Commands\ConvertIdToRevisions::class,
     ];
 
     /**

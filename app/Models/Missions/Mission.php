@@ -32,6 +32,13 @@ class Mission extends Model implements HasMediaConversions
         HasMentions;
 
     /**
+     * Guarded attributes.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
