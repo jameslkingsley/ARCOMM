@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Missions;
 
-use Log;
 use Notification;
-use App\Helpers\ArmaConfig;
 use App\Models\Portal\User;
 use Illuminate\Http\Request;
 use App\Models\Missions\Mission;
@@ -57,14 +55,14 @@ class MissionController extends Controller
             // Store locally temporarily
             $path = $request->file->storeAs(
                 "missions/{$user->id}/{$mission->id}",
-                "original.pbo"
+                'original.pbo'
             );
 
             $mission->pbo_path = $path;
             $mission->save();
 
             // Unpack PBO and store configs in mission record as JSON objects
-            $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
+            $configs = $mission->storeConfigs(null, function ($mission, $unpacked, $ext, $config) {
                 $mission->display_name = trim($ext->onloadname, '.');
                 $mission->summary = $ext->onloadmission;
                 $mission->save();
@@ -86,7 +84,7 @@ class MissionController extends Controller
             // Discord Message
             $mission->notify(new MissionPublished($mission, true));
 
-            $users = User::all()->filter(function($user) use($mission) {
+            $users = User::all()->filter(function ($user) use ($mission) {
                 return
                     $user->id != auth()->user()->id &&
                     ($user->hasPermission('mission:notes') ||
@@ -167,14 +165,20 @@ class MissionController extends Controller
                 // Store locally temporarily
                 $path = $request->file->storeAs(
                     "missions/{$user->id}/{$mission->id}",
-                    "original.pbo"
+                    'original.pbo'
                 );
 
                 $mission->pbo_path = $path;
                 $mission->save();
 
+                // Create revision item
+                $revision = MissionRevision::create([
+                    'mission_id' => $mission->id,
+                    'user_id' => auth()->user()->id
+                ]);
+
                 // Unpack PBO and store configs in mission record as JSON objects
-                $configs = $mission->storeConfigs(null, function($mission, $unpacked, $ext, $config) {
+                $configs = $mission->storeConfigs(null, function ($mission, $unpacked, $ext, $config) {
                     $mission->display_name = trim($ext->onloadname, '.');
                     $mission->summary = $ext->onloadmission;
                     $mission->save();
@@ -204,6 +208,8 @@ class MissionController extends Controller
                     $mission->summary = $old_mission_summary;
                     $mission->save();
 
+                    $revision->delete();
+
                     abort(400, $configs->message);
                     return;
                 }
@@ -215,16 +221,10 @@ class MissionController extends Controller
                 Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
                 Storage::cloud()->delete("x{$old_mission_cloud_zip_dir}");
 
-                // Create revision item
-                $revision = MissionRevision::create([
-                    'mission_id' => $mission->id,
-                    'user_id' => auth()->user()->id
-                ]);
-
                 // Discord Message
                 $mission->notify(new MissionUpdated($revision, true));
 
-                $users = User::all()->filter(function($user) use($mission) {
+                $users = User::all()->filter(function ($user) use ($mission) {
                     return
                         $user->id != auth()->user()->id &&
                         ($user->hasPermission('mission:notes') ||
@@ -305,7 +305,7 @@ class MissionController extends Controller
             // Discord Message
             $mission->notify(new MissionVerified($mission, true));
 
-            $users = User::all()->filter(function($user) use($mission) {
+            $users = User::all()->filter(function ($user) use ($mission) {
                 return
                     $user->id != auth()->user()->id &&
                     (
