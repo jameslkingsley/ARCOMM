@@ -740,7 +740,7 @@ class Mission extends Model implements HasMediaConversions
         $qualified_pbo = "missions/{$this->user_id}/{$this->id}/{$this->exportedName()}";
 
         // Mission PBO
-        Storage::disk('gcs')->put(
+        Storage::disk(env('PBO_DRIVE', 'public'))->put(
             $qualified_pbo,
             file_get_contents(storage_path("app/{$this->pbo_path}"))
         );
@@ -756,7 +756,7 @@ class Mission extends Model implements HasMediaConversions
         $zip->make("downloads/{$path}")->add($unpacked)->close();
         $qualified_zip = "missions/{$this->user_id}/{$this->id}/{$name}";
 
-        Storage::disk('gcs')->put(
+        Storage::disk(env('PBO_DRIVE', 'public'))->put(
             $qualified_zip,
             file_get_contents(public_path("downloads/{$path}"))
         );
