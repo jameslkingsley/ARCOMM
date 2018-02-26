@@ -37,6 +37,13 @@
             Chat Commands
         </a>
 
+        <a
+            href="TODO"
+            target="_newtab"
+            class="dropdown-item">
+            Code of Conduct
+        </a>
+
         @foreach (Storage::disk('guides')->files() as $file)
             <a
                 href="{{ url("/guides/$file") }}"
