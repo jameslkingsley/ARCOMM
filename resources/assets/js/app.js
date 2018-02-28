@@ -17,6 +17,8 @@ $(document).ready(function(event) {
     });*/
 });
 
+window.mdconvert = new showdown.Converter();
+
 setUrl = function(url, title) {
     var url = (window.location.protocol + "//" + window.location.hostname + "/") + url;
 
@@ -25,9 +27,9 @@ setUrl = function(url, title) {
     }, document.title, url);
 
     if (title) document.title = title;
-}
+};
 
-;(function($) {
+(function($) {
     $.fn.offClick = function(a) {
         var caller = $(this);
         $(document).bind("mouseup.offClick", function(event) {

@@ -18,6 +18,7 @@ require('bootstrap-material-design');
 require('jquery.waitforimages');
 require('dropzone/dist/dropzone-amd-module');
 require('magnific-popup');
+window.showdown = require('showdown');
 
 window.collect = require('collect.js');
 

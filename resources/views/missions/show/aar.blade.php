@@ -9,6 +9,19 @@
 <div class="mission-comments-form pull-left w-100">
     <script>
         $(document).ready(function(e) {
+            var runConvert = function() {
+                $('.mission-comment-item-text').each(function(idx, span) {
+                    var jspan = $(span);
+
+                    if (!jspan.hasClass('md-converted')) {
+                        span.innerHTML = window.mdconvert.makeHtml(span.innerText);
+                        jspan.addClass('md-converted');
+                    }
+                });
+            };
+
+            runConvert();
+
             $(document).on('click', '.mission-comment-control-edit', function(event) {
                 var caller = $(this);
                 var id = caller.data('id');
@@ -72,6 +85,7 @@
                             url: '{{ url('/hub/missions/comments?mission_id=' . $mission->id) }}',
                             success: function(data) {
                                 $('.mission-comments').html(data);
+                                runConvert();
                             }
                         });
                     },

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | PDO Fetch Style
@@ -45,7 +44,6 @@ return [
     */
 
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
@@ -66,13 +64,13 @@ return [
             'engine' => 'InnoDB',
         ],
 
-        'mysql_old' => [
+        'mysql_live' => [
             'driver' => 'mysql',
-            'host' => env('DB_OLD_HOST', 'localhost'),
-            'port' => env('DB_OLD_PORT', '3306'),
-            'database' => env('DB_OLD_DATABASE', 'forge'),
-            'username' => env('DB_OLD_USERNAME', 'forge'),
-            'password' => env('DB_OLD_PASSWORD', ''),
+            'host' => env('DB_LIVE_HOST', 'localhost'),
+            'port' => env('DB_LIVE_PORT', '3306'),
+            'database' => env('DB_LIVE_DATABASE', 'forge'),
+            'username' => env('DB_LIVE_USERNAME', 'forge'),
+            'password' => env('DB_LIVE_PASSWORD', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -92,7 +90,6 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
-
     ],
 
     /*
@@ -120,7 +117,6 @@ return [
     */
 
     'redis' => [
-
         'cluster' => false,
 
         'default' => [
@@ -129,7 +125,5 @@ return [
             'port' => env('REDIS_PORT', 6379),
             'database' => 0,
         ],
-
     ],
-
 ];

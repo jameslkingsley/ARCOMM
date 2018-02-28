@@ -69,6 +69,14 @@ main {
     }
 }
 
+a {
+    color: $brand-primary;
+
+    &:hover, &:focus, &:active {
+        color: $brand-primary;
+    }
+}
+
 .text-muted {
     color: rgba(0, 0, 0, 0.5) !important;
 }
