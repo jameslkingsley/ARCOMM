@@ -30,15 +30,9 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\Models\Portal\User::class,
+        'model' => App\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
-    'discord' => [
-        'token' => env('DISCORD_API_TOKEN'),
-        'channel_id' => env('DISCORD_CHANNEL_ID'),
-        'staff_channel_id' => env('DISCORD_STAFF_CHANNEL_ID')
-    ]
 
 ];

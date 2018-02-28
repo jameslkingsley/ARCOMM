@@ -1,47 +1,22 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/maksimru/laravel-google-cloud-storage.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/maksimru/flysystem-google-cloud-storage.git"
-        }
-    ],
     "require": {
-        "php": ">=7.0.0",
-        "alaouy/youtube": "dev-master",
-        "chumper/zipper": "1.0.x",
-        "fideloper/proxy": "~3.3",
-        "guzzlehttp/guzzle": "^6.3",
-        "invisnik/laravel-steam-auth": "^2.3",
-        "jameslkingsley/laravel-livedata": "^1.0",
-        "jameslkingsley/laravel-mentions": "dev-master",
-        "jameslkingsley/laravel-references": "dev-master",
-        "laravel-notification-channels/discord": "^0.0.1",
-        "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0",
-        "sentry/sentry-laravel": "^0.7.0",
-        "spatie/laravel-medialibrary": "^6.6.6",
-        "superbalist/flysystem-google-storage": "dev-master#093b7e4b46f37720109e9efa594782cd0b3ced02",
-        "superbalist/laravel-google-cloud-storage": "dev-master#3cb952fd4599f31bacdf36379703e85dbd0f6157",
-        "syntax/steam-api": "^2.0",
-        "team-reflex/discord-php": "^4.0"
+        "php": ">=7.1.3",
+        "fideloper/proxy": "~4.0",
+        "laravel/framework": "5.6.*",
+        "laravel/tinker": "~1.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
-        "phpunit/phpunit": "~6.0"
+        "nunomaduro/collision": "~2.0",
+        "phpunit/phpunit": "~7.0",
+        "symfony/thanks": "^1.0"
     },
     "autoload": {
         "classmap": [
@@ -59,7 +34,8 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+            ]
         }
     },
     "scripts": {
@@ -78,5 +54,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

@@ -1,20 +1,19 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
     |--------------------------------------------------------------------------
     |
     | Here you may specify the default filesystem disk that should be used
-    | by the framework. A "local" driver, as well as a variety of cloud
-    | based drivers are available for your choosing. Just store away!
-    |
-    | Supported: "local", "ftp", "s3", "rackspace"
+    | by the framework. The "local" disk, as well as a variety of cloud
+    | based disks are available to your application. Just store away!
     |
     */
 
-    'default' => 'local',
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +26,7 @@ return [
     |
     */
 
-    'cloud' => 'gcs',
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,23 +37,11 @@ return [
     | may even configure multiple disks of the same driver. Defaults have
     | been setup for each driver as an example of the required options.
     |
+    | Supported Drivers: "local", "ftp", "sftp", "s3", "rackspace"
+    |
     */
 
     'disks' => [
-        'media' => [
-            'driver' => 'local',
-            'root' => public_path('/_media'),
-        ],
-
-        'images' => [
-            'driver' => 'local',
-            'root' => public_path('/images'),
-        ],
-
-        'downloads' => [
-            'driver' => 'local',
-            'root' => public_path('/downloads'),
-        ],
 
         'local' => [
             'driver' => 'local',
@@ -64,30 +51,19 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'visibility' => 'public',
-        ],
-
-        'guides' => [
-            'driver' => 'local',
-            'root' => public_path('guides'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
         's3' => [
             'driver' => 's3',
-            'key' => 'your-key',
-            'secret' => 'your-secret',
-            'region' => 'your-region',
-            'bucket' => 'your-bucket',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
         ],
 
-        'gcs' => [
-            'driver' => 'gcs',
-            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
-            'key_file' => base_path('gcs.json'),
-            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
-            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', null),
-            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
-        ],
     ],
+
 ];

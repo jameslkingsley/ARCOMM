@@ -1,41 +1,22 @@
+
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
 require('./bootstrap');
 
-$(document).ready(function(event) {
-    /*$.ajax({
-        type: 'GET',
-        url: (window.location.protocol + "//" + window.location.hostname + "/") + 'hub/notifications',
-        success: function(data) {
-            var container = $('#nav-notifications');
-            container.find('.dropdown-menu').html(data);
+window.Vue = require('vue');
 
-            if (container.find('.dropdown-menu .list-group').hasClass('notifications-empty')) {
-                container.find('.nav-link .notifications-has-unread').hide();
-            } else {
-                container.find('.nav-link .notifications-has-unread').show();
-            }
-        }
-    });*/
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+
+Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
+const app = new Vue({
+    el: '#app'
 });
-
-window.mdconvert = new showdown.Converter();
-
-setUrl = function(url, title) {
-    var url = (window.location.protocol + "//" + window.location.hostname + "/") + url;
-
-    window.history.replaceState({
-        archubPush: true
-    }, document.title, url);
-
-    if (title) document.title = title;
-};
-
-(function($) {
-    $.fn.offClick = function(a) {
-        var caller = $(this);
-        $(document).bind("mouseup.offClick", function(event) {
-            var target = $(event.target);
-            if (!target.is(caller) && !target.is(caller.find('*')))
-                if (typeof a == "function") a();
-        });
-    }
-})(jQuery);

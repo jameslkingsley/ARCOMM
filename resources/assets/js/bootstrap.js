@@ -1,33 +1,56 @@
+
+window._ = require('lodash');
+window.Popper = require('popper.js').default;
+
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
 
-// window._ = require('lodash');
-window.$ = window.jQuery = require('jquery');
-// window.Tether = require('tether');
-// window.Vue = require('vue');
-// window.axios = require('axios');
+try {
+    window.$ = window.jQuery = require('jquery');
 
-// require('jquery-ui-bundle');
-import Popper from 'popper.js';
-window.Popper = Popper;
+    require('bootstrap');
+} catch (e) {}
 
-require('bootstrap-material-design');
-require('jquery.waitforimages');
-require('dropzone/dist/dropzone-amd-module');
-require('magnific-popup');
-window.showdown = require('showdown');
+/**
+ * We'll load the axios HTTP library which allows us to easily issue requests
+ * to our Laravel back-end. This library automatically handles sending the
+ * CSRF token as a header based on the value of the "XSRF" token cookie.
+ */
 
-window.collect = require('collect.js');
+window.axios = require('axios');
 
-window.Tribute = require('tributejs');
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-import Mentions from './laravel-mentions';
-window.Mentions = Mentions;
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach every token manually.
+ */
 
-// window.axios.defaults.headers.common = {
-//     'X-CSRF-TOKEN': window.Laravel.csrfToken,
-//     'X-Requested-With': 'XMLHttpRequest'
-// };
+let token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+/**
+ * Echo exposes an expressive API for subscribing to channels and listening
+ * for events that are broadcast by Laravel. Echo and event broadcasting
+ * allows your team to easily build robust real-time web applications.
+ */
+
+// import Echo from 'laravel-echo'
+
+// window.Pusher = require('pusher-js');
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     encrypted: true
+// });
