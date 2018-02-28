@@ -23415,6 +23415,29 @@ header .subnav .subnav-link.active {
   text-align: justify;
 }
 
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted ul {
+  padding: 0 0 0 1rem;
+  margin: 0;
+}
+
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted img {
+  max-width: 100%;
+}
+
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted h1 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted h2,
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted h3,
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted h4,
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted h5,
+.mission-comments .mission-comment-item .mission-comment-item-text.md-converted h6 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
 @media screen and (max-width: 768px) {
   .mission-comments .mission-comment-item .mission-comment-item-text {
     font-size: .875rem;
@@ -23708,6 +23731,16 @@ main {
   main {
     padding: 0.5rem;
   }
+}
+
+a {
+  color: #bd2c2c;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: #bd2c2c;
 }
 
 .text-muted,

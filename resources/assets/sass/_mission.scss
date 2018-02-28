@@ -526,6 +526,27 @@ $mission-banner-author-font-sizes: (
             word-break: break-word;
             text-align: justify;
 
+            &.md-converted {
+                ul {
+                    padding: 0 0 0 1rem;
+                    margin: 0;
+                }
+
+                img {
+                    max-width: 100%;
+                }
+
+                h1 {
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+
+                h2, h3, h4, h5, h6 {
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+            }
+
             @media screen and (max-width: 768px) {
                 font-size: .875rem;
                 font-weight: 400;

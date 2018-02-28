@@ -1,27 +1,17 @@
 <script>
     $(document).ready(function(e) {
-
-        var runConvert = function()
-        {
+        var runConvert = function() {
             $('.mission-comment-item-text').each(function(idx, span) {
                 var jspan = $(span);
 
-                if(!jspan.hasClass('md-converted'))
-                {
+                if (!jspan.hasClass('md-converted')) {
                     span.innerHTML = window.mdconvert.makeHtml(span.innerText);
-
                     jspan.addClass('md-converted');
                 }
             });
         };
 
         runConvert();
-
-        var editShow = $('#mission-comment-item-text-editing');
-
-        $('#submit-mission-comment-text-real').on("keyup keydown keypress", function(event) {
-            editShow[0].innerHTML = window.mdconvert.makeHtml(event.target.innerText);
-        });
 
         $(document).on('click', '.mission-note-delete', function(event) {
             var caller = $(this);
@@ -53,7 +43,6 @@
 
                     runConvert();
 
-                    editShow[0].innerHTML = "";
                     form[0].reset();
                 }
             });
@@ -99,9 +88,6 @@
         <input type="hidden" name="mentions" id="mentions" value="">
         <textarea class="form-control" id="submit-mission-comment-text" name="text" style="display:none"></textarea>
 
-        <div id="mission-comment-item-text-editing" class="mission-aar-textarea form-control m-b-3 m-t-3">
-        </div>
-
         <span
             id="submit-mission-comment-text-real"
             class="form-control-editable has-mentions mission-aar-textarea form-control m-b-3 m-t-3"
@@ -109,7 +95,14 @@
             placeholder="Write a note..."
             for="#submit-mission-comment-text"></span>
 
-        <a class="pull-left m-l-3" href="https://docs.google.com/document/d/14qpJxHfDwz9N4CBppwBqe7KS1Mm7FXhxoE9v9SfI6jM/edit?usp=sharing" target="_newtab">Mission Checklist</a>
+        <a
+            class="pull-left m-l-3"
+            style="font-weight:600"
+            href="https://docs.google.com/document/d/14qpJxHfDwz9N4CBppwBqe7KS1Mm7FXhxoE9v9SfI6jM/edit?usp=sharing"
+            target="_newtab">
+            Mission Checklist
+        </a>
+
         <button type="submit" class="btn btn-raised btn-primary pull-right m-r-3">Submit</button>
     </form>
 </div>
