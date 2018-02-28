@@ -109,6 +109,7 @@
             placeholder="Write a note..."
             for="#submit-mission-comment-text"></span>
 
+        <a class="pull-left m-l-3" href="https://docs.google.com/document/d/14qpJxHfDwz9N4CBppwBqe7KS1Mm7FXhxoE9v9SfI6jM/edit?usp=sharing" target="_newtab">Mission Checklist</a>
         <button type="submit" class="btn btn-raised btn-primary pull-right m-r-3">Submit</button>
     </form>
 </div>
