@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdcf2e1f34e087ced8f73f0a4b09bc17",
+    "content-hash": "3409087f40d9df49dcf7d931cb53b83a",
     "packages": [
         {
             "name": "TrafficCophp/ByteBuffer",
@@ -1334,6 +1334,50 @@
                 }
             ],
             "time": "2015-04-20T18:58:01+00:00"
+        },
+        {
+            "name": "jameslkingsley/laravel-livedata",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jameslkingsley/laravel-livedata.git",
+                "reference": "a13df8cdc85dfa1c6f3ae5955c94d62b0eba0be4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jameslkingsley/laravel-livedata/zipball/a13df8cdc85dfa1c6f3ae5955c94d62b0eba0be4",
+                "reference": "a13df8cdc85dfa1c6f3ae5955c94d62b0eba0be4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^5.5",
+                "illuminate/support": "^5.5",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5",
+                "phpunit/phpunit": "^6.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Kingsley\\LiveData\\LiveDataServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kingsley\\LiveData\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Pull database rows from a live server.",
+            "homepage": "https://github.com/jameslkingsley/laravel-livedata",
+            "time": "2018-02-16T16:35:17+00:00"
         },
         {
             "name": "jameslkingsley/laravel-mentions",
@@ -6633,8 +6677,8 @@
         "alaouy/youtube": 20,
         "jameslkingsley/laravel-mentions": 20,
         "jameslkingsley/laravel-references": 20,
-        "superbalist/laravel-google-cloud-storage": 20,
-        "superbalist/flysystem-google-storage": 20
+        "superbalist/flysystem-google-storage": 20,
+        "superbalist/laravel-google-cloud-storage": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
