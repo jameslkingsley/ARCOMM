@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/hub', 'HubController@index');
+
+Route::get('/auth', 'Auth\SteamController@handle');

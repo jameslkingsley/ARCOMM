@@ -604,6 +604,11 @@ button,
   cursor: pointer;
 }
 
+html,
+body {
+  font-family: system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 .container {
   width: 100%;
 }
