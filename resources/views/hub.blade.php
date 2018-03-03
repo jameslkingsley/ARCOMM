@@ -7,6 +7,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name') }}</title>
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+
+        <script>
+            window.App = {
+                csrfToken: '{{ csrf_token() }}',
+                user: JSON.parse('{!! optional(auth())->user() !!}')
+            };
+        </script>
     </head>
 
     <body>

@@ -16,5 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/hub', 'HubController@index');
+Route::get('/hub/{page}', 'HubController@index');
+Route::get('/hub/{page}/{subpage}', 'HubController@index');
 
 Route::get('/auth', 'Auth\SteamController@handle');

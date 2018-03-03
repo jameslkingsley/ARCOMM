@@ -13,6 +13,16 @@ if (token) {
 
 window.Vue = require('vue');
 
+import VueRouter from 'vue-router';
+window.VueRouter = VueRouter;
+Vue.use(VueRouter);
+
+require('./event');
+
+window.random = a => {
+    return a[Math.floor((Math.random() * a.length))];
+}
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

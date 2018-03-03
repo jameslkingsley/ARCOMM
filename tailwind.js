@@ -12,21 +12,6 @@ we've done our very best to explain each section.
 
 View the full documentation at https://tailwindcss.com.
 
-
-|-------------------------------------------------------------------------------
-| The default config
-|-------------------------------------------------------------------------------
-|
-| This variable contains the default Tailwind config. You don't have
-| to use it, but it can sometimes be helpful to have available. For
-| example, you may choose to merge your custom configuration
-| values with some of the Tailwind defaults.
-|
-*/
-
-let defaultConfig = require('tailwindcss/defaultConfig')()
-
-
 /*
 |-------------------------------------------------------------------------------
 | Colors                                    https://tailwindcss.com/docs/colors
@@ -46,87 +31,23 @@ let defaultConfig = require('tailwindcss/defaultConfig')()
 let colors = {
   'transparent': 'transparent',
 
-  'black': '#22292f',
+  'black': '#080a0c',
   'grey-darkest': '#3d4852',
   'grey-darker': '#606f7b',
   'grey-dark': '#8795a1',
-  'grey': '#b8c2cc',
+  'grey': '#525f7f',
   'grey-light': '#dae1e7',
-  'grey-lighter': '#f1f5f8',
-  'grey-lightest': '#f8fafc',
+  'grey-lighter': '#e6ebf1',
+  'grey-lightest': '#f5f9fc',
   'white': '#ffffff',
 
-  'red-darkest': '#3b0d0c',
-  'red-darker': '#621b18',
-  'red-dark': '#cc1f1a',
-  'red': '#e3342f',
-  'red-light': '#ef5753',
-  'red-lighter': '#f9acaa',
-  'red-lightest': '#fcebea',
+  'brand': '#bd2c2c',
 
-  'orange-darkest': '#462a16',
-  'orange-darker': '#613b1f',
-  'orange-dark': '#de751f',
-  'orange': '#f6993f',
-  'orange-light': '#faad63',
-  'orange-lighter': '#fcd9b6',
-  'orange-lightest': '#fff5eb',
+  'tvt': '#f3af1f',
+  'coop': '#3aa3ea',
+  'preop': '#2cbd72',
 
-  'yellow-darkest': '#453411',
-  'yellow-darker': '#684f1d',
-  'yellow-dark': '#f2d024',
-  'yellow': '#ffed4a',
-  'yellow-light': '#fff382',
-  'yellow-lighter': '#fff9c2',
-  'yellow-lightest': '#fcfbeb',
-
-  'green-darkest': '#0f2f21',
-  'green-darker': '#1a4731',
-  'green-dark': '#1f9d55',
-  'green': '#38c172',
-  'green-light': '#51d88a',
-  'green-lighter': '#a2f5bf',
-  'green-lightest': '#e3fcec',
-
-  'teal-darkest': '#0d3331',
-  'teal-darker': '#20504f',
-  'teal-dark': '#38a89d',
-  'teal': '#4dc0b5',
-  'teal-light': '#64d5ca',
-  'teal-lighter': '#a0f0ed',
-  'teal-lightest': '#e8fffe',
-
-  'blue-darkest': '#12283a',
-  'blue-darker': '#1c3d5a',
-  'blue-dark': '#2779bd',
-  'blue': '#3490dc',
-  'blue-light': '#6cb2eb',
-  'blue-lighter': '#bcdefa',
-  'blue-lightest': '#eff8ff',
-
-  'indigo-darkest': '#191e38',
-  'indigo-darker': '#2f365f',
-  'indigo-dark': '#5661b3',
-  'indigo': '#6574cd',
-  'indigo-light': '#7886d7',
-  'indigo-lighter': '#b2b7ff',
-  'indigo-lightest': '#e6e8ff',
-
-  'purple-darkest': '#21183c',
-  'purple-darker': '#382b5f',
-  'purple-dark': '#794acf',
-  'purple': '#9561e2',
-  'purple-light': '#a779e9',
-  'purple-lighter': '#d6bbfc',
-  'purple-lightest': '#f3ebff',
-
-  'pink-darkest': '#451225',
-  'pink-darker': '#6f213f',
-  'pink-dark': '#eb5286',
-  'pink': '#f66d9b',
-  'pink-light': '#fa7ea8',
-  'pink-lighter': '#ffbbca',
-  'pink-lightest': '#ffebef',
+  'line': '#f2f2f2'
 }
 
 module.exports = {
@@ -170,7 +91,7 @@ module.exports = {
     'sm': '576px',
     'md': '768px',
     'lg': '992px',
-    'xl': '1200px',
+    'xl': '992px',
   },
 
 
@@ -378,6 +299,7 @@ module.exports = {
     '0': '0',
     '2': '2px',
     '4': '4px',
+    '5': '0.33rem',
     '8': '8px',
   },
 
@@ -399,7 +321,7 @@ module.exports = {
   |
   */
 
-  borderColors: Object.assign({ default: colors['grey-light'] }, colors),
+  borderColors: Object.assign({ default: colors['line'] }, colors),
 
 
   /*
@@ -423,6 +345,7 @@ module.exports = {
     'sm': '.125rem',
     default: '.25rem',
     'lg': '.5rem',
+    'xl': '1rem',
     'full': '9999px',
   },
 
@@ -459,6 +382,7 @@ module.exports = {
     '10': '2.5rem',
     '12': '3rem',
     '16': '4rem',
+    '18': '5rem',
     '24': '6rem',
     '32': '8rem',
     '48': '12rem',
@@ -498,20 +422,25 @@ module.exports = {
     'auto': 'auto',
     'px': '1px',
     '1': '0.25rem',
+    '1.5': '0.33333rem',
     '2': '0.5rem',
     '3': '0.75rem',
     '4': '1rem',
     '6': '1.5rem',
     '8': '2rem',
+    '9': '2.25rem',
     '10': '2.5rem',
     '12': '3rem',
     '16': '4rem',
+    '18': '5rem',
     '24': '6rem',
     '32': '8rem',
     '48': '12rem',
     '64': '16rem',
+    '128': '32rem',
     'full': '100%',
-    'screen': '100vh'
+    'screen': '100vh',
+    'golden': `${100 / 1.618}vh`,
   },
 
 
@@ -629,6 +558,12 @@ module.exports = {
     '4': '1rem',
     '6': '1.5rem',
     '8': '2rem',
+    '9': '2.5rem',
+    '10': '3rem',
+    '12': '4rem',
+    '16': '6rem',
+    '18': '8rem',
+    '32': '16rem',
   },
 
 
@@ -657,6 +592,14 @@ module.exports = {
     '4': '1rem',
     '6': '1.5rem',
     '8': '2rem',
+    '9': '2.5rem',
+    '10': '3rem',
+    '11': '3.5rem',
+    '12': '4rem',
+    '16': '6rem',
+    '18': '8rem',
+    '24': '12rem',
+    '32': '16rem',
   },
 
 
@@ -684,6 +627,14 @@ module.exports = {
     '4': '1rem',
     '6': '1.5rem',
     '8': '2rem',
+    '9': '2.5rem',
+    '10': '3.25rem',
+    '11': '3.75rem',
+    '12': '4rem',
+    '16': '6rem',
+    '18': '8rem',
+    '24': '12rem',
+    '32': '16rem',
   },
 
 
@@ -704,11 +655,17 @@ module.exports = {
   */
 
   shadows: {
-    default: '0 2px 4px 0 rgba(0,0,0,0.10)',
-    'md': '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
-    'lg': '0 15px 30px 0 rgba(0,0,0,0.11), 0 5px 15px 0 rgba(0,0,0,0.08)',
-    'inner': 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
-    'none': 'none',
+    default:
+      '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)',
+    md: '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
+    lg: '0 7px 14px 0 rgba(50,50,93,.01), 0 3px 6px 0 rgba(0,0,0,.05)',
+    inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
+    button: '0 0 0 1px rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent',
+    'button-hover': '0 0 0 1px rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.1), 0 3px 9px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)',
+    'button-active': '0 0 0 1px rgba(103,114,229,.1), 0 1px 3px rgba(103,114,229,.04), 0 1px 1px rgba(0,0,0,.04), 0 0 0 0 transparent, 0 0 0 0 transparent',
+    input: '0 0 0 1px rgba(50,50,93,.16), 0 0 0 1px rgba(50,151,211,0), 0 0 0 2px rgba(50,151,211,0), 0 1px 1px rgba(0,0,0,.08)',
+    'input-focus': '0 0 0 1px rgba(50,50,93,0), 0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 1px 1px rgba(0,0,0,.08)',
+    none: 'none'
   },
 
 

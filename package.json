@@ -14,7 +14,8 @@
     "cross-env": "^5.1",
     "laravel-mix": "^2.0",
     "lodash": "^4.17.4",
-    "tailwindcss": "^0.4.1",
-    "vue": "^2.5.7"
+    "tailwindcss": "^0.4.2",
+    "vue": "^2.5.7",
+    "vue-router": "^3.0.1"
   }
 }
