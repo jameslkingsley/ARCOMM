@@ -5,7 +5,7 @@
         </div>
 
         <header :class="{ 'text-white': banner !== null }" class="z-10 w-full h-16 relative">
-            <span class="absolute pin-t pin-l pin-r bg-brand h-1.5"></span>
+            <span :style="accentBarStyle" class="absolute pin-t pin-l pin-r bg-brand h-1.5 transition"></span>
             <nav class="inline-block w-full p-6 uppercase">
                 <grid thirds>
                     <a class="inline-block text-left pl-4" href="/hub">
@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="text-right">
-                        <button class="btn btn-primary mr-4">Upload</button>
+                        <upload class="mr-4"></upload>
 
                         <a href="/hub" class="inline-block py-2 px-4 font-semibold">
                             {{ user.name }}
@@ -38,11 +38,18 @@
 </template>
 
 <script>
+    import Upload from './mission/Upload.vue';
+
     export default {
         name: 'app',
 
+        components: {
+            Upload
+        },
+
         data() {
             return {
+                barProgress: null,
                 bannerImage: null,
                 user: window.App.user,
                 pages: [
@@ -60,6 +67,14 @@
                 return {
                     'background-image': `url(${this.bannerImage})`
                 };
+            },
+
+            accentBarStyle() {
+                if (this.barProgress === null) return null;
+
+                return {
+                    width: `${this.barProgress}%`
+                };
             }
         },
 
@@ -69,6 +84,7 @@
 
         created() {
             Events.listen('banner', e => (this.bannerImage = e));
+            Events.listen('progress', e => (this.barProgress = e));
         }
     };
 </script>

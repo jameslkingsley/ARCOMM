@@ -679,6 +679,11 @@ p:last-of-type {
   background-repeat: no-repeat;
 }
 
+.transition {
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+}
+
 .btn {
   background-color: #fff;
   color: #525f7f;

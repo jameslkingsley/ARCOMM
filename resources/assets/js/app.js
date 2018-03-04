@@ -14,7 +14,7 @@ const app = new Vue({
     router: new VueRouter({
         mode: 'history',
         routes: [
-            { name: 'Hub', path: '/hub', component: Missions },
+            { name: 'Index', path: '/hub', component: Missions },
             { name: 'Library', path: '/hub/missions', component: Missions },
             { name: 'Mission', path: '/hub/missions/example', component: Mission },
         ]

@@ -1638,6 +1638,8 @@ module.exports = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mission_Upload_vue__ = __webpack_require__("./resources/assets/js/components/mission/Upload.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mission_Upload_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mission_Upload_vue__);
 //
 //
 //
@@ -1677,12 +1679,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'app',
 
+    components: {
+        Upload: __WEBPACK_IMPORTED_MODULE_0__mission_Upload_vue___default.a
+    },
+
     data: function data() {
         return {
+            barProgress: null,
             bannerImage: null,
             user: window.App.user,
             pages: [{ text: 'Missions', url: '/hub/missions' }, { text: 'Guides', url: '/hub/guides' }, { text: 'Tutorials', url: '/hub/tutorials' }]
@@ -1697,6 +1706,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return {
                 'background-image': 'url(' + this.bannerImage + ')'
             };
+        },
+        accentBarStyle: function accentBarStyle() {
+            if (this.barProgress === null) return null;
+
+            return {
+                width: this.barProgress + '%'
+            };
         }
     },
 
@@ -1709,6 +1725,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         Events.listen('banner', function (e) {
             return _this.bannerImage = e;
+        });
+        Events.listen('progress', function (e) {
+            return _this.barProgress = e;
         });
     }
 });
@@ -2092,6 +2111,64 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     created: function created() {
         //
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/Upload.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            file: null
+        };
+    },
+
+
+    computed: {
+        //
+    },
+
+    methods: {
+        upload: function upload(event) {
+            var data = new FormData();
+            data.append('file', this.$refs.file.files[0]);
+
+            ajax.post('/api/mission', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: function onUploadProgress(e) {
+                    Events.fire('progress', Math.floor(e.loaded * 100 / e.total));
+                }
+            }).then(function (r) {
+                event.target.value = null;
+                Events.fire('progress', null);
+            }).catch(function (_ref) {
+                var response = _ref.response;
+
+                event.target.value = null;
+                console.log(response.message);
+            });
+        },
+        chooseFile: function chooseFile() {
+            this.$refs.file.click();
+        }
     }
 });
 
@@ -19935,7 +20012,8 @@ var render = function() {
       },
       [
         _c("span", {
-          staticClass: "absolute pin-t pin-l pin-r bg-brand h-1.5"
+          staticClass: "absolute pin-t pin-l pin-r bg-brand h-1.5 transition",
+          style: _vm.accentBarStyle
         }),
         _vm._v(" "),
         _c(
@@ -19979,26 +20057,29 @@ var render = function() {
                 })
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "text-right" }, [
-                _c("button", { staticClass: "btn btn-primary mr-4" }, [
-                  _vm._v("Upload")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "inline-block py-2 px-4 font-semibold",
-                    attrs: { href: "/hub" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(_vm.user.name) +
-                        "\n                    "
-                    )
-                  ]
-                )
-              ])
+              _c(
+                "div",
+                { staticClass: "text-right" },
+                [
+                  _c("upload", { staticClass: "mr-4" }),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "inline-block py-2 px-4 font-semibold",
+                      attrs: { href: "/hub" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.user.name) +
+                          "\n                    "
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
             ])
           ],
           1
@@ -20353,6 +20434,57 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-65fc68ca", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ca5b55f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/mission/Upload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            _vm.chooseFile($event)
+          }
+        }
+      },
+      [_vm._v("Upload")]
+    ),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        directives: [
+          { name: "show", rawName: "v-show", value: false, expression: "false" }
+        ]
+      },
+      [
+        _c("input", {
+          ref: "file",
+          attrs: { type: "file", name: "file" },
+          on: { change: _vm.upload }
+        })
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ca5b55f0", module.exports)
   }
 }
 
@@ -34209,7 +34341,7 @@ var app = new Vue({
     },
     router: new VueRouter({
         mode: 'history',
-        routes: [{ name: 'Hub', path: '/hub', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'Library', path: '/hub/missions', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'Mission', path: '/hub/missions/example', component: __WEBPACK_IMPORTED_MODULE_2__components_mission_Index_vue___default.a }]
+        routes: [{ name: 'Index', path: '/hub', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'Library', path: '/hub/missions', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'Mission', path: '/hub/missions/example', component: __WEBPACK_IMPORTED_MODULE_2__components_mission_Index_vue___default.a }]
     }),
 
     created: function created() {
@@ -34234,13 +34366,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
 window._ = __webpack_require__("./node_modules/lodash/lodash.js");
 
-window.axios = __webpack_require__("./node_modules/axios/index.js");
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.ajax = __webpack_require__("./node_modules/axios/index.js");
+window.ajax.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.ajax.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
@@ -34561,6 +34693,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-5e4722c4", Component.options)
   } else {
     hotAPI.reload("data-v-5e4722c4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/mission/Upload.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/Upload.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-ca5b55f0\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/mission/Upload.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\mission\\Upload.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ca5b55f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-ca5b55f0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
