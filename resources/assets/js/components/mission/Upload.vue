@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="inline-block">
         <button class="btn btn-primary" @click.prevent="chooseFile">Upload</button>
 
         <form v-show="false">
