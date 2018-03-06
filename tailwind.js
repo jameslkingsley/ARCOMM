@@ -41,7 +41,13 @@ let colors = {
   'grey-lightest': '#f5f9fc',
   'white': '#ffffff',
 
-  'brand': '#bd2c2c',
+  'brand-lightest': '#F8EAEA',
+  'brand-lighter': '#E5ABAB',
+  'brand-light': '#D16B6B',
+  'brand': '#BD2C2C',
+  'brand-dark': '#AA2828',
+  'brand-darker': '#711A1A',
+  'brand-darkest': '#390D0D',
 
   'tvt': '#f3af1f',
   'coop': '#3aa3ea',

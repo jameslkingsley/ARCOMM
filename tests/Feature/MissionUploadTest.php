@@ -12,8 +12,10 @@ class MissionUploadTest extends TestCase
         $this->login();
         $this->clean();
 
-        $response = $this->uploadMission('ARC_COOP_Valid_K.Malden.pbo')
-            ->assertStatus(200);
+        $response = $this->uploadMission('ARC_COOP_Valid_K.Malden.pbo');
+        // ->assertStatus(200);
+
+        $this->dump($response);
     }
 
     /** @test */
@@ -33,6 +35,7 @@ class MissionUploadTest extends TestCase
         $this->clean();
 
         $response = $this->uploadMission('ARC_COOP_LoadoutsContainACRE_K.Malden.pbo')
-            ->assertStatus(500);
+            ->assertStatus(200)
+            ->assertJsonFragment(['errors']);
     }
 }

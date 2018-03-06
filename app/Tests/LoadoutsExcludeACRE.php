@@ -2,16 +2,10 @@
 
 namespace App\Tests;
 
+use Illuminate\Support\Facades\Storage;
+
 class LoadoutsExcludeACRE extends MissionTest
 {
-    /**
-     * Is the test strict?
-     * Strict tests prevent continuation.
-     *
-     * @var boolean
-     */
-    protected $strict = false;
-
     /**
      * Determines if the test passes.
      *
@@ -19,7 +13,21 @@ class LoadoutsExcludeACRE extends MissionTest
      */
     public function passes($fail)
     {
-        // TODO Check for ACRE in loadouts
+        if (!file_exists("{$this->fullUnpacked}/loadouts")) {
+            return $fail('Missing loadouts directory');
+        }
+
+        $files = Storage::allFiles("{$this->unpacked}/loadouts");
+
+        foreach ($files as $file) {
+            $contents = strtolower(Storage::get($file));
+
+            if (str_contains($contents, 'acre_')) {
+                $relativeFile = str_replace_first($this->unpacked . '/', '', $file);
+
+                $fail("$relativeFile contains use of ACRE");
+            }
+        }
 
         return true;
     }

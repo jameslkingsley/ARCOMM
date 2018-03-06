@@ -3,21 +3,23 @@
 namespace App\Http\Requests;
 
 use App\Tests\FilesExist;
+use App\Tests\ValidSyntax;
 use App\Tests\LoadoutsExcludeACRE;
-use App\Exceptions\MissionTestException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
 class MissionUploadRequest extends FormRequest
 {
     /**
-     * List of test cases.
+     * Array of test cases.
+     * They are executed in the same order.
      *
      * @var array
      */
     protected $testCases = [
         FilesExist::class,
-        LoadoutsExcludeACRE::class
+        ValidSyntax::class,
+        LoadoutsExcludeACRE::class,
     ];
 
     /**
@@ -36,6 +38,13 @@ class MissionUploadRequest extends FormRequest
 
     /**
      * Absolute path to the unpacked directory.
+     *
+     * @var string
+     */
+    public $fullUnpacked;
+
+    /**
+     * Relative path to the unpacked directory.
      *
      * @var string
      */
@@ -94,7 +103,9 @@ class MissionUploadRequest extends FormRequest
         if (empty($errors)) {
             return response(200);
         } else {
-            throw new MissionTestException(implode('\n', $errors));
+            return response()->json([
+                'errors' => $errors
+            ]);
         }
     }
 
@@ -171,7 +182,8 @@ class MissionUploadRequest extends FormRequest
 
         // chdir($cwd);
 
-        $this->unpacked = $unpacked;
+        $this->fullUnpacked = $unpacked;
+        $this->unpacked = dirname($this->path) . '/unpacked';
     }
 
     /**
@@ -191,8 +203,8 @@ class MissionUploadRequest extends FormRequest
                 return false;
             });
 
-            if (!$passes && $instance->isStrict()) {
-                throw new MissionTestException(implode('\n', $errors));
+            if (!$passes) {
+                throw new \Exception(implode('\n', $errors));
             }
         }
 

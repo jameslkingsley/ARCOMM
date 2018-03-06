@@ -5,14 +5,6 @@ namespace App\Tests;
 abstract class MissionTest
 {
     /**
-     * Is the test strict?
-     * Strict tests prevent continuation.
-     *
-     * @var boolean
-     */
-    protected $strict = true;
-
-    /**
      * The request instance.
      *
      * @var \Illuminate\Http\Request
@@ -27,16 +19,6 @@ abstract class MissionTest
     public function __construct($request)
     {
         $this->request = $request;
-    }
-
-    /**
-     * Determines if the test is strict.
-     *
-     * @return boolean
-     */
-    public function isStrict()
-    {
-        return (bool) $this->strict;
     }
 
     /**
