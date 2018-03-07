@@ -43,7 +43,7 @@ class ArmaConfig
 
         // $parser = new ArmaConfigParser($this->contents);
 
-        $this->parsed = new Text($this->contents);
+        $this->parsed = (new Text($this->contents))->tokens;
     }
 
     /**

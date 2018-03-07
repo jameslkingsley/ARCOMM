@@ -5,6 +5,17 @@ namespace App\Parser;
 class Text
 {
     /**
+     * Blah
+     *
+     * @var type
+     */
+    public $tokens = [];
+
+    public $lexer;
+    public $head = 0;
+    public $root;
+
+    /**
      * Constructor method.
      *
      * @return void

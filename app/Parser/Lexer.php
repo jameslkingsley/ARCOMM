@@ -32,6 +32,12 @@ class Lexer
      */
     public $tokensReversed = [];
 
+    public $text;
+    public $head = 0;
+    public $posLine = 1;
+    public $posChar = 1;
+    public $pushed = [];
+
     /**
      * Constructor method.
      *
@@ -54,12 +60,13 @@ class Lexer
      */
     public function get($number = 1)
     {
-        if ($this->head + $number === strlen($this->text)) {
+        if ($this->head + ($number - 1) === strlen($this->text)) {
             return false;
         }
 
         $result = substr($this->text, $this->head, $number);
 
+        info([$this->head, $number]);
         $this->head += $number;
         $this->posChar += $number;
 
@@ -130,24 +137,20 @@ class Lexer
      */
     public function pushToken($type, $data = null)
     {
-        if (!$type) {
-            return false;
-        }
-
         if (is_string($type)) {
             $type = $this->tokens[$type];
         }
 
-        $this->pushed->push([
+        $this->pushed[] = [
             'type' => $type,
             'data' => $data,
             'pos' => [
                 'line' => $this->posLine,
                 'char' => $this->posChar,
             ]
-        ]);
+        ];
 
-        return $this->pushed[$this->pushed->count() - 1];
+        return true;
     }
 
     /**
@@ -288,7 +291,8 @@ class Lexer
         $output = '';
         $nc = $this->get();
 
-        while (!preg_match('/[^0-9a-z\xDF-\xFF]/', strtolower($nc))) {
+        while (!preg_match('/^[a-zA-Z0-9_]/', strtolower($nc))) {
+            info('.');
             $output .= $nc;
 
             $nc = $this->get();
@@ -362,7 +366,9 @@ class Lexer
      */
     public function lex()
     {
-        while ($this->readNextToken());
+        while ($this->readNextToken()) {
+            // info($this->head);
+        };
     }
 
     /**
@@ -376,6 +382,6 @@ class Lexer
         $this->head = 0;
         $this->posLine = 1;
         $this->posChar = 1;
-        $this->pushed = collect();
+        $this->pushed = [];
     }
 }
