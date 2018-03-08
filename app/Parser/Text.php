@@ -63,7 +63,7 @@ class Text
      *
      * @return mixed?
      */
-    public function readValue($entry)
+    public function readValue(&$entry)
     {
         $nt = $this->get();
 
@@ -76,18 +76,24 @@ class Text
             $entry['value'] = $nt['data'];
 
             while (($nt = $this->get())['type'] === $this->lexer->tokens['string']) {
-                $entry['value'] += $nt['data'];
+                $entry['value'] .= $nt['data'];
             }
 
             $this->give();
         } elseif ($nt['type'] === $this->lexer->tokens['number']) {
-            if ($entry['value'] % 1 === 0) {
+            if ($nt['data'] % 1 === 0) {
                 $entry['subtype'] = Common::$subTypes['long'];
             } else {
                 $entry['subtype'] = Common::$subTypes['float'];
             }
 
             $entry['value'] = $nt['data'];
+        } elseif ($nt['type'] === $this->lexer->tokens['bool_true']) {
+            $entry['subtype'] = Common::$subTypes['bool'];
+            $entry['value'] = true;
+        } elseif ($nt['type'] === $this->lexer->tokens['bool_false']) {
+            $entry['subtype'] = Common::$subTypes['bool'];
+            $entry['value'] = false;
         } elseif ($nt['type'] === $this->lexer->tokens['curly_open']) {
             $subent = null;
             $entry['subtype'] = Common::$subTypes['array'];
@@ -146,7 +152,7 @@ class Text
             }
 
             if ($nt['type'] === $this->lexer->tokens['class']) {
-                $entry = $cls->addEntry(Common::$types['class']);
+                $entry = ['type' => Common::$types['class']];
 
                 $nt = $this->get();
 
@@ -185,8 +191,10 @@ class Text
                 if (!$nt || $nt['type'] !== $this->lexer->tokens['curly_close']) {
                     throw new \Exception("Expected closing bracket at line {$nt['pos']['line']} char {$nt['pos']['char']}");
                 }
+
+                $cls->addEntry($entry);
             } elseif ($nt['type'] === $this->lexer->tokens['extern']) {
-                $entry = $cls->addEntry(Common::$types['extern']);
+                $entry = ['type' => Common::$types['extern']];
 
                 $nt = $this->get();
 
@@ -195,8 +203,9 @@ class Text
                 }
 
                 $entry['name'] = $nt['data'];
+                $cls->addEntry($entry);
             } elseif ($nt['type'] === $this->lexer->tokens['delete']) {
-                $entry = $cls->addEntry(Common::$types['delete']);
+                $entry = ['type' => Common::$types['delete']];
 
                 $nt = $this->get();
 
@@ -205,8 +214,10 @@ class Text
                 }
 
                 $entry['name'] = $nt['data'];
+
+                $cls->addEntry($entry);
             } elseif ($nt['type'] === $this->lexer->tokens['ident']) {
-                $entry = $cls->addEntry();
+                $entry = [];
 
                 $entry['name'] = $nt['data'];
 
@@ -233,6 +244,8 @@ class Text
                 }
 
                 $this->readValue($entry);
+
+                $cls->addEntry($entry);
             } elseif ($nt['type'] === $this->lexer->tokens['curly_close']) {
                 $this->give();
                 break;

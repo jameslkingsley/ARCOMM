@@ -23,15 +23,15 @@ class Lexer
         'class' => 10,
         'extern' => 11,
         'delete' => 12,
+        'bool_true' => 13,
+        'bool_false' => 14,
     ];
-
     /**
      * Lexer tokens reversed.
      *
      * @var array
      */
     public $tokensReversed = [];
-
     public $text;
     public $head = 0;
     public $posLine = 1;
@@ -65,12 +65,10 @@ class Lexer
         }
 
         $result = substr($this->text, $this->head, $number);
-
-        info([$this->head, $number]);
         $this->head += $number;
         $this->posChar += $number;
 
-        if (str_contains($result, '\n')) {
+        if (strpos($result, '\n') !== false) {
             $this->posLine++;
             $this->posChar = 1;
         }
@@ -96,14 +94,13 @@ class Lexer
         $this->head -= $index;
 
         $result = substr($this->text, $this->head, $index);
-
         $this->posChar -= $index;
 
-        if (str_contains($result, '\n')) {
+        if (strpos($result, '\n') !== false) {
             $this->posLine--;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -115,18 +112,17 @@ class Lexer
     {
         $nc = $this->get();
 
-        if (!$nc) {
+        if ($nc === false) {
             return false;
         }
 
-        while (strlen(trim($nc)) === 0) {
-            if (!$nc = $this->get()) {
+        while (preg_match('/\\s/', $nc)) {
+            if (($nc = $this->get()) === false) {
                 return false;
             }
         }
 
         $this->give();
-
         return true;
     }
 
@@ -161,10 +157,9 @@ class Lexer
     public function readStringToken($quote)
     {
         $output = '';
-
         $nc = $this->get();
 
-        if (!$nc) {
+        if ($nc === false) {
             return $nc;
         }
 
@@ -172,7 +167,7 @@ class Lexer
             if ($nc === $quote) {
                 $nc = $this->get();
 
-                if (!$nc) {
+                if ($nc === false) {
                     return $nc;
                 }
 
@@ -182,11 +177,10 @@ class Lexer
                 }
             }
 
-            $output += $nc;
-
+            $output .= $nc;
             $nc = $this->get();
 
-            if (!$nc) {
+            if ($nc === false) {
                 return $nc;
             }
         }
@@ -203,14 +197,13 @@ class Lexer
     {
         $nc = $this->get();
 
-        if (!$nc) {
+        if ($nc === false) {
             return $nc;
         }
 
         while ($nc !== '\n') {
             $nc = $this->get();
-
-            if (!$nc) {
+            if ($nc === false) {
                 return $nc;
             }
         }
@@ -227,7 +220,7 @@ class Lexer
     {
         $nc = $this->get();
 
-        if (!$nc) {
+        if ($nc === false) {
             return $nc;
         }
 
@@ -235,7 +228,7 @@ class Lexer
             if ($nc === '*') {
                 $nc = $this->get();
 
-                if (!$nc) {
+                if (!$nc === false) {
                     return $nc;
                 }
 
@@ -248,7 +241,7 @@ class Lexer
 
             $nc = $this->get();
 
-            if (!$nc) {
+            if ($nc === false) {
                 return $nc;
             }
         }
@@ -266,12 +259,11 @@ class Lexer
         $numStr = '';
         $nc = $this->get();
 
-        while (preg_match('/\d/', $nc) || $nc === '-' || $nc === '+' || $nc === '.' || $nc === 'e') {
-            $numStr += $nc;
-
+        while (is_numeric($nc) || $nc === '-' || $nc === '+' || $nc === '.' || $nc === 'e') {
+            $numStr .= $nc;
             $nc = $this->get();
 
-            if (!$nc) {
+            if ($nc === false) {
                 return $nc;
             }
         }
@@ -291,20 +283,18 @@ class Lexer
         $output = '';
         $nc = $this->get();
 
-        while (!preg_match('/^[a-zA-Z0-9_]/', strtolower($nc))) {
-            info('.');
+        while (preg_match('/\\w/', strtolower($nc))) {
             $output .= $nc;
-
             $nc = $this->get();
 
-            if (!$nc) {
+            if ($nc === false) {
                 return $nc;
             }
         }
 
         $this->give();
 
-        return $this->pushToken($this->tokens['ident'], $output);
+        return $this->pushToken($this->tokens['ident'], strtolower($output));
     }
 
     /**
@@ -320,7 +310,7 @@ class Lexer
 
         $nc = $this->get();
 
-        if (!$nc) {
+        if ($nc === false) {
             return $nc;
         }
 
@@ -336,7 +326,7 @@ class Lexer
             return $this->pushToken($this->tokens['comma']);
         } elseif ($nc === '=') {
             return $this->pushToken($this->tokens['equals']);
-        } elseif ($nc === '=' || $nc === '"') {
+        } elseif ($nc === "'" || $nc === '"') {
             return $this->readStringToken($nc);
         } elseif ($nc === '[' && $this->get() === ']') {
             return $this->pushToken($this->tokens['array_id']);
@@ -346,9 +336,16 @@ class Lexer
             return $this->readLineComment();
         } elseif ($nc === '/' && $this->get() === '*') {
             return $this->readBlockComment();
-        } elseif ($nc === 'c' && $this->get(5) === 'lass ') {
+        } elseif ($nc === 'c' && ($this->get(5) === 'lass ' || $this->give(5))) {
             return $this->pushToken($this->tokens['class']);
-        } elseif (preg_match('/\d/', $nc) || $nc === '-' || $nc === '+' || $nc === '.') {
+        } elseif ($nc === 't' && ($this->get(3) === 'rue' || $this->give(3))) {
+            return $this->pushToken($this->tokens['bool_true'], true);
+        } elseif ($nc === 'f' && ($this->get(4) === 'alse' || $this->give(4))) {
+            return $this->pushToken($this->tokens['bool_false'], false);
+        } elseif ($nc === '\\') {
+            $this->get();
+            return true;
+        } elseif (preg_match('/\\d/', $nc) || $nc === '-' || $nc === '+' || $nc === '.') {
             $this->give();
             return $this->readNumberToken();
         } else {
@@ -367,8 +364,8 @@ class Lexer
     public function lex()
     {
         while ($this->readNextToken()) {
-            // info($this->head);
-        };
+            //
+        }
     }
 
     /**

@@ -12,10 +12,8 @@ class MissionUploadTest extends TestCase
         $this->login();
         $this->clean();
 
-        $response = $this->uploadMission('ARC_COOP_Valid_K.Malden.pbo');
-        // ->assertStatus(200);
-
-        $this->dump($response);
+        $response = $this->uploadMission('ARC_COOP_Valid_K.Malden.pbo')
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -37,5 +35,15 @@ class MissionUploadTest extends TestCase
         $response = $this->uploadMission('ARC_COOP_LoadoutsContainACRE_K.Malden.pbo')
             ->assertStatus(200)
             ->assertJsonFragment(['errors']);
+    }
+
+    /** @test */
+    public function cant_upload_mission_file_with_syntax_errors()
+    {
+        $this->login();
+        $this->clean();
+
+        $response = $this->uploadMission('ARC_COOP_SyntaxError_K.Malden.pbo')
+            ->assertStatus(500);
     }
 }

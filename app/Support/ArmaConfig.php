@@ -3,6 +3,8 @@
 namespace App\Support;
 
 use App\Parser\Text;
+use App\Parser\Lexer;
+use App\Parser\Common;
 
 class ArmaConfig
 {
@@ -27,9 +29,25 @@ class ArmaConfig
      */
     public function __construct(string $contents)
     {
-        $this->contents = $contents;
+        $this->contents = $this->clean($contents);
 
         $this->parse();
+    }
+
+    /**
+     * Cleans the source content of comments.
+     *
+     * @return string
+     */
+    public function clean($source)
+    {
+        // Remove single line comments
+        $source = preg_replace('#^\s*//.+$#m', '', $source);
+
+        // Remove multi line comments
+        $source = preg_replace('!/\*.*?\*/!s', '', $source);
+
+        return $source;
     }
 
     /**
@@ -39,11 +57,49 @@ class ArmaConfig
      */
     public function parse()
     {
-        // dd(new Text($this->contents));
+        $this->parsed = $this->compile((new Text($this->contents))->root);
+    }
 
-        // $parser = new ArmaConfigParser($this->contents);
+    /**
+     * Compiles the lexer data into a PHP array.
+     *
+     * @return array
+     */
+    public function compile($entry)
+    {
+        if (array_key_exists('subtype', $entry)) {
+            if ($entry['subtype'] === Common::$subTypes['array']) {
+                $array = [];
 
-        $this->parsed = (new Text($this->contents))->tokens;
+                foreach ($entry['value'] as $item) {
+                    $array[] = $this->compile($item);
+                }
+
+                return $array;
+            }
+
+            return $entry['value'];
+        } else {
+            $result = [];
+
+            foreach ($entry->entries as $object) {
+                if ($object['type'] === Common::$types['class']) {
+                    $result[$object['name']] = $this->compile($object['cls']);
+                } elseif ($object['type'] === Common::$types['array']) {
+                    $array = [];
+
+                    foreach ($object['value'] as $item) {
+                        $array[] = $this->compile($item);
+                    }
+
+                    $result[$object['name']] = $array;
+                } else {
+                    $result[$object['name']] = $object['value'];
+                }
+            }
+
+            return $result;
+        }
     }
 
     /**

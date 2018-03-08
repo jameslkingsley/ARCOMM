@@ -28,5 +28,6 @@ class Common
         'long' => 2,
         'array' => 3,
         'string_var' => 4,
+        'bool' => 5,
     ];
 }

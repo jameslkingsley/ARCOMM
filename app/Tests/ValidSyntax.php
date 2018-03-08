@@ -15,8 +15,8 @@ class ValidSyntax extends MissionTest
     {
         try {
             $this->decodeDescription();
-            // $this->decodeConfig();
-            // $this->decodeMission();
+            $this->decodeConfig();
+            $this->decodeMission();
 
             return true;
         } catch (\Exception $error) {
@@ -34,9 +34,7 @@ class ValidSyntax extends MissionTest
     {
         $contents = file_get_contents("{$this->fullUnpacked}/description.ext");
 
-        $data = new ArmaConfig($contents);
-
-        info($data->toArray());
+        new ArmaConfig($contents);
     }
 
     /**
@@ -60,8 +58,6 @@ class ValidSyntax extends MissionTest
     {
         $contents = file_get_contents("{$this->fullUnpacked}/mission.sqm");
 
-        $config = (new ArmaConfig($contents))->toJson();
-
-        info($config);
+        new ArmaConfig($contents);
     }
 }

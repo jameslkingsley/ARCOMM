@@ -16,12 +16,9 @@ class Table
      *
      * @return array
      */
-    public function addEntry($type)
+    public function addEntry($data)
     {
-        $entry = ['type' => $type];
-
-        $this->entries[] = $entry;
-
-        return $entry;
+        $this->entries[] = $data;
+        return $data;
     }
 }
