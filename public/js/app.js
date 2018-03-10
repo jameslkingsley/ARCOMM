@@ -1925,29 +1925,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/Index.vue":
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/AAR.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -1987,10 +1969,208 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         //
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/Briefing.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        mission: Object
+    },
+
+    data: function data() {
+        return {
+            activeFaction: null
+        };
+    },
+
+
+    computed: {
+        factions: function factions() {
+            var filled = [];
+
+            for (var f in this.mission.cfg.briefing) {
+                // Always skip game master briefing
+                if (f === 'game_master') continue;
+
+                var filtered = {};
+                var faction = this.mission.cfg.briefing[f];
+
+                for (var s in faction) {
+                    if (faction[s].length) {
+                        filtered[s] = faction[s];
+                    }
+                }
+
+                if (Object.keys(filtered).length) {
+                    filled.push({
+                        name: f,
+                        sections: filtered
+                    });
+                }
+            }
+
+            return filled;
+        }
+    },
+
+    methods: {
+        startsWith: function startsWith(string, target) {
+            return _.startsWith(string, target);
+        },
+        startCase: function startCase(string) {
+            return _.startCase(string);
+        }
     },
 
     created: function created() {
-        Events.fire('banner', random(['https://arcomm.co.uk/_media/163/20180213011554_1.jpg', 'https://arcomm.co.uk/_media/211/20180224014950_1.jpg', 'https://arcomm.co.uk/_media/55/20180107234956_1.jpg', 'https://arcomm.co.uk/_media/191/20180222184117_1.jpg', 'https://arcomm.co.uk/_media/203/20180222232134_1.jpg']));
+        this.activeFaction = this.factions[0];
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/Index.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AAR_vue__ = __webpack_require__("./resources/assets/js/components/mission/AAR.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AAR_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__AAR_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Briefing_vue__ = __webpack_require__("./resources/assets/js/components/mission/Briefing.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Briefing_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Briefing_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        //
+    },
+
+    components: {
+        'mission-aar': __WEBPACK_IMPORTED_MODULE_0__AAR_vue___default.a,
+        'mission-briefing': __WEBPACK_IMPORTED_MODULE_1__Briefing_vue___default.a
+    },
+
+    data: function data() {
+        return {
+            mission: null,
+            activeTab: 'overview'
+        };
+    },
+
+
+    computed: {
+        tabs: function tabs() {
+            return [{ text: 'Overview', uri: 'overview' }, { text: 'Briefing', uri: 'briefing' }, { text: 'After-Action Report', uri: 'aar' }, { text: 'Media', uri: 'media' }, { text: 'Addons', uri: 'addons' }, { text: 'Notes', uri: 'notes' }];
+        }
+    },
+
+    watch: {
+        $route: function $route(to, from) {
+            var _this = this;
+
+            if (to.params.ref === from.params.ref) {
+                return this.activeTab = to.params.tab;
+            }
+
+            this.fetch(to.params.ref).then(function (r) {
+                _this.activeTab = to.params.tab;
+            });
+        }
+    },
+
+    methods: {
+        fetch: function fetch(ref) {
+            var _this2 = this;
+
+            return ajax.get('/api/mission/' + (ref || this.$route.params.ref)).then(function (r) {
+                return _this2.mission = r.data;
+            });
+        }
+    },
+
+    created: function created() {
+        this.fetch();
+
+        if ('tab' in this.$route.params) {
+            this.activeTab = this.$route.params.tab;
+        }
+
+        // Events.fire('banner', '');
     }
 });
 
@@ -2014,7 +2194,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
-        //
+        mission: Object
     },
 
     data: function data() {
@@ -2031,16 +2211,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
         },
         url: function url() {
-            return '/hub/missions/example';
-        },
-        classes: function classes() {
-            var seed = _.random(0, 2);
-
-            return {
-                'bg-tvt': seed === 0,
-                'bg-coop': seed === 1,
-                'bg-preop': seed === 2
-            };
+            return '/hub/missions/' + this.mission.ref;
         }
     },
 
@@ -2058,12 +2229,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Item_vue__ = __webpack_require__("./resources/assets/js/components/mission/Item.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Item_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Item_vue__);
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2110,7 +2275,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     created: function created() {
-        //
+        this.fetch();
     }
 });
 
@@ -2146,6 +2311,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         upload: function upload(event) {
+            var _this = this;
+
             var data = new FormData();
             data.append('file', this.$refs.file.files[0]);
 
@@ -2159,11 +2326,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (r) {
                 event.target.value = null;
                 Events.fire('progress', null);
+                _this.$router.push({
+                    name: 'mission',
+                    params: { ref: r.data.ref }
+                });
             }).catch(function (_ref) {
                 var response = _ref.response;
 
                 event.target.value = null;
-                console.log(response.message);
+                console.log(response.data.message);
             });
         },
         chooseFile: function chooseFile() {
@@ -20170,27 +20341,29 @@ var render = function() {
         {
           staticClass:
             "text-left absolute pin-b pin-l pin-r text-white py-4 px-6 rounded-b",
-          class: _vm.classes
+          class: "bg-" + _vm.mission.mode
         },
         [
           _c("span", { staticClass: "font-semibold w-full inline-block" }, [
-            _vm._v("Mission Name")
+            _vm._v(_vm._s(_vm.mission.name))
           ]),
           _vm._v(" "),
           _c(
             "span",
             { staticClass: "w-full inline-block opacity-75 text-sm mt-2" },
-            [
-              _vm._v(
-                "Some short summary of the mission that should interest people."
-              )
-            ]
+            [_vm._v(_vm._s(_vm.mission.summary))]
           ),
           _vm._v(" "),
           _c(
             "span",
             { staticClass: "w-full inline-block opacity-50 text-xs mt-2" },
-            [_vm._v("Author · Terrain")]
+            [
+              _vm._v(
+                _vm._s(_vm.mission.user.name) +
+                  " · " +
+                  _vm._s(_vm.mission.map.name)
+              )
+            ]
           )
         ]
       )
@@ -20221,35 +20394,10 @@ var render = function() {
     [
       _c(
         "grid",
-        { attrs: { doubles: "", gap: "2rem" } },
-        [
-          _c(
-            "grid",
-            { attrs: { thirds: "", gap: "2rem" } },
-            [
-              _c("mission-item", [_vm._v("Mission")]),
-              _vm._v(" "),
-              _c("mission-item", [_vm._v("Mission")]),
-              _vm._v(" "),
-              _c("mission-item", [_vm._v("Mission")])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "grid",
-            { attrs: { thirds: "", gap: "2rem" } },
-            [
-              _c("mission-item", [_vm._v("Mission")]),
-              _vm._v(" "),
-              _c("mission-item", [_vm._v("Mission")]),
-              _vm._v(" "),
-              _c("mission-item", [_vm._v("Mission")])
-            ],
-            1
-          )
-        ],
-        1
+        { attrs: { "template-columns": "repeat(6, 16.66666fr)", gap: "2rem" } },
+        _vm._l(_vm.missions, function(mission, index) {
+          return _c("mission-item", { key: index, attrs: { mission: mission } })
+        })
       )
     ],
     1
@@ -20274,166 +20422,240 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container mx-auto h-full" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "bg-white h-full rounded-t shadow-lg mt-12" }, [
-      _c(
-        "div",
-        { staticClass: "inline-block w-full h-16 border-b text-center" },
-        [
-          _c(
-            "router-link",
-            {
-              staticClass:
-                "inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
-              attrs: { to: "/hub/missions/example" }
-            },
-            [_vm._v("Overview")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass:
-                "inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
-              attrs: { to: "/hub/missions/example" }
-            },
-            [_vm._v("Briefing")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass:
-                "border-b-2 border-brand text-brand inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
-              attrs: { to: "/hub/missions/example" }
-            },
-            [_vm._v("After-Action Report")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass:
-                "inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
-              attrs: { to: "/hub/missions/example" }
-            },
-            [_vm._v("Media")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass:
-                "inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
-              attrs: { to: "/hub/missions/example" }
-            },
-            [_vm._v("Addons")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass:
-                "inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
-              attrs: { to: "/hub/missions/example" }
-            },
-            [_vm._v("Notes")]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "inline-block w-full p-10" },
-        [
-          _c("grid", { attrs: { "auto-rows": "min-content", gap: "2rem" } }, [
-            _c("div", [
-              _c(
-                "div",
-                { staticClass: "bg-grey-lightest rounded-xl py-2 pb-6 ml-11" },
-                [
-                  _c(
-                    "grid",
-                    { attrs: { "template-columns": "5rem 1fr" } },
-                    [
-                      _c("div", {
-                        staticClass:
-                          "-ml-12 rounded-full border-5 border-white w-18 h-18 bg-grey"
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        { staticClass: "-ml-10 py-4 text-lg font-bold" },
-                        [_vm._v("Author")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "grid-child",
-                        {
-                          staticClass:
-                            "inline-block w-full px-4 pr-9 ml-3 -mt-8",
-                          attrs: { "column-start": "1", "column-end": "3" }
-                        },
-                        [
-                          _c("p", [
-                            _vm._v(
-                              "Etiam id est quis nisi vestibulum molestie. Nunc sit amet consectetur dui. Aliquam vestibulum odio sed urna dapibus laoreet. Nunc nec eros vel tellus ultrices porta a sed nulla. Proin at lorem metus. Integer dignissim mauris sed nisi accumsan sodales. Proin iaculis sollicitudin ipsum, mollis ultricies mauris dignissim convallis. Mauris malesuada cursus arcu, quis hendrerit metus interdum vel. Praesent faucibus ex placerat, porta erat eget, dapibus diam."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Aenean consequat nec purus quis tempus. Praesent finibus ultrices sapien, in pretium libero iaculis sed. In mollis mi non pharetra feugiat. Cras consectetur, enim in venenatis fringilla, elit lacus tempor ipsum, vel condimentum magna ligula et lectus. Maecenas aliquam augue id dolor auctor, et viverra ex hendrerit. Etiam lacinia justo sit amet metus sagittis, eget iaculis erat elementum. Donec elementum ipsum sit amet faucibus malesuada. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec molestie, velit sit amet efficitur ultrices, est tortor fringilla urna, non condimentum dui nisi vitae purus. Nullam auctor sapien sit amet ante ornare, vel porta sapien maximus. Ut pharetra tempus volutpat."
-                            )
-                          ])
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ])
-          ])
-        ],
-        1
-      )
-    ])
-  ])
+  return _vm.mission !== null
+    ? _c("div", { staticClass: "container mx-auto h-full" }, [
+        _c(
+          "div",
+          {
+            staticClass: "w-full text-center mt-16",
+            class: { "text-white": _vm.mission.banner }
+          },
+          [
+            _c(
+              "span",
+              {
+                staticClass: "inline-block w-full text-4xl font-bold uppercase"
+              },
+              [_vm._v(_vm._s(_vm.mission.name))]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "inline-block w-full text-lg font-semibold uppercase mt-2"
+              },
+              [_vm._v("By " + _vm._s(_vm.mission.user.name))]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "bg-off-white h-full rounded-t shadow-lg mt-12" },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "bg-white inline-block w-full h-16 rounded-t border-b text-center"
+              },
+              _vm._l(_vm.tabs, function(tab, index) {
+                return _c("router-link", {
+                  key: index,
+                  staticClass:
+                    "mission-tab inline-block text-center font-semibold px-8 py-6 uppercase text-sm",
+                  class: { active: _vm.activeTab === tab.uri },
+                  attrs: {
+                    to: "/hub/missions/" + _vm.mission.ref + "/" + tab.uri
+                  },
+                  domProps: { textContent: _vm._s(tab.text) }
+                })
+              })
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "inline-block w-full p-10" },
+              [
+                _c("mission-" + _vm.activeTab, {
+                  tag: "component",
+                  attrs: { mission: _vm.mission }
+                })
+              ],
+              1
+            )
+          ]
+        )
+      ])
+    : _vm._e()
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full text-center text-white mt-16" }, [
-      _c(
-        "span",
-        { staticClass: "inline-block w-full text-4xl font-bold uppercase" },
-        [_vm._v("Mission Name")]
-      ),
-      _vm._v(" "),
-      _c(
-        "span",
-        {
-          staticClass:
-            "inline-block w-full text-lg font-semibold uppercase mt-2"
-        },
-        [_vm._v("By Author")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-65fc68ca", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7ec0ef5b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/mission/AAR.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("grid", { attrs: { "auto-rows": "min-content", gap: "2rem" } }, [
+        _c("div", [
+          _c(
+            "div",
+            { staticClass: "bg-white shadow-lg rounded-xl py-2 pb-6 ml-11" },
+            [
+              _c(
+                "grid",
+                { attrs: { "template-columns": "5rem 1fr" } },
+                [
+                  _c("div", {
+                    staticClass:
+                      "-ml-12 rounded-full border-5 border-off-white w-18 h-18 bg-grey"
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "-ml-10 py-4 text-lg font-bold" }, [
+                    _vm._v("Author")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "grid-child",
+                    {
+                      staticClass: "inline-block w-full px-4 pr-9 ml-3 -mt-8",
+                      attrs: { "column-start": "1", "column-end": "3" }
+                    },
+                    [
+                      _c("p", [
+                        _vm._v(
+                          "Etiam id est quis nisi vestibulum molestie. Nunc sit amet consectetur dui. Aliquam vestibulum odio sed urna dapibus laoreet. Nunc nec eros vel tellus ultrices porta a sed nulla. Proin at lorem metus. Integer dignissim mauris sed nisi accumsan sodales. Proin iaculis sollicitudin ipsum, mollis ultricies mauris dignissim convallis. Mauris malesuada cursus arcu, quis hendrerit metus interdum vel. Praesent faucibus ex placerat, porta erat eget, dapibus diam."
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v(
+                          "Aenean consequat nec purus quis tempus. Praesent finibus ultrices sapien, in pretium libero iaculis sed. In mollis mi non pharetra feugiat. Cras consectetur, enim in venenatis fringilla, elit lacus tempor ipsum, vel condimentum magna ligula et lectus. Maecenas aliquam augue id dolor auctor, et viverra ex hendrerit. Etiam lacinia justo sit amet metus sagittis, eget iaculis erat elementum. Donec elementum ipsum sit amet faucibus malesuada. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec molestie, velit sit amet efficitur ultrices, est tortor fringilla urna, non condimentum dui nisi vitae purus. Nullam auctor sapien sit amet ante ornare, vel porta sapien maximus. Ut pharetra tempus volutpat."
+                        )
+                      ])
+                    ]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7ec0ef5b", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-c86afe22\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/mission/Briefing.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "grid",
+    { attrs: { "template-columns": "0.15fr 0.85fr" } },
+    [
+      _c(
+        "div",
+        { staticClass: "pt-4" },
+        _vm._l(_vm.factions, function(faction, index) {
+          return _c("button", {
+            key: index,
+            class: {
+              "py-2": true,
+              "w-full": true,
+              uppercase: true,
+              "text-left": true,
+              "no-underline": true,
+              "inline-block": true,
+              "font-semibold": true,
+              "cursor-pointer": true,
+              "hover:opacity-100": true,
+              "opacity-50": _vm.activeFaction.name !== faction.name,
+              "opacity-100": _vm.activeFaction.name === faction.name
+            },
+            domProps: { textContent: _vm._s(faction.name) },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.activeFaction = faction
+              }
+            }
+          })
+        })
+      ),
+      _vm._v(" "),
+      _c(
+        "grid",
+        {
+          staticClass: "bg-white rounded shadow-lg p-6",
+          attrs: { "auto-rows": "", gap: "2rem" }
+        },
+        _vm._l(_vm.activeFaction.sections, function(section, index) {
+          return _c(
+            "div",
+            { key: index },
+            [
+              _c("h4", { staticClass: "mb-2" }, [
+                _vm._v(_vm._s(_vm.startCase(index)))
+              ]),
+              _vm._v(" "),
+              _vm._l(section, function(line, index) {
+                return _c("p", {
+                  key: index,
+                  class: {
+                    "mb-0": _vm.startsWith(line, "-")
+                  },
+                  domProps: { innerHTML: _vm._s(line) }
+                })
+              })
+            ],
+            2
+          )
+        })
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c86afe22", module.exports)
   }
 }
 
@@ -34341,12 +34563,12 @@ var app = new Vue({
     },
     router: new VueRouter({
         mode: 'history',
-        routes: [{ name: 'Index', path: '/hub', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'Library', path: '/hub/missions', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'Mission', path: '/hub/missions/example', component: __WEBPACK_IMPORTED_MODULE_2__components_mission_Index_vue___default.a }]
+        routes: [{ name: 'index', path: '/hub', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'library', path: '/hub/missions', component: __WEBPACK_IMPORTED_MODULE_1__components_mission_Library_vue___default.a }, { name: 'mission', path: '/hub/missions/:ref', component: __WEBPACK_IMPORTED_MODULE_2__components_mission_Index_vue___default.a }, { name: 'mission-tab', path: '/hub/missions/:ref/:tab', component: __WEBPACK_IMPORTED_MODULE_2__components_mission_Index_vue___default.a }]
     }),
 
     created: function created() {
         this.$router.beforeEach(function (to, from, next) {
-            if (from.name === 'Mission' && to.component !== 'Mission') {
+            if (from.name === 'mission' && to.component !== 'mission') {
                 Events.fire('banner', null);
                 return next();
             }
@@ -34549,6 +34771,102 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-130ab5e2", Component.options)
   } else {
     hotAPI.reload("data-v-130ab5e2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/mission/AAR.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/AAR.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-7ec0ef5b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/mission/AAR.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\mission\\AAR.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7ec0ef5b", Component.options)
+  } else {
+    hotAPI.reload("data-v-7ec0ef5b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/mission/Briefing.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/mission/Briefing.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-c86afe22\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/mission/Briefing.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\mission\\Briefing.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c86afe22", Component.options)
+  } else {
+    hotAPI.reload("data-v-c86afe22", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

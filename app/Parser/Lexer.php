@@ -294,7 +294,7 @@ class Lexer
 
         $this->give();
 
-        return $this->pushToken($this->tokens['ident'], strtolower($output));
+        return $this->pushToken($this->tokens['ident'], camel_case($output));
     }
 
     /**

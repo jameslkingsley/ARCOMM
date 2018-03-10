@@ -21,7 +21,7 @@ class FilesExist extends MissionTest
      *
      * @return boolean
      */
-    public function passes($fail)
+    public function passes($fail, $data)
     {
         $passed = true;
 

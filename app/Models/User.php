@@ -52,4 +52,14 @@ class User extends Authenticatable
             }
         }));
     }
+
+    /**
+     * Gets the user's missions.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function missions()
+    {
+        return $this->hasMany(Mission::class);
+    }
 }

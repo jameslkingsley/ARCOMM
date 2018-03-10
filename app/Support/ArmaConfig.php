@@ -31,7 +31,9 @@ class ArmaConfig
     {
         $this->contents = $this->clean($contents);
 
-        $this->parse();
+        $this->parsed = $this->compile(
+            (new Text($this->contents))->root
+        );
     }
 
     /**
@@ -51,13 +53,13 @@ class ArmaConfig
     }
 
     /**
-     * Parses the config into PHP.
+     * Parses the given config into PHP.
      *
-     * @return void
+     * @return array
      */
-    public function parse()
+    public static function parse($source)
     {
-        $this->parsed = $this->compile((new Text($this->contents))->root);
+        return (new static($source))->toArray();
     }
 
     /**

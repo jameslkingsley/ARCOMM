@@ -14,15 +14,16 @@ const app = new Vue({
     router: new VueRouter({
         mode: 'history',
         routes: [
-            { name: 'Index', path: '/hub', component: Missions },
-            { name: 'Library', path: '/hub/missions', component: Missions },
-            { name: 'Mission', path: '/hub/missions/example', component: Mission },
+            { name: 'index', path: '/hub', component: Missions },
+            { name: 'library', path: '/hub/missions', component: Missions },
+            { name: 'mission', path: '/hub/missions/:ref', component: Mission },
+            { name: 'mission-tab', path: '/hub/missions/:ref/:tab', component: Mission },
         ]
     }),
 
     created() {
         this.$router.beforeEach((to, from, next) => {
-            if (from.name === 'Mission' && to.component !== 'Mission') {
+            if (from.name === 'mission' && to.component !== 'mission') {
                 Events.fire('banner', null);
                 return next();
             }

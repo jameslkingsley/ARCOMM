@@ -15,18 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test/{file}', function (string $file) {
-    $contents = file_get_contents(__DIR__ . "/../tests/ARC_COOP_Valid_K.Malden/$file");
-
-    $data = new \App\Support\ArmaConfig($contents);
-
-    return $data->toArray();
-});
-
 Route::get('/hub', 'HubController@index');
 Route::get('/hub/{page}', 'HubController@index');
 Route::get('/hub/{page}/{subpage}', 'HubController@index');
+Route::get('/hub/{page}/{subpage}/{tab}', 'HubController@index');
 
+Route::get('/api/mission', 'API\MissionController@index');
+Route::get('/api/mission/{mission}', 'API\MissionController@show');
 Route::post('/api/mission', 'API\MissionController@store');
 
 Route::get('/auth', 'Auth\SteamController@handle');

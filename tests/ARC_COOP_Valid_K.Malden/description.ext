@@ -1,0 +1,6 @@
+onLoadName = "Sables Beach";
+onLoadMission = "Cold beach covered with earth and blood.";
+author = "Kingsley";
+
+#include "config.hpp"
+#include "\z\arcore\addons\main\bootstrap.hpp"

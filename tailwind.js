@@ -40,6 +40,7 @@ let colors = {
   'grey-lighter': '#e6ebf1',
   'grey-lightest': '#f5f9fc',
   'white': '#ffffff',
+  'off-white': 'hsla(213, 28%, 98%, 1)',
 
   'brand-lightest': '#F8EAEA',
   'brand-lighter': '#E5ABAB',
@@ -49,9 +50,9 @@ let colors = {
   'brand-darker': '#711A1A',
   'brand-darkest': '#390D0D',
 
-  'tvt': '#f3af1f',
   'coop': '#3aa3ea',
   'preop': '#2cbd72',
+  'adversarial': '#f3af1f',
 
   'line': '#f2f2f2'
 }

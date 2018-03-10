@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Mission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MissionUploadRequest;
@@ -15,7 +16,9 @@ class MissionController extends Controller
      */
     public function index()
     {
-        //
+        return Mission::orderBy('created_at', 'desc')
+            ->with('user', 'map')
+            ->get();
     }
 
     /**
@@ -45,9 +48,9 @@ class MissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Mission $mission)
     {
-        //
+        return $mission->load('user', 'map');
     }
 
     /**

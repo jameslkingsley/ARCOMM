@@ -1,17 +1,11 @@
 <template>
     <div>
-        <grid doubles gap="2rem">
-            <grid thirds gap="2rem">
-                <mission-item>Mission</mission-item>
-                <mission-item>Mission</mission-item>
-                <mission-item>Mission</mission-item>
-            </grid>
-
-            <grid thirds gap="2rem">
-                <mission-item>Mission</mission-item>
-                <mission-item>Mission</mission-item>
-                <mission-item>Mission</mission-item>
-            </grid>
+        <grid template-columns="repeat(6, 16.66666fr)" gap="2rem">
+            <mission-item
+                v-for="(mission, index) in missions"
+                :key="index"
+                :mission="mission">
+            </mission-item>
         </grid>
     </div>
 </template>
@@ -40,12 +34,13 @@
 
         methods: {
             fetch() {
-                return ajax.get('/api/mission').then(r => (this.missions = r.data));
+                return ajax.get('/api/mission')
+                    .then(r => (this.missions = r.data));
             }
         },
 
         created() {
-            //
+            this.fetch();
         }
     };
 </script>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Map;
+use App\Models\Mission;
 use App\Tests\FilesExist;
 use App\Tests\ValidSyntax;
 use App\Tests\LoadoutsExcludeACRE;
@@ -58,6 +60,20 @@ class MissionUploadRequest extends FormRequest
     public $key;
 
     /**
+     * Class name of the map.
+     *
+     * @var string
+     */
+    public $mapName;
+
+    /**
+     * Game mode of the mission.
+     *
+     * @var string
+     */
+    public $mode;
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -98,15 +114,52 @@ class MissionUploadRequest extends FormRequest
         $this->store();
         $this->unpack();
 
-        $errors = $this->runTests();
+        try {
+            // If there are any strict errors
+            // an exception will be thrown.
+            $tests = $this->runTests();
 
-        if (empty($errors)) {
-            return response(200);
-        } else {
-            return response()->json([
-                'errors' => $errors
-            ]);
+            return $this->createRecord($tests->validSyntax->data);
+        } catch (\Exception $error) {
+            throw $error;
         }
+    }
+
+    /**
+     * Gets the map model for the mission.
+     *
+     * @return \App\Models\Map
+     */
+    public function map()
+    {
+        return Map::firstOrCreate(
+            // Search by this key
+            ['key' => $this->mapName],
+
+            // Add these if creating
+            ['name' => $this->mapName]
+        );
+    }
+
+    /**
+     * Creates the database mission record.
+     *
+     * @return Mission
+     */
+    public function createRecord($configs)
+    {
+        return auth()->user()->missions()->save(
+            new Mission([
+                'ref' => $this->key,
+                'map_id' => $this->map()->id,
+                'mode' => $this->mode,
+                'name' => $configs->ext->onLoadName,
+                'summary' => $configs->ext->onLoadMission,
+                'ext' => json_encode((array) $configs->ext),
+                'sqm' => json_encode((array) $configs->sqm),
+                'cfg' => json_encode((array) $configs->cfg->cfgARCMF),
+            ])
+        );
     }
 
     /**
@@ -144,8 +197,8 @@ class MissionUploadRequest extends FormRequest
         }
 
         $name = substr($name, 0, -4);
-        $mapName = last(explode('.', $name));
-        $parts = explode('_', rtrim($name, ".{$mapName}"));
+        $this->mapName = last(explode('.', $name));
+        $parts = explode('_', rtrim($name, ".{$this->mapName}"));
 
         if (sizeof($parts) < 3) {
             return false;
@@ -154,6 +207,12 @@ class MissionUploadRequest extends FormRequest
         if (!in_array(strtolower($parts[1]), ['coop', 'co', 'tvt', 'pvp', 'adv', 'preop'])) {
             return false;
         }
+
+        if (in_array(strtolower($parts[1]), ['tvt', 'pvp', 'adv'])) {
+            $parts[1] = 'adversarial';
+        }
+
+        $this->mode = $parts[1];
 
         return true;
     }
@@ -188,26 +247,35 @@ class MissionUploadRequest extends FormRequest
 
     /**
      * Runs through the tests.
+     * Tests will gather any errors and data.
      *
      * @return void
      */
     public function runTests()
     {
-        $errors = [];
+        $result = [];
 
         foreach ($this->testCases as $test) {
+            $classKey = camel_case(class_basename($test));
             $instance = new $test($this);
+            $errors = [];
+            $data = [];
 
             $passes = $instance->passes(function ($message) use (&$errors) {
                 $errors[] = $message;
                 return false;
+            }, function ($d) use (&$data) {
+                $data = $d;
+                return true;
             });
 
             if (!$passes) {
                 throw new \Exception(implode('\n', $errors));
             }
+
+            $result[$classKey] = compact('errors', 'data');
         }
 
-        return $errors;
+        return array_to_object($result);
     }
 }

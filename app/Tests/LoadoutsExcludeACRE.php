@@ -11,7 +11,7 @@ class LoadoutsExcludeACRE extends MissionTest
      *
      * @return boolean
      */
-    public function passes($fail)
+    public function passes($fail, $data)
     {
         if (!file_exists("{$this->fullUnpacked}/loadouts")) {
             return $fail('Missing loadouts directory');

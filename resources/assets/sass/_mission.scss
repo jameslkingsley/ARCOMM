@@ -11,3 +11,10 @@
         transform: scale(1.1);
     }
 }
+
+.mission-tab {
+    &.active {
+        @apply .text-brand;
+        box-shadow: 0 -3px 0 config('colors.brand') inset;
+    }
+}

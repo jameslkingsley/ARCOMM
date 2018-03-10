@@ -11,17 +11,18 @@ class ValidSyntax extends MissionTest
      *
      * @return boolean
      */
-    public function passes($fail)
+    public function passes($fail, $data)
     {
         try {
-            $this->decodeDescription();
-            $this->decodeConfig();
-            $this->decodeMission();
+            $data([
+                'ext' => $this->decodeDescription(),
+                'cfg' => $this->decodeConfig(),
+                'sqm' => $this->decodeMission(),
+            ]);
 
             return true;
         } catch (\Exception $error) {
-            throw $error;
-            // return $fail($error->getMessage());
+            return $fail($error->getMessage());
         }
     }
 
@@ -34,7 +35,7 @@ class ValidSyntax extends MissionTest
     {
         $contents = file_get_contents("{$this->fullUnpacked}/description.ext");
 
-        new ArmaConfig($contents);
+        return ArmaConfig::parse($contents);
     }
 
     /**
@@ -46,7 +47,7 @@ class ValidSyntax extends MissionTest
     {
         $contents = file_get_contents("{$this->fullUnpacked}/config.hpp");
 
-        new ArmaConfig($contents);
+        return ArmaConfig::parse($contents);
     }
 
     /**
@@ -58,6 +59,6 @@ class ValidSyntax extends MissionTest
     {
         $contents = file_get_contents("{$this->fullUnpacked}/mission.sqm");
 
-        new ArmaConfig($contents);
+        return ArmaConfig::parse($contents);
     }
 }

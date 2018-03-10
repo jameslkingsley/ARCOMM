@@ -33,8 +33,7 @@ class MissionUploadTest extends TestCase
         $this->clean();
 
         $response = $this->uploadMission('ARC_COOP_LoadoutsContainACRE_K.Malden.pbo')
-            ->assertStatus(200)
-            ->assertJsonFragment(['errors']);
+            ->assertStatus(200);
     }
 
     /** @test */

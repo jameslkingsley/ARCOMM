@@ -40,10 +40,14 @@
                     .then(r => {
                         event.target.value = null;
                         Events.fire('progress', null);
+                        this.$router.push({
+                            name: 'mission',
+                            params: { ref: r.data.ref }
+                        });
                     })
                     .catch(({ response }) => {
                         event.target.value = null;
-                        console.log(response.message);
+                        console.log(response.data.message);
                     });
             },
 
