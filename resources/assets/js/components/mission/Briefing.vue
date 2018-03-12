@@ -1,5 +1,5 @@
 <template>
-    <grid template-columns="0.15fr 0.85fr">
+    <grid template-columns="0.2fr 0.8fr">
         <div class="pt-4">
             <button
                 :key="index"

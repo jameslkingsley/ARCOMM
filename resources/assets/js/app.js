@@ -8,9 +8,19 @@ import Mission from './components/mission/Index.vue';
 Vue.component('grid', require('./components/Grid.vue'));
 Vue.component('grid-child', require('./components/GridChild.vue'));
 
+Vue.filter('date', (value, format = 'Do MMMM YYYY') => {
+    return moment(value).format(format);
+});
+
 const app = new Vue({
     el: '#app',
+
     render: h => h(App),
+
+    data: {
+        progress: null
+    },
+
     router: new VueRouter({
         mode: 'history',
         routes: [

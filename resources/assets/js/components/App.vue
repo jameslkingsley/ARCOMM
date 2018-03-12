@@ -49,7 +49,6 @@
 
         data() {
             return {
-                barProgress: null,
                 bannerImage: null,
                 user: window.App.user,
                 pages: [
@@ -70,10 +69,10 @@
             },
 
             accentBarStyle() {
-                if (this.barProgress === null) return null;
+                if (this.$root.progress === null) return null;
 
                 return {
-                    width: `${this.barProgress}%`
+                    width: `${this.$root.progress}%`
                 };
             }
         },
@@ -84,7 +83,6 @@
 
         created() {
             Events.listen('banner', e => (this.bannerImage = e));
-            Events.listen('progress', e => (this.barProgress = e));
         }
     };
 </script>

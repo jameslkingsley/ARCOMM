@@ -615,6 +615,7 @@ body {
   color: #525f7f;
   background-color: #e6ebf1;
   height: 100%;
+  line-height: 1.5;
 }
 
 html header,
@@ -649,6 +650,10 @@ body nav a:active {
 html main,
 body main {
   height: calc(100% - 64px);
+}
+
+button {
+  color: #525f7f;
 }
 
 a {

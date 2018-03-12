@@ -22,24 +22,20 @@
 
         methods: {
             upload(event) {
+                let root = this.$root;
                 let data = new FormData();
                 data.append('file', this.$refs.file.files[0]);
 
                 ajax
                     .post('/api/mission', data, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        },
+                        headers: { 'Content-Type': 'multipart/form-data' },
                         onUploadProgress(e) {
-                            Events.fire(
-                                'progress',
-                                Math.floor(e.loaded * 100 / e.total)
-                            );
+                            root.progress = Math.floor(e.loaded * 100 / e.total);
                         }
                     })
                     .then(r => {
                         event.target.value = null;
-                        Events.fire('progress', null);
+
                         this.$router.push({
                             name: 'mission',
                             params: { ref: r.data.ref }

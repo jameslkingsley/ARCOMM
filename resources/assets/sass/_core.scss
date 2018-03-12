@@ -3,7 +3,7 @@
 }
 
 html, body {
-    @apply .font-sans .text-base .text-grey .bg-grey-lighter .h-full;
+    @apply .font-sans .text-base .text-grey .bg-grey-lighter .h-full .leading-normal;
 
     header, nav {
         color: inherit;
@@ -20,6 +20,10 @@ html, body {
     main {
         height: calc(100% - 64px);
     }
+}
+
+button {
+    @apply .text-grey;
 }
 
 a {

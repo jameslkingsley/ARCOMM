@@ -5,7 +5,7 @@
             <span class="inline-block w-full text-lg font-semibold uppercase mt-2">By {{ mission.user.name }}</span>
         </div>
 
-        <div class="bg-off-white h-full rounded-t shadow-lg mt-12">
+        <div class="bg-off-white h-full rounded-t shadow mt-12">
             <div class="bg-white inline-block w-full h-16 rounded-t border-b text-center">
                 <router-link
                     :key="index"
@@ -13,11 +13,11 @@
                     v-for="(tab, index) in tabs"
                     :class="{ 'active': activeTab === tab.uri }"
                     :to="`/hub/missions/${mission.ref}/${tab.uri}`"
-                    class="mission-tab inline-block text-center font-semibold px-8 py-6 uppercase text-sm">
+                    class="mission-tab inline-block text-center font-semibold px-8 py-6 uppercase text-sm leading-none h-full">
                 </router-link>
             </div>
 
-            <div class="inline-block w-full p-10">
+            <div class="inline-block w-full p-8">
                 <component :is="`mission-${activeTab}`" :mission="mission"></component>
             </div>
         </div>
@@ -26,6 +26,7 @@
 
 <script>
     import MissionAAR from './AAR.vue';
+    import MissionOverview from './Overview.vue';
     import MissionBriefing from './Briefing.vue';
 
     export default {
@@ -35,6 +36,7 @@
 
         components: {
             'mission-aar': MissionAAR,
+            'mission-overview': MissionOverview,
             'mission-briefing': MissionBriefing
         },
 

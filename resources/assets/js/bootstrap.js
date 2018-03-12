@@ -11,6 +11,8 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+window.moment = require('moment');
+
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
