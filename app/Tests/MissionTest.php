@@ -12,13 +12,21 @@ abstract class MissionTest
     protected $request;
 
     /**
+     * Stack of errors and data from previous tests.
+     *
+     * @var object
+     */
+    protected $stack;
+
+    /**
      * Constructor method.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($request, $stack)
     {
         $this->request = $request;
+        $this->stack = $stack;
     }
 
     /**

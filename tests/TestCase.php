@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use App\Models\Mission;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -39,7 +40,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function clean()
     {
-        File::cleanDirectory(storage_path('app/missions'));
+        File::cleanDirectory(storage_path('app/missions_test'));
     }
 
     /**
@@ -49,7 +50,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function uploadMission($name)
     {
-        return $this->post('/api/mission', [
+        $response = $this->post('/api/mission', [
             '_token' => csrf_token(),
             'file' => new UploadedFile(
                 base_path("tests/$name"),
@@ -60,5 +61,9 @@ abstract class TestCase extends BaseTestCase
                 true
             )
         ]);
+
+        optional(Mission::orderBy('created_at', 'desc')->first())->delete();
+
+        return $response;
     }
 }

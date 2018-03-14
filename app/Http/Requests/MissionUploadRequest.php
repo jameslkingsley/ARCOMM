@@ -6,7 +6,10 @@ use App\Models\Map;
 use App\Models\Mission;
 use App\Tests\FilesExist;
 use App\Tests\ValidSyntax;
+use App\Tests\MissionIntelExists;
 use App\Tests\LoadoutsExcludeACRE;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -21,6 +24,7 @@ class MissionUploadRequest extends FormRequest
     protected $testCases = [
         FilesExist::class,
         ValidSyntax::class,
+        MissionIntelExists::class,
         LoadoutsExcludeACRE::class,
     ];
 
@@ -121,6 +125,8 @@ class MissionUploadRequest extends FormRequest
 
             return $this->createRecord($tests->validSyntax->data);
         } catch (\Exception $error) {
+            Storage::deleteDirectory("missions/{$this->key}");
+
             throw $error;
         }
     }
@@ -179,7 +185,8 @@ class MissionUploadRequest extends FormRequest
      */
     public function store()
     {
-        $this->path = $this->file->storeAs("missions/{$this->key}", 'original.pbo');
+        $directory = config('app.env') === 'testing' ? 'missions_test' : 'missions';
+        $this->path = $this->file->storeAs("$directory/{$this->key}", 'original.pbo');
         $this->fullPath = storage_path("app/{$this->path}");
     }
 
@@ -232,14 +239,14 @@ class MissionUploadRequest extends FormRequest
 
         shell_exec("$armake unpack -f {$this->fullPath} $unpacked");
 
-        // $cwd = getcwd();
-        // chdir($unpacked);
+        $cwd = getcwd();
+        chdir($unpacked);
 
         // Debinarize mission.sqm
         // If it's not binned, armake exits gracefully
-        // shell_exec("$armake derapify -f mission.sqm mission.sqm");
+        shell_exec("$armake derapify -f mission.sqm mission.sqm");
 
-        // chdir($cwd);
+        chdir($cwd);
 
         $this->fullUnpacked = $unpacked;
         $this->unpacked = dirname($this->path) . '/unpacked';
@@ -257,7 +264,7 @@ class MissionUploadRequest extends FormRequest
 
         foreach ($this->testCases as $test) {
             $classKey = camel_case(class_basename($test));
-            $instance = new $test($this);
+            $instance = new $test($this, array_to_object($result));
             $errors = [];
             $data = [];
 

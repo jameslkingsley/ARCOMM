@@ -13,7 +13,7 @@ class MissionUploadTest extends TestCase
         $this->clean();
 
         $response = $this->uploadMission('ARC_COOP_Valid_K.Malden.pbo')
-            ->assertStatus(200);
+            ->assertStatus(201);
     }
 
     /** @test */
@@ -27,13 +27,23 @@ class MissionUploadTest extends TestCase
     }
 
     /** @test */
+    public function cant_upload_mission_file_with_missing_mission_intel()
+    {
+        $this->login();
+        $this->clean();
+
+        $response = $this->uploadMission('ARC_COOP_MissingIntel_K.Malden.pbo')
+            ->assertStatus(500);
+    }
+
+    /** @test */
     public function can_upload_mission_file_with_acre_in_loadouts_but_errors_returned()
     {
         $this->login();
         $this->clean();
 
         $response = $this->uploadMission('ARC_COOP_LoadoutsContainACRE_K.Malden.pbo')
-            ->assertStatus(200);
+            ->assertStatus(201);
     }
 
     /** @test */
