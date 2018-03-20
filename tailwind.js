@@ -662,17 +662,17 @@ module.exports = {
   */
 
   shadows: {
-    default:
-      '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)',
-    md: '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
-    lg: '0 7px 14px 0 rgba(50,50,93,.01), 0 3px 6px 0 rgba(0,0,0,.05)',
-    inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
-    button: '0 0 0 1px rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent',
-    'button-hover': '0 0 0 1px rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.1), 0 3px 9px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)',
-    'button-active': '0 0 0 1px rgba(103,114,229,.1), 0 1px 3px rgba(103,114,229,.04), 0 1px 1px rgba(0,0,0,.04), 0 0 0 0 transparent, 0 0 0 0 transparent',
-    input: '0 0 0 1px rgba(50,50,93,.16), 0 0 0 1px rgba(50,151,211,0), 0 0 0 2px rgba(50,151,211,0), 0 1px 1px rgba(0,0,0,.08)',
-    'input-focus': '0 0 0 1px rgba(50,50,93,0), 0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 1px 1px rgba(0,0,0,.08)',
-    none: 'none'
+    'default': '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)',
+    'md': '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
+    'lg': '0 7px 14px 0 rgba(50,50,93,.01), 0 3px 6px 0 rgba(0,0,0,.05)',
+    'xl': '0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05)',
+    'inner': 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
+    'button': '0 0 0 0 rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent',
+    'button-hover': '0 0 0 0 rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.1), 0 3px 9px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)',
+    'button-active': '0 0 0 0 rgba(103,114,229,.1), 0 1px 3px rgba(103,114,229,.04), 0 1px 1px rgba(0,0,0,.04), 0 0 0 0 transparent, 0 0 0 0 transparent',
+    'input': '0 0 0 0 rgba(50,50,93,.16), 0 0 0 1px rgba(50,151,211,0), 0 0 0 2px rgba(50,151,211,0), 0 1px 1px rgba(0,0,0,.08)',
+    'input-focus': '0 0 0 0 rgba(50,50,93,0), 0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 1px 1px rgba(0,0,0,.08)',
+    'none': 'none'
   },
 
 

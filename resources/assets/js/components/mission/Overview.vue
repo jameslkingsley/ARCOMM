@@ -16,6 +16,14 @@
 
         <div :style="boxStyles" :class="boxClasses">
             <span class="inline-block w-full text-lg font-medium mb-1">Published {{ mission.created_at | fromnow }}</span>
+
+            <span v-if="mission.last_played" class="inline-block w-full">
+                Last played {{ mission.last_played | fromnow }}
+            </span>
+
+            <span v-else class="inline-block w-full">
+                Mission has not been played in an operation yet! Soon&trade;
+            </span>
         </div>
     </grid>
 </template>

@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\Commentable;
 use App\Traits\BelongsToUser;
+use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Mission extends Model
+class Mission extends Model implements HasMedia
 {
-    use BelongsToUser;
+    use Commentable,
+        HasMediaTrait,
+        BelongsToUser;
 
     /**
      * Guarded attributes.
@@ -37,6 +43,15 @@ class Mission extends Model
     ];
 
     /**
+     * Appended attributes.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'banner'
+    ];
+
+    /**
      * Get the route key for the model.
      *
      * @return string
@@ -44,6 +59,44 @@ class Mission extends Model
     public function getRouteKeyName()
     {
         return 'ref';
+    }
+
+    /**
+     * Registers the media collections for media library.
+     *
+     * @return void
+     */
+    public function registerMediaCollections()
+    {
+        $this->addMediaCollection('banner')
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(512)
+                    ->height(512);
+            });
+
+        $this->addMediaCollection('images')
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(512)
+                    ->height(512);
+            });
+    }
+
+    /**
+     * Gets the mission's banner image url.
+     *
+     * @return array
+     */
+    public function getBannerAttribute()
+    {
+        return [
+            'full' => $this->getFirstMediaUrl('banner'),
+            'thumb' => $this->getFirstMediaUrl('banner', 'thumb'),
+        ];
     }
 
     /**
@@ -94,5 +147,29 @@ class Mission extends Model
     public function verifiedBy()
     {
         return $this->belongsTo(User::class, 'id', 'verified_by');
+    }
+
+    /**
+     * Gets the mission after-action reports.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function afterActionReports()
+    {
+        return $this->comments()
+            ->whereCollection(null)
+            ->orderBy('published_at');
+    }
+
+    /**
+     * Gets the mission notes.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notes()
+    {
+        return $this->comments()
+            ->whereCollection('notes')
+            ->orderBy('published_at');
     }
 }

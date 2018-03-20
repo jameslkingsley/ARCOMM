@@ -604,7 +604,8 @@ button,
   cursor: pointer;
 }
 
-* {
+a,
+button {
   outline: 0 !important;
 }
 
@@ -652,6 +653,10 @@ body main {
   height: calc(100% - 64px);
 }
 
+body {
+  overflow-y: scroll;
+}
+
 button {
   color: #525f7f;
 }
@@ -689,12 +694,92 @@ p:last-of-type {
   transition: all .15s ease;
 }
 
+input,
+textarea,
+select {
+  border-style: none;
+  background-color: #fff;
+  border-radius: .25rem;
+  -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+          box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+  color: #525f7f;
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 7px 13px;
+  -webkit-transition: color .08s ease-in, -webkit-box-shadow .08s ease-in;
+  transition: color .08s ease-in, -webkit-box-shadow .08s ease-in;
+  transition: box-shadow .08s ease-in, color .08s ease-in;
+  transition: box-shadow .08s ease-in, color .08s ease-in, -webkit-box-shadow .08s ease-in;
+}
+
+input[type="radio"],
+input[type="checkbox"],
+textarea[type="radio"],
+textarea[type="checkbox"],
+select[type="radio"],
+select[type="checkbox"] {
+  border-style: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  color: #525f7f;
+  width: auto;
+  width: 18px;
+  height: 18px;
+}
+
+input[type="radio"]:focus,
+input[type="checkbox"]:focus,
+textarea[type="radio"]:focus,
+textarea[type="checkbox"]:focus,
+select[type="radio"]:focus,
+select[type="checkbox"]:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+          box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+}
+
+input.plain,
+textarea.plain,
+select.plain {
+  border-style: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+input.plain:focus,
+textarea.plain:focus,
+select.plain:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+textarea {
+  min-height: 8rem;
+}
+
+label {
+  text-transform: uppercase;
+  opacity: .5;
+  font-size: .75rem;
+  font-weight: 600;
+  padding-bottom: .25rem;
+  display: inline-block;
+  width: 100%;
+}
+
 .btn {
   background-color: #fff;
   color: #525f7f;
   font-weight: 600;
-  -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
-          box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+          box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
   padding-top: .5rem;
   padding-bottom: .5rem;
   padding-left: .75rem;
@@ -706,13 +791,13 @@ p:last-of-type {
 }
 
 .btn:hover {
-  -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
 }
 
 .btn:active {
-  -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
-          box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+          box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
 }
 
 .btn[disabled],
@@ -737,6 +822,14 @@ p:last-of-type {
 }
 
 .btn.btn-lg {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-size: .875rem;
+}
+
+.btn.btn-xl {
   padding-top: 1rem;
   padding-bottom: 1rem;
   padding-left: 2rem;
@@ -747,6 +840,10 @@ p:last-of-type {
 .btn.btn-primary {
   background-color: #bd2c2c;
   color: #fff;
+}
+
+.btn.btn-primary:active {
+  background-color: #aa2828;
 }
 
 .btn .material-icons {
@@ -3707,34 +3804,39 @@ p:last-of-type {
           box-shadow: 0 7px 14px 0 rgba(50, 50, 93, .01), 0 3px 6px 0 rgba(0, 0, 0, .05);
 }
 
+.shadow-xl {
+  -webkit-box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+          box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+}
+
 .shadow-inner {
   -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
           box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
 }
 
 .shadow-button {
-  -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
-          box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+          box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
 }
 
 .shadow-button-hover {
-  -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
-          box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+          box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
 }
 
 .shadow-button-active {
-  -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
-          box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+          box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
 }
 
 .shadow-input {
-  -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
-          box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+          box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
 }
 
 .shadow-input-focus {
-  -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
-          box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+  -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+          box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
 }
 
 .shadow-none {
@@ -7205,34 +7307,39 @@ p:last-of-type {
             box-shadow: 0 7px 14px 0 rgba(50, 50, 93, .01), 0 3px 6px 0 rgba(0, 0, 0, .05);
   }
 
+  .sm\:shadow-xl {
+    -webkit-box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+            box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+  }
+
   .sm\:shadow-inner {
     -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
   }
 
   .sm\:shadow-button {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
   }
 
   .sm\:shadow-button-hover {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
   }
 
   .sm\:shadow-button-active {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
   }
 
   .sm\:shadow-input {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .sm\:shadow-input-focus {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .sm\:shadow-none {
@@ -10696,34 +10803,39 @@ p:last-of-type {
             box-shadow: 0 7px 14px 0 rgba(50, 50, 93, .01), 0 3px 6px 0 rgba(0, 0, 0, .05);
   }
 
+  .md\:shadow-xl {
+    -webkit-box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+            box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+  }
+
   .md\:shadow-inner {
     -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
   }
 
   .md\:shadow-button {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
   }
 
   .md\:shadow-button-hover {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
   }
 
   .md\:shadow-button-active {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
   }
 
   .md\:shadow-input {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .md\:shadow-input-focus {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .md\:shadow-none {
@@ -14187,34 +14299,39 @@ p:last-of-type {
             box-shadow: 0 7px 14px 0 rgba(50, 50, 93, .01), 0 3px 6px 0 rgba(0, 0, 0, .05);
   }
 
+  .lg\:shadow-xl {
+    -webkit-box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+            box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+  }
+
   .lg\:shadow-inner {
     -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
   }
 
   .lg\:shadow-button {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
   }
 
   .lg\:shadow-button-hover {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
   }
 
   .lg\:shadow-button-active {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
   }
 
   .lg\:shadow-input {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .lg\:shadow-input-focus {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .lg\:shadow-none {
@@ -17678,34 +17795,39 @@ p:last-of-type {
             box-shadow: 0 7px 14px 0 rgba(50, 50, 93, .01), 0 3px 6px 0 rgba(0, 0, 0, .05);
   }
 
+  .xl\:shadow-xl {
+    -webkit-box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+            box-shadow: 0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05);
+  }
+
   .xl\:shadow-inner {
     -webkit-box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .06);
   }
 
   .xl\:shadow-button {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .07), 0 1px 2px 0 rgba(0, 0, 0, .08), 0 0 0 0 transparent;
   }
 
   .xl\:shadow-button-hover {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
   }
 
   .xl\:shadow-button-active {
-    -webkit-box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
-            box-shadow: 0 0 0 1px rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
+            box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 1px 3px rgba(103, 114, 229, .04), 0 1px 1px rgba(0, 0, 0, .04), 0 0 0 0 transparent, 0 0 0 0 transparent;
   }
 
   .xl\:shadow-input {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, .16), 0 0 0 1px rgba(50, 151, 211, 0), 0 0 0 2px rgba(50, 151, 211, 0), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .xl\:shadow-input-focus {
-    -webkit-box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
-            box-shadow: 0 0 0 1px rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+    -webkit-box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
+            box-shadow: 0 0 0 0 rgba(50, 50, 93, 0), 0 0 0 1px rgba(50, 151, 211, .2), 0 0 0 2px rgba(50, 151, 211, .25), 0 1px 1px rgba(0, 0, 0, .08);
   }
 
   .xl\:shadow-none {

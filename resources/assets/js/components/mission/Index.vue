@@ -9,16 +9,16 @@
             <div class="bg-white inline-block w-full h-16 rounded-t border-b text-center">
                 <router-link
                     :key="index"
-                    v-text="tab.text"
-                    v-for="(tab, index) in tabs"
-                    :class="{ 'active': activeTab === tab.uri }"
-                    :to="`/hub/missions/${mission.ref}/${tab.uri}`"
+                    v-text="route.name"
+                    v-for="(route, index) in routes"
+                    :class="{ 'active': selected.path === route.path }"
+                    :to="route.path"
                     class="mission-tab inline-block text-center font-semibold px-8 py-6 uppercase text-sm leading-none h-full">
                 </router-link>
             </div>
 
             <div class="inline-block w-full p-8">
-                <component :is="`mission-${activeTab}`" :mission="mission"></component>
+                <router-view :mission="mission"></router-view>
             </div>
         </div>
     </div>
@@ -43,50 +43,60 @@
         data() {
             return {
                 mission: null,
-                activeTab: 'overview'
+                selected: optional()
             };
         },
 
         computed: {
-            tabs() {
-                return [
-                    { text: 'Overview', uri: 'overview' },
-                    { text: 'Briefing', uri: 'briefing' },
-                    { text: 'After-Action Report', uri: 'aar' },
-                    { text: 'Media', uri: 'media' },
-                    { text: 'Addons', uri: 'addons' },
-                    { text: 'Notes', uri: 'notes' },
-                ];
+            routes() {
+                return _.map([
+                    { name: 'Overview', path: 'overview' },
+                    { name: 'Briefing', path: 'briefing' },
+                    { name: 'After-Action Report', path: 'aar' },
+                    { name: 'Media', path: 'media' },
+                    // { name: 'Addons', path: 'addons' },
+                    // { name: 'Notes', path: 'notes' },
+                    { name: 'Settings', path: 'settings' },
+                ], r => {
+                    r.path = `/hub/missions/${this.mission.ref}/${r.path}`;
+                    return r;
+                });
             }
         },
 
         watch: {
             $route(to, from) {
-                if (to.params.ref === from.params.ref) {
-                    return this.activeTab = to.params.tab;
-                }
+                let route = _.find(this.routes, ['path', to.path]);
 
-                this.fetch(to.params.ref).then(r => {
-                    this.activeTab = to.params.tab;
-                });
+                if (route) {
+                    this.selected = route;
+                }
             }
         },
 
         methods: {
-            fetch(ref) {
-                return ajax.get(`/api/mission/${ref || this.$route.params.ref}`)
-                    .then(r => this.mission = r.data);
+            fetch() {
+                return ajax.get(`/api/mission/${this.$route.params.ref}`)
+                    .then(r => this.mission = r.data)
+                    .then(r => {
+                        if (this.mission.banner) {
+                            Events.fire('banner', this.mission.banner.full);
+                        }
+                    });
             }
         },
 
         created() {
-            this.fetch();
+            this.fetch().then(r => {
+                let route = _.find(this.routes, ['path', this.$route.path]);
+                this.selected = route ? route : this.routes[0];
 
-            if ('tab' in this.$route.params) {
-                this.activeTab = this.$route.params.tab;
-            }
+                if (this.mission.banner) {
+                    Events.fire('banner', this.mission.banner.full);
+                }
+            });
 
-            // Events.fire('banner', '');
+            Events.listen('fetch-mission', this.fetch);
         }
     };
 </script>

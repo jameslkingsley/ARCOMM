@@ -25,6 +25,15 @@ window.random = a => {
     return a[Math.floor((Math.random() * a.length))];
 }
 
+window.opt = window.optional = object => {
+    object = object || {};
+    return new Proxy(object || {}, {
+        get(target, name) {
+            return name in target ? target[name] : null;
+        }
+    });
+};
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

@@ -5,20 +5,23 @@ namespace App\Http\Controllers\API;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MissionUploadRequest;
+use Spatie\MediaLibrary\Models\Media;
 
-class MissionController extends Controller
+class MissionMediaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Mission $mission)
     {
-        return Mission::orderBy('created_at', 'desc')
-            ->with('user', 'map')
-            ->get();
+        return $mission->getMedia('images')->transform(function (Media $media) {
+            return [
+                'full_url' => $media->getUrl(),
+                'thumb_url' => $media->getUrl('thumb'),
+            ];
+        });
     }
 
     /**
@@ -34,12 +37,13 @@ class MissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\MissionUploadRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MissionUploadRequest $request)
+    public function store(Request $request, Mission $mission)
     {
-        return $request->handle();
+        $mission->addMediaFromRequest('image')
+            ->toMediaCollection('images');
     }
 
     /**
@@ -48,9 +52,9 @@ class MissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Mission $mission)
+    public function show($id)
     {
-        return $mission->load('user', 'map', 'afterActionReports', 'notes');
+        //
     }
 
     /**

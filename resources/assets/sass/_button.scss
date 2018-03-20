@@ -26,6 +26,10 @@
     }
 
     &.btn-lg {
+        @apply .py-3 .px-6 .text-sm;
+    }
+
+    &.btn-xl {
         @apply .py-4 .px-8 .text-base;
     }
 
@@ -33,7 +37,7 @@
         @apply .bg-brand .text-white;
 
         &:active {
-            // @apply .bg-brand-dark;
+            @apply .bg-brand-dark;
         }
     }
 

@@ -16,20 +16,14 @@
 
         data() {
             return {
-                banner: random([
-                    'https://arcomm.co.uk/_media/163/20180213011554_1.jpg',
-                    'https://arcomm.co.uk/_media/211/20180224014950_1.jpg',
-                    'https://arcomm.co.uk/_media/55/20180107234956_1.jpg',
-                    'https://arcomm.co.uk/_media/191/20180222184117_1.jpg',
-                    'https://arcomm.co.uk/_media/203/20180222232134_1.jpg'
-                ])
+                //
             };
         },
 
         computed: {
             background() {
                 return {
-                    'background-image': `url(${this.banner})`
+                    'background-image': `url(${this.mission.banner.thumb})`
                 };
             },
 

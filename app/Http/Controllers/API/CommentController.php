@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Mission;
+use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MissionUploadRequest;
 
-class MissionController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,7 @@ class MissionController extends Controller
      */
     public function index()
     {
-        return Mission::orderBy('created_at', 'desc')
-            ->with('user', 'map')
-            ->get();
+        //
     }
 
     /**
@@ -34,32 +30,32 @@ class MissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\MissionUploadRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MissionUploadRequest $request)
+    public function store(Request $request)
     {
-        return $request->handle();
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Mission $mission)
+    public function show(Comment $comment)
     {
-        return $mission->load('user', 'map', 'afterActionReports', 'notes');
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -68,10 +64,10 @@ class MissionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -79,10 +75,10 @@ class MissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comment $comment)
     {
         //
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="h-full">
-        <div v-if="banner" class="z-0 absolute pin-t pin-l pin-r h-golden bg-image shadow-lg" :style="banner">
+        <div v-if="banner" class="z-0 absolute pin-t pin-l pin-r h-screen bg-image shadow-lg" :style="banner">
             <div class="absolute pin bg-black opacity-25"></div>
         </div>
 
@@ -8,9 +8,9 @@
             <span :style="accentBarStyle" class="absolute pin-t pin-l pin-r bg-brand h-1.5 transition"></span>
             <nav class="inline-block w-full p-6 uppercase">
                 <grid thirds>
-                    <a class="inline-block text-left pl-4" href="/hub">
+                    <router-link class="inline-block text-left pl-4" to="/hub">
                         <img class="h-9" src="/images/logo.png">
-                    </a>
+                    </router-link>
 
                     <div class="text-center">
                         <router-link :to="page.url" v-for="(page, index) in pages" :key="index" class="inline-block py-2 px-4 font-semibold">

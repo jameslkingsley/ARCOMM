@@ -3,43 +3,38 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Mission;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MissionUploadRequest;
 
-class MissionController extends Controller
+class MissionCommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Mission $mission)
     {
-        return Mission::orderBy('created_at', 'desc')
-            ->with('user', 'map')
-            ->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $mission->comments->load('user');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\MissionUploadRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MissionUploadRequest $request)
+    public function store(Request $request, Mission $mission)
     {
-        return $request->handle();
+        $attributes = $request->validate([
+            'text' => 'required|min:1',
+            'collection' => 'nullable'
+        ]);
+
+        $mission->comments()->save(
+            new Comment($attributes)
+        );
     }
 
     /**
@@ -48,9 +43,9 @@ class MissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Mission $mission)
+    public function show($id)
     {
-        return $mission->load('user', 'map', 'afterActionReports', 'notes');
+        //
     }
 
     /**

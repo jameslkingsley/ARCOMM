@@ -1,13 +1,18 @@
 require('./bootstrap');
 require('./filters');
 
+Vue.component('grid', require('./components/Grid.vue'));
+Vue.component('grid-child', require('./components/GridChild.vue'));
+
 import App from './components/App.vue';
 
 import Missions from './components/mission/Library.vue';
 import Mission from './components/mission/Index.vue';
-
-Vue.component('grid', require('./components/Grid.vue'));
-Vue.component('grid-child', require('./components/GridChild.vue'));
+import MissionOverview from './components/mission/Overview.vue';
+import MissionBriefing from './components/mission/Briefing.vue';
+import MissionAAR from './components/mission/AAR.vue';
+import MissionMedia from './components/mission/Media.vue';
+import MissionSettings from './components/mission/Settings.vue';
 
 const app = new Vue({
     el: '#app',
@@ -21,21 +26,30 @@ const app = new Vue({
     router: new VueRouter({
         mode: 'history',
         routes: [
-            { name: 'index', path: '/hub', component: Missions },
-            { name: 'library', path: '/hub/missions', component: Missions },
-            { name: 'mission', path: '/hub/missions/:ref', component: Mission },
-            { name: 'mission-tab', path: '/hub/missions/:ref/:tab', component: Mission },
+            { path: '/hub', component: Missions },
+            { path: '/hub/missions', component: Missions },
+            {
+                path: '/hub/missions/:ref',
+                component: Mission,
+                children: [
+                    { path: '', component: MissionOverview },
+                    { path: 'overview', component: MissionOverview },
+                    { path: 'briefing', component: MissionBriefing },
+                    { path: 'aar', component: MissionAAR },
+                    { path: 'media', component: MissionMedia },
+                    { path: 'settings', component: MissionSettings },
+                ]
+            }
         ]
     }),
 
     created() {
         this.$router.beforeEach((to, from, next) => {
-            if (from.name === 'mission' && to.component !== 'mission') {
+            if (to.path.split('/').length <= 3) {
                 Events.fire('banner', null);
-                return next();
             }
 
-            next();
+            return next();
         });
     }
 });

@@ -1,4 +1,4 @@
-* {
+a, button {
     outline: 0 !important;
 }
 
@@ -20,6 +20,10 @@ html, body {
     main {
         height: calc(100% - 64px);
     }
+}
+
+body {
+    overflow-y: scroll;
 }
 
 button {

@@ -1,0 +1,35 @@
+input, textarea, select {
+    @apply .border-none .bg-white .rounded .shadow-input .text-grey .w-full .text-base .leading-normal;
+    padding: 7px 13px;
+    transition: box-shadow .08s ease-in, color .08s ease-in;
+
+    &[type="radio"], &[type="checkbox"] {
+        @apply .border-none .shadow-none .text-grey .w-auto;
+        width: 18px;
+        height: 18px;
+
+        &:focus {
+            @apply .shadow-none;
+        }
+    }
+
+    &:focus {
+        @apply .shadow-input-focus;
+    }
+
+    &.plain {
+        @apply .border-none .shadow-none;
+
+        &:focus {
+            @apply .shadow-none;
+        }
+    }
+}
+
+textarea {
+    min-height: 8rem;
+}
+
+label {
+    @apply .uppercase .opacity-50 .text-xs .font-semibold .pb-1 .inline-block .w-full;
+}
