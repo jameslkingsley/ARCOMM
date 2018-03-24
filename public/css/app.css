@@ -1,4 +1,4 @@
-/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
+@import url(https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800);/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
    ========================================================================== */
@@ -790,6 +790,11 @@ label {
   text-transform: uppercase;
 }
 
+.btn.btn-hero {
+  text-transform: none;
+  border-radius: 9999px;
+}
+
 .btn:hover {
   -webkit-box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
           box-shadow: 0 0 0 0 rgba(103, 114, 229, .1), 0 2px 5px 0 rgba(103, 114, 229, .1), 0 3px 9px 0 rgba(103, 114, 229, .08), 0 1px 1.5px 0 rgba(0, 0, 0, .08), 0 1px 2px 0 rgba(0, 0, 0, .08);
@@ -876,6 +881,12 @@ label {
   color: #bd2c2c;
   -webkit-box-shadow: 0 -3px 0 #bd2c2c inset;
           box-shadow: 0 -3px 0 #bd2c2c inset;
+}
+
+.blueimp-gallery > .next,
+.blueimp-gallery > .prev {
+  background: transparent !important;
+  border: none !important;
 }
 
 .container {

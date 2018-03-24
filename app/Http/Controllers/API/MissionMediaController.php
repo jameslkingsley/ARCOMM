@@ -18,6 +18,7 @@ class MissionMediaController extends Controller
     {
         return $mission->getMedia('images')->transform(function (Media $media) {
             return [
+                'id' => $media->id,
                 'full_url' => $media->getUrl(),
                 'thumb_url' => $media->getUrl('thumb'),
             ];

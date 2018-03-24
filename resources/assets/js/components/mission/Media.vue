@@ -1,23 +1,28 @@
 <template>
     <div>
-        <upload class="text-right" name="image" :url="imageUploadUrl" @success="fetch">
+        <upload class="text-right" name="image" :url="imageUploadUrl" :options="galleryOptions" @success="fetch">
             Upload Image
         </upload>
 
+        <gallery :images="gallery" :index="galleryIndex" @close="galleryIndex = null"></gallery>
+
         <grid class="mt-4" template-columns="repeat(4, 0.25fr)" gap="1rem" auto-rows="min-content">
-            <div v-for="(image, index) in images" :key="index" class="rounded" :style="{
+            <div v-for="(image, index) in images" :key="index" @click="galleryIndex = index" class="rounded relative" :style="{
                 'background-image': `url(${image.thumb_url})`,
                 'background-position': 'center',
                 'background-size': 'cover',
                 'background-repeat': 'no-repeat',
                 'padding-top': '100%'
-            }"></div>
+            }">
+                <button class="absolute pin-t pin-r mt-1 mr-2 text-2xl text-white font-medium" @click.prevent="deleteImage(image.id)">&times;</button>
+            </div>
         </grid>
     </div>
 </template>
 
 <script>
     import Upload from '../helpers/Upload.vue';
+    import Gallery from 'vue-gallery';
 
     export default {
         props: {
@@ -25,18 +30,33 @@
         },
 
         components: {
-            Upload
+            Upload,
+            Gallery
         },
 
         data() {
             return {
-                images: []
+                images: [],
+                galleryIndex: null,
+                galleryOptions: {
+                    closeOnSlideClick: true
+                }
             };
         },
 
         computed: {
             imageUploadUrl() {
                 return `/api/mission/${this.mission.ref}/media`;
+            },
+
+            gallery() {
+                let result = [];
+
+                for (let image of this.images) {
+                    result.push(image.full_url);
+                }
+
+                return result;
             }
         },
 
@@ -44,6 +64,10 @@
             fetch() {
                 ajax.get(`/api/mission/${this.mission.ref}/media`)
                     .then(r => this.images = r.data);
+            },
+
+            deleteImage(id) {
+                //
             }
         },
 

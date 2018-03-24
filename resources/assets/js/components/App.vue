@@ -1,6 +1,6 @@
 <template>
     <div class="h-full">
-        <div v-if="banner" class="z-0 absolute pin-t pin-l pin-r h-screen bg-image shadow-lg" :style="banner">
+        <div v-if="banner" class="z-0 fixed pin-t pin-l pin-r h-screen bg-image shadow-lg" :style="banner">
             <div class="absolute pin bg-black opacity-25"></div>
         </div>
 

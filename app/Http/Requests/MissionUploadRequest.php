@@ -6,6 +6,7 @@ use App\Models\Map;
 use App\Models\Mission;
 use App\Tests\FilesExist;
 use App\Tests\ValidSyntax;
+use App\Tests\NoDuplicateIds;
 use App\Tests\MissionIntelExists;
 use App\Tests\LoadoutsExcludeACRE;
 use Illuminate\Support\Facades\File;
@@ -25,6 +26,7 @@ class MissionUploadRequest extends FormRequest
         FilesExist::class,
         ValidSyntax::class,
         MissionIntelExists::class,
+        NoDuplicateIds::class,
         LoadoutsExcludeACRE::class,
     ];
 

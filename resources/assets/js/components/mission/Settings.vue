@@ -17,10 +17,11 @@
         </div>
 
         <div>
-            <label v-for="(faction, index) in factions" :key="index" class="opacity-100">
-                <input type="checkbox" class="float-left mr-2 mt-1" v-model="faction.checked" @change="lockBriefing">
+            <div v-for="(faction, index) in factions" :key="index" @click.prevent="lockBriefing(faction)" class="inline-block w-full opacity-100 mb-1 cursor-pointer">
+                <i v-show="faction.locked" class="float-left mr-2 material-icons">lock</i>
+                <i v-show="!faction.locked" class="float-left mr-2 material-icons">lock_open</i>
                 <span class="text-base font-normal" v-text="faction.name.toUpperCase()"></span>
-            </label>
+            </div>
         </div>
     </grid>
 </template>
@@ -40,10 +41,10 @@
         data() {
             return {
                 factions: [
-                    { name: 'blufor', checked: false },
-                    { name: 'opfor', checked: false },
-                    { name: 'indfor', checked: false },
-                    { name: 'civilian', checked: false },
+                    { name: 'blufor', locked: false },
+                    { name: 'opfor', locked: false },
+                    { name: 'indfor', locked: false },
+                    { name: 'civilian', locked: false },
                 ]
             };
         },
@@ -59,8 +60,19 @@
                 Events.fire('fetch-mission');
             },
 
-            lockBriefing() {
-                console.log(this.factions);
+            lockBriefing(faction) {
+                faction.locked = !faction.locked;
+                ajax.put(`/api/mission/${this.mission.ref}/briefing`, { factions: this.factions });
+            },
+
+            isLocked(faction) {
+                return this.mission.locked_briefings.indexOf(faction.name.toLowerCase()) !== -1;
+            }
+        },
+
+        created() {
+            for (let faction of this.factions) {
+                faction.locked = this.isLocked(faction);
             }
         }
     }

@@ -1,6 +1,10 @@
 .btn {
     @apply .bg-white .text-grey .font-semibold .shadow-button .py-2 .px-3 .rounded .text-xs .no-underline .uppercase;
 
+    &.btn-hero {
+        @apply .normal-case .rounded-full;
+    }
+
     &:hover {
         @apply .shadow-button-hover;
     }
