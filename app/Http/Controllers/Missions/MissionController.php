@@ -156,6 +156,11 @@ class MissionController extends Controller
                 Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
                 Storage::cloud()->move($old_mission_cloud_zip_dir, "x{$old_mission_cloud_zip_dir}");
 
+                if ($mission->verified && $mission->user_id == $user->id) {
+                    $mission->verified = 0;
+                    $mission->verified_by = null;
+                }
+
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
                 $mission->mode = $details->mode;
