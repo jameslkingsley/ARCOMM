@@ -7,6 +7,8 @@ Route::get('/arma3sync', function () {
     return redirect('https://docs.google.com/document/d/1i-LzCJE0l_7PtOj8WU717mmmzX1U2KaaNGEnj0KzkIw/view');
 });
 
+Route::get('/api/absence', 'API\AbsenceController@index');
+
 //--- Shared Missions
 Route::get('/share/{ref}', 'ShareController@show');
 Route::get('/share/{ref}/{panel}', 'SharePanelController@show');
