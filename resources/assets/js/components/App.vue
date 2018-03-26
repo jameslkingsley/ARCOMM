@@ -4,7 +4,7 @@
             <div class="absolute pin bg-black opacity-25"></div>
         </div>
 
-        <header :class="{ 'text-white': banner !== null }" class="z-10 w-full h-16 relative">
+        <header :class="{ 'text-white': banner !== null }" class="z-20 w-full h-16 relative">
             <span :style="accentBarStyle" class="absolute pin-t pin-l pin-r bg-brand h-1.5 transition"></span>
             <nav class="inline-block w-full p-6 uppercase">
                 <grid thirds>
@@ -29,7 +29,7 @@
             </nav>
         </header>
 
-        <main class="relative z-20 pt-9 px-9">
+        <main class="relative z-10 pt-9 px-9">
             <!-- <transition name="fade"> -->
                 <router-view></router-view>
             <!-- </transition> -->

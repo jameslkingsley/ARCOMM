@@ -23,15 +23,12 @@ class FilesExist extends MissionTest
      */
     public function passes($fail, $data)
     {
-        $passed = true;
-
         foreach ($this->files as $file) {
             if (!file_exists("{$this->fullUnpacked}/$file")) {
-                $fail("Missing $file");
-                $passed = false;
+                return $fail("Missing $file");
             }
         }
 
-        return $passed;
+        return true;
     }
 }

@@ -5,6 +5,10 @@
         <form v-show="false">
             <input type="file" name="file" ref="file" @change="upload">
         </form>
+
+        <modal title="Your mission has a fatal error" v-model="hasError" :btn-complete="false" btn-close="Close">
+            {{ errorMessage }}
+        </modal>
     </div>
 </template>
 
@@ -12,12 +16,10 @@
     export default {
         data() {
             return {
-                file: null
+                file: null,
+                hasError: false,
+                errorMessage: null
             };
-        },
-
-        computed: {
-            //
         },
 
         methods: {
@@ -35,14 +37,12 @@
                     })
                     .then(r => {
                         event.target.value = null;
-
-                        this.$router.push({
-                            name: 'mission',
-                            params: { ref: r.data.ref }
-                        });
+                        this.$router.push(`/hub/missions/${r.data.ref}`);
                     })
                     .catch(({ response }) => {
                         event.target.value = null;
+                        this.errorMessage = response.data.message;
+                        this.hasError = true;
                         console.log(response.data.message);
                     });
             },

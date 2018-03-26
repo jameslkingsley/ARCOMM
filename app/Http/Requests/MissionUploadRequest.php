@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Map;
+use App\Models\Comment;
 use App\Models\Mission;
 use App\Tests\FilesExist;
 use App\Tests\ValidSyntax;
@@ -125,11 +126,42 @@ class MissionUploadRequest extends FormRequest
             // an exception will be thrown.
             $tests = $this->runTests();
 
-            return $this->createRecord($tests->validSyntax->data);
+            $record = $this->createRecord($tests->validSyntax->data);
+
+            $this->createErrorNote($tests, $record);
+
+            return $record;
         } catch (\Exception $error) {
             Storage::deleteDirectory("missions/{$this->key}");
 
             throw $error;
+        }
+    }
+
+    /**
+     * Creates a note if any non-fatal errors were found.
+     *
+     * @return void
+     */
+    public function createErrorNote($tests, $mission)
+    {
+        $errors = collect();
+
+        foreach ($tests as $key => $test) {
+            if (count($test->errors)) {
+                $errors->push($test->errors);
+            }
+        }
+
+        if (!$errors->isEmpty()) {
+            $mission->comments()->save(
+                new Comment([
+                    'text' => $errors->flatten()->map(function ($error) {
+                        return "- $error";
+                    })->implode('<br />'),
+                    'published_at' => now()
+                ])
+            );
         }
     }
 

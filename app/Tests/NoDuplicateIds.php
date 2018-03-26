@@ -11,14 +11,20 @@ class NoDuplicateIds extends MissionTest
      */
     public function passes($fail, $data)
     {
-        $ids = collect();
+        $ids = collect($this->stack->validSyntax->data->sqm->mission->entities)
+            ->map(function ($entity) {
+                if (is_object($entity)) {
+                    return $entity->id;
+                }
 
-        foreach ($this->stack->validSyntax->data->sqm->mission->entities as $key => $entity) {
-            if ($ids->has($entity->id)) {
-                $fail("Entity has a duplicate ID: {$entity->id}");
-            }
+                return null;
+            })
+            ->reject(function ($entity) {
+                return is_null($entity);
+            });
 
-            $ids->push($entity->id);
+        if ($ids->unique()->count() !== $ids->count()) {
+            $fail('Duplicate IDs found in mission.sqm');
         }
 
         return true;

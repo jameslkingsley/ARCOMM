@@ -3,6 +3,7 @@ require('./filters');
 
 Vue.component('grid', require('./components/Grid.vue'));
 Vue.component('grid-child', require('./components/GridChild.vue'));
+Vue.component('modal', require('./components/helpers/Modal.vue'));
 
 import App from './components/App.vue';
 
