@@ -23,7 +23,7 @@
         "chumper/zipper": "1.0.x",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
-        "invisnik/laravel-steam-auth": "^2.3",
+        "invisnik/laravel-steam-auth": "^3.2.1",
         "jameslkingsley/laravel-livedata": "^1.0",
         "jameslkingsley/laravel-mentions": "dev-master",
         "jameslkingsley/laravel-references": "dev-master",
