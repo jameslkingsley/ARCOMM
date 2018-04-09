@@ -63,6 +63,10 @@
     </div>
 </li>
 
+<a href="{{ config('app.donate_url') }}" target="_newtab" class="nav-item nav-link hidden-sm-down">
+    Donate
+</a>
+
 {{-- <a href="https://www.nfoservers.com/donate.pl?force_recipient=1&recipient=fbidude21@yahoo.com" target="_newtab" class="nav-item nav-link">
     Donate
 </a> --}}
