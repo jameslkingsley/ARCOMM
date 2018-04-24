@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Discord\Discord;
 use App\Models\Operations\Operation;
 use App\Models\Missions\Mission;
-use Log;
 
 class DiscordBot extends Command
 {
@@ -43,13 +42,14 @@ class DiscordBot extends Command
     {
         $operation = Operation::nextWeek();
 
-        if (!$operation)
+        if (!$operation) {
             return "I couldn't find an operation for next week. One needs to be created on ARCHUB by an admin.";
+        }
 
         $text = "Next operation is in {$operation->startsIn()}";
 
         if (!$operation->missions->isEmpty()) {
-            $missions = $operation->missions->map(function($item) {
+            $missions = $operation->missions->map(function ($item) {
                 return "**{$item->mission->display_name}**";
             });
 
@@ -85,8 +85,8 @@ class DiscordBot extends Command
             'token' => config('services.discord.token')
         ]);
 
-        $discord->on('ready', function($discord) use($command) {
-            $discord->on('message', function($message, $discord) use($command) {
+        $discord->on('ready', function ($discord) use ($command) {
+            $discord->on('message', function ($message, $discord) use ($command) {
                 try {
                     if (starts_with($message->content, '!')) {
                         $parts = explode(' ', substr($message->content, 1));
@@ -102,17 +102,19 @@ class DiscordBot extends Command
                         return;
                     }
 
-                    $bot_id = '309300058669449217';
+                    $bot_id = '398154552366465044';
                     $rand = mt_rand() / mt_getrandmax();
 
-                    if ($rand > 0.02 && (!str_contains($message, $bot_id) || $message->author->user->id == $bot_id)) return;
+                    if ($rand > 0.02 && (!str_contains($message, $bot_id) || $message->author->user->id == $bot_id)) {
+                        return;
+                    }
 
                     $query = http_build_query([
                         'key' => env('CLEVERBOT_API_KEY'),
                         'input' => $message->content
                     ]);
 
-                    $json = file_get_contents('https://www.cleverbot.com/getreply?'.$query);
+                    $json = file_get_contents('https://www.cleverbot.com/getreply?' . $query);
                     $obj = json_decode($json);
                     $message->channel->sendMessage($obj->output);
                 } catch (Exception $e) {
