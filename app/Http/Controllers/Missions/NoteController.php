@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\MissionNote;
 use App\Models\Missions\Mission;
 use App\Notifications\MissionNoteAdded;
-use App\Models\Portal\User;
-use Notification;
 
 class NoteController extends Controller
 {
@@ -94,17 +92,6 @@ class NoteController extends Controller
         // Discord Message
         $mission->notify(new MissionNoteAdded($note, true));
 
-        $users = User::all()->filter(function($user) use($mission) {
-            return
-                $user->id != auth()->user()->id &&
-                (
-                    $user->hasPermission('mission:notes') ||
-                    $user->id == $mission->user->id
-                );
-        });
-
-        Notification::send($users, new MissionNoteAdded($note));
-
         return view('missions.notes.item', compact('note'));
     }
 
@@ -150,7 +137,9 @@ class NoteController extends Controller
      */
     public function destroy(Mission $mission, MissionNote $note)
     {
-        if (!$note->isMine()) return;
+        if (!$note->isMine()) {
+            return;
+        }
 
         $note->unmention($note->mentions());
 

@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Missions\Mission;
 use App\Models\Missions\MissionComment;
 use App\Notifications\MissionCommentAdded;
-use App\Models\Portal\User;
-use Notification;
 
 class CommentController extends Controller
 {
@@ -54,10 +52,6 @@ class CommentController extends Controller
             $mentions = $comment->mention($request->mentions, false);
 
             if ($comment->published) {
-                if ($mentions) {
-                    $mentions->notify();
-                }
-
                 $mission = Mission::findOrFail($request->mission_id);
                 static::notify($mission, $comment);
 
@@ -134,8 +128,5 @@ class CommentController extends Controller
     {
         // Discord Message
         $mission->notify(new MissionCommentAdded($comment, true));
-
-        $users = User::where('id', '!=', auth()->user()->id)->get();
-        Notification::send($users, new MissionCommentAdded($comment));
     }
 }

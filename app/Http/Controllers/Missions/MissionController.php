@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Missions;
 
-use Notification;
-use App\Models\Portal\User;
 use Illuminate\Http\Request;
 use App\Models\Missions\Mission;
 use App\Http\Controllers\Controller;
@@ -83,15 +81,6 @@ class MissionController extends Controller
 
             // Discord Message
             $mission->notify(new MissionPublished($mission, true));
-
-            $users = User::all()->filter(function ($user) use ($mission) {
-                return
-                    $user->id != auth()->user()->id &&
-                    ($user->hasPermission('mission:notes') ||
-                    $user->id == $mission->user->id);
-            });
-
-            Notification::send($users, new MissionPublished($mission));
 
             return $mission->url();
         }
@@ -229,15 +218,6 @@ class MissionController extends Controller
                 // Discord Message
                 $mission->notify(new MissionUpdated($revision, true));
 
-                $users = User::all()->filter(function ($user) use ($mission) {
-                    return
-                        $user->id != auth()->user()->id &&
-                        ($user->hasPermission('mission:notes') ||
-                        $user->id == $mission->user->id);
-                });
-
-                Notification::send($users, new MissionUpdated($revision));
-
                 return view('missions.show', compact('mission'));
             }
         }
@@ -309,17 +289,6 @@ class MissionController extends Controller
         if ($mission->verified) {
             // Discord Message
             $mission->notify(new MissionVerified($mission, true));
-
-            $users = User::all()->filter(function ($user) use ($mission) {
-                return
-                    $user->id != auth()->user()->id &&
-                    (
-                        $user->hasPermission('mission:verification') ||
-                        $user->id == $mission->user->id
-                    );
-            });
-
-            Notification::send($users, new MissionVerified($mission));
         }
 
         $updated_by = auth()->user()->username;

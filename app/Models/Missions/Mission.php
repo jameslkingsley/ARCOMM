@@ -585,7 +585,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function ext()
     {
-        return json_decode($this->ext_json);
+        return json_decode($this->ext_json ?: '{}');
     }
 
     /**
@@ -595,7 +595,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function sqm()
     {
-        return json_decode($this->sqm_json);
+        return json_decode($this->sqm_json ?: '{}');
     }
 
     /**
@@ -605,7 +605,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function config()
     {
-        return json_decode($this->cfg_json)->cfgarcmf;
+        return json_decode($this->cfg_json ?: '{}')->cfgarcmf;
     }
 
     /**
@@ -804,7 +804,7 @@ class Mission extends Model implements HasMediaConversions
     public function fog()
     {
         return static::computeLessThan(
-            (property_exists($this->sqm()->mission->intel, 'startfog')) ? $this->sqm()->mission->intel->startfog : 0,
+            (property_path_exists($this->sqm(), 'mission.intel.startfog')) ? $this->sqm()->mission->intel->startfog : 0,
             [
                 '' => 0.0,
                 'Light Fog' => 0.1,
@@ -823,7 +823,9 @@ class Mission extends Model implements HasMediaConversions
     public function overcast()
     {
         return static::computeLessThan(
-            $this->sqm()->mission->intel->startweather,
+            property_path_exists($this->sqm(), 'mission.intel.startweather')
+                ? $this->sqm()->mission->intel->startweather
+                : 0,
             [
                 'Clear Skies' => 0.1,
                 'Partly Cloudy' => 0.3,
@@ -840,8 +842,8 @@ class Mission extends Model implements HasMediaConversions
      */
     public function rain()
     {
-        $startRain = (property_exists($this->sqm()->mission->intel, 'startrain')) ? $this->sqm()->mission->intel->startrain : 0;
-        $forecastRain = (property_exists($this->sqm()->mission->intel, 'forecastrain')) ? $this->sqm()->mission->intel->forecastrain : 0;
+        $startRain = (property_path_exists($this->sqm(), 'mission.intel.startrain')) ? $this->sqm()->mission->intel->startrain : 0;
+        $forecastRain = (property_path_exists($this->sqm(), 'mission.intel.forecastrain')) ? $this->sqm()->mission->intel->forecastrain : 0;
         $diff = $forecastRain - $startRain;
 
         return static::computeLessThan(
@@ -905,9 +907,9 @@ class Mission extends Model implements HasMediaConversions
     public function date()
     {
         $date = Carbon::createFromDate(
-            (property_exists($this->sqm()->mission->intel, 'year')) ? abs($this->sqm()->mission->intel->year) : 2000,
-            (property_exists($this->sqm()->mission->intel, 'month')) ? abs($this->sqm()->mission->intel->month) : 1,
-            (property_exists($this->sqm()->mission->intel, 'day')) ? abs($this->sqm()->mission->intel->day) : 1
+            (property_path_exists($this->sqm(), 'mission.intel.year')) ? abs($this->sqm()->mission->intel->year) : 2000,
+            (property_path_exists($this->sqm(), 'mission.intel.month')) ? abs($this->sqm()->mission->intel->month) : 1,
+            (property_path_exists($this->sqm(), 'mission.intel.day')) ? abs($this->sqm()->mission->intel->day) : 1
         );
 
         return $date->format('jS M Y');
@@ -921,8 +923,8 @@ class Mission extends Model implements HasMediaConversions
     public function time()
     {
         $time = Carbon::createFromTime(
-            (property_exists($this->sqm()->mission->intel, 'hour')) ? abs($this->sqm()->mission->intel->hour) : 0,
-            (property_exists($this->sqm()->mission->intel, 'minute')) ? abs($this->sqm()->mission->intel->minute) : 0,
+            (property_path_exists($this->sqm(), 'mission.intel.hour')) ? abs($this->sqm()->mission->intel->hour) : 0,
+            (property_path_exists($this->sqm(), 'mission.intel.minute')) ? abs($this->sqm()->mission->intel->minute) : 0,
             0
         );
 
