@@ -32,7 +32,11 @@
                                     @if ($attendance->present)
                                         <span class="pull-right text-success">PRESENT</span>
                                     @else
-                                        <span class="pull-right text-danger">ABSENT</span>
+                                        @if ($attendance->booked())
+                                            <span class="pull-right text-muted">BOOKED</span>
+                                        @else
+                                            <span class="pull-right text-danger">ABSENT</span>
+                                        @endif
                                     @endif
                                 </span>
                             </li>
