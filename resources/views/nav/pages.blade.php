@@ -18,6 +18,12 @@
     </a>
 @endif
 
+@if (auth()->user()->hasPermission('attendance:view'))
+    <a href="{{ url('/hub/attendance') }}" class="nav-item nav-link hidden-sm-down">
+        Attendance
+    </a>
+@endif
+
 @if (auth()->user()->hasPermission('users:all'))
     <a href="{{ url('/hub/users') }}" class="nav-item nav-link hidden-sm-down">
         Users
