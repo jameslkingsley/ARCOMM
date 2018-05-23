@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Users;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Portal\User;
-use App\Models\Missions\Mission;
+use Illuminate\Http\Request;
 use App\Models\Portal\Attendance;
+use App\Http\Controllers\Controller;
+use App\Models\Operations\Operation;
 
 class AttendanceController extends Controller
 {
@@ -17,7 +17,9 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        $operations = Operation::orderBy('starts_at', 'desc')->take(5)->with('attendances.user')->get();
+
+        return view('attendance.index', compact('operations'));
     }
 
     /**

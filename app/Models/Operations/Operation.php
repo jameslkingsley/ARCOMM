@@ -4,7 +4,7 @@ namespace App\Models\Operations;
 
 use \Carbon\Carbon;
 use App\Models\Portal\User;
-use App\Models\Operations\Absence;
+use App\Models\Portal\Attendance;
 use Illuminate\Database\Eloquent\Model;
 
 class Operation extends Model
@@ -28,6 +28,30 @@ class Operation extends Model
     protected $fillable = [
         'starts_at'
     ];
+
+    /**
+     * Gets all associated attendances.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Gets the actual turnout.
+     *
+     * @return integer|null
+     */
+    public function actualTurnout()
+    {
+        if ($this->attendances->isNotEmpty()) {
+            return $this->attendances->sum('present');
+        }
+
+        return null;
+    }
 
     /**
      * Gets the number of seconds away from the operation start time.
@@ -100,7 +124,7 @@ class Operation extends Model
      */
     public function missionsResolved()
     {
-        return $this->missions->map(function($mission) {
+        return $this->missions->map(function ($mission) {
             return $mission->mission;
         });
     }

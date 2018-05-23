@@ -31,7 +31,9 @@ Route::post('/media/delete', 'MediaController@deletePhoto');
 Route::get('/roster', 'PageController@roster');
 
 //--- Attendance
-Route::resource('/hub/attendance', 'Users\AttendanceController');
+Route::group(['middleware' => 'permission:attendance:view'], function () {
+    Route::resource('/hub/attendance', 'Users\AttendanceController');
+});
 
 //--- Admins
 Route::group(['middleware' => 'permission:apps:all'], function () {
