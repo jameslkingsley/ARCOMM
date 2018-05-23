@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use App\Models\Portal\User;
+
 trait BelongsToUser
 {
     /**
@@ -11,6 +13,6 @@ trait BelongsToUser
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\Portal\User');
+        return $this->belongsTo(User::class);
     }
 }
