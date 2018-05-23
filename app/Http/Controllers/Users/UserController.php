@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Users;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Portal\User;
-use App\Models\Permissions\PermissionUser;
+use Illuminate\Http\Request;
+use App\Models\Portal\SteamAPI;
+use App\Http\Controllers\Controller;
 use App\Models\Permissions\Permission;
+use App\Models\Permissions\PermissionUser;
 
 class UserController extends Controller
 {
@@ -19,8 +20,11 @@ class UserController extends Controller
     {
         $users = User::all();
         $unregistered = User::unregistered();
+        $nonMembers = $users->reject(function ($user) {
+            return collect(SteamAPI::members())->contains($user->steam_id);
+        });
 
-        return view('user.admin.index', compact('users', 'unregistered'));
+        return view('user.admin.index', compact('users', 'unregistered', 'nonMembers'));
     }
 
     /**
@@ -80,7 +84,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         // Delete all permissions
-        PermissionUser::where('user_id', $user->id)->get()->map(function($item) {
+        PermissionUser::where('user_id', $user->id)->get()->map(function ($item) {
             $item->delete();
         });
 

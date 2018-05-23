@@ -36,18 +36,33 @@
 
 @section('content')
     <div class="container" id="users-content">
-        <h5 class="m-t-0 m-b-2">{{ $unregistered->count() }} Unregistered Members</h5>
+        <h5 class="m-t-0 m-b-2">{{ $nonMembers->count() }} Members Awaiting Purge</h5>
 
-        <div class="card">
+        <div style="margin-bottom: 5rem" class="card">
             <div class="list-group">
-                @foreach ($unregistered as $user)
+                @foreach ($nonMembers as $user)
                     <li class="list-group-item list-group-item-action">
-                        <img src="{{ $user->avatarUrl }}" class="img-circle m-r-2" width="32">
-                        {{ $user->personaName }}
+                        <img src="{{ $user->avatar }}" class="img-circle m-r-2" width="32">
+                        {{ $user->username }}
                     </li>
                 @endforeach
             </div>
         </div>
+
+        @if ($unregistered->isNotEmpty())
+            <h5 class="m-t-4 m-b-2">{{ $unregistered->count() }} Unregistered Members</h5>
+
+            <div style="margin-bottom: 5rem" class="card">
+                <div class="list-group">
+                    @foreach ($unregistered as $user)
+                        <li class="list-group-item list-group-item-action">
+                            <img src="{{ $user->avatarUrl }}" class="img-circle m-r-2" width="32">
+                            {{ $user->personaName }}
+                        </li>
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
         <h5 class="m-t-3 m-b-2">{{ $users->count() }} Users</h5>
 

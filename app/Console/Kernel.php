@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\MigrateOldApps::class,
         Commands\GenerateRefs::class,
         Commands\ConvertIdToRevisions::class,
+        Commands\PurgeNonMembers::class,
     ];
 
     /**
