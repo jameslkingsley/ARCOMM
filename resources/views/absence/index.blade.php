@@ -23,7 +23,7 @@
                     </span>
                 </h5>
 
-                <div class="card m-b-3">
+                <div class="card" style="margin-bottom: 5rem">
                     <div class="list-group">
                         @foreach ($operation->absences as $absence)
                             <li class="list-group-item jr-item">
