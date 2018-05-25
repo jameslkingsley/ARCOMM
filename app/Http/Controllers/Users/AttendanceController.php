@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Portal\Attendance;
 use App\Http\Controllers\Controller;
 use App\Models\Operations\Operation;
+use App\Console\Commands\CollectAttendance;
 
 class AttendanceController extends Controller
 {
@@ -40,7 +41,9 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        (new CollectAttendance)->handle(false);
+
+        return redirect('/hub/attendance');
     }
 
     /**

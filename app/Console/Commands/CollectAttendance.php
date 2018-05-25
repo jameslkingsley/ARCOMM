@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
-use GuzzleHttp\Client;
+use GameQ\GameQ;
 use App\Models\Portal\User;
+use App\Models\Missions\Map;
 use Illuminate\Console\Command;
+use App\Models\Missions\Mission;
 use App\Models\Portal\Attendance;
 use Illuminate\Support\Facades\DB;
 use App\Models\Operations\Operation;
@@ -41,47 +43,92 @@ class CollectAttendance extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle($runningInConsole = true)
     {
+        $users = User::all();
         $closestOperation = Operation::orderBy(DB::raw('ABS(DATEDIFF(operations.starts_at, NOW()))'))->first();
         $minutesOver = $closestOperation->starts_at->diffInMinutes(now(), false);
 
-        if ($minutesOver < 60) {
+        if ($minutesOver < 60 && $runningInConsole) {
             // Don't collect attendance when we're not
             // actually playing the operation and only
             // if it has been at least 60 minutes over.
             return $this->info('Operation is not being played yet!');
         }
 
-        $steamApiKey = config('steam-api.steamApiKey');
-        $steamIds = User::all()->pluck('steam_id')->implode(',');
-
-        $client = new Client(['base_uri' => 'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/']);
-        $response = $client->get("?steamids={$steamIds}&key={$steamApiKey}");
-        $players = collect(json_decode((string) $response->getBody())->response->players);
-
         $present = collect();
         $absent = collect();
 
-        foreach ($players as $player) {
-            if ($user = User::whereSteamId($player->steamid)->first()) {
-                if (isset($player->gameextrainfo) && strtolower($player->gameextrainfo) === 'arma 3') {
+        $query = new GameQ;
+
+        $query->addServer([
+            'id' => 'main',
+            'type' => 'armedassault3',
+            'host' => '108.61.34.58:2302',
+            'options' => [
+                'debug' => true,
+                'timeout' => 10
+            ]
+        ]);
+
+        $results = json_decode(json_encode($query->process()['main']));
+
+        while (!isset($results->map)) {
+            $results = json_decode(json_encode($query->process()['main']));
+            sleep(1);
+        }
+
+        $missions = [];
+        $currentMission = null;
+
+        if ($map = Map::select('id')->whereDisplayName(optional($results)->map)->first()) {
+            $missions = Mission::whereMapId($map->id)->get();
+        }
+
+        foreach ($missions as $mission) {
+            $parts = explode('/', $mission->cloud_pbo);
+            $name = str_replace_last(".{$results->map}.pbo", '', end($parts));
+
+            if (strtolower($name) === strtolower($results->gq_gametype)) {
+                $currentMission = $mission;
+                break;
+            }
+        }
+
+        foreach ($users as $user) {
+            $found = false;
+
+            foreach ($results->players as $player) {
+                $name = $player->name;
+
+                if (str_contains($player->name, '[ARC]')) {
+                    $name = str_replace('[ARC]', '', $name);
+                }
+
+                $name = trim($name);
+
+                if (str_contains(strtolower($user->username), strtolower($name))) {
+                    $found = true;
                     $present->push("{$user->username} marked as present");
 
                     Attendance::firstOrCreate([
                         'present' => true,
                         'user_id' => $user->id,
-                        'operation_id' => $closestOperation->id
-                    ]);
-                } else {
-                    $absent->push("{$user->username} marked as absent");
-
-                    Attendance::firstOrCreate([
-                        'present' => false,
-                        'user_id' => $user->id,
-                        'operation_id' => $closestOperation->id
+                        'operation_id' => $closestOperation->id,
+                        'mission_id' => optional($currentMission)->id,
                     ]);
                 }
+            }
+
+            if (!$found) {
+                $absent->push("{$user->username} marked as absent");
+
+                Attendance::firstOrCreate([
+                    'present' => false,
+                    'user_id' => $user->id,
+                    'operation_id' => $closestOperation->id,
+                    'mission_id' => optional($currentMission)->id,
+                ]);
             }
         }
 
