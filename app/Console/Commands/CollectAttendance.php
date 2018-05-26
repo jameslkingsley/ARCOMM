@@ -101,13 +101,13 @@ class CollectAttendance extends Command
             foreach ($results->players as $player) {
                 $name = $player->name;
 
-                if (str_contains($player->name, '[ARC]')) {
-                    $name = str_replace('[ARC]', '', $name);
-                }
+                $name = preg_replace('(\[.*\])', '', $name);
+                $name = preg_replace('(\d)', '', $name);
+                $name = str_slug(strtolower(trim($name)), '-');
 
-                $name = trim($name);
+                $hubName = str_slug(strtolower(trim($user->username)));
 
-                if (str_contains(strtolower($user->username), strtolower($name))) {
+                if (str_contains($hubName, $name)) {
                     $found = true;
                     $present->push("{$user->username} marked as present");
 
@@ -116,6 +116,8 @@ class CollectAttendance extends Command
                         'operation_id' => $closestOperation->id,
                         'mission_id' => optional($currentMission)->id,
                     ], ['present' => true]);
+
+                    break;
                 }
             }
 
@@ -130,6 +132,6 @@ class CollectAttendance extends Command
             }
         }
 
-        staffProxy()->notify(new AttendanceCollected($present, $absent));
+        // staffProxy()->notify(new AttendanceCollected($present, $absent));
     }
 }
