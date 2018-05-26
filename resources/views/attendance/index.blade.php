@@ -24,7 +24,7 @@
                     Turnout: {{ $operation->actualTurnout() }}
                     <span class="pull-right text-muted">
                         @php
-                            $missionGrouped = $operation->attendances->groupBy('mission_id')->all();
+                            $missionGrouped = $operation->attendances->where('present', true)->groupBy('mission_id')->all();
                         @endphp
 
                         @foreach ($operation->missionsResolved() as $index => $mission)
