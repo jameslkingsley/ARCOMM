@@ -8,7 +8,6 @@ use App\Models\Missions\Map;
 use Illuminate\Console\Command;
 use App\Models\Missions\Mission;
 use App\Models\Portal\Attendance;
-use Illuminate\Support\Facades\DB;
 use App\Models\Operations\Operation;
 use App\Notifications\AttendanceCollected;
 
@@ -45,16 +44,19 @@ class CollectAttendance extends Command
      */
     public function handle($runningInConsole = true)
     {
-        $users = User::all();
-        $closestOperation = Operation::orderBy(DB::raw('ABS(DATEDIFF(operations.starts_at, NOW()))'))->first();
-        $minutesOver = $closestOperation->starts_at->diffInMinutes(now(), false);
+        $operation = Operation::where('starts_at', 'like', now()->toDateString() . '%')->first();
 
-        if ($minutesOver < 60 && $runningInConsole) {
-            // Don't collect attendance when we're not
-            // actually playing the operation and only
-            // if it has been at least 60 minutes over.
+        if (!$operation) {
             return $this->info('Operation is not being played yet!');
         }
+
+        $minutesOver = $operation->starts_at->diffInMinutes(now(), false);
+
+        if ($minutesOver <= 0) {
+            return $this->info('Operation is not being played yet!');
+        }
+
+        $users = User::all();
 
         $present = collect();
         $absent = collect();
@@ -95,6 +97,10 @@ class CollectAttendance extends Command
             }
         }
 
+        if (!$currentMission) {
+            return $this->info('Mission cannot be found!');
+        }
+
         foreach ($users as $user) {
             $found = false;
 
@@ -113,7 +119,7 @@ class CollectAttendance extends Command
 
                     Attendance::updateOrCreate([
                         'user_id' => $user->id,
-                        'operation_id' => $closestOperation->id,
+                        'operation_id' => $operation->id,
                         'mission_id' => optional($currentMission)->id,
                     ], ['present' => true]);
 
@@ -126,7 +132,7 @@ class CollectAttendance extends Command
 
                 Attendance::updateOrCreate([
                     'user_id' => $user->id,
-                    'operation_id' => $closestOperation->id,
+                    'operation_id' => $operation->id,
                     'mission_id' => optional($currentMission)->id,
                 ], ['present' => false]);
             }
