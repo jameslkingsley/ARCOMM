@@ -47,13 +47,13 @@ class CollectAttendance extends Command
         $operation = Operation::where('starts_at', 'like', now()->toDateString() . '%')->first();
 
         if (!$operation) {
-            return $this->info('Operation is not being played yet!');
+            return;
         }
 
         $minutesOver = $operation->starts_at->diffInMinutes(now(), false);
 
         if ($minutesOver <= 0) {
-            return $this->info('Operation is not being played yet!');
+            return;
         }
 
         $users = User::all();
@@ -98,7 +98,7 @@ class CollectAttendance extends Command
         }
 
         if (!$currentMission) {
-            return $this->info('Mission cannot be found!');
+            return;
         }
 
         foreach ($users as $user) {
