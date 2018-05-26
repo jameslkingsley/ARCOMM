@@ -21,7 +21,11 @@
                 <h5 class="m-t-0 m-b-2" title="{{ $operation->starts_at }}">
                     {{ $operation->starts_at->format('jS F Y') }}
                     &middot;
-                    Turnout: {{ $operation->actualTurnout() }}
+                    Average Turnout: {{
+                        floor($operation->attendances->groupBy('mission_id')->map(function ($a) {
+                            return $a->sum('present');
+                        })->average())
+                    }}
                     <span class="pull-right text-muted">
                         @php
                             $missionGrouped = $operation->attendances->where('present', true)->groupBy('mission_id')->all();
