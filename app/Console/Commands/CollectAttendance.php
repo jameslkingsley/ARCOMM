@@ -111,24 +111,22 @@ class CollectAttendance extends Command
                     $found = true;
                     $present->push("{$user->username} marked as present");
 
-                    Attendance::firstOrCreate([
-                        'present' => true,
+                    Attendance::updateOrCreate([
                         'user_id' => $user->id,
                         'operation_id' => $closestOperation->id,
                         'mission_id' => optional($currentMission)->id,
-                    ]);
+                    ], ['present' => true]);
                 }
             }
 
             if (!$found) {
                 $absent->push("{$user->username} marked as absent");
 
-                Attendance::firstOrCreate([
-                    'present' => false,
+                Attendance::updateOrCreate([
                     'user_id' => $user->id,
                     'operation_id' => $closestOperation->id,
                     'mission_id' => optional($currentMission)->id,
-                ]);
+                ], ['present' => false]);
             }
         }
 

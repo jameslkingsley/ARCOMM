@@ -23,27 +23,39 @@
                     &middot;
                     Turnout: {{ $operation->actualTurnout() }}
                     <span class="pull-right text-muted">
-                        {{ $operation->missionsResolved()->implode('display_name', ', ') }}
+                        @php
+                            $missionGrouped = $operation->attendances->groupBy('mission_id')->all();
+                        @endphp
+
+                        @foreach ($operation->missionsResolved() as $index => $mission)
+                            {{ $mission->display_name }} ({{
+                                (array_key_exists($mission->id, $missionGrouped))
+                                ? count($missionGrouped[$mission->id])
+                                : '?'
+                            }})@if ($index < 2), @endif
+                        @endforeach
                     </span>
                 </h5>
 
                 <div class="card" style="margin-bottom: 5rem">
                     <div class="list-group">
-                        @foreach ($operation->attendances as $attendance)
+                        @foreach ($operation->attendances->groupBy('user_id') as $user => $attendances)
                             <li class="list-group-item jr-item">
                                 <span class="jr-item-title">
-                                    <img src="{{ $attendance->user->avatar }}" class="img-circle m-r-1" width="32">
-                                    {{ $attendance->user->username }}
+                                    <img src="{{ $attendances[0]->user->avatar }}" class="img-circle m-r-1" width="32">
+                                    {{ $attendances[0]->user->username }}
 
-                                    @if ($attendance->present)
-                                        <span class="pull-right text-success">{{ $attendance->mission ? $attendance->mission->display_name : 'PRESENT' }}</span>
-                                    @else
-                                        @if ($attendance->booked())
-                                            <span class="pull-right text-muted">{{ $attendance->mission ? $attendance->mission->display_name : 'BOOKED' }}</span>
+                                    @foreach ($attendances->reverse() as $attendance)
+                                        @if ($attendance->present)
+                                            <span class="pull-right text-success m-l-2">{{ $attendance->mission ? $attendance->mission->display_name : 'PRESENT' }}</span>
                                         @else
-                                            <span class="pull-right text-danger">{{ $attendance->mission ? $attendance->mission->display_name : 'ABSENT' }}</span>
+                                            @if ($attendance->booked())
+                                                <span class="pull-right text-muted m-l-2">{{ $attendance->mission ? $attendance->mission->display_name : 'BOOKED' }}</span>
+                                            @else
+                                                <span class="pull-right text-danger m-l-2">{{ $attendance->mission ? $attendance->mission->display_name : 'ABSENT' }}</span>
+                                            @endif
                                         @endif
-                                    @endif
+                                    @endforeach
                                 </span>
                             </li>
                         @endforeach
