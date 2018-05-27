@@ -42,28 +42,26 @@
                 </h5>
 
                 <div class="card" style="margin-bottom: 5rem">
-                    <div class="list-group">
+                    <table class="table w100">
                         @foreach ($operation->attendances->groupBy('user_id') as $user => $attendances)
-                            <li class="list-group-item jr-item">
-                                <span class="jr-item-title">
-                                    <img src="{{ $attendances[0]->user->avatar }}" class="img-circle m-r-1" width="32">
-                                    {{ $attendances[0]->user->username }}
-
-                                    @foreach ($attendances->reverse() as $attendance)
+                            <tr>
+                                <td align="left">{{ $attendances[0]->user->username }}</td>
+                                @foreach ($attendances as $attendance)
+                                    <td width="150" align="right">
                                         @if ($attendance->present)
-                                            <span class="pull-right text-success m-l-2">{{ $attendance->mission ? $attendance->mission->display_name : 'PRESENT' }}</span>
+                                            <span class="text-success">{{ $attendance->mission ? $attendance->mission->display_name : 'PRESENT' }}</span>
                                         @else
                                             @if ($attendance->booked())
-                                                <span class="pull-right text-muted m-l-2">{{ $attendance->mission ? $attendance->mission->display_name : 'BOOKED' }}</span>
+                                                <span class="text-muted">{{ $attendance->mission ? $attendance->mission->display_name : 'BOOKED' }}</span>
                                             @else
-                                                <span class="pull-right text-danger m-l-2">{{ $attendance->mission ? $attendance->mission->display_name : 'ABSENT' }}</span>
+                                                <span class="text-danger">{{ $attendance->mission ? $attendance->mission->display_name : 'ABSENT' }}</span>
                                             @endif
                                         @endif
-                                    @endforeach
-                                </span>
-                            </li>
+                                    </td>
+                                @endforeach
+                            </tr>
                         @endforeach
-                    </div>
+                    </table>
                 </div>
             @endif
         @endforeach
