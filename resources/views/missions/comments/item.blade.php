@@ -9,7 +9,7 @@
             {{ $comment->user->username }}
         </span>
 
-        <span class="mission-comment-item-timestamp">
+        <span class="mission-comment-item-timestamp" title="{{ $comment->created_at }}">
             {{ $comment->created_at->diffForHumans() }}
 
             @if ($comment->isMine())

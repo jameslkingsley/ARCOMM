@@ -332,7 +332,8 @@ class Mission extends Model implements HasMediaConversions
      */
     public function comments()
     {
-        return $this->hasMany(MissionComment::class);
+        return $this->hasMany(MissionComment::class)
+            ->orderBy('updated_at');
     }
 
     /**
@@ -362,6 +363,10 @@ class Mission extends Model implements HasMediaConversions
      */
     public function banner()
     {
+        if (config('app.env') === 'local') {
+            return '';
+        }
+
         $media = $this->photos();
 
         if (count($media) > 0) {
@@ -378,7 +383,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function thumbnail()
     {
-        if (env('APP_ENV', 'production') == 'debug') {
+        if (config('app.env') === 'local') {
             return '';
         }
 

@@ -139,8 +139,10 @@ class MissionController extends Controller
                 $old_mission_displayname = $mission->display_name;
                 $old_mission_summary = $mission->summary;
 
-                $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
-                $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
+                // $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
+                // $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
+                $old_mission_cloud_pbo_dir = $mission->cloud_pbo;
+                $old_mission_cloud_zip_dir = $mission->cloud_zip;
 
                 Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
                 Storage::cloud()->move($old_mission_cloud_zip_dir, "x{$old_mission_cloud_zip_dir}");
