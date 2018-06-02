@@ -73,10 +73,6 @@
     Donate
 </a>
 
-{{-- <a href="https://www.nfoservers.com/donate.pl?force_recipient=1&recipient=fbidude21@yahoo.com" target="_newtab" class="nav-item nav-link">
-    Donate
-</a> --}}
-
 <li id="nav-pages" class="nav-item dropdown hidden-md-up m-l-0">
     <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-bars"></i>
@@ -91,17 +87,31 @@
             </a>
 
             @if (auth()->user()->hasPermission('operations:all'))
-                <a
-                    href="{{ url('/hub/operations') }}"
-                    class="list-group-item list-group-item-action">
+                <a href="{{ url('/hub/operations') }}" class="list-group-item list-group-item-action">
                     Operations
                 </a>
             @endif
 
+            @if (auth()->user()->hasPermission('apps:view'))
+                <a href="{{ url('/hub/applications') }}" class="list-group-item list-group-item-action">
+                    Applications
+                </a>
+            @endif
+
+            @if (auth()->user()->hasPermission('absences:view'))
+                <a href="{{ url('/hub/absence') }}" class="list-group-item list-group-item-action">
+                    Absences
+                </a>
+            @endif
+
+            @if (auth()->user()->hasPermission('attendance:view'))
+                <a href="{{ url('/hub/attendance') }}" class="list-group-item list-group-item-action">
+                    Attendance
+                </a>
+            @endif
+
             @if (auth()->user()->hasPermission('users:all'))
-                <a
-                    href="{{ url('/hub/users') }}"
-                    class="list-group-item list-group-item-action">
+                <a href="{{ url('/hub/users') }}" class="list-group-item list-group-item-action">
                     Users
                 </a>
             @endif

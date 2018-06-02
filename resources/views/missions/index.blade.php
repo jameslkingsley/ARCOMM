@@ -37,7 +37,7 @@
         data-panel="upload"
         data-noajax="true"
         id="mission-upload-btn"
-        class="nav-item nav-link"
+        class="nav-item nav-link hidden-sm-down"
     >Upload</a>
 @endsection
 
