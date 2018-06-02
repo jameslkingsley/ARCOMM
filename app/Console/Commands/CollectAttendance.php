@@ -47,12 +47,14 @@ class CollectAttendance extends Command
         $operation = Operation::where('starts_at', 'like', now()->toDateString() . '%')->first();
 
         if (!$operation) {
+            echo 'Operation not found';
             return;
         }
 
-        $minutesOver = $operation->starts_at->diffInMinutes(now(), false);
+        $minutesOver = $operation->starts_at->diffInMinutes(now()->addHour(), false);
 
         if ($minutesOver <= 0) {
+            echo 'Operation hasn\'t started yet';
             return;
         }
 
@@ -98,6 +100,7 @@ class CollectAttendance extends Command
         }
 
         if (!$currentMission) {
+            echo 'Mission not found';
             return;
         }
 
