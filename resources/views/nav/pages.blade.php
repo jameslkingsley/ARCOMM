@@ -43,6 +43,13 @@
             Chat Commands
         </a>
 
+        <a
+            href="https://docs.google.com/document/d/10yKYK6fUrgvI-7oX6rd0Z0RAjG4gZZj3CwWSMs2U_Q8/edit?usp=sharing"
+            target="_newtab"
+            class="dropdown-item">
+            Code of Conduct
+        </a>
+
         @foreach (Storage::disk('guides')->files() as $file)
             <a
                 href="{{ url("/guides/$file") }}"
