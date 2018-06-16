@@ -17,6 +17,8 @@
                 <h5 class="m-t-0 m-b-2" title="{{ $operation->starts_at }}">
                     {{ $operation->starts_at->format('jS F Y') }}
                     &middot;
+                    {{ $operation->absences->count() }} Total
+                    &middot;
                     Expected Turnout: {{ $operation->expectedTurnout() }}
                     <span class="pull-right text-muted">
                         {{ $operation->missionsResolved()->implode('display_name', ', ') }}
