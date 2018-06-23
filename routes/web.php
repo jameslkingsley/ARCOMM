@@ -32,7 +32,6 @@ Route::get('/roster', 'PageController@roster');
 
 //--- Attendance
 Route::group(['middleware' => 'permission:attendance:view'], function () {
-    Route::get('/api/attendance/analysis', 'Users\AttendanceAnalysisController@index');
     Route::resource('/hub/attendance', 'Users\AttendanceController');
 });
 

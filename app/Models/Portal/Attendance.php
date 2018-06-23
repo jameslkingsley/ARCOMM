@@ -50,4 +50,20 @@ class Attendance extends Model
             ->whereOperationId($this->operation_id)
             ->exists();
     }
+
+    /**
+     * Gets all users that are 4 weeks in the red.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function inactive()
+    {
+        return static::wherePresent(false)->with('user')->get()->reject(function ($attendance) {
+            return $attendance->booked();
+        })->groupBy('user.username')->map(function ($user) {
+            return $user->groupBy('operation_id')->count();
+        })->reject(function ($missed) {
+            return $missed < 4;
+        });
+    }
 }

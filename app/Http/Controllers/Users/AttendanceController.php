@@ -19,8 +19,9 @@ class AttendanceController extends Controller
     public function index(Request $request)
     {
         $operations = Operation::orderBy('starts_at', 'desc')->take(10)->with('attendances.user')->get();
+        $inactives = Attendance::inactive();
 
-        return view('attendance.index', compact('operations'));
+        return view('attendance.index', compact('operations', 'inactives'));
     }
 
     /**
