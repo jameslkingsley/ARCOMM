@@ -42,7 +42,11 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        (new CollectAttendance)->handle(false);
+        try {
+            return (new CollectAttendance)->handle(false);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
 
         return redirect('/hub/attendance');
     }
