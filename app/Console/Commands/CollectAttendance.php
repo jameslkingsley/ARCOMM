@@ -85,7 +85,7 @@ class CollectAttendance extends Command
         $missions = [];
         $currentMission = null;
 
-        if ($map = Map::select('id')->whereDisplayName(optional($results)->map)->first()) {
+        if ($map = Map::select('id')->whereClassName(optional($results)->map)->first()) {
             $missions = Mission::whereMapId($map->id)->get();
         }
 
