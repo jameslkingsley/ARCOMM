@@ -47,12 +47,24 @@
                             <tr>
                                 <th>Member</th>
                                 <th>Weeks Missed</th>
+                                <th>Consecutive Weeks</th>
                             </tr>
 
-                            @foreach ($inactives as $user => $missed)
+                            @foreach ($inactives as $user => $item)
                                 <tr>
                                     <td>{{ $user }}</td>
-                                    <td>{{ $missed }}</td>
+
+                                    @if ($item->missed > 3)
+                                        <td class="text-danger">{{ $item->missed }}</td>
+                                    @else
+                                        <td>{{ $item->missed }}</td>
+                                    @endif
+
+                                    @if ($item->consecutives >= 2)
+                                        <td class="text-danger">{{ $item->consecutives }}</td>
+                                    @else
+                                        <td>{{ $item->consecutives }}</td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </table>
