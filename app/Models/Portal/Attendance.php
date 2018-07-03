@@ -60,23 +60,10 @@ class Attendance extends Model
     {
         return static::wherePresent(false)->with('user')->get()->reject(function ($attendance) {
             return $attendance->booked();
-        })->groupBy('user.username')->map(function ($items) {
-            $prev = $items->first();
-            $consecutives = 1;
-
-            foreach ($items as $item) {
-                if ($item->operation->starts_at->diffInWeeks($prev->operation->starts_at) < 1) {
-                    $consecutives++;
-                    $prev = $item;
-                }
-            }
-
-            return (object) [
-                'missed' => $items->groupBy('operation_id')->count(),
-                'consecutives' => $consecutives
-            ];
-        })->reject(function ($item) {
-            return $item->missed < 2;
-        })->sort()->reverse();
+        })->groupBy('user.username')->map(function ($user) {
+            return $user->groupBy('operation_id')->count();
+        })->reject(function ($missed) {
+            return $missed < 4;
+        });
     }
 }
