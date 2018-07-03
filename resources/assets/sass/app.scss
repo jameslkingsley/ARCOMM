@@ -4,9 +4,12 @@
 @import 'node_modules/font-awesome/css/font-awesome';
 @import 'laravel-mentions';
 
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+
 body {
     overflow-y: scroll;
     background-color: #fafafa;
+    font-family: 'Roboto', sans-serif;
 
     .banner {
         position: absolute;
