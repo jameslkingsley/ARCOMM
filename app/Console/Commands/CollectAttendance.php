@@ -28,13 +28,22 @@ class CollectAttendance extends Command
     protected $description = 'Collects attendance data about all members.';
 
     /**
+     * Mission ID.
+     *
+     * @var integer
+     */
+    protected $missionId;
+
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($missionId = null)
     {
         parent::__construct();
+
+        $this->missionId = $missionId;
     }
 
     /**
@@ -85,23 +94,27 @@ class CollectAttendance extends Command
         $missions = [];
         $currentMission = null;
 
-        if ($map = Map::select('id')->whereClassName(optional($results)->map)->first()) {
-            $missions = Mission::whereMapId($map->id)->get();
-        }
-
-        foreach ($missions as $mission) {
-            $parts = explode('/', $mission->cloud_pbo);
-            $name = str_replace_last(".{$results->map}.pbo", '', end($parts));
-
-            if (strtolower($name) === strtolower($results->gq_gametype)) {
-                $currentMission = $mission;
-                break;
+        if (!$this->missionId) {
+            if ($map = Map::select('id')->whereClassName(optional($results)->map)->first()) {
+                $missions = Mission::whereMapId($map->id)->get();
             }
-        }
 
-        if (!$currentMission) {
-            echo 'Mission not found';
-            return;
+            foreach ($missions as $mission) {
+                $parts = explode('/', $mission->cloud_pbo);
+                $name = str_replace_last(".{$results->map}.pbo", '', end($parts));
+
+                if (strtolower($name) === strtolower($results->gq_gametype)) {
+                    $currentMission = $mission;
+                    break;
+                }
+            }
+
+            if (!$currentMission) {
+                echo 'Mission not found';
+                return;
+            }
+        } else {
+            $currentMission = Mission::findOrFail($this->missionId);
         }
 
         foreach ($users as $user) {

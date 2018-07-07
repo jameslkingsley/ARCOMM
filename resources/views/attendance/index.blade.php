@@ -25,6 +25,12 @@
     <div class="container" id="users-content">
         <div style="display: inline-block; width: 100%; margin-bottom: 2rem">
             <form class="pull-right" method="post" action="{{ url('/hub/attendance') }}">
+                <select name="mission_id">
+                    @foreach ($missions as $mission)
+                        <option value="{{ $mission->id }}">{{ $mission->display_name }}</option>
+                    @endforeach
+                </select>
+
                 <button type="submit" class="btn btn-raised btn-primary pull-right">Collect Attendance</button>
             </form>
             

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Models\Portal\User;
 use Illuminate\Http\Request;
+use App\Models\Missions\Mission;
 use App\Models\Portal\Attendance;
 use App\Http\Controllers\Controller;
 use App\Models\Operations\Operation;
@@ -18,10 +19,11 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+        $missions = Mission::orderBy('created_at', 'desc')->get();
         $operations = Operation::orderBy('starts_at', 'desc')->with('attendances.user')->get();
         $inactives = Attendance::inactive();
 
-        return view('attendance.index', compact('operations', 'inactives'));
+        return view('attendance.index', compact('operations', 'inactives', 'missions'));
     }
 
     /**
@@ -42,7 +44,9 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        (new CollectAttendance)->handle(false);
+        $request->validate(['mission_id' => 'required']);
+
+        (new CollectAttendance($request->mission_id))->handle(false);
 
         return redirect('/hub/attendance');
     }
