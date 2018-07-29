@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import Item from './Item.vue';
+    import Item from './Item.vue'
 
     export default {
         props: {
@@ -24,23 +24,24 @@
 
         data() {
             return {
-                missions: []
-            };
+                //
+            }
         },
 
         computed: {
-            //
+            missions() {
+                return this.$store.state.mission.all
+            }
         },
 
         methods: {
             fetch() {
-                return ajax.get('/api/mission')
-                    .then(r => (this.missions = r.data));
+                return this.$store.dispatch('mission/fetch')
             }
         },
 
         created() {
-            this.fetch();
+            this.fetch()
         }
-    };
+    }
 </script>

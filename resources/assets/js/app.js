@@ -6,7 +6,7 @@ Vue.component('grid', require('./components/Grid.vue'));
 Vue.component('grid-child', require('./components/GridChild.vue'));
 Vue.component('modal', require('./components/helpers/Modal.vue'));
 
-import App from './components/App.vue';
+import App from './pages/App.vue';
 
 import { mapState } from 'vuex'
 import store from './store'

@@ -1,10 +1,10 @@
-import Missions from '../components/mission/Library.vue'
-import Mission from '../components/mission/Index.vue'
-import MissionOverview from '../components/mission/Overview.vue'
-import MissionBriefing from '../components/mission/Briefing.vue'
-import MissionMedia from '../components/mission/Media.vue'
-import MissionSettings from '../components/mission/Settings.vue'
-import MissionComments from '../components/mission/Comments.vue'
+import Missions from '../pages/mission/Library.vue'
+import Mission from '../pages/mission/Index.vue'
+import MissionOverview from '../pages/mission/Overview.vue'
+import MissionBriefing from '../pages/mission/Briefing.vue'
+import MissionMedia from '../pages/mission/Media.vue'
+import MissionSettings from '../pages/mission/Settings.vue'
+import MissionComments from '../pages/mission/Comments.vue'
 
 export default [
     { path: '/hub/missions', component: Missions, meta: { auth: true } },

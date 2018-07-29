@@ -2,7 +2,7 @@ import VueRouter from 'vue-router'
 import { sync } from 'vuex-router-sync'
 import store from '../store'
 
-import Missions from '../components/mission/Library.vue'
+import Missions from '../pages/mission/Library.vue'
 
 import mission from './mission'
 

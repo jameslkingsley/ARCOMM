@@ -24,50 +24,10 @@
                 }"></p>
         </div>
     </div>
-    <!-- <grid template-columns="0.2fr 0.8fr">
-        <div class="pt-4">
-            <button
-                :key="index"
-                v-text="faction.name"
-                v-for="(faction, index) in factions"
-                @click.prevent="activeFaction = faction"
-                :class="{
-                    'py-2': true,
-                    'w-full': true,
-                    'uppercase': true,
-                    'text-left': true,
-                    'no-underline': true,
-                    'inline-block': true,
-                    'font-semibold': true,
-                    'cursor-pointer': true,
-                    'hover:opacity-100': true,
-                    'opacity-50': activeFaction.name !== faction.name,
-                    'opacity-100': activeFaction.name === faction.name
-                }"></button>
-        </div>
-
-        <grid class="bg-white rounded shadow-lg p-6" auto-rows gap="2rem">
-            <div v-for="(section, index) in activeFaction.sections" :key="index">
-                <h4 class="mb-2">{{ startCase(index) }}</h4>
-
-                <p
-                    v-for="(line, index) in section"
-                    :key="index"
-                    v-html="line"
-                    :class="{
-                        'mb-0': startsWith(line, '-')
-                    }"></p>
-            </div>
-        </grid>
-    </grid> -->
 </template>
 
 <script>
     export default {
-        props: {
-            mission: Object
-        },
-
         data() {
             return {
                 activeFaction: null
@@ -75,6 +35,10 @@
         },
 
         computed: {
+            mission() {
+                return this.$store.state.mission.viewing
+            },
+
             factions() {
                 let filled = []
 

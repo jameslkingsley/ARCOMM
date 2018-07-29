@@ -51,8 +51,8 @@
                 comments: [],
                 editing: this.storedCommentId(),
                 comment: {
-                    text: this.storedCommentText(),
                     collection: this.collection,
+                    text: this.storedCommentText(),
                 }
             }
         },

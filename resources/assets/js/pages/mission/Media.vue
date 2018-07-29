@@ -21,13 +21,9 @@
 </template>
 
 <script>
-    import Upload from '../helpers/Upload.vue';
+    import Upload from '../../components/helpers/Upload.vue';
 
     export default {
-        props: {
-            mission: Object
-        },
-
         components: {
             Upload
         },
@@ -43,6 +39,10 @@
         },
 
         computed: {
+            mission() {
+                return this.$store.state.mission.viewing
+            },
+
             imageUploadUrl() {
                 return `/api/mission/${this.mission.ref}/media`;
             },

@@ -26,10 +26,6 @@
 
 <script>
     export default {
-        props: {
-            mission: Object
-        },
-
         data() {
             return {
                 boxClasses: {
@@ -47,6 +43,10 @@
         },
 
         computed: {
+            mission() {
+                return this.$store.state.mission.viewing
+            },
+
             modeFull() {
                 return {
                     'coop': 'Cooperative',
