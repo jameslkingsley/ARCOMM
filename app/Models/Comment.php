@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Traits\BelongsToUser;
+use App\Traits\AppendableActions;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    use BelongsToUser;
+    use BelongsToUser,
+        AppendableActions;
 
     /**
      * Guarded attributes.
@@ -22,5 +24,15 @@ class Comment extends Model
     public function commentable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Gets the text attribute.
+     *
+     * @return string
+     */
+    public function getTextAttribute($value)
+    {
+        return nl2br($value);
     }
 }

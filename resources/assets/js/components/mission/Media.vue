@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="p-6">
         <upload class="text-right" name="image" :url="imageUploadUrl" :options="galleryOptions" @success="fetch">
             Upload Image
         </upload>

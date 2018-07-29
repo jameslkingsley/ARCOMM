@@ -1,38 +1,46 @@
-window._ = require('lodash');
+window._ = require('lodash')
 
-window.ajax = require('axios');
-window.ajax.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.ajax = require('axios')
+window.ajax.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
+let token = document.head.querySelector('meta[name="csrf-token"]')
 
 if (token) {
-    window.ajax.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.ajax.defaults.headers.common['X-CSRF-TOKEN'] = token.content
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
 }
 
-window.moment = require('moment');
+window.moment = require('moment')
 
-window.Vue = require('vue');
+window.Vue = require('vue')
 
-import VueRouter from 'vue-router';
-window.VueRouter = VueRouter;
-Vue.use(VueRouter);
+import VueRouter from 'vue-router'
+window.VueRouter = VueRouter
+Vue.use(VueRouter)
 
-require('./event');
+import SvgIcon from 'vue-svgicon'
+Vue.use(SvgIcon, { tagName: 'svgicon' })
+import './icons'
+
+require('./event')
 
 window.random = a => {
-    return a[Math.floor((Math.random() * a.length))];
+    return a[Math.floor((Math.random() * a.length))]
 }
 
 window.opt = window.optional = object => {
-    object = object || {};
+    object = object || {}
     return new Proxy(object || {}, {
         get(target, name) {
-            return name in target ? target[name] : null;
+            return name in target ? target[name] : null
         }
-    });
-};
+    })
+}
+
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual'
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

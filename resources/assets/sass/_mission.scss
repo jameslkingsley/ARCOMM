@@ -1,20 +1,16 @@
 .mission {
-    @apply .bg-white .shadow-lg .rounded .relative;
+    @apply .bg-grey-darker .shadow-button .rounded .relative;
     height: 0;
     padding-bottom: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     transition: all .15s ease;
-
-    &:hover {
-        transform: scale(1.1);
-    }
 }
 
 .mission-tab {
     &.active {
-        @apply .text-brand;
-        box-shadow: 0 -3px 0 config('colors.brand') inset;
+        @apply .text-primary;
+        box-shadow: 0 -3px 0 config('colors.primary') inset;
     }
 }

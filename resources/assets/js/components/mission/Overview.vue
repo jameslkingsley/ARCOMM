@@ -1,30 +1,26 @@
 <template>
-    <grid thirds gap="2rem">
-        <div :style="boxStyles" :class="boxClasses">
-            <span class="inline-block w-full text-lg font-medium mb-1">{{ modeFull }} on {{ mission.map.name }}</span>
+    <grid thirds gap="2rem" class="p-6">
+        <ui-card outline :title="`${modeFull} on ${mission.map.name}`">
             <span class="inline-block w-full mb-3">{{ dateTime | date }} &mdash; {{ dateTime | date('HH:mm') }}</span>
-            <span class="inline-block w-full">{{ mission.summary }}</span>
-        </div>
-
-        <div :style="boxStyles" :class="boxClasses">
-            <span class="inline-block w-full text-lg font-medium mb-6">{{ weatherText }}</span>
-            <img :src="weatherImage" class="block mx-auto" :style="{
-                'width': '60%',
-                'max-width': 'none'
-            }" />
-        </div>
-
-        <div :style="boxStyles" :class="boxClasses">
-            <span class="inline-block w-full text-lg font-medium mb-1">Published {{ mission.created_at | fromnow }}</span>
-
-            <span v-if="mission.last_played" class="inline-block w-full">
-                Last played {{ mission.last_played | fromnow }}
+            <span class="inline-block w-full mb-8">
+                <img :src="weatherImage" class="float-left w-6 mr-4" />
+                {{ weatherText }}
             </span>
 
-            <span v-else class="inline-block w-full">
-                Mission has not been played in an operation yet! Soon&trade;
-            </span>
-        </div>
+            <span class="inline-block w-full text-lg">{{ mission.summary }}</span>
+        </ui-card>
+
+        <ui-card outline title="After-Action Reports">
+            <div class="w-full block text-center">
+                <ui-icon name="chat-bubble-dots" size="156" color="grey-lightest" class="mt-4" />
+            </div>
+        </ui-card>
+
+        <ui-card outline :title="`Created by ${mission.user.name}`">
+            <span class="inline-block w-full mb-3">Published {{ createdDate }}</span>
+            <span v-if="mission.last_played" class="inline-block w-full mb-3">Last played {{ mission.last_played | fromnow }}</span>
+            <span v-else class="inline-block w-full mb-3">Mission has not been played yet!</span>
+        </ui-card>
     </grid>
 </template>
 
@@ -129,6 +125,10 @@
                     'Stormy, Rain': 'rain',
                     'Stormy, Showers': 'showers'
                 })[`${this.overcast}${this.rain ? `, ${this.rain}` : ''}`] + '.png';
+            },
+
+            createdDate() {
+                return moment(this.mission.created_at).fromNow()
             }
         },
 

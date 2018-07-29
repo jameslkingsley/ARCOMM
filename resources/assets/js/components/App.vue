@@ -5,15 +5,15 @@
         </div>
 
         <header :class="{ 'text-white': banner !== null }" class="z-20 w-full h-16 relative">
-            <span :style="accentBarStyle" class="absolute pin-t pin-l pin-r bg-brand h-1.5 transition"></span>
-            <nav class="inline-block w-full p-6 uppercase">
+            <span :style="accentBarStyle" class="absolute pin-t pin-l pin-r bg-primary h-2 transition"></span>
+            <nav class="inline-block w-full p-6 text-lg">
                 <grid thirds>
                     <router-link class="inline-block text-left pl-4" to="/hub">
                         <img class="h-9" src="/images/logo.png">
                     </router-link>
 
                     <div class="text-center">
-                        <router-link :to="page.url" v-for="(page, index) in pages" :key="index" class="inline-block py-2 px-4 font-semibold">
+                        <router-link :to="page.url" v-for="(page, index) in pages" :key="index" class="inline-block py-2 px-4 font-medium">
                             {{ page.text }}
                         </router-link>
                     </div>
@@ -21,7 +21,8 @@
                     <div class="text-right">
                         <upload class="mr-4"></upload>
 
-                        <a href="/hub" class="inline-block py-2 px-4 font-semibold">
+                        <a href="/hub" class="inline-block py-2 px-4 font-medium" style="line-height: 1.75">
+                            <img :src="user.avatar" class="w-8 h-8 float-left rounded-full mr-4" />
                             {{ user.name }}
                         </a>
                     </div>
@@ -29,10 +30,10 @@
             </nav>
         </header>
 
-        <main class="relative z-10 pt-9 px-9">
-            <!-- <transition name="fade"> -->
+        <main class="relative z-10 pt-16 px-10">
+            <transition name="scale" mode="out-in">
                 <router-view></router-view>
-            <!-- </transition> -->
+            </transition>
         </main>
     </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button :class="btnClasses" class="btn" @click.prevent="chooseFile">
+        <ui-button primary :class="btnClasses" @click="chooseFile">
             <slot></slot>
-        </button>
+        </ui-button>
 
         <form v-show="false">
             <input type="file" :name="name" ref="file" @change="upload">

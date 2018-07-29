@@ -1,6 +1,6 @@
 <template>
     <div class="inline-block">
-        <button class="btn btn-primary" @click.prevent="chooseFile">Upload</button>
+        <ui-button primary @click="chooseFile">Upload</ui-button>
 
         <form v-show="false">
             <input type="file" name="file" ref="file" @change="upload">

@@ -3,7 +3,7 @@ a, button {
 }
 
 html, body {
-    @apply .font-sans .text-base .text-grey .bg-grey-lighter .h-full .leading-normal;
+    @apply .font-sans .text-base .text-grey .bg-off-white .h-full .leading-normal;
 
     header, nav {
         color: inherit;
@@ -42,10 +42,6 @@ a {
 
 p {
     @apply .mb-6 .leading-normal .font-normal;
-    
-    &:last-of-type {
-        @apply .mb-0;
-    }
 }
 
 .bg-image {
@@ -56,4 +52,22 @@ p {
 
 .transition {
     transition: all .15s ease;
+}
+
+.transition-none {
+    transition: none !important;
+}
+
+.scale-enter-active {
+    transition: all 0.15s ease;
+}
+
+.scale-leave-active {
+    transition: all 0.15s ease;
+}
+
+.scale-enter,
+.scale-leave-to {
+    opacity: 0;
+    transform: scale(0.88);
 }

@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800');
+@import url("https://use.typekit.net/nme4mls.css");
 
 @tailwind preflight;
+@tailwind components;
 
 @import "core";
 @import "form";
-@import "button";
 @import "mission";
 @import "gallery";
 

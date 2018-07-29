@@ -1,5 +1,5 @@
 input, textarea, select {
-    @apply .border-none .bg-white .rounded .shadow-input .text-grey .w-full .text-base .leading-normal;
+    @apply .border-none .bg-white .rounded .shadow-button .text-grey .w-full .text-base .leading-normal;
     padding: 7px 13px;
     transition: box-shadow .08s ease-in, color .08s ease-in;
 
@@ -14,7 +14,7 @@ input, textarea, select {
     }
 
     &:focus {
-        @apply .shadow-input-focus;
+        @apply .shadow-outline;
     }
 
     &.plain {

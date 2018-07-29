@@ -1,8 +1,8 @@
 <template>
-    <grid template-columns="0.25fr 0.75fr" gap="4rem">
+    <grid template-columns="0.25fr 0.75fr" gap="8rem" class="p-6">
         <div class="text-left">
-            <span class="inline-block w-full font-medium">Banner</span>
-            <span class="inline-block w-full opacity-50 text-sm">Upload an interesting banner image to showcase your mission.</span>
+            <span class="inline-block w-full font-medium text-xl">Banner</span>
+            <span class="inline-block w-full opacity-50">Upload an interesting banner image to showcase your mission.</span>
         </div>
 
         <div>
@@ -12,8 +12,8 @@
         </div>
 
         <div class="text-left">
-            <span class="inline-block w-full font-medium">Locked Briefings</span>
-            <span class="inline-block w-full opacity-50 text-sm">Lock briefings that contain super top secret information the enemy shouldn't know.</span>
+            <span class="inline-block w-full font-medium text-xl">Locked Briefings</span>
+            <span class="inline-block w-full opacity-50">Lock briefings that contain super top secret information the enemy shouldn't know.</span>
         </div>
 
         <div>
@@ -66,6 +66,7 @@
             },
 
             isLocked(faction) {
+                if (this.mission.locked_briefings === null) return false;
                 return this.mission.locked_briefings.indexOf(faction.name.toLowerCase()) !== -1;
             }
         },

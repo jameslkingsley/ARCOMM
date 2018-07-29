@@ -1,6 +1,6 @@
 <template>
     <div>
-        <grid template-columns="repeat(6, 16.66666fr)" gap="2rem">
+        <grid template-columns="repeat(6, 16.66666fr)" gap="1rem">
             <mission-item
                 v-for="(mission, index) in missions"
                 :key="index"

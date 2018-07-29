@@ -1,5 +1,6 @@
 require('./bootstrap');
 require('./filters');
+require('./ui');
 
 Vue.component('grid', require('./components/Grid.vue'));
 Vue.component('grid-child', require('./components/GridChild.vue'));
@@ -11,9 +12,9 @@ import Missions from './components/mission/Library.vue';
 import Mission from './components/mission/Index.vue';
 import MissionOverview from './components/mission/Overview.vue';
 import MissionBriefing from './components/mission/Briefing.vue';
-import MissionAAR from './components/mission/AAR.vue';
 import MissionMedia from './components/mission/Media.vue';
 import MissionSettings from './components/mission/Settings.vue';
+import MissionComments from './components/mission/Comments.vue';
 
 const app = new Vue({
     el: '#app',
@@ -36,8 +37,9 @@ const app = new Vue({
                     { path: '', component: MissionOverview },
                     { path: 'overview', component: MissionOverview },
                     { path: 'briefing', component: MissionBriefing },
-                    { path: 'aar', component: MissionAAR },
+                    { path: 'aar', component: MissionComments },
                     { path: 'media', component: MissionMedia },
+                    { path: 'notes', component: MissionComments },
                     { path: 'settings', component: MissionSettings },
                 ]
             }

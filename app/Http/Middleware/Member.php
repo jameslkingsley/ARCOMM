@@ -16,11 +16,11 @@ class Member
     public function handle($request, Closure $next)
     {
         if (auth()->guest()) {
-            return redirect('/');
+            return redirect('/auth');
         }
 
         if (!auth()->user()->member()) {
-            return redirect('/');
+            return redirect('/auth');
         }
 
         return $next($request);

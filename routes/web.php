@@ -11,6 +11,7 @@ Route::post('/api/mission', 'API\MissionController@store');
 // Mission Comments
 Route::get('/api/mission/{mission}/comment', 'API\MissionCommentController@index');
 Route::post('/api/mission/{mission}/comment', 'API\MissionCommentController@store');
+Route::post('/api/mission/{mission}/comment/{comment}', 'API\MissionCommentController@update');
 
 // Mission Media
 Route::get('/api/mission/{mission}/media', 'API\MissionMediaController@index');

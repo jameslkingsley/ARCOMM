@@ -12,6 +12,21 @@ we've done our very best to explain each section.
 
 View the full documentation at https://tailwindcss.com.
 
+
+|-------------------------------------------------------------------------------
+| The default config
+|-------------------------------------------------------------------------------
+|
+| This variable contains the default Tailwind config. You don't have
+| to use it, but it can sometimes be helpful to have available. For
+| example, you may choose to merge your custom configuration
+| values with some of the Tailwind defaults.
+|
+*/
+
+let defaultConfig = require('tailwindcss/defaultConfig')()
+
+
 /*
 |-------------------------------------------------------------------------------
 | Colors                                    https://tailwindcss.com/docs/colors
@@ -30,34 +45,65 @@ View the full documentation at https://tailwindcss.com.
 
 let colors = {
   'transparent': 'transparent',
+  'dim': 'rgba(255,255,255,0.88)',
 
-  'black': '#080a0c',
-  'grey-darkest': '#3d4852',
-  'grey-darker': '#606f7b',
-  'grey-dark': '#8795a1',
-  'grey': '#525f7f',
-  'grey-light': '#dae1e7',
-  'grey-lighter': '#e6ebf1',
-  'grey-lightest': '#f5f9fc',
+  'black': '#22292f',
+  'grey-lightest': '#EBEBED',
+  'grey-lighter': '#AFB0B6',
+  'grey-light': '#727580',
+  'grey': '#363A49',
+  'grey-dark': '#313442',
+  'grey-darker': '#20232C',
+  'grey-darkest': '#101116',
   'white': '#ffffff',
-  'off-white': 'hsla(213, 28%, 98%, 1)',
+  'off-white': '#e6ebf1',
+  'off-white-2': '#f6f9fc',
+  'off-white-3': '#dce1e7',
 
-  'brand-lightest': '#F8EAEA',
-  'brand-lighter': '#E5ABAB',
-  'brand-light': '#D16B6B',
-  'brand': '#BD2C2C',
-  'brand-dark': '#AA2828',
-  'brand-darker': '#711A1A',
-  'brand-darkest': '#390D0D',
+  'primary-lightest': '#F8EAEA',
+  'primary-lighter': '#E5ABAB',
+  'primary-light': '#D16B6B',
+  'primary': '#BD2C2C',
+  'primary-dark': '#AA2828',
+  'primary-darker': '#711A1A',
+  'primary-darkest': '#390D0D',
 
-  'coop': '#3aa3ea',
-  'preop': '#2cbd72',
-  'adversarial': '#f3af1f',
+  'error-lightest': '#FBEDED',
+  'error-lighter': '#EFB5B5',
+  'error-light': '#E37E7E',
+  'error': '#D74646',
+  'error-dark': '#C23F3F',
+  'error-darker': '#812A2A',
+  'error-darkest': '#411515',
 
-  'line': '#f2f2f2'
+  'success-lightest': '#EAFAF4',
+  'success-lighter': '#ACE9D3',
+  'success-light': '#6DD9B3',
+  'success': '#2FC892',
+  'success-dark': '#2AB483',
+  'success-darker': '#1C7858',
+  'success-darkest': '#0E3C2C',
+
+  'coop-lightest': '#EAF4FF',
+  'coop-lighter': '#A9D2FF',
+  'coop-light': '#69B1FF',
+  'coop': '#298FFF',
+  'coop-dark': '#2581E6',
+  'coop-darker': '#195699',
+  'coop-darkest': '#0C2B4D',
+
+  'adversarial-lightest': '#FFF0ED',
+  'adversarial-lighter': '#FFC3B7',
+  'adversarial-light': '#FF9781',
+  'adversarial': '#FF6A4B',
+  'adversarial-dark': '#E65F44',
+  'adversarial-darker': '#99402D',
+  'adversarial-darkest': '#4D2017',
+
+  'preop': '#ff0000',
 }
 
-module.exports = {
+const config = {
 
   /*
   |-----------------------------------------------------------------------------
@@ -98,7 +144,7 @@ module.exports = {
     'sm': '576px',
     'md': '768px',
     'lg': '992px',
-    'xl': '992px',
+    'xl': '1200px',
   },
 
 
@@ -122,30 +168,12 @@ module.exports = {
 
   fonts: {
     'sans': [
-      'system-ui',
-      'BlinkMacSystemFont',
-      '-apple-system',
-      'Segoe UI',
-      'Roboto',
-      'Oxygen',
-      'Ubuntu',
-      'Cantarell',
-      'Fira Sans',
-      'Droid Sans',
-      'Helvetica Neue',
+      'proxima-nova',
       'sans-serif',
     ],
-    'serif': [
-      'Constantia',
-      'Lucida Bright',
-      'Lucidabright',
-      'Lucida Serif',
-      'Lucida',
-      'DejaVu Serif',
-      'Bitstream Vera Serif',
-      'Liberation Serif',
-      'Georgia',
-      'serif',
+    'numeral': [
+      'Montserrat',
+      'sans-serif',
     ],
     'mono': [
       'Menlo',
@@ -178,6 +206,7 @@ module.exports = {
   */
 
   textSizes: {
+    'xxs': '.66rem',
     'xs': '.75rem',     // 12px
     'sm': '.875rem',    // 14px
     'base': '1rem',     // 16px
@@ -290,6 +319,26 @@ module.exports = {
 
   /*
   |-----------------------------------------------------------------------------
+  | Background sizes               https://tailwindcss.com/docs/background-size
+  |-----------------------------------------------------------------------------
+  |
+  | Here is where you define your background sizes. We provide some common
+  | values that are useful in most projects, but feel free to add other sizes
+  | that are specific to your project here as well.
+  |
+  | Class name: .bg-{size}
+  |
+  */
+
+  backgroundSize: {
+    'auto': 'auto',
+    'cover': 'cover',
+    'contain': 'contain',
+  },
+
+
+  /*
+  |-----------------------------------------------------------------------------
   | Border widths                     https://tailwindcss.com/docs/border-width
   |-----------------------------------------------------------------------------
   |
@@ -305,8 +354,9 @@ module.exports = {
     default: '1px',
     '0': '0',
     '2': '2px',
+    '3': '3px',
     '4': '4px',
-    '5': '0.33rem',
+    '6': '6px',
     '8': '8px',
   },
 
@@ -328,7 +378,7 @@ module.exports = {
   |
   */
 
-  borderColors: Object.assign({ default: colors['line'] }, colors),
+  borderColors: global.Object.assign({ default: colors['grey-light'] }, colors),
 
 
   /*
@@ -350,9 +400,8 @@ module.exports = {
   borderRadius: {
     'none': '0',
     'sm': '.125rem',
-    default: '.25rem',
+    'default': '.25rem',
     'lg': '.5rem',
-    'xl': '1rem',
     'full': '9999px',
   },
 
@@ -384,12 +433,12 @@ module.exports = {
     '2': '0.5rem',
     '3': '0.75rem',
     '4': '1rem',
+    '5': '1.25rem',
     '6': '1.5rem',
     '8': '2rem',
     '10': '2.5rem',
     '12': '3rem',
     '16': '4rem',
-    '18': '5rem',
     '24': '6rem',
     '32': '8rem',
     '48': '12rem',
@@ -429,25 +478,22 @@ module.exports = {
     'auto': 'auto',
     'px': '1px',
     '1': '0.25rem',
-    '1.5': '0.33333rem',
     '2': '0.5rem',
     '3': '0.75rem',
     '4': '1rem',
+    '5': '1.25rem',
     '6': '1.5rem',
     '8': '2rem',
     '9': '2.25rem',
     '10': '2.5rem',
     '12': '3rem',
     '16': '4rem',
-    '18': '5rem',
     '24': '6rem',
     '32': '8rem',
     '48': '12rem',
     '64': '16rem',
-    '128': '32rem',
     'full': '100%',
-    'screen': '100vh',
-    'golden': `${100 / 1.618}vh`,
+    'screen': '100vh'
   },
 
 
@@ -563,14 +609,16 @@ module.exports = {
     '2': '0.5rem',
     '3': '0.75rem',
     '4': '1rem',
+    '5': '1.25rem',
     '6': '1.5rem',
     '8': '2rem',
-    '9': '2.5rem',
-    '10': '3rem',
-    '12': '4rem',
-    '16': '6rem',
-    '18': '8rem',
-    '32': '16rem',
+    '10': '2.5rem',
+    '12': '3rem',
+    '14': '3.5rem',
+    '16': '4rem',
+    '18': '4.5rem',
+    '20': '5rem',
+    'full': '100%'
   },
 
 
@@ -597,16 +645,15 @@ module.exports = {
     '2': '0.5rem',
     '3': '0.75rem',
     '4': '1rem',
+    '5': '1.25rem',
     '6': '1.5rem',
     '8': '2rem',
-    '9': '2.5rem',
-    '10': '3rem',
-    '11': '3.5rem',
-    '12': '4rem',
-    '16': '6rem',
-    '18': '8rem',
-    '24': '12rem',
-    '32': '16rem',
+    '10': '2.5rem',
+    '12': '3rem',
+    '14': '3.5rem',
+    '16': '4rem',
+    '18': '4.5rem',
+    '20': '5rem',
   },
 
 
@@ -632,16 +679,15 @@ module.exports = {
     '2': '0.5rem',
     '3': '0.75rem',
     '4': '1rem',
+    '5': '1.25rem',
     '6': '1.5rem',
     '8': '2rem',
-    '9': '2.5rem',
-    '10': '3.25rem',
-    '11': '3.75rem',
-    '12': '4rem',
-    '16': '6rem',
-    '18': '8rem',
-    '24': '12rem',
-    '32': '16rem',
+    '10': '2.5rem',
+    '12': '3rem',
+    '14': '3.5rem',
+    '16': '4rem',
+    '18': '4.5rem',
+    '20': '5rem',
   },
 
 
@@ -662,17 +708,16 @@ module.exports = {
   */
 
   shadows: {
-    'default': '0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07)',
+    default: '0 2px 4px 0 rgba(0,0,0,0.10)',
     'md': '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
-    'lg': '0 7px 14px 0 rgba(50,50,93,.01), 0 3px 6px 0 rgba(0,0,0,.05)',
-    'xl': '0 12px 20px 0 rgba(50, 50, 93, .01), 0 7px 15px 0 rgba(0, 0, 0, .05)',
+    'lg': '0 15px 30px 0 rgba(0,0,0,0.11), 0 5px 15px 0 rgba(0,0,0,0.08)',
     'inner': 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
-    'button': '0 0 0 0 rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent',
-    'button-hover': '0 0 0 0 rgba(103,114,229,.1), 0 2px 5px 0 rgba(103,114,229,.1), 0 3px 9px 0 rgba(103,114,229,.08), 0 1px 1.5px 0 rgba(0,0,0,.08), 0 1px 2px 0 rgba(0,0,0,.08)',
-    'button-active': '0 0 0 0 rgba(103,114,229,.1), 0 1px 3px rgba(103,114,229,.04), 0 1px 1px rgba(0,0,0,.04), 0 0 0 0 transparent, 0 0 0 0 transparent',
-    'input': '0 0 0 0 rgba(50,50,93,.16), 0 0 0 1px rgba(50,151,211,0), 0 0 0 2px rgba(50,151,211,0), 0 1px 1px rgba(0,0,0,.08)',
-    'input-focus': '0 0 0 0 rgba(50,50,93,0), 0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 1px 1px rgba(0,0,0,.08)',
-    'none': 'none'
+    'none': 'none',
+    'button': '0 0 0 0 rgba(50,50,93,.1),0 2px 5px 0 rgba(50,50,93,.08),0 1px 1.5px 0 rgba(0,0,0,.07),0 1px 2px 0 rgba(0,0,0,.08)',
+    'button-hover': '0 0 0 0 rgba(50,50,93,.1),0 2px 5px 0 rgba(50,50,93,.1),0 3px 9px 0 rgba(50,50,93,.08),0 1px 1.5px 0 rgba(0,0,0,.08),0 1px 2px 0 rgba(0,0,0,.08)',
+    'button-active': '0 0 0 0 rgba(50,50,93,.08),0 2px 5px 0 rgba(50,50,93,.06),0 1px 1.5px 0 rgba(0,0,0,.05),0 1px 2px 0 rgba(0,0,0,.06)',
+    'outline': '0 0 0 3px rgba(92, 122, 255, 0.5)',
+    'card': '0 7px 14px 0 rgba(50,50,93,.1),0 3px 6px 0 rgba(0,0,0,.07)'
   },
 
 
@@ -768,7 +813,12 @@ module.exports = {
   | Here is where you control which modules are generated and what variants are
   | generated for each of those modules.
   |
-  | Currently supported variants: 'responsive', 'hover', 'focus', 'group-hover'
+  | Currently supported variants:
+  |   - responsive
+  |   - hover
+  |   - focus
+  |   - active
+  |   - group-hover
   |
   | To disable a module completely, use `false` instead of an array.
   |
@@ -784,7 +834,7 @@ module.exports = {
     borderColors: ['responsive', 'hover'],
     borderRadius: ['responsive'],
     borderStyle: ['responsive'],
-    borderWidths: ['responsive'],
+    borderWidths: ['responsive', 'hover'],
     cursor: ['responsive'],
     display: ['responsive'],
     flexbox: ['responsive'],
@@ -800,13 +850,13 @@ module.exports = {
     minHeight: ['responsive'],
     minWidth: ['responsive'],
     negativeMargin: ['responsive'],
-    opacity: ['responsive'],
+    opacity: ['responsive', 'active', 'hover'],
     overflow: ['responsive'],
     padding: ['responsive'],
     pointerEvents: ['responsive'],
     position: ['responsive'],
     resize: ['responsive'],
-    shadows: ['responsive'],
+    shadows: ['responsive', 'focus', 'active', 'hover'],
     svgFill: [],
     svgStroke: [],
     textAlign: ['responsive'],
@@ -820,6 +870,47 @@ module.exports = {
     whitespace: ['responsive'],
     width: ['responsive'],
     zIndex: ['responsive'],
+  },
+
+
+  /*
+  |-----------------------------------------------------------------------------
+  | Plugins                                https://tailwindcss.com/docs/plugins
+  |-----------------------------------------------------------------------------
+  |
+  | Here is where you can register any plugins you'd like to use in your
+  | project. Tailwind's built-in `container` plugin is enabled by default to
+  | give you a Bootstrap-style responsive container component out of the box.
+  |
+  | Be sure to view the complete plugin documentation to learn more about how
+  | the plugin system works.
+  |
+  */
+
+  plugins: [
+    require('tailwindcss/plugins/container')({
+      // center: true,
+      // padding: '1rem',
+    }),
+
+    require('./resources/assets/js/tailwind/util'),
+
+    require('./resources/assets/js/tailwind/button')({
+      base: {
+        //
+      },
+
+      colors: {
+        error: ['error', 'error-dark'],
+        dark: ['grey-dark', 'grey-darker'],
+        primary: ['primary', 'primary-dark'],
+        success: ['success', 'success-dark'],
+      }
+    })
+  ],
+
+  experiments: {
+    shadowLookup: true
   },
 
 
@@ -840,3 +931,5 @@ module.exports = {
   },
 
 }
+
+module.exports = Object.assign({}, defaultConfig, config)

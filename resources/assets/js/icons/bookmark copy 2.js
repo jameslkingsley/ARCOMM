@@ -1,0 +1,13 @@
+
+/* eslint-disable */
+/* tslint:disable */
+// @ts-ignore
+import icon from 'vue-svgicon'
+icon.register({
+  'bookmark copy 2': {
+    width: 16,
+    height: 16,
+    viewBox: '0 0 20 20',
+    data: '<path pid="0" d="M18 12v1H8v5l-6-6 6-6v5h8V2h2z"/>'
+  }
+})

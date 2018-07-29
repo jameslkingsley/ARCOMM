@@ -14,9 +14,17 @@ class MissionCommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Mission $mission)
+    public function index(Request $request, Mission $mission)
     {
-        return $mission->comments->load('user');
+        if ($request->has('collection')) {
+            return $mission->comments()
+                ->whereCollection($request->collection)
+                ->orderBy('published_at')
+                ->with('user')
+                ->get();
+        }
+
+        return $mission->afterActionReports->load('user');
     }
 
     /**
@@ -27,6 +35,8 @@ class MissionCommentController extends Controller
      */
     public function store(Request $request, Mission $mission)
     {
+        $this->authorize('create', Comment::class);
+
         $attributes = $request->validate([
             'text' => 'required|min:1',
             'collection' => 'nullable'
@@ -38,47 +48,31 @@ class MissionCommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Mission $mission, Comment $comment)
     {
-        //
+        $this->authorize('update', $comment);
+
+        $attributes = $request->validate([
+            'text' => 'required|min:1'
+        ]);
+
+        $comment->update($attributes);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Mission $mission, Comment $comment)
     {
-        //
+        $this->authorize('destroy', $comment);
     }
 }
