@@ -8,51 +8,69 @@ Vue.component('modal', require('./components/helpers/Modal.vue'));
 
 import App from './components/App.vue';
 
-import Missions from './components/mission/Library.vue';
-import Mission from './components/mission/Index.vue';
-import MissionOverview from './components/mission/Overview.vue';
-import MissionBriefing from './components/mission/Briefing.vue';
-import MissionMedia from './components/mission/Media.vue';
-import MissionSettings from './components/mission/Settings.vue';
-import MissionComments from './components/mission/Comments.vue';
+import { mapState } from 'vuex'
+import store from './store'
+import router from './routes'
 
-const app = new Vue({
+Vue.router = router
+
+Vue.use({
+    install(Vue, options) {
+        Vue.prototype.$auth = function (field = null) {
+            if (!window.app.$store) return undefined
+
+            const user = window.app.$store.state.auth.me
+
+            if (field && user) {
+                return user[field] || undefined
+            }
+
+            return user || undefined
+        }
+    }
+})
+
+window.app = new Vue({
+    store,
+    router,
+
     el: '#app',
 
     render: h => h(App),
 
     data: {
-        progress: null
+        loading: true,
+        progress: null,
+        csrfToken: window.App.csrfToken,
     },
 
-    router: new VueRouter({
-        mode: 'history',
-        routes: [
-            { path: '/hub', component: Missions },
-            { path: '/hub/missions', component: Missions },
-            {
-                path: '/hub/missions/:ref',
-                component: Mission,
-                children: [
-                    { path: '', component: MissionOverview },
-                    { path: 'overview', component: MissionOverview },
-                    { path: 'briefing', component: MissionBriefing },
-                    { path: 'aar', component: MissionComments },
-                    { path: 'media', component: MissionMedia },
-                    { path: 'notes', component: MissionComments },
-                    { path: 'settings', component: MissionSettings },
-                ]
-            }
-        ]
-    }),
+    computed: {
+        ...mapState({
+            route: state => state.route,
+            me: state => state.auth.me || optional(),
+            auth: state => state.auth.me || optional(),
+        })
+    },
 
     created() {
+        if (window.App.access_token) {
+            localStorage.setItem('access_token', window.App.access_token)
+            delete window.App.access_token
+        }
+
         this.$router.beforeEach((to, from, next) => {
             if (to.path.split('/').length <= 3) {
-                Events.fire('banner', null);
+                Events.fire('banner', null)
             }
 
-            return next();
-        });
+            return next()
+        })
+
+        this.$store.dispatch('auth/checkLogin').then(() => {
+            this.loading = false
+            this.$router.replace(window.location.pathname)
+        }).catch(() => {
+            this.loading = false
+        })
     }
-});
+})

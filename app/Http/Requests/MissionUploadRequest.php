@@ -87,7 +87,7 @@ class MissionUploadRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check() && auth()->user()->member();
+        return auth()->check();
     }
 
     /**

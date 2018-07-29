@@ -11,9 +11,19 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
 }
 
+window.ajax.interceptors.request.use(config => {
+    config['headers'] = {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+    }
+
+    return config
+}, error => Promise.reject(error))
+
 window.moment = require('moment')
 
 window.Vue = require('vue')
+Vue.config.productionTip = false
 
 import VueRouter from 'vue-router'
 window.VueRouter = VueRouter

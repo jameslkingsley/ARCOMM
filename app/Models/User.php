@@ -2,25 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Cache;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Guarded attributes.
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'steam_id',
-        'avatar',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -28,29 +23,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'remember_token',
     ];
 
     /**
-     * Determines if the user is a member of the Steam group.
+     * Get existing or make new access token.
      *
-     * @return boolean
+     * @return string
      */
-    public function member()
+    public function makeApiToken()
     {
-        return in_array($this->steam_id, Cache::remember('members', 60, function () {
-            try {
-                $members = simplexml_load_file(
-                    'http://steamcommunity.com/groups/' .
-                    config('steam-auth.group') .
-                    '/memberslistxml/?xml=1'
-                )->members->steamID64;
-
-                return (array) $members;
-            } catch (\Exception $error) {
-                return static::all()->pluck('steam_id')->all();
-            }
-        }));
+        return $this->createToken('API')->accessToken;
     }
 
     /**

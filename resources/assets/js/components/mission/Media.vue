@@ -22,7 +22,6 @@
 
 <script>
     import Upload from '../helpers/Upload.vue';
-    import Gallery from 'vue-gallery';
 
     export default {
         props: {
@@ -30,8 +29,7 @@
         },
 
         components: {
-            Upload,
-            Gallery
+            Upload
         },
 
         data() {

@@ -22,8 +22,8 @@
                         <upload class="mr-4"></upload>
 
                         <a href="/hub" class="inline-block py-2 px-4 font-medium" style="line-height: 1.75">
-                            <img :src="user.avatar" class="w-8 h-8 float-left rounded-full mr-4" />
-                            {{ user.name }}
+                            <img :src="$auth('avatar')" class="w-8 h-8 float-left rounded-full mr-4" />
+                            {{ $auth('name') }}
                         </a>
                     </div>
                 </grid>
@@ -51,7 +51,6 @@
         data() {
             return {
                 bannerImage: null,
-                user: window.App.user,
                 pages: [
                     { text: 'Missions', url: '/hub/missions' },
                     { text: 'Guides', url: '/hub/guides' },

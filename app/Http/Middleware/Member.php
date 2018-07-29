@@ -16,11 +16,7 @@ class Member
     public function handle($request, Closure $next)
     {
         if (auth()->guest()) {
-            return redirect('/auth');
-        }
-
-        if (!auth()->user()->member()) {
-            return redirect('/auth');
+            return redirect('/oauth/redirect');
         }
 
         return $next($request);

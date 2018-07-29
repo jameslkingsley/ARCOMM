@@ -977,12 +977,6 @@ label {
           box-shadow: 0 -3px 0 #bd2c2c inset;
 }
 
-.blueimp-gallery > .next,
-.blueimp-gallery > .prev {
-  background: transparent !important;
-  border: none !important;
-}
-
 .list-reset {
   list-style: none;
   padding: 0;
