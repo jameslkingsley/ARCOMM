@@ -3063,6 +3063,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -3073,65 +3088,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            comments: [],
-            editing: this.storedCommentId(),
-            comment: {
+            creating: true,
+
+            create: {
+                text: null,
                 collection: this.collection,
-                text: this.storedCommentText()
+                commentable_type: 'missions',
+                commentable_id: this.mission.id
+            },
+
+            update: {
+                id: null,
+                text: null
             }
         };
     },
 
 
+    computed: {
+        comments: function comments() {
+            return this.$store.state.comment.all;
+        }
+    },
+
     watch: {
-        comment: {
+        create: {
             deep: true,
             handler: function handler(value) {
                 var collection = this.collection || '';
 
                 localStorage.setItem('comment-text-' + this.mission.ref + '-' + collection, value.text);
-
-                localStorage.setItem('comment-id-' + this.mission.ref + '-' + collection, this.editing);
             }
         }
     },
 
     methods: {
         fetch: function fetch() {
-            var _this = this;
-
-            var collection = this.collection ? '?collection=' + this.collection : '';
-
-            ajax.get('/api/mission/' + this.mission.ref + '/comment' + collection).then(function (r) {
-                return _this.comments = r.data;
+            return this.$store.dispatch('comment/fetch', {
+                collection: this.collection,
+                commentable_type: 'missions',
+                commentable_id: this.mission.id
             });
         },
         submit: function submit() {
-            var _this2 = this;
+            var _this = this;
 
             var collection = this.collection || '';
 
-            if (this.editing) {
-                return ajax.post('/api/mission/' + this.mission.ref + '/comment/' + this.editing, this.comment).then(function (r) {
-                    _this2.fetch();
-                    _this2.editing = null;
-                    _this2.comment.text = null;
-                    localStorage.removeItem('comment-id-' + _this2.mission.ref + '-' + collection);
-                    localStorage.removeItem('comment-text-' + _this2.mission.ref + '-' + collection);
-                });
-            }
-
-            return ajax.post('/api/mission/' + this.mission.ref + '/comment', this.comment).then(function (r) {
-                _this2.fetch();
-                _this2.comment.text = null;
-                localStorage.removeItem('comment-id-' + _this2.mission.ref + '-' + collection);
-                localStorage.removeItem('comment-text-' + _this2.mission.ref + '-' + collection);
+            return this.$store.dispatch('comment/submit', this.create).then(function (r) {
+                _this.create.text = null;
+                localStorage.removeItem('comment-text-' + _this.mission.ref + '-' + collection);
             });
         },
-        storedCommentId: function storedCommentId() {
-            var collection = this.collection || '';
+        save: function save() {
+            var _this2 = this;
 
-            return localStorage.getItem('comment-id-' + this.mission.ref + '-' + collection);
+            return this.$store.dispatch('comment/save', this.update).then(function (r) {
+                _this2.fetch();
+                _this2.creating = true;
+                _this2.update.id = null;
+                _this2.update.text = null;
+            });
+        },
+        destroy: function destroy(comment) {
+            var _this3 = this;
+
+            return this.$store.dispatch('comment/destroy', comment.id).then(function (r) {
+                _this3.fetch();
+            });
         },
         storedCommentText: function storedCommentText() {
             var collection = this.collection || '';
@@ -3139,13 +3163,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return localStorage.getItem('comment-text-' + this.mission.ref + '-' + collection);
         },
         editComment: function editComment(comment) {
-            this.editing = comment.id;
-            this.comment.text = comment.text;
+            this.update = {
+                id: comment.id,
+                text: comment.text
+            };
+
+            this.creating = false;
         }
     },
 
     created: function created() {
         this.fetch();
+
+        if (this.storedCommentText() !== 'null') {
+            this.create.text = this.storedCommentText();
+        }
     }
 });
 
@@ -41508,128 +41540,182 @@ var render = function() {
           staticClass: "p-6",
           attrs: { "auto-rows": "min-content", gap: "4rem" }
         },
-        _vm._l(_vm.comments, function(comment, index) {
-          return _c(
-            "ui-card",
-            { key: index, attrs: { "no-padding": "", plain: "" } },
-            [
-              _c(
-                "div",
-                [
-                  _c(
-                    "grid",
-                    { attrs: { "template-columns": "4.5rem 1fr" } },
-                    [
-                      _c("div", {
-                        staticClass: "rounded-full w-12 h-12",
-                        style: {
-                          "background-image":
-                            "url(" + comment.user.avatar + ")",
-                          "background-size": "110%",
-                          "background-position": "center",
-                          "background-repeat": "no-repeat"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "span",
-                        { staticClass: "mt-1 text-xl font-bold" },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(comment.user.name) +
-                              "\n                        "
-                          ),
-                          comment.actions.delete
-                            ? _c("ui-icon", {
-                                staticClass:
-                                  "float-right ml-4 mt-1 cursor-pointer hover:opacity-75 select-none transition",
-                                attrs: {
-                                  name: "trash",
-                                  size: "18",
-                                  color: "grey-lighter"
-                                }
-                              })
-                            : _vm._e(),
-                          _vm._v(" "),
-                          comment.actions.update
-                            ? _c("ui-icon", {
-                                staticClass:
-                                  "float-right mt-1 cursor-pointer hover:opacity-75 select-none transition",
-                                attrs: {
-                                  size: "18",
-                                  name: "edit-pencil",
-                                  color: "grey-lighter"
-                                },
-                                nativeOn: {
-                                  click: function($event) {
-                                    _vm.editComment(comment)
-                                  }
-                                }
-                              })
-                            : _vm._e()
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("grid-child", {
-                        staticClass: "-mt-2 text-lg font-normal",
-                        attrs: { "column-start": "2", "column-end": "3" },
-                        domProps: { innerHTML: _vm._s(comment.text) }
-                      })
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ]
-          )
-        })
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "inline-block w-full bg-off-white-2 border-t border-off-white p-6 mt-8 rounded-b"
-        },
         [
-          _c("ui-input", {
-            staticClass: "mb-4 text-lg",
-            attrs: {
-              type: "textarea",
-              placeholder: _vm.placeholder,
-              rows: "6",
-              grow: ""
-            },
-            model: {
-              value: _vm.comment.text,
-              callback: function($$v) {
-                _vm.$set(_vm.comment, "text", $$v)
-              },
-              expression: "comment.text"
-            }
+          _vm._l(_vm.comments, function(comment, index) {
+            return !!_vm.comments.length
+              ? _c(
+                  "ui-card",
+                  { key: index, attrs: { "no-padding": "", plain: "" } },
+                  [
+                    _c(
+                      "div",
+                      [
+                        _c(
+                          "grid",
+                          { attrs: { "template-columns": "4.5rem 1fr" } },
+                          [
+                            _c("div", {
+                              staticClass: "rounded-full w-12 h-12",
+                              style: {
+                                "background-image":
+                                  "url(" + comment.user.avatar + ")",
+                                "background-size": "110%",
+                                "background-position": "center",
+                                "background-repeat": "no-repeat"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "mt-1 text-xl font-bold" },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(comment.user.name) +
+                                    "\n\n                        "
+                                ),
+                                comment.actions.delete
+                                  ? _c("ui-icon", {
+                                      staticClass:
+                                        "float-right ml-4 mt-1 cursor-pointer hover:opacity-75 select-none transition",
+                                      attrs: {
+                                        size: "18",
+                                        name: "trash",
+                                        color: "grey-lighter"
+                                      },
+                                      nativeOn: {
+                                        click: function($event) {
+                                          _vm.destroy(comment)
+                                        }
+                                      }
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                comment.actions.update
+                                  ? _c("ui-icon", {
+                                      staticClass:
+                                        "float-right mt-1 cursor-pointer hover:opacity-75 select-none transition",
+                                      attrs: {
+                                        size: "18",
+                                        name: "edit-pencil",
+                                        color: "grey-lighter"
+                                      },
+                                      nativeOn: {
+                                        click: function($event) {
+                                          _vm.editComment(comment)
+                                        }
+                                      }
+                                    })
+                                  : _vm._e()
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c("grid-child", {
+                              staticClass: "-mt-2 text-lg font-normal",
+                              attrs: { "column-start": "2", "column-end": "3" },
+                              domProps: { innerHTML: _vm._s(comment.text) }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                )
+              : _vm._e()
           }),
           _vm._v(" "),
-          _c(
-            "ui-button",
+          !_vm.comments.length
+            ? _c("ui-card", { attrs: { "no-padding": "", plain: "" } }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "text-center pt-8 text-grey-lighter font-medium text-xl"
+                  },
+                  [_vm._v("Be the first to comment!")]
+                )
+              ])
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.creating
+        ? _c(
+            "div",
             {
-              staticClass: "float-right",
-              attrs: { primary: "", large: "" },
-              on: { click: _vm.submit }
+              staticClass:
+                "inline-block w-full bg-off-white-2 border-t border-off-white p-6 mt-8 rounded-b"
             },
             [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm.editing ? "Save Changes" : "Publish") +
-                  "\n        "
+              _c("ui-input", {
+                staticClass: "mb-4 text-lg",
+                attrs: {
+                  type: "textarea",
+                  placeholder: _vm.placeholder,
+                  rows: "6",
+                  grow: ""
+                },
+                model: {
+                  value: _vm.create.text,
+                  callback: function($$v) {
+                    _vm.$set(_vm.create, "text", $$v)
+                  },
+                  expression: "create.text"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "ui-button",
+                {
+                  staticClass: "float-right",
+                  attrs: { primary: "", large: "" },
+                  on: { click: _vm.submit }
+                },
+                [_vm._v("Publish")]
               )
-            ]
+            ],
+            1
           )
-        ],
-        1
-      )
+        : _c(
+            "div",
+            {
+              staticClass:
+                "inline-block w-full bg-off-white-2 border-t border-off-white p-6 mt-8 rounded-b"
+            },
+            [
+              _c("ui-input", {
+                staticClass: "mb-4 text-lg",
+                attrs: {
+                  type: "textarea",
+                  placeholder: _vm.placeholder,
+                  rows: "6",
+                  grow: ""
+                },
+                model: {
+                  value: _vm.update.text,
+                  callback: function($$v) {
+                    _vm.$set(_vm.update, "text", $$v)
+                  },
+                  expression: "update.text"
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "ui-button",
+                {
+                  staticClass: "float-right",
+                  attrs: { primary: "", large: "" },
+                  on: { click: _vm.save }
+                },
+                [_vm._v("Save Changes")]
+              )
+            ],
+            1
+          )
     ],
     1
   )
@@ -42201,7 +42287,11 @@ var render = function() {
     "grid",
     {
       staticClass: "p-6",
-      attrs: { "template-columns": "0.25fr 0.75fr", gap: "8rem" }
+      attrs: {
+        "template-columns": "0.25fr 0.75fr",
+        "row-gap": "2rem",
+        "column-gap": "8rem"
+      }
     },
     [
       _c("div", { staticClass: "text-left" }, [
@@ -68317,6 +68407,70 @@ router.beforeEach(function (to, from, next) {
 
 /***/ }),
 
+/***/ "./resources/assets/js/store/comment.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    namespaced: true,
+
+    state: {
+        all: []
+    },
+
+    actions: {
+        fetch: function fetch(_ref, _ref2) {
+            var commit = _ref.commit;
+            var commentable_type = _ref2.commentable_type,
+                commentable_id = _ref2.commentable_id,
+                collection = _ref2.collection;
+
+            commit('fetch', []);
+
+            var queries = ['id=' + commentable_id, 'type=' + commentable_type, collection ? 'collection=' + collection : ''].join('&');
+
+            return ajax.get('/api/comment?' + queries).then(function (r) {
+                return commit('fetch', r.data);
+            });
+        },
+        submit: function submit(_ref3, _ref4) {
+            var dispatch = _ref3.dispatch;
+            var commentable_type = _ref4.commentable_type,
+                commentable_id = _ref4.commentable_id,
+                text = _ref4.text,
+                collection = _ref4.collection;
+
+            return ajax.post('/api/comment', {
+                text: text, collection: collection, commentable_type: commentable_type, commentable_id: commentable_id
+            }).then(function (r) {
+                return dispatch('fetch', {
+                    commentable_type: commentable_type, commentable_id: commentable_id, collection: collection
+                });
+            });
+        },
+        save: function save(_ref5, _ref6) {
+            var dispatch = _ref5.dispatch;
+            var id = _ref6.id,
+                text = _ref6.text;
+
+            return ajax.post('/api/comment/' + id, { text: text });
+        },
+        destroy: function destroy(_ref7, id) {
+            var dispatch = _ref7.dispatch;
+
+            return ajax.delete('/api/comment/' + id);
+        }
+    },
+
+    mutations: {
+        fetch: function fetch(state, comments) {
+            state.all = comments;
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./resources/assets/js/store/index.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -68326,10 +68480,12 @@ router.beforeEach(function (to, from, next) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth__ = __webpack_require__("./resources/assets/js/store/auth.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mission__ = __webpack_require__("./resources/assets/js/store/mission.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__comment__ = __webpack_require__("./resources/assets/js/store/comment.js");
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
 
 
 
@@ -68341,7 +68497,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 
     modules: {
         auth: __WEBPACK_IMPORTED_MODULE_2__auth__["a" /* default */],
-        mission: __WEBPACK_IMPORTED_MODULE_3__mission__["a" /* default */]
+        mission: __WEBPACK_IMPORTED_MODULE_3__mission__["a" /* default */],
+        comment: __WEBPACK_IMPORTED_MODULE_4__comment__["a" /* default */]
     }
 });
 

@@ -158,7 +158,7 @@ class Mission extends Model implements HasMedia
     {
         return $this->comments()
             ->whereCollection(null)
-            ->orderBy('published_at');
+            ->orderBy('created_at');
     }
 
     /**
@@ -170,6 +170,6 @@ class Mission extends Model implements HasMedia
     {
         return $this->comments()
             ->whereCollection('notes')
-            ->orderBy('published_at');
+            ->orderBy('created_at');
     }
 }

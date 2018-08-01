@@ -1,5 +1,5 @@
 <template>
-    <grid template-columns="0.25fr 0.75fr" gap="8rem" class="p-6">
+    <grid template-columns="0.25fr 0.75fr" row-gap="2rem" column-gap="8rem" class="p-6">
         <div class="text-left">
             <span class="inline-block w-full font-medium text-xl">Banner</span>
             <span class="inline-block w-full opacity-50">Upload an interesting banner image to showcase your mission.</span>

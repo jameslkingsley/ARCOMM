@@ -20,7 +20,7 @@ class CreateCommentsTable extends Migration
             $table->morphs('commentable');
             $table->string('collection')->nullable();
             $table->longText('text');
-            $table->timestamp('published_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

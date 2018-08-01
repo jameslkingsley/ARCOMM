@@ -7,10 +7,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/mission/{mission}', 'API\MissionController@show');
     Route::post('/mission', 'API\MissionController@store');
 
-    // Mission Comments
-    Route::get('/mission/{mission}/comment', 'API\MissionCommentController@index');
-    Route::post('/mission/{mission}/comment', 'API\MissionCommentController@store');
-    Route::post('/mission/{mission}/comment/{comment}', 'API\MissionCommentController@update');
+    Route::get('/comment', 'API\CommentController@index');
+    Route::post('/comment', 'API\CommentController@store');
+    Route::post('/comment/{comment}', 'API\CommentController@update');
+    Route::delete('/comment/{comment}', 'API\CommentController@destroy');
 
     // Mission Media
     Route::get('/mission/{mission}/media', 'API\MissionMediaController@index');

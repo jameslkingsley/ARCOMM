@@ -1,7 +1,7 @@
 <template>
     <div>
         <grid auto-rows="min-content" gap="4rem" class="p-6">
-            <ui-card no-padding plain v-for="(comment, index) in comments" :key="index">
+            <ui-card v-if="!!comments.length" no-padding plain v-for="(comment, index) in comments" :key="index">
                 <div>
                     <grid template-columns="4.5rem 1fr">
                         <div :style="{
@@ -13,7 +13,15 @@
 
                         <span class="mt-1 text-xl font-bold">
                             {{ comment.user.name }}
-                            <ui-icon v-if="comment.actions.delete" name="trash" size="18" color="grey-lighter" class="float-right ml-4 mt-1 cursor-pointer hover:opacity-75 select-none transition" />
+
+                            <ui-icon
+                                size="18"
+                                name="trash"
+                                color="grey-lighter"
+                                v-if="comment.actions.delete"
+                                @click.native="destroy(comment)"
+                                class="float-right ml-4 mt-1 cursor-pointer hover:opacity-75 select-none transition" />
+
                             <ui-icon
                                 size="18"
                                 name="edit-pencil"
@@ -27,13 +35,20 @@
                     </grid>
                 </div>
             </ui-card>
+
+            <ui-card v-if="!comments.length" no-padding plain>
+                <div class="text-center pt-8 text-grey-lighter font-medium text-xl">Be the first to comment!</div>
+            </ui-card>
         </grid>
 
-        <div class="inline-block w-full bg-off-white-2 border-t border-off-white p-6 mt-8 rounded-b">
-            <ui-input type="textarea" v-model="comment.text" :placeholder="placeholder" rows="6" class="mb-4 text-lg" grow />
-            <ui-button primary large class="float-right" @click="submit">
-                {{ editing ? 'Save Changes' : 'Publish' }}
-            </ui-button>
+        <div v-if="creating" class="inline-block w-full bg-off-white-2 border-t border-off-white p-6 mt-8 rounded-b">
+            <ui-input type="textarea" v-model="create.text" :placeholder="placeholder" rows="6" class="mb-4 text-lg" grow />
+            <ui-button primary large class="float-right" @click="submit">Publish</ui-button>
+        </div>
+
+        <div v-else class="inline-block w-full bg-off-white-2 border-t border-off-white p-6 mt-8 rounded-b">
+            <ui-input type="textarea" v-model="update.text" :placeholder="placeholder" rows="6" class="mb-4 text-lg" grow />
+            <ui-button primary large class="float-right" @click="save">Save Changes</ui-button>
         </div>
     </div>
 </template>
@@ -48,17 +63,30 @@
 
         data() {
             return {
-                comments: [],
-                editing: this.storedCommentId(),
-                comment: {
+                creating: true,
+
+                create: {
+                    text: null,
                     collection: this.collection,
-                    text: this.storedCommentText(),
+                    commentable_type: 'missions',
+                    commentable_id: this.mission.id,
+                },
+
+                update: {
+                    id: null,
+                    text: null,
                 }
             }
         },
 
+        computed: {
+            comments() {
+                return this.$store.state.comment.all
+            }
+        },
+
         watch: {
-            comment: {
+            create: {
                 deep: true,
                 handler(value) {
                     const collection = this.collection || ''
@@ -67,52 +95,44 @@
                         `comment-text-${this.mission.ref}-${collection}`,
                         value.text
                     )
-
-                    localStorage.setItem(
-                        `comment-id-${this.mission.ref}-${collection}`,
-                        this.editing
-                    )
                 }
             }
         },
 
         methods: {
             fetch() {
-                const collection = this.collection ? `?collection=${this.collection}` : ''
-
-                ajax.get(`/api/mission/${this.mission.ref}/comment${collection}`)
-                    .then(r => this.comments = r.data)
+                return this.$store.dispatch('comment/fetch', {
+                    collection: this.collection,
+                    commentable_type: 'missions',
+                    commentable_id: this.mission.id,
+                })
             },
 
             submit() {
                 const collection = this.collection || ''
 
-                if (this.editing) {
-                    return ajax.post(`/api/mission/${this.mission.ref}/comment/${this.editing}`, this.comment)
-                        .then(r => {
-                            this.fetch()
-                            this.editing = null
-                            this.comment.text = null
-                            localStorage.removeItem(`comment-id-${this.mission.ref}-${collection}`)
-                            localStorage.removeItem(`comment-text-${this.mission.ref}-${collection}`)
-                        })
-                }
-
-                return ajax.post(`/api/mission/${this.mission.ref}/comment`, this.comment)
+                return this.$store.dispatch('comment/submit', this.create)
                     .then(r => {
-                        this.fetch()
-                        this.comment.text = null
-                        localStorage.removeItem(`comment-id-${this.mission.ref}-${collection}`)
+                        this.create.text = null
                         localStorage.removeItem(`comment-text-${this.mission.ref}-${collection}`)
                     })
             },
 
-            storedCommentId() {
-                const collection = this.collection || ''
+            save() {
+                return this.$store.dispatch('comment/save', this.update)
+                    .then(r => {
+                        this.fetch()
+                        this.creating = true
+                        this.update.id = null
+                        this.update.text = null
+                    })
+            },
 
-                return localStorage.getItem(
-                    `comment-id-${this.mission.ref}-${collection}`
-                )
+            destroy(comment) {
+                return this.$store.dispatch('comment/destroy', comment.id)
+                    .then(r => {
+                        this.fetch()
+                    })
             },
 
             storedCommentText() {
@@ -124,13 +144,21 @@
             },
 
             editComment(comment) {
-                this.editing = comment.id
-                this.comment.text = comment.text
+                this.update = {
+                    id: comment.id,
+                    text: comment.text
+                }
+
+                this.creating = false
             }
         },
 
         created() {
             this.fetch()
+
+            if (this.storedCommentText() !== 'null') {
+                this.create.text = this.storedCommentText()
+            }
         }
     }
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CommentController extends Controller
 {
@@ -12,19 +13,18 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $mission = Comment::getActualClassNameForMorph($request->type)
+            ::findOrFail($request->id);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $mission->comments()
+            ->whereCollection($request->collection ?: null)
+            ->orderBy('created_at')
+            ->with('user')
+            ->get();
+
+        return $mission->afterActionReports->load('user');
     }
 
     /**
@@ -35,29 +35,19 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->authorize('create', Comment::class);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
+        $mission = Comment::getActualClassNameForMorph($request->commentable_type)
+            ::findOrFail($request->commentable_id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
+        $attributes = $request->validate([
+            'text' => 'required|min:1',
+            'collection' => 'nullable'
+        ]);
+
+        $mission->comments()->save(
+            new Comment($attributes)
+        );
     }
 
     /**
@@ -69,7 +59,13 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $this->authorize('update', $comment);
+
+        $attributes = $request->validate([
+            'text' => 'required|min:1'
+        ]);
+
+        $comment->update($attributes);
     }
 
     /**
@@ -80,6 +76,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
     }
 }
