@@ -1,12 +1,13 @@
-require('./bootstrap');
-require('./filters');
-require('./ui');
+require('./bootstrap')
+require('./filters')
+require('./ui')
 
-Vue.component('grid', require('./components/Grid.vue'));
-Vue.component('grid-child', require('./components/GridChild.vue'));
-Vue.component('modal', require('./components/helpers/Modal.vue'));
+Vue.component('grid', require('./components/Grid.vue'))
+Vue.component('grid-child', require('./components/GridChild.vue'))
+Vue.component('modal', require('./components/helpers/Modal.vue'))
 
-import App from './pages/App.vue';
+import App from './pages/App.vue'
+import Welcome from './pages/Welcome.vue'
 
 import { mapState } from 'vuex'
 import store from './store'
@@ -36,7 +37,12 @@ window.app = new Vue({
 
     el: '#app',
 
-    render: h => h(App),
+    render: h => {
+        return h(
+            window.location.pathname.includes('hub')
+                ? App : Welcome
+        )
+    },
 
     data: {
         loading: true,

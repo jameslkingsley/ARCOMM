@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Commentable;
 use App\Traits\BelongsToUser;
+use App\Traits\AppendableActions;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -13,7 +14,8 @@ class Mission extends Model implements HasMedia
 {
     use Commentable,
         HasMediaTrait,
-        BelongsToUser;
+        BelongsToUser,
+        AppendableActions;
 
     /**
      * Guarded attributes.
@@ -49,6 +51,15 @@ class Mission extends Model implements HasMedia
      */
     protected $appends = [
         'banner'
+    ];
+
+    /**
+     * The appendable actions.
+     *
+     * @var array
+     */
+    protected $appendableActions = [
+        'verify',
     ];
 
     /**
@@ -97,6 +108,16 @@ class Mission extends Model implements HasMedia
             'full' => $this->getFirstMediaUrl('banner'),
             'thumb' => $this->getFirstMediaUrl('banner', 'thumb'),
         ];
+    }
+
+    /**
+     * Gets the verified by attribute.
+     *
+     * @return \App\Models\User
+     */
+    public function getVerifiedByAttribute($value)
+    {
+        return $value ? User::findOrFail($value) : null;
     }
 
     /**

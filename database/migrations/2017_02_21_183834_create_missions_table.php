@@ -25,7 +25,7 @@ class CreateMissionsTable extends Migration
             $table->enum('mode', ['coop', 'adversarial', 'preop'])->default('coop');
             $table->unsignedInteger('verified_by')->nullable();
             $table->foreign('verified_by')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamp('last_played')->nullable();
+            $table->timestamp('verified_at')->nullable();
             $table->json('locked_briefings')->nullable();
             $table->longText('ext')->nullable();
             $table->longText('cfg')->nullable();

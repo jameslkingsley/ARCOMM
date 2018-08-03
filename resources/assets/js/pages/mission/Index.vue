@@ -2,7 +2,7 @@
     <div v-if="$store.state.mission.viewing !== null" class="container mx-auto h-full">
         <div :class="{ 'text-white': $store.state.mission.viewing.banner.full.length }" class="w-full text-center mt-16">
             <span class="inline-block w-full text-5xl font-black uppercase tracking-wide">{{ $store.state.mission.viewing.name }}</span>
-            <span class="inline-block w-full text-2xl font-light">By {{ $store.state.mission.viewing.user.name }}</span>
+            <span class="inline-block w-full text-2xl font-bold">By {{ $store.state.mission.viewing.user.name }}</span>
         </div>
 
         <ui-tabs @change="setActiveTab" :active="activeTab" class="mt-16 p-0">
@@ -30,7 +30,7 @@
                 <mission-comments placeholder="Write a note..." collection="notes" :mission="$store.state.mission.viewing"></mission-comments>
             </template>
 
-            <template slot="settings">
+            <template v-if="$store.state.mission.viewing.actions.update" slot="settings">
                 <mission-settings></mission-settings>
             </template>
         </ui-tabs>

@@ -1950,9 +1950,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         btnClasses: { type: String, default: '' }
     },
 
+    data: function data() {
+        return {
+            uploading: false
+        };
+    },
+
+
     methods: {
         upload: function upload(event) {
             var _this = this;
+
+            this.uploading = true;
 
             var root = this.$root;
             var data = new FormData();
@@ -1964,12 +1973,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     root.progress = Math.floor(e.loaded * 100 / e.total);
                 }
             }).then(function (r) {
+                _this.uploading = false;
                 event.target.value = null;
 
                 _this.$emit('success', r.data);
             }).catch(function (_ref) {
                 var response = _ref.response;
 
+                _this.uploading = false;
                 event.target.value = null;
                 _this.$emit('error', response.data);
             });
@@ -2062,7 +2073,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         iconClasses: function iconClasses() {
             return {
                 'mr-3': true,
-                '-mt-px': true,
                 'float-left': true
             };
         },
@@ -2925,6 +2935,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Welcome.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        //
+    },
+
+    data: function data() {
+        return {
+            //
+        };
+    },
+
+
+    computed: {
+        //
+    },
+
+    methods: {
+        //
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/mission/Briefing.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3708,6 +3775,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3718,6 +3833,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
+            missionUploadMessage: null,
             factions: [{ name: 'blufor', locked: false }, { name: 'opfor', locked: false }, { name: 'indfor', locked: false }, { name: 'civilian', locked: false }]
         };
     },
@@ -3734,7 +3850,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         bannerUploaded: function bannerUploaded(data) {
-            Events.fire('fetch-mission');
+            var _this = this;
+
+            this.$store.dispatch('mission/view', this.mission.ref).then(function (r) {
+                Events.fire('banner', _this.$store.state.mission.viewing.banner.full);
+            });
+        },
+        missionUploaded: function missionUploaded(data) {
+            this.$store.dispatch('mission/view', this.mission.ref);
+        },
+        missionUploadError: function missionUploadError(data) {
+            this.missionUploadMessage = 'errors' in data ? data.errors.file[0] : data.message;
+        },
+        deleteMission: function deleteMission() {
+            var _this2 = this;
+
+            this.$store.dispatch('mission/destroy', this.mission.ref).then(function (r) {
+                _this2.$router.push('/hub');
+                _this2.$store.commit('mission/view', null);
+            });
         },
         lockBriefing: function lockBriefing(faction) {
             faction.locked = !faction.locked;
@@ -3743,6 +3877,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         isLocked: function isLocked(faction) {
             if (this.mission.locked_briefings === null) return false;
             return this.mission.locked_briefings.indexOf(faction.name.toLowerCase()) !== -1;
+        },
+        toggleVerification: function toggleVerification() {
+            return this.$store.dispatch('mission/verify', this.mission.ref);
         }
     },
 
@@ -42104,6 +42241,108 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-34eca43b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Welcome.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "h-screen" },
+    [
+      _c("header", { staticClass: "absolute pin-t pin-l pin-r" }, [
+        _c(
+          "nav",
+          {
+            staticClass: "container mx-auto text-white py-6 flex items-center"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-right flex-1" }, [
+              !!_vm.$store.state.auth.me
+                ? _c(
+                    "a",
+                    {
+                      staticClass: "inline-block py-2 px-4 font-semibold",
+                      attrs: { href: "/hub" }
+                    },
+                    [_vm._v("Hub")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("a", { staticClass: "inline-block py-2 px-4 font-semibold" }, [
+                _vm._v("Join")
+              ]),
+              _vm._v(" "),
+              _c("a", { staticClass: "inline-block py-2 px-4 font-semibold" }, [
+                _vm._v("Media")
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "ui-card",
+        {
+          staticClass: "container mx-auto h-golden",
+          staticStyle: { "margin-top": "-15%" }
+        },
+        [_vm._v("\n        /\n    ")]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-left" }, [
+      _c(
+        "a",
+        { staticClass: "inline-block text-left pl-4", attrs: { href: "/" } },
+        [
+          _c("img", {
+            staticClass: "h-9",
+            attrs: { src: "/images/logo_white.png" }
+          })
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "h-golden bg-primary text-white flex items-center justify-center",
+        staticStyle: { "padding-bottom": "15%" }
+      },
+      [_c("span", [_vm._v("ARCOMM")])]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-34eca43b", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3b49144c\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/mission/Item.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42325,12 +42564,12 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "text-left" }, [
         _c("span", { staticClass: "inline-block w-full font-medium text-xl" }, [
-          _vm._v("Locked Briefings")
+          _vm._v("Hidden Briefings")
         ]),
         _vm._v(" "),
         _c("span", { staticClass: "inline-block w-full opacity-50" }, [
           _vm._v(
-            "Lock briefings that contain super top secret information the enemy shouldn't know."
+            "Hide briefings that contain super top secret information the enemy shouldn't know."
           )
         ])
       ]),
@@ -42342,8 +42581,8 @@ var render = function() {
             "div",
             {
               key: index,
-              staticClass:
-                "inline-block w-full opacity-100 mb-1 cursor-pointer",
+              staticClass: "inline-block w-full mb-1 cursor-pointer",
+              class: { "opacity-50": faction.locked },
               on: {
                 click: function($event) {
                   $event.preventDefault()
@@ -42352,46 +42591,169 @@ var render = function() {
               }
             },
             [
-              _c(
-                "i",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: faction.locked,
-                      expression: "faction.locked"
-                    }
-                  ],
-                  staticClass: "float-left mr-2 material-icons"
-                },
-                [_vm._v("lock")]
-              ),
-              _vm._v(" "),
-              _c(
-                "i",
-                {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: !faction.locked,
-                      expression: "!faction.locked"
-                    }
-                  ],
-                  staticClass: "float-left mr-2 material-icons"
-                },
-                [_vm._v("lock_open")]
-              ),
+              _c("ui-icon", {
+                staticClass: "float-left mr-2",
+                attrs: {
+                  name: faction.locked ? "view-hide" : "view-show",
+                  color: "grey",
+                  size: "24"
+                }
+              }),
               _vm._v(" "),
               _c("span", {
                 staticClass: "text-base font-normal",
                 domProps: { textContent: _vm._s(faction.name.toUpperCase()) }
               })
-            ]
+            ],
+            1
           )
         })
-      )
+      ),
+      _vm._v(" "),
+      _vm.mission.actions.verify
+        ? _c("div", { staticClass: "text-left" }, [
+            _c(
+              "span",
+              { staticClass: "inline-block w-full font-medium text-xl" },
+              [_vm._v("Verification")]
+            ),
+            _vm._v(" "),
+            _c("span", { staticClass: "inline-block w-full opacity-50" }, [
+              _vm._v(
+                "If the mission is ready to be played then hit that big button. Go ahead."
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mission.actions.verify
+        ? _c(
+            "div",
+            [
+              _c(
+                "ui-button",
+                {
+                  attrs: {
+                    primary: !_vm.mission.verified_by,
+                    success: !!_vm.mission.verified_by,
+                    icon: _vm.mission.verified_by ? "" : "checkmark"
+                  },
+                  on: { click: _vm.toggleVerification }
+                },
+                [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(
+                        _vm.mission.verified_by
+                          ? "Verified by " + _vm.mission.verified_by.name
+                          : "Verify"
+                      ) +
+                      "\n        "
+                  )
+                ]
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mission.actions.update
+        ? _c("div", { staticClass: "text-left" }, [
+            _c(
+              "span",
+              { staticClass: "inline-block w-full font-medium text-xl" },
+              [_vm._v("Update")]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "inline-block w-full opacity-50" },
+              [
+                _vm._v(
+                  "\n            You can update your mission, just as long as you\n            "
+                ),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "font-semibold underline",
+                    attrs: { to: "/hub/missions/" + _vm.mission.ref + "/notes" }
+                  },
+                  [_vm._v("provide a change log.")]
+                )
+              ],
+              1
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mission.actions.update
+        ? _c(
+            "div",
+            [
+              _c(
+                "upload",
+                {
+                  attrs: {
+                    name: "file",
+                    url: "/api/mission/" + _vm.mission.ref,
+                    "btn-classes": "btn-lg"
+                  },
+                  on: {
+                    success: _vm.missionUploaded,
+                    error: _vm.missionUploadError
+                  }
+                },
+                [_vm._v("\n            Choose PBO File\n        ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                { staticClass: "block w-1/2 mt-2 text-error font-medium" },
+                [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.missionUploadMessage) +
+                      "\n        "
+                  )
+                ]
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mission.actions.delete
+        ? _c("div", { staticClass: "text-left" }, [
+            _c(
+              "span",
+              { staticClass: "inline-block w-full font-medium text-xl" },
+              [_vm._v("Delete")]
+            ),
+            _vm._v(" "),
+            _c("span", { staticClass: "inline-block w-full opacity-50" }, [
+              _vm._v(
+                "\n            Woah careful, this is the danger zone. You sure you want to delete this? There's no going back.\n        "
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mission.actions.delete
+        ? _c(
+            "div",
+            [
+              _c(
+                "ui-button",
+                {
+                  attrs: { icon: "trash", primary: "" },
+                  on: { click: _vm.deleteMission }
+                },
+                [_vm._v("Delete Mission")]
+              )
+            ],
+            1
+          )
+        : _vm._e()
     ]
   )
 }
@@ -42644,7 +43006,10 @@ var render = function() {
     [
       _c(
         "ui-button",
-        { attrs: { primary: "" }, on: { click: _vm.chooseFile } },
+        {
+          attrs: { icon: "upload", primary: "" },
+          on: { click: _vm.chooseFile }
+        },
         [_vm._v("Upload")]
       ),
       _vm._v(" "),
@@ -42769,7 +43134,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "span",
-                { staticClass: "inline-block w-full text-2xl font-light" },
+                { staticClass: "inline-block w-full text-2xl font-bold" },
                 [
                   _vm._v(
                     "By " + _vm._s(_vm.$store.state.mission.viewing.user.name)
@@ -42823,7 +43188,14 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("template", { slot: "settings" }, [_c("mission-settings")], 1)
+              _vm.$store.state.mission.viewing.actions.update
+                ? _c(
+                    "template",
+                    { slot: "settings" },
+                    [_c("mission-settings")],
+                    1
+                  )
+                : _vm._e()
             ],
             2
           )
@@ -42858,7 +43230,7 @@ var render = function() {
         "ui-button",
         {
           class: _vm.btnClasses,
-          attrs: { primary: "" },
+          attrs: { icon: "upload", primary: "", loading: _vm.uploading },
           on: { click: _vm.chooseFile }
         },
         [_vm._t("default")],
@@ -59780,9 +60152,11 @@ module.exports = function(module) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_App_vue__ = __webpack_require__("./resources/assets/js/pages/App.vue");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pages_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__pages_App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store__ = __webpack_require__("./resources/assets/js/store/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes__ = __webpack_require__("./resources/assets/js/routes/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_Welcome_vue__ = __webpack_require__("./resources/assets/js/pages/Welcome.vue");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_Welcome_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__pages_Welcome_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__("./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store__ = __webpack_require__("./resources/assets/js/store/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes__ = __webpack_require__("./resources/assets/js/routes/index.js");
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 __webpack_require__("./resources/assets/js/bootstrap.js");
@@ -59799,7 +60173,8 @@ Vue.component('modal', __webpack_require__("./resources/assets/js/components/hel
 
 
 
-Vue.router = __WEBPACK_IMPORTED_MODULE_3__routes__["a" /* default */];
+
+Vue.router = __WEBPACK_IMPORTED_MODULE_4__routes__["a" /* default */];
 
 Vue.use({
     install: function install(Vue, options) {
@@ -59820,13 +60195,13 @@ Vue.use({
 });
 
 window.app = new Vue({
-    store: __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */],
-    router: __WEBPACK_IMPORTED_MODULE_3__routes__["a" /* default */],
+    store: __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */],
+    router: __WEBPACK_IMPORTED_MODULE_4__routes__["a" /* default */],
 
     el: '#app',
 
     render: function render(h) {
-        return h(__WEBPACK_IMPORTED_MODULE_0__pages_App_vue___default.a);
+        return h(window.location.pathname.includes('hub') ? __WEBPACK_IMPORTED_MODULE_0__pages_App_vue___default.a : __WEBPACK_IMPORTED_MODULE_1__pages_Welcome_vue___default.a);
     },
 
     data: {
@@ -59835,7 +60210,7 @@ window.app = new Vue({
         csrfToken: window.App.csrfToken
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_1_vuex__["b" /* mapState */])({
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapState */])({
         route: function route(state) {
             return state.route;
         },
@@ -67855,6 +68230,54 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/pages/Welcome.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/Welcome.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-34eca43b\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/pages/Welcome.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\pages\\Welcome.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-34eca43b", Component.options)
+  } else {
+    hotAPI.reload("data-v-34eca43b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pages/mission/Briefing.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -68425,8 +68848,6 @@ router.beforeEach(function (to, from, next) {
                 commentable_id = _ref2.commentable_id,
                 collection = _ref2.collection;
 
-            commit('fetch', []);
-
             var queries = ['id=' + commentable_id, 'type=' + commentable_type, collection ? 'collection=' + collection : ''].join('&');
 
             return ajax.get('/api/comment?' + queries).then(function (r) {
@@ -68532,6 +68953,25 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
             return ajax.get('/api/mission/' + ref).then(function (r) {
                 return commit('view', r.data);
             });
+        },
+        verify: function verify(_ref3, ref) {
+            var state = _ref3.state,
+                dispatch = _ref3.dispatch;
+
+            if (state.viewing.verified_by) {
+                return ajax.delete('/api/mission/' + ref + '/verification').then(function (r) {
+                    dispatch('view', ref);
+                });
+            }
+
+            return ajax.post('/api/mission/' + ref + '/verification').then(function (r) {
+                dispatch('view', ref);
+            });
+        },
+        destroy: function destroy(_ref4, ref) {
+            var commit = _ref4.commit;
+
+            return ajax.delete('/api/mission/' + ref);
         }
     },
 
@@ -69153,7 +69593,8 @@ var config = {
     '1/6': '16.66667%',
     '5/6': '83.33333%',
     'full': '100%',
-    'screen': '100vw'
+    'screen': '100vw',
+    'golden': 'calc(100vh / 1.618)'
   },
 
   /*
@@ -69190,7 +69631,8 @@ var config = {
     '48': '12rem',
     '64': '16rem',
     'full': '100%',
-    'screen': '100vh'
+    'screen': '100vh',
+    'golden': 'calc(100vh / 1.618)'
   },
 
   /*

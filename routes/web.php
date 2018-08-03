@@ -1,8 +1,6 @@
 <?php
 
-Route::get('/', function () {
-    return redirect('/hub');
-});
+Route::view('/', 'welcome');
 
 Route::get('/oauth', 'Auth\DiscordController@callback');
 Route::get('/oauth/redirect', 'Auth\DiscordController@redirect');

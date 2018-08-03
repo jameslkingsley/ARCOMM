@@ -15,6 +15,8 @@ class MissionBriefingController extends Controller
      */
     public function update(Request $request, Mission $mission)
     {
+        $this->authorize('update', $mission);
+
         $factions = [];
 
         foreach ($request->factions as $faction) {

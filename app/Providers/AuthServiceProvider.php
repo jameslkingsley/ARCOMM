@@ -14,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
+        \App\Models\Mission::class => \App\Policies\MissionPolicy::class,
     ];
 
     /**
@@ -26,5 +27,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+
+        Passport::tokensCan([
+            'administrate' => 'Administrator level permissions',
+            'mission-test' => 'Mission tester level permissions',
+        ]);
     }
 }

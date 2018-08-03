@@ -82,7 +82,6 @@
             iconClasses() {
                 return {
                     'mr-3': true,
-                    '-mt-px': true,
                     'float-left': true,
                 }
             },

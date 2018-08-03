@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ui-button primary :class="btnClasses" @click="chooseFile">
+        <ui-button icon="upload" primary :loading="uploading" :class="btnClasses" @click="chooseFile">
             <slot></slot>
         </ui-button>
 
@@ -18,8 +18,16 @@
             btnClasses: { type: String, default: '' }
         },
 
+        data() {
+            return {
+                uploading: false
+            }
+        },
+
         methods: {
             upload(event) {
+                this.uploading = true
+
                 let root = this.$root;
                 let data = new FormData();
                 data.append(this.name, this.$refs.file.files[0]);
@@ -32,11 +40,13 @@
                         }
                     })
                     .then(r => {
+                        this.uploading = false
                         event.target.value = null;
 
                         this.$emit('success', r.data);
                     })
                     .catch(({ response }) => {
+                        this.uploading = false
                         event.target.value = null;
                         this.$emit('error', response.data);
                     });

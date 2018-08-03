@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\CommentCreated;
 
 class CommentController extends Controller
 {
@@ -45,9 +46,11 @@ class CommentController extends Controller
             'collection' => 'nullable'
         ]);
 
-        $mission->comments()->save(
+        $comment = $mission->comments()->save(
             new Comment($attributes)
         );
+
+        $comment->user->notify(new CommentCreated($comment));
     }
 
     /**

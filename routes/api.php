@@ -3,10 +3,18 @@
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user/me', 'Auth\UserController@me');
 
+    // Mission
     Route::get('/mission', 'API\MissionController@index');
-    Route::get('/mission/{mission}', 'API\MissionController@show');
     Route::post('/mission', 'API\MissionController@store');
+    Route::get('/mission/{mission}', 'API\MissionController@show');
+    Route::post('/mission/{mission}', 'API\MissionController@update');
+    Route::delete('/mission/{mission}', 'API\MissionController@destroy');
 
+    // Mission Verification
+    Route::post('/mission/{mission}/verification', 'API\MissionVerificationController@store');
+    Route::delete('/mission/{mission}/verification', 'API\MissionVerificationController@destroy');
+
+    // Comments
     Route::get('/comment', 'API\CommentController@index');
     Route::post('/comment', 'API\CommentController@store');
     Route::post('/comment/{comment}', 'API\CommentController@update');

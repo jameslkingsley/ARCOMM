@@ -16,6 +16,8 @@ class MissionBannerController extends Controller
      */
     public function store(Request $request, Mission $mission)
     {
+        $this->authorize('update', $mission);
+
         $mission->addMediaFromRequest('banner')
             ->toMediaCollection('banner');
     }

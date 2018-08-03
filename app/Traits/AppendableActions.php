@@ -5,19 +5,6 @@ namespace App\Traits;
 trait AppendableActions
 {
     /**
-     * The appendable actions.
-     *
-     * @var array
-     */
-    protected $appendableActions = [
-        'view',
-        'update',
-        'delete',
-        'restore',
-        'forceDelete',
-    ];
-
-    /**
      * Boots the trait.
      *
      * @return void
@@ -38,7 +25,15 @@ trait AppendableActions
     {
         $actions = [];
 
-        foreach ($this->appendableActions as $action) {
+        $appendableActions = array_merge([
+            'view',
+            'update',
+            'delete',
+            'restore',
+            'forceDelete',
+        ], $this->appendableActions ?: []);
+
+        foreach ($appendableActions as $action) {
             $actions[$action] = auth()->user()->can($action, $this);
         }
 

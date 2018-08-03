@@ -7,8 +7,6 @@ export default {
 
     actions: {
         fetch({ commit }, { commentable_type, commentable_id, collection }) {
-            commit('fetch', [])
-
             let queries = [
                 `id=${commentable_id}`,
                 `type=${commentable_type}`,
