@@ -33,6 +33,10 @@ export default {
 
         destroy({ commit }, ref) {
             return ajax.delete(`/api/mission/${ref}`)
+        },
+
+        download({ commit }, { ref, format }) {
+            return window.location = `/api/mission/${ref}/download?format=${format}`
         }
     },
 

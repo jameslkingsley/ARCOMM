@@ -45,6 +45,7 @@
                 for (let f in this.mission.cfg.briefing) {
                     // Always skip game master briefing
                     if (f === 'game_master') continue
+                    if (this.mission.locked_briefings.includes(f.toLowerCase())) continue
 
                     let filtered = {}
                     let faction = this.mission.cfg.briefing[f]

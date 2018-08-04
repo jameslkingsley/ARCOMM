@@ -19,13 +19,38 @@
         <div>
             <div
                 :key="index"
-                v-for="(faction, index) in factions"
-                @click.prevent="lockBriefing(faction)"
-                :class="{ 'opacity-50': faction.locked }"
-                class="inline-block w-full mb-1 cursor-pointer">
-                <ui-icon :name="faction.locked ? 'view-hide' : 'view-show'" class="float-left mr-2" color="grey" size="24" />
-                <span class="text-base font-normal" v-text="faction.name.toUpperCase()"></span>
+                class="inline-block w-full"
+                v-for="(faction, index) in factions">
+                <div
+                    @click.prevent="lockBriefing(faction)"
+                    :class="{ 'opacity-50': faction.locked }"
+                    class="float-left cursor-pointer">
+                    <ui-icon :name="faction.locked ? 'view-hide' : 'view-show'" class="float-left mr-2" color="grey" size="24" />
+                    <span class="text-base font-normal" v-text="faction.name.toUpperCase()"></span>
+                </div>
             </div>
+        </div>
+
+        <div v-if="mission.actions.verify" class="text-left">
+            <span class="inline-block w-full font-medium text-xl">Download</span>
+            <span class="inline-block w-full opacity-50">Use the ZIP for testing and the PBO for deploying to the server.</span>
+        </div>
+
+        <div v-if="mission.actions.verify">
+            <ui-button
+                primary
+                class="mr-2"
+                icon="download"
+                @click="download('zip')">
+                Zip
+            </ui-button>
+
+            <ui-button
+                primary
+                icon="download"
+                @click="download('pbo')">
+                PBO
+            </ui-button>
         </div>
 
         <div v-if="mission.actions.verify" class="text-left">
@@ -140,6 +165,13 @@
 
             toggleVerification() {
                 return this.$store.dispatch('mission/verify', this.mission.ref)
+            },
+
+            download(format) {
+                this.$store.dispatch('mission/download', {
+                    format,
+                    ref: this.mission.ref,
+                })
             }
         },
 

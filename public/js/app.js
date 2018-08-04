@@ -3044,6 +3044,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var f in this.mission.cfg.briefing) {
                 // Always skip game master briefing
                 if (f === 'game_master') continue;
+                if (this.mission.locked_briefings.includes(f.toLowerCase())) continue;
 
                 var filtered = {};
                 var faction = this.mission.cfg.briefing[f];
@@ -3400,6 +3401,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
@@ -3416,7 +3421,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         background: function background() {
             return {
-                'background-image': 'url(' + this.mission.banner.thumb + ')'
+                'background-image': 'url(' + this.mission.banner.thumb + ')',
+                'filter': this.mission.verified_by ? null : 'grayscale(100%)'
             };
         },
         url: function url() {
@@ -3448,16 +3454,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        //
-    },
-
     components: {
         'mission-item': __WEBPACK_IMPORTED_MODULE_0__Item_vue___default.a
     },
@@ -3823,6 +3823,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3880,6 +3905,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleVerification: function toggleVerification() {
             return this.$store.dispatch('mission/verify', this.mission.ref);
+        },
+        download: function download(format) {
+            this.$store.dispatch('mission/download', {
+                format: format,
+                ref: this.mission.ref
+            });
         }
     },
 
@@ -4917,6 +4948,21 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 // module
 exports.push([module.i, "\n.fade-enter-active[data-v-2cca580c],\n.fade-leave-active[data-v-2cca580c] {\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.fade-enter[data-v-2cca580c],\n.fade-leave-to[data-v-2cca580c] {\n  opacity: 0;\n}\n.slide-fade-enter-active[data-v-2cca580c] {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n}\n.slide-fade-leave-active[data-v-2cca580c] {\n  -webkit-transition: all .3s ease;\n  transition: all .3s ease;\n}\n.slide-fade-enter[data-v-2cca580c],\n.slide-fade-leave-to[data-v-2cca580c] {\n  -webkit-transform: translateY(-10rem);\n          transform: translateY(-10rem);\n  opacity: 0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ea1e5c4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/pages/mission/Library.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.library {\n  display: grid;\n  grid-gap: 1rem;\n  grid-template-columns: 1fr;\n}\n.library [role='name'] {\n  font-size: 1.5rem;\n}\n.library [role='summary'] {\n  display: inline-block;\n  font-size: 1rem;\n}\n.library [role='meta'] {\n  font-size: 1rem;\n}\n@media (min-width: 576px) {\n.library {\n    grid-template-columns: repeat(2, 1fr);\n}\n.library [role='name'] {\n    font-size: 1.125rem;\n}\n.library [role='summary'] {\n    display: inline-block;\n    font-size: .875rem;\n}\n.library [role='meta'] {\n    font-size: .875rem;\n}\n}\n@media (min-width: 992px) {\n.library {\n    grid-template-columns: repeat(3, 1fr);\n}\n.library [role='name'] {\n    font-size: 1.125rem;\n}\n.library [role='summary'] {\n    display: inline-block;\n    font-size: 1rem;\n}\n.library [role='meta'] {\n    font-size: 1rem;\n}\n}\n@media (min-width: 1200px) {\n.library {\n    grid-template-columns: repeat(6, 1fr);\n}\n.library [role='verification'] span {\n    font-size: .66rem;\n    padding-left: .5rem;\n    padding-right: .5rem;\n}\n.library [role='wrapper'] {\n    padding-left: 1rem;\n    padding-right: 1rem;\n    padding-top: 1.5rem;\n    padding-bottom: 1.5rem;\n}\n.library [role='name'] {\n    font-size: 1.125rem;\n}\n.library [role='summary'] {\n    display: none;\n}\n.library [role='meta'] {\n    font-size: .75rem;\n}\n}\n@media (min-width: 1680px) {\n.library [role='verification'] span {\n    font-size: .75rem;\n    padding-left: .75rem;\n    padding-right: .75rem;\n}\n.library [role='wrapper'] {\n    padding-left: 1.5rem;\n    padding-right: 1.5rem;\n    padding-top: 2rem;\n    padding-bottom: 2rem;\n}\n.library [role='name'] {\n    font-size: 1.125rem;\n}\n.library [role='summary'] {\n    display: inline-block;\n    font-size: 1rem;\n}\n.library [role='meta'] {\n    font-size: 1rem;\n}\n}\n@media (min-width: 2200px) {\n.library [role='verification'] span {\n    font-size: .75rem;\n    padding-left: .75rem;\n    padding-right: .75rem;\n}\n.library [role='wrapper'] {\n    padding-left: 1.5rem;\n    padding-right: 1.5rem;\n    padding-top: 2rem;\n    padding-bottom: 2rem;\n}\n.library [role='name'] {\n    font-size: 1.5rem;\n}\n.library [role='summary'] {\n    display: inline-block;\n    font-size: 1rem;\n}\n.library [role='meta'] {\n    font-size: 1rem;\n}\n}\n", ""]);
 
 // exports
 
@@ -42358,27 +42404,59 @@ var render = function() {
         "div",
         {
           staticClass:
-            "text-left absolute pin-b pin-l pin-r text-white py-6 px-8 mb-3 rounded-b"
+            "text-left absolute pin-b pin-l pin-r text-white py-6 px-8 mb-3 rounded-b",
+          attrs: { role: "wrapper" }
         },
         [
+          !_vm.mission.verified_by
+            ? _c(
+                "div",
+                {
+                  staticClass: "w-full inline-block mb-3",
+                  attrs: { role: "verification" }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      staticClass:
+                        "rounded-full border border-white px-3 py-1 text-xs uppercase"
+                    },
+                    [_vm._v("Incomplete")]
+                  )
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "span",
-            { staticClass: "font-bold text-2xl w-full inline-block mb-1" },
+            {
+              staticClass: "font-bold text-2xl w-full inline-block mb-1",
+              attrs: { role: "name" }
+            },
             [_vm._v(_vm._s(_vm.mission.name))]
           ),
           _vm._v(" "),
-          _c("span", { staticClass: "w-full inline-block opacity-75 mb-1" }, [
-            _vm._v(_vm._s(_vm.mission.summary))
-          ]),
+          _c(
+            "span",
+            {
+              staticClass: "w-full inline-block opacity-75 mb-1",
+              attrs: { role: "summary" }
+            },
+            [_vm._v(_vm._s(_vm.mission.summary))]
+          ),
           _vm._v(" "),
           _c(
             "span",
-            { staticClass: "w-full inline-block opacity-50 text-sm" },
+            {
+              staticClass: "w-full inline-block opacity-50 text-sm",
+              attrs: { role: "meta" }
+            },
             [
               _vm._v(
                 _vm._s(_vm._f("capitalize")(_vm.mission.mode)) +
                   " · " +
-                  _vm._s(_vm.mission.map.name) +
+                  _vm._s(_vm._f("capitalize")(_vm.mission.map.name)) +
                   " · " +
                   _vm._s(_vm.mission.user.name)
               )
@@ -42577,38 +42655,90 @@ var render = function() {
       _c(
         "div",
         _vm._l(_vm.factions, function(faction, index) {
-          return _c(
+          return _c("div", { key: index, staticClass: "inline-block w-full" }, [
+            _c(
+              "div",
+              {
+                staticClass: "float-left cursor-pointer",
+                class: { "opacity-50": faction.locked },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.lockBriefing(faction)
+                  }
+                }
+              },
+              [
+                _c("ui-icon", {
+                  staticClass: "float-left mr-2",
+                  attrs: {
+                    name: faction.locked ? "view-hide" : "view-show",
+                    color: "grey",
+                    size: "24"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", {
+                  staticClass: "text-base font-normal",
+                  domProps: { textContent: _vm._s(faction.name.toUpperCase()) }
+                })
+              ],
+              1
+            )
+          ])
+        })
+      ),
+      _vm._v(" "),
+      _vm.mission.actions.verify
+        ? _c("div", { staticClass: "text-left" }, [
+            _c(
+              "span",
+              { staticClass: "inline-block w-full font-medium text-xl" },
+              [_vm._v("Download")]
+            ),
+            _vm._v(" "),
+            _c("span", { staticClass: "inline-block w-full opacity-50" }, [
+              _vm._v(
+                "Use the ZIP for testing and the PBO for deploying to the server."
+              )
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.mission.actions.verify
+        ? _c(
             "div",
-            {
-              key: index,
-              staticClass: "inline-block w-full mb-1 cursor-pointer",
-              class: { "opacity-50": faction.locked },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  _vm.lockBriefing(faction)
-                }
-              }
-            },
             [
-              _c("ui-icon", {
-                staticClass: "float-left mr-2",
-                attrs: {
-                  name: faction.locked ? "view-hide" : "view-show",
-                  color: "grey",
-                  size: "24"
-                }
-              }),
+              _c(
+                "ui-button",
+                {
+                  staticClass: "mr-2",
+                  attrs: { primary: "", icon: "download" },
+                  on: {
+                    click: function($event) {
+                      _vm.download("zip")
+                    }
+                  }
+                },
+                [_vm._v("\n            Zip\n        ")]
+              ),
               _vm._v(" "),
-              _c("span", {
-                staticClass: "text-base font-normal",
-                domProps: { textContent: _vm._s(faction.name.toUpperCase()) }
-              })
+              _c(
+                "ui-button",
+                {
+                  attrs: { primary: "", icon: "download" },
+                  on: {
+                    click: function($event) {
+                      _vm.download("pbo")
+                    }
+                  }
+                },
+                [_vm._v("\n            PBO\n        ")]
+              )
             ],
             1
           )
-        })
-      ),
+        : _vm._e(),
       _vm._v(" "),
       _vm.mission.actions.verify
         ? _c("div", { staticClass: "text-left" }, [
@@ -43077,16 +43207,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [
-      _c(
-        "grid",
-        { attrs: { "template-columns": "repeat(6, 16.66666fr)", gap: "1rem" } },
-        _vm._l(_vm.missions, function(mission, index) {
-          return _c("mission-item", { key: index, attrs: { mission: mission } })
-        })
-      )
-    ],
-    1
+    { staticClass: "library" },
+    _vm._l(_vm.missions, function(mission, index) {
+      return _c("mission-item", { key: index, attrs: { mission: mission } })
+    })
   )
 }
 var staticRenderFns = []
@@ -46355,6 +46479,33 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2cca580c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
      var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2cca580c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ea1e5c4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/pages/mission/Library.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ea1e5c4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/pages/mission/Library.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0b3bb961", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ea1e5c4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Library.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ea1e5c4\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Library.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -68474,6 +68625,10 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7ea1e5c4\",\"scoped\":false,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/assets/js/pages/mission/Library.vue")
+}
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
 var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/pages/mission/Library.vue")
@@ -68482,7 +68637,7 @@ var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/templa
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -68972,6 +69127,13 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
             var commit = _ref4.commit;
 
             return ajax.delete('/api/mission/' + ref);
+        },
+        download: function download(_ref5, _ref6) {
+            var commit = _ref5.commit;
+            var ref = _ref6.ref,
+                format = _ref6.format;
+
+            return window.location = '/api/mission/' + ref + '/download?format=' + format;
         }
     },
 
@@ -69307,7 +69469,9 @@ var config = {
     'sm': '576px',
     'md': '768px',
     'lg': '992px',
-    'xl': '1200px'
+    'xl': '1200px',
+    'xxl': '1680px',
+    'xxxl': '2200px'
   },
 
   /*

@@ -18,7 +18,8 @@
         "laravel/tinker": "~1.0",
         "restcord/restcord": "^0.3.0",
         "socialiteproviders/discord": "^2.0",
-        "spatie/laravel-medialibrary": "7.0.0"
+        "spatie/laravel-medialibrary": "7.0.0",
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
