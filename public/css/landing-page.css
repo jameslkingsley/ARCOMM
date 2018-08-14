@@ -63,6 +63,7 @@ a:focus, a:active {
 }
 
 .navbar {
+  padding: 0 1rem !important;
 }
 
 .btn-hover, i {
@@ -421,7 +422,7 @@ a:focus, a:active {
   margin: 5px 0px;
   padding: 20px 15px;
   font-size: 20px;
-  margin-top: 80px !important;
+  margin-top: 0 !important;
 }
 .navbar .navbar-nav > li > a {
   padding: 10px 15px;
@@ -869,7 +870,6 @@ a:focus, a:active {
   right: 0;
   left: 0;
   z-index: 1030;
-  height: 50px;
 }
 
 .landing-page .parallax {
