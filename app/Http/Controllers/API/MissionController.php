@@ -18,9 +18,14 @@ class MissionController extends Controller
      */
     public function index()
     {
-        return Mission::orderBy('created_at', 'desc')
-            ->with('user', 'map')
-            ->get();
+        $query = Mission::orderBy('created_at', 'desc')
+            ->with('user', 'map');
+
+        if (auth()->user()->tokenCan('administrate') || auth()->user()->tokenCan('mission-test')) {
+            return $query->get();
+        }
+
+        return $query->whereNotNull('verified_by')->get();
     }
 
     /**
