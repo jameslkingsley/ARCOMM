@@ -60351,10 +60351,6 @@ window.app = new Vue({
 
     el: '#app',
 
-    render: function render(h) {
-        return h(window.location.pathname.includes('hub') ? __WEBPACK_IMPORTED_MODULE_0__pages_App_vue___default.a : __WEBPACK_IMPORTED_MODULE_1__pages_Welcome_vue___default.a);
-    },
-
     data: {
         loading: true,
         progress: null,

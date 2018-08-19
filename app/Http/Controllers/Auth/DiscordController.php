@@ -74,10 +74,9 @@ class DiscordController extends Controller
      */
     public function create($data)
     {
-        $user = User::create([
+        $user = User::updateOrCreate(['discord_id' => $data->id], [
             'name' => $data->name,
             'email' => $data->email,
-            'discord_id' => $data->id,
             'avatar' => $data->avatar,
         ]);
 
@@ -85,10 +84,7 @@ class DiscordController extends Controller
 
         $token = $user->makeApiToken();
 
-        auth()->login($user, true);
-
-        return redirect('/hub')
-            ->with('access_token', $token);
+        return redirect('/complete');
     }
 
     /**

@@ -37,13 +37,6 @@ window.app = new Vue({
 
     el: '#app',
 
-    render: h => {
-        return h(
-            window.location.pathname.includes('hub')
-                ? App : Welcome
-        )
-    },
-
     data: {
         loading: true,
         progress: null,
