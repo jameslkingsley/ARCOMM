@@ -111,16 +111,6 @@ class Mission extends Model implements HasMedia
     }
 
     /**
-     * Gets the verified by attribute.
-     *
-     * @return \App\Models\User
-     */
-    public function getVerifiedByAttribute($value)
-    {
-        return $value ? User::findOrFail($value) : null;
-    }
-
-    /**
      * Gets the ext attribute.
      *
      * @return object
@@ -167,7 +157,7 @@ class Mission extends Model implements HasMedia
      */
     public function verifiedBy()
     {
-        return $this->belongsTo(User::class, 'id', 'verified_by');
+        return $this->belongsTo(User::class, 'verified_by', 'id');
     }
 
     /**
