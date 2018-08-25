@@ -35,6 +35,10 @@ input[type='search']::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
 
+.search-icon-center {
+  top: 8px;
+}
+
 /* Content
 ---------------------------------------------------------------------------- */
 .content {
@@ -352,6 +356,10 @@ input[type='search']::-webkit-search-cancel-button {
 ---------------------------------------------------------------------------- */
 
 .sidebar-link {
+}
+
+.router-link-active {
+  @apply font-extrabold !important;
 }
 
 .sidebar-icon {

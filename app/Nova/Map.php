@@ -5,16 +5,15 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\BelongsTo;
 
-class Mission extends Resource
+class Map extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\\Models\\Mission';
+    public static $model = 'App\\Models\\Map';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -29,15 +28,8 @@ class Mission extends Resource
      * @var array
      */
     public static $search = [
-        'name', 'ref', 'mode'
+        'id', 'name', 'key'
     ];
-
-    /**
-     * The relationships that should be eager loaded on index queries.
-     *
-     * @var array
-     */
-    public static $with = ['user', 'map', 'verifiedBy'];
 
     /**
      * Get the fields displayed by the resource.
@@ -50,24 +42,11 @@ class Mission extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Creator', 'user', 'App\\Nova\\User')
-                ->searchable(),
-
             Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+                ->sortable(),
 
-            Text::make('Mode')
-                ->displayUsing(function ($value) {
-                    return auth()->user()->name;
-                    return studly_case($value);
-                }),
-
-            BelongsTo::make('Map', 'map', 'App\\Nova\\Map')
-                ->searchable(),
-
-            BelongsTo::make('Verified By', 'verifiedBy', 'App\\Nova\\User')
-                ->searchable(),
+            Text::make('Key')
+                ->sortable(),
         ];
     }
 
@@ -113,15 +92,5 @@ class Mission extends Resource
     public function actions(Request $request)
     {
         return [];
-    }
-
-    /**
-     * Determine if the given resource is authorizable.
-     *
-     * @return bool
-     */
-    public static function authorizable()
-    {
-        return false;
     }
 }

@@ -15,6 +15,7 @@ let tailwindcss = require('tailwindcss');
 mix
     .js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
+    .sass('resources/assets/sass/nova.scss', 'public/css')
     .version()
     .options({
         processCssUrls: false,

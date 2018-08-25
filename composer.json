@@ -18,14 +18,15 @@
         "fideloper/proxy": "~4.0",
         "invisnik/laravel-steam-auth": "^3.2",
         "laravel/framework": "5.6.*",
+        "laravel/nova": "*",
         "laravel/passport": "^6.0",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "restcord/restcord": "^0.3.0",
+        "sbine/route-viewer": "^0.0.2",
         "socialiteproviders/discord": "^2.0",
         "spatie/laravel-medialibrary": "7.0.0",
-        "zanysoft/laravel-zip": "^1.0",
-        "laravel/nova": "*"
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

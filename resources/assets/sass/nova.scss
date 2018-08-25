@@ -1,0 +1,49 @@
+:root {
+  --transparent: transparent;
+  --black: #22292f;
+  --white: white;
+  --white-50: rgba(255, 255, 255, 0.5);
+  --danger: #e74444;
+  --success: #21b978;
+  --warning: #ffeb3b;
+  --info: #03a9f4;
+
+  --primary: #BD2C2C;
+  --primary-dark: #AA2828;
+  --primary-70: #711A1A;
+  --primary-50: #D16B6B;
+  --primary-30: #E5ABAB;
+  --primary-10: #F8EAEA;
+
+  --logo: white;
+}
+
+.bg-grad-sidebar {
+    background: white;
+
+    h3, h3 span, a {
+        @apply text-black font-semibold;
+
+        &.router-link-exact-active {
+            @apply font-bold;
+        }
+    }
+}
+
+.form-input:focus,
+.form-input:active,
+.btn-default:focus,
+.btn-default:active {
+    text-shadow: none;
+    box-shadow: 0 0 0 3px rgba(92, 122, 255, 0.5);
+}
+
+[dusk="global-search"] {
+    border-width: 0;
+    box-shadow: none;
+    background: rgba(237, 241, 244, 0.5);
+}
+
+.bg-80 {
+    background-color: transparent !important;
+}

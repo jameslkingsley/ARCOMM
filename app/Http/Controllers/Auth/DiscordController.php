@@ -74,10 +74,11 @@ class DiscordController extends Controller
      */
     public function create($data)
     {
-        $user = User::create([
-            'name' => $data->name,
+        $user = User::updateOrCreate([
             'email' => $data->email,
             'discord_id' => $data->id,
+        ], [
+            'name' => $data->name,
             'avatar' => $data->avatar,
         ]);
 
@@ -88,6 +89,7 @@ class DiscordController extends Controller
         auth()->login($user, true);
 
         return redirect('/hub')
+            ->withCookie(cookie()->forever('remember_token', $user->remember_token))
             ->with('access_token', $token);
     }
 

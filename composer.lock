@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95015d1f76072a8de42c62d9c892a605",
+    "content-hash": "a40146f56faabf468c787842f014630d",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2682,6 +2682,55 @@
             ],
             "description": "REST Library for the Discord API",
             "time": "2018-06-07T02:35:01+00:00"
+        },
+        {
+            "name": "sbine/route-viewer",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sbine/nova-route-viewer.git",
+                "reference": "79f27523925173be4dd340364df4e9641844d416"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sbine/nova-route-viewer/zipball/79f27523925173be4dd340364df4e9641844d416",
+                "reference": "79f27523925173be4dd340364df4e9641844d416",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sbine\\RouteViewer\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sbine\\RouteViewer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sara Bine",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova tool to view your registered routes.",
+            "homepage": "https://github.com/sbine/nova-route-viewer",
+            "keywords": [
+                "laravel",
+                "nova",
+                "routes"
+            ],
+            "time": "2018-08-24T17:15:39+00:00"
         },
         {
             "name": "socialiteproviders/discord",

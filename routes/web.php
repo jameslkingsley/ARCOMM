@@ -1,5 +1,15 @@
 <?php
 
+Route::get('/admin/login', function (\Illuminate\Http\Request $request) {
+    $user = \App\Models\User::whereRememberToken(cookie('remember_token'))->first();
+
+    auth()->login($user, true);
+
+    return redirect(
+        \Laravel\Nova\Nova::path()
+    );
+});
+
 Route::view('/', 'welcome');
 
 Route::get('/oauth', 'Auth\DiscordController@callback');

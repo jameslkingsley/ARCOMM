@@ -1,8 +1,8 @@
-{{-- <dropdown-trigger class="h-9 flex items-center" slot-scope="{toggle}" :handle-click="toggle">
-    <img src="" class="rounded-full w-8 h-8 mr-3"/>
+<dropdown-trigger class="h-9 flex items-center" slot-scope="{toggle}" :handle-click="toggle">
+    <img src="{{ auth()->user()->avatar }}" class="rounded-full w-8 h-8 mr-3"/>
 
     <span class="text-90">
-        Your Name
+        {{ auth()->user()->name }}
     </span>
 </dropdown-trigger>
 
@@ -14,4 +14,4 @@
             </a>
         </li>
     </ul>
-</dropdown-menu> --}}
+</dropdown-menu>

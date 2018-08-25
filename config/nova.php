@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'path' => '/nova',
+    'path' => '/admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -58,11 +58,10 @@ return [
     */
 
     'middleware' => [
-        'api',
-        Admin::class,
+        'web',
+        Authenticate::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
         Authorize::class,
-        // Authenticate::class,
     ],
 ];

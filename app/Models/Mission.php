@@ -42,6 +42,7 @@ class Mission extends Model implements HasMedia
         'created_at',
         'updated_at',
         'last_played',
+        'verified_at',
     ];
 
     /**

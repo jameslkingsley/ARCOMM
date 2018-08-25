@@ -17,6 +17,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::style('nova-colours', public_path('css/nova.css'));
     }
 
     /**
@@ -27,7 +29,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-            // ->withAuthenticationRoutes()
+            ->withAuthenticationRoutes()
             // ->withPasswordResetRoutes()
             ->register();
     }
@@ -65,7 +67,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            new \Sbine\RouteViewer\RouteViewer,
+        ];
     }
 
     /**

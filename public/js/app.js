@@ -69322,6 +69322,13 @@ Vue.component('ui-list', __webpack_require__("./resources/assets/js/components/u
 
 /***/ }),
 
+/***/ "./resources/assets/sass/nova.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./tailwind.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70223,7 +70230,8 @@ module.exports = Object.assign({}, defaultConfig, config);
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__("./resources/assets/js/app.js");
-module.exports = __webpack_require__("./resources/assets/sass/app.scss");
+__webpack_require__("./resources/assets/sass/app.scss");
+module.exports = __webpack_require__("./resources/assets/sass/nova.scss");
 
 
 /***/ })

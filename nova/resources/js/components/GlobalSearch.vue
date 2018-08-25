@@ -1,16 +1,9 @@
 <template>
-    <div class="relative z-50 w-full max-w-xs">
-        <div
-            v-if="currentlySearching"
-            @mousedown="closeSearch"
-            class="fixed pin bg-80 z-0 opacity-25"
-        />
-
+    <div v-on-clickaway="closeSearch" class="relative z-50 w-full max-w-xs">
         <div class="relative">
-
             <!-- Search -->
-            <div class="relative flex items-center">
-                <icon type="search" class="absolute ml-3 text-70" />
+            <div class="relative">
+                <icon type="search" class="absolute search-icon-center ml-3 text-70" />
 
                 <input
                     dusk="global-search"
@@ -29,7 +22,6 @@
                 />
             </div>
 
-
             <div
                 v-if="shouldShowResults"
                 class="overflow-hidden absolute rounded-lg shadow-lg w-full mt-2 max-h-search overflow-y-auto"
@@ -37,7 +29,7 @@
             >
                 <div v-for="group in formattedResults">
                     <h3 class="text-xs uppercase tracking-wide text-80 bg-40 py-2 px-3">
-                        {{ group.resourceName }}
+                        {{ group.resourceTitle }}
                     </h3>
 
                     <ul class="list-reset">
@@ -72,8 +64,11 @@
 
 <script>
 import { Minimum } from 'laravel-nova'
+import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
+    mixins: [clickaway],
+
     data: () => ({
         currentlySearching: false,
         searchTerm: '',
@@ -82,9 +77,9 @@ export default {
     }),
 
     watch: {
-        $route: function () {
+        $route: function() {
             this.closeSearch()
-        }
+        },
     },
 
     mounted() {
