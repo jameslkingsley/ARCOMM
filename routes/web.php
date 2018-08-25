@@ -1,14 +1,7 @@
 <?php
 
-Route::get('/admin/login', function (\Illuminate\Http\Request $request) {
-    $user = \App\Models\User::whereRememberToken(cookie('remember_token'))->first();
-
-    auth()->login($user, true);
-
-    return redirect(
-        \Laravel\Nova\Nova::path()
-    );
-});
+Route::get('/admin/login', 'Auth\NovaController@login');
+Route::get('/admin/logout', 'Auth\NovaController@logout');
 
 Route::view('/', 'welcome');
 

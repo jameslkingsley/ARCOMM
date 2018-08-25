@@ -89,7 +89,7 @@ class DiscordController extends Controller
         auth()->login($user, true);
 
         return redirect('/hub')
-            ->withCookie(cookie()->forever('remember_token', $user->remember_token))
+            ->withCookie(cookie()->forever('user_token', $user->remember_token))
             ->with('access_token', $token);
     }
 
