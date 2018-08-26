@@ -184,4 +184,14 @@ class Mission extends Model implements HasMedia
             ->whereCollection('notes')
             ->orderBy('created_at');
     }
+
+    /**
+     * Determines whether the mission is assigned to an operation.
+     *
+     * @return boolean
+     */
+    public function assignedToOperation()
+    {
+        return OperationMission::whereMissionId($this->id)->exists();
+    }
 }

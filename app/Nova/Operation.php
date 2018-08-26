@@ -4,26 +4,25 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
-use Vyuldashev\NovaPermission\Role;
-use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\DateTime;
 
-class User extends Resource
+class Operation extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\\Models\\User';
+    public static $model = 'App\\Models\\Operation';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'starts_at';
 
     /**
      * The columns that should be searched.
@@ -31,7 +30,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'starts_at'
     ];
 
     /**
@@ -44,25 +43,9 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-
-            Text::make('Discord ID')
-                ->sortable(),
-
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:255')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            HasMany::make('Missions'),
-            HasMany::make('Comments'),
-            HasMany::make('Absences'),
-
-            MorphToMany::make('Roles', 'roles', Role::class),
+            DateTime::make('Starts At')->sortable(),
+            Boolean::make('Open Day')->sortable(),
+            HasMany::make('Missions', 'missions', 'App\\Nova\\OperationMission')->sortable(),
         ];
     }
 
@@ -108,5 +91,15 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->starts_at->toDateTimeString();
     }
 }

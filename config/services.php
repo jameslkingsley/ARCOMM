@@ -41,5 +41,6 @@ return [
         'redirect' => env('DISCORD_REDIRECT_URI'),
         'server_id' => env('DISCORD_SERVER_ID'),
         'channel_id' => env('DISCORD_CHANNEL_ID'),
+        'staff_id' => env('DISCORD_STAFF_ID'),
     ],
 ];

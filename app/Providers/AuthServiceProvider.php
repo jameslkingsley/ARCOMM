@@ -15,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         \App\Models\Comment::class => \App\Policies\CommentPolicy::class,
         \App\Models\Mission::class => \App\Policies\MissionPolicy::class,
+        \App\Models\Absence::class => \App\Policies\AbsencePolicy::class,
     ];
 
     /**

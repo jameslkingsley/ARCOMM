@@ -4,11 +4,13 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Comment;
+use App\Traits\AlwaysAllowAdmin;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CommentPolicy
 {
-    use HandlesAuthorization;
+    use AlwaysAllowAdmin,
+        HandlesAuthorization;
 
     /**
      * Determine whether the user can view the comment.

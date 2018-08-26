@@ -4,26 +4,24 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
-use Vyuldashev\NovaPermission\Role;
-use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\BelongsTo;
 
-class User extends Resource
+class OperationMission extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\\Models\\User';
+    public static $model = 'App\\Models\\OperationMission';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -31,8 +29,15 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'operation_id', 'mission_id'
     ];
+
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
     /**
      * Get the fields displayed by the resource.
@@ -44,25 +49,9 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-
-            Text::make('Discord ID')
-                ->sortable(),
-
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:255')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            HasMany::make('Missions'),
-            HasMany::make('Comments'),
-            HasMany::make('Absences'),
-
-            MorphToMany::make('Roles', 'roles', Role::class),
+            BelongsTo::make('Operation')->sortable(),
+            BelongsTo::make('Mission')->sortable(),
+            Number::make('Order')->sortable(),
         ];
     }
 
@@ -108,5 +97,25 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Get the displayble label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Operation Missions';
+    }
+
+    /**
+     * Get the displayble singular label of the resource.
+     *
+     * @return string
+     */
+    public static function singularLabel()
+    {
+        return 'Operation Mission';
     }
 }

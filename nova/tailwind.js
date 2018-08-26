@@ -131,7 +131,7 @@ module.exports = {
     width: {
         auto: 'auto',
         px: '1px',
-        sidebar: '13.75rem',
+        sidebar: '18rem',
         // '1': '0.25rem',
         '2': '0.5rem',
         '3': '0.75rem',

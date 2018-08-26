@@ -175,7 +175,7 @@ trait MissionRequest
             ['key' => $this->mapName],
 
             // Add these if creating
-            ['name' => $this->mapName]
+            ['name' => studly_case($this->mapName)]
         );
     }
 

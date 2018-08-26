@@ -4,26 +4,26 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
-use Vyuldashev\NovaPermission\Role;
-use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\BelongsTo;
 
-class User extends Resource
+class Absence extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\\Models\\User';
+    public static $model = 'App\\Models\\Absence';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'date';
 
     /**
      * The columns that should be searched.
@@ -31,7 +31,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'date', 'user_id'
     ];
 
     /**
@@ -44,25 +44,10 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-
-            Text::make('Discord ID')
-                ->sortable(),
-
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:255')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            HasMany::make('Missions'),
-            HasMany::make('Comments'),
-            HasMany::make('Absences'),
-
-            MorphToMany::make('Roles', 'roles', Role::class),
+            BelongsTo::make('User')->sortable(),
+            Date::make('Date')->sortable(),
+            Text::make('Reason'),
+            DateTime::make('Created At'),
         ];
     }
 

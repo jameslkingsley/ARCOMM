@@ -19,7 +19,7 @@ class MissionController extends Controller
     public function index()
     {
         $query = Mission::orderBy('created_at', 'desc')
-            ->with('user', 'map');
+            ->with('user', 'map', 'verifiedBy');
 
         if (auth()->user()->hasRole('administrator') || auth()->user()->hasRole('mission-tester')) {
             return $query->get();
@@ -51,7 +51,7 @@ class MissionController extends Controller
      */
     public function show(Mission $mission)
     {
-        return $mission->load('user', 'map', 'afterActionReports', 'notes');
+        return $mission->load('user', 'map', 'afterActionReports', 'notes', 'verifiedBy');
     }
 
     /**

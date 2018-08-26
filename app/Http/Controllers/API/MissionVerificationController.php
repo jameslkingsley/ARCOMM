@@ -10,16 +10,6 @@ use App\Notifications\MissionVerified;
 class MissionVerificationController extends Controller
 {
     /**
-     * Constructor method.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('scope:administrate,mission-test');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -31,7 +21,7 @@ class MissionVerificationController extends Controller
 
         $mission->update([
             'verified_at' => now(),
-            'verified_by' => auth()->user()->id,
+            'verified_by' => $request->user()->id,
         ]);
 
         $mission->user->notify(new MissionVerified($mission));

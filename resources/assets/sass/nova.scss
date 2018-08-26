@@ -15,12 +15,12 @@
   --primary-30: #E5ABAB;
   --primary-10: #F8EAEA;
 
-  --logo: var(--primary);
+  --logo: var(--black);
   --sidebar-icon: white;
 }
 
 .bg-grad-sidebar {
-    background: var(--primary);
+    background: var(--black);
 
     h3, h3 span, a {
         @apply text-white font-semibold;
@@ -39,6 +39,12 @@
     box-shadow: 0 0 0 3px rgba(92, 122, 255, 0.5);
 }
 
+.form-select:focus,
+.checkbox:focus,
+.form-radio:focus {
+    box-shadow: none;
+}
+
 [dusk="global-search"] {
     border-width: 0;
     box-shadow: none;
@@ -47,4 +53,8 @@
 
 .bg-80 {
     background-color: transparent !important;
+}
+
+.sidebar-icon path {
+    fill: currentColor;
 }

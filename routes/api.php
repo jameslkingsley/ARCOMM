@@ -27,4 +27,10 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Mission Briefing
     Route::put('/mission/{mission}/briefing', 'API\MissionBriefingController@update');
+
+    // Absences
+    Route::get('/absence', 'API\AbsenceController@index');
+    Route::post('/absence', 'API\AbsenceController@store');
+    Route::post('/absence/{absence}', 'API\AbsenceController@update');
+    Route::delete('/absence/{absence}', 'API\AbsenceController@destroy');
 });

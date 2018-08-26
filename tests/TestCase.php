@@ -4,33 +4,48 @@ namespace Tests;
 
 use App\Models\User;
 use App\Models\Mission;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use RefreshDatabase,
+        CreatesApplication;
 
-    /**
-     * Dumps the contents of the response.
-     *
-     * @return void
-     */
-    public function dump(TestResponse $response)
+    public function setUp()
     {
-        dd($response->decodeResponseJson());
+        parent::setUp();
+
+        $this->withoutExceptionHandling();
+
+        $this->withoutMiddleware(
+            \App\Http\Middleware\VerifyCsrfToken::class
+        );
+
+        $this->user = User::create([
+            'discord_id' => '376552105571385355',
+            'name' => 'Kingsley',
+            'email' => 'jlkingsley97@gmail.com',
+        ]);
+
+        $this->defaultHeaders['X-CSRF-TOKEN'] = csrf_token();
+        $this->defaultHeaders['Authorization'] = 'Bearer ' . $this->user->makeApiToken();
     }
 
     /**
-     * Authenticates with a user.
+     * Refresh the in-memory database.
      *
      * @return void
      */
-    public function login($user = null)
+    protected function refreshInMemoryDatabase()
     {
-        auth()->login($user ?: User::first());
+        $this->artisan('migrate:fresh');
+        $this->artisan('passport:install');
+        $this->artisan('db:seed');
+
+        $this->app[Kernel::class]->setArtisan(null);
     }
 
     /**
@@ -41,29 +56,5 @@ abstract class TestCase extends BaseTestCase
     public function clean()
     {
         File::cleanDirectory(storage_path('app/missions_test'));
-    }
-
-    /**
-     * Uploads the given mission file.
-     *
-     * @return \Illuminate\Foundation\Testing\TestResponse
-     */
-    public function uploadMission($name)
-    {
-        $response = $this->post('/api/mission', [
-            '_token' => csrf_token(),
-            'file' => new UploadedFile(
-                base_path("tests/$name"),
-                $name,
-                null,
-                null,
-                null,
-                true
-            )
-        ]);
-
-        optional(Mission::orderBy('created_at', 'desc')->first())->delete();
-
-        return $response;
     }
 }

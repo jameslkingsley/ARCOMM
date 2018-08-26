@@ -56,4 +56,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * Gets the user's absences.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function absences()
+    {
+        return $this->hasMany(Absence::class);
+    }
 }

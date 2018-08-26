@@ -4,11 +4,13 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Mission;
+use App\Traits\AlwaysAllowAdmin;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MissionPolicy
 {
-    use HandlesAuthorization;
+    use AlwaysAllowAdmin,
+        HandlesAuthorization;
 
     /**
      * Determine whether the user can view the mission.
@@ -19,9 +21,7 @@ class MissionPolicy
      */
     public function view(User $user, Mission $mission)
     {
-        return true;
         return $mission->user->is($user)
-            || $user->hasRole('administrator')
             || $user->hasRole('mission-tester')
             || (bool) $mission->verified_by;
     }
@@ -47,7 +47,6 @@ class MissionPolicy
     public function update(User $user, Mission $mission)
     {
         return $mission->user->is($user)
-            || $user->hasRole('administrator')
             || $user->hasRole('mission-tester');
     }
 
@@ -60,10 +59,11 @@ class MissionPolicy
      */
     public function delete(User $user, Mission $mission)
     {
-        // TODO Prevent deletion if mission is assigned to an operation
+        if ($mission->assignedToOperation()) {
+            return false;
+        }
 
-        return $mission->user->is($user)
-            || $user->hasRole('administrator');
+        return $mission->user->is($user);
     }
 
     /**
@@ -75,7 +75,7 @@ class MissionPolicy
      */
     public function restore(User $user, Mission $mission)
     {
-        return $user->hasRole('administrator');
+        //
     }
 
     /**
@@ -87,7 +87,7 @@ class MissionPolicy
      */
     public function forceDelete(User $user, Mission $mission)
     {
-        return $user->hasRole('administrator');
+        return $mission->user->is($user);
     }
 
     /**
@@ -99,9 +99,6 @@ class MissionPolicy
      */
     public function verify(User $user, Mission $mission)
     {
-        // TODO Only if user is tester or admin
-
-        return $user->hasRole('administrator')
-            || $user->hasRole('mission-tester');
+        return $user->hasRole('mission-tester');
     }
 }

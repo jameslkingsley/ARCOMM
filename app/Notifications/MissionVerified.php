@@ -51,7 +51,7 @@ class MissionVerified extends Notification implements ShouldQueue
             'dm' => $this->mission->user->discord_id,
             'channel' => config('services.discord.channel_id'),
             'url' => url("/hub/missions/{$this->mission->ref}"),
-            'message' => "**{$this->mission->verified_by->name}** verified the mission **{$this->mission->name}**",
+            'message' => "**{$this->mission->verifiedBy->name}** verified the mission **{$this->mission->name}**",
         ];
     }
 }

@@ -62,7 +62,7 @@ class Application extends Resource
                     return studly_case($value);
                 }),
             DateTime::make('Created At')->sortable(),
-            DateTime::make('Updated At')->sortable(),
+            DateTime::make('Updated At')->sortable()->hideFromIndex(),
         ];
     }
 
@@ -107,6 +107,8 @@ class Application extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new Actions\ChangeApplicationStatus
+        ];
     }
 }
