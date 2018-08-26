@@ -12,4 +12,14 @@ class Map extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Gets all associated missions.
+     *
+     * @return \Laravel\Nova\Fields\HasMany
+     */
+    public function missions()
+    {
+        return $this->hasMany(Mission::class);
+    }
 }

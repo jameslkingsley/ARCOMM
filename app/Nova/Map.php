@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasMany;
 
 class Map extends Resource
 {
@@ -47,6 +48,8 @@ class Map extends Resource
 
             Text::make('Key')
                 ->sortable(),
+
+            HasMany::make('Missions'),
         ];
     }
 

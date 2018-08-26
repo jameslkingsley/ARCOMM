@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, HasRoles;
 
     /**
      * Guarded attributes.
@@ -44,5 +45,15 @@ class User extends Authenticatable
     public function missions()
     {
         return $this->hasMany(Mission::class);
+    }
+
+    /**
+     * Gets the user's comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

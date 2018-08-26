@@ -5,7 +5,10 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\MorphMany;
 
 class Mission extends Resource
 {
@@ -50,6 +53,10 @@ class Mission extends Resource
         return [
             ID::make()->sortable(),
 
+            Text::make('Reference', 'ref')
+                ->exceptOnForms()
+                ->sortable(),
+
             BelongsTo::make('Creator', 'user', 'App\\Nova\\User')
                 ->searchable(),
 
@@ -57,17 +64,40 @@ class Mission extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Mode')
+            Textarea::make('Summary'),
+
+            Text::make('Mode')->sortable()
+                ->updateRules('in:coop,adversarial,preop')
+                ->creationRules('in:coop,adversarial,preop')
                 ->displayUsing(function ($value) {
-                    return auth()->user()->name;
                     return studly_case($value);
                 }),
 
             BelongsTo::make('Map', 'map', 'App\\Nova\\Map')
                 ->searchable(),
 
+            Text::make('Locked Briefings', function () {
+                if (is_null($this->locked_briefings)) {
+                    return null;
+                }
+
+                return strtoupper(
+                    collect($this->locked_briefings)->implode(', ')
+                );
+            }),
+
             BelongsTo::make('Verified By', 'verifiedBy', 'App\\Nova\\User')
                 ->searchable(),
+
+            DateTime::make('Verified At')->hideFromIndex(),
+            Text::make('Verified At', function () {
+                return optional($this->verified_at)->diffForHumans();
+            })->hideFromDetail(),
+
+            DateTime::make('Created At')->hideFromIndex(),
+            DateTime::make('Updated At')->hideFromIndex(),
+
+            MorphMany::make('Comments'),
         ];
     }
 

@@ -13,18 +13,18 @@
   --primary-50: #d16b6b;
   --primary-30: #e5abab;
   --primary-10: #f8eaea;
-  --logo: white;
-  --sidebar-icon: #727580;
+  --logo: var(--primary);
+  --sidebar-icon: white;
 }
 
 .bg-grad-sidebar {
-  background: white;
+  background: var(--primary);
 }
 
 .bg-grad-sidebar h3,
 .bg-grad-sidebar h3 span,
 .bg-grad-sidebar a {
-  color: #22292f;
+  color: #fff;
   font-weight: 600;
 }
 

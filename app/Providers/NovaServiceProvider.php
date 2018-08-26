@@ -69,6 +69,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new \Sbine\RouteViewer\RouteViewer,
+            new \Vyuldashev\NovaPermission\NovaPermissionTool,
         ];
     }
 

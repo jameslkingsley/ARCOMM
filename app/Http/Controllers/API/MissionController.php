@@ -21,7 +21,7 @@ class MissionController extends Controller
         $query = Mission::orderBy('created_at', 'desc')
             ->with('user', 'map');
 
-        if (auth()->user()->tokenCan('administrate') || auth()->user()->tokenCan('mission-test')) {
+        if (auth()->user()->hasRole('administrator') || auth()->user()->hasRole('mission-tester')) {
             return $query->get();
         }
 

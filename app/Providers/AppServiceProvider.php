@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Models\Mission;
 use RestCord\DiscordClient;
-use Laravel\Horizon\Horizon;
 use Laravel\Passport\Passport;
 use App\Observers\MissionObserver;
 use Illuminate\Support\ServiceProvider;
@@ -24,10 +23,6 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Mission::observe(MissionObserver::class);
-
-        // Horizon::auth(function ($request) {
-        //     return auth()->user()->tokenCan('administrate');
-        // });
     }
 
     /**

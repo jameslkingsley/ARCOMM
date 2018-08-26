@@ -26,6 +26,8 @@
         "sbine/route-viewer": "^0.0.2",
         "socialiteproviders/discord": "^2.0",
         "spatie/laravel-medialibrary": "7.0.0",
+        "spatie/laravel-permission": "^2.17",
+        "vyuldashev/nova-permission": "^1.0",
         "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {

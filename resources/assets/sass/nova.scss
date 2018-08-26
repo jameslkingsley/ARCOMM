@@ -15,15 +15,15 @@
   --primary-30: #E5ABAB;
   --primary-10: #F8EAEA;
 
-  --logo: white;
-  --sidebar-icon: #727580;
+  --logo: var(--primary);
+  --sidebar-icon: white;
 }
 
 .bg-grad-sidebar {
-    background: white;
+    background: var(--primary);
 
     h3, h3 span, a {
-        @apply text-black font-semibold;
+        @apply text-white font-semibold;
 
         &.router-link-exact-active {
             @apply font-bold;

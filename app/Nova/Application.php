@@ -5,18 +5,19 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
-use Vyuldashev\NovaPermission\Role;
-use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Textarea;
 
-class User extends Resource
+class Application extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\\Models\\User';
+    public static $model = 'App\\Models\\Application';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -31,7 +32,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'name', 'email'
     ];
 
     /**
@@ -44,24 +45,24 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-
-            Text::make('Discord ID')
-                ->sortable(),
-
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
-
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:255')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            HasMany::make('Missions'),
-            HasMany::make('Comments'),
-
-            MorphToMany::make('Roles', 'roles', Role::class),
+            Text::make('Name')->sortable(),
+            Number::make('Age')->sortable(),
+            Text::make('Location')->sortable(),
+            Text::make('Email'),
+            Text::make('Steam'),
+            Boolean::make('Available'),
+            Boolean::make('Owns Apex'),
+            Boolean::make('Other Groups'),
+            Textarea::make('Experience'),
+            Textarea::make('About'),
+            Text::make('Source')->sortable(),
+            Text::make('Source Data'),
+            Text::make('Status')->sortable()
+                ->displayUsing(function ($value) {
+                    return studly_case($value);
+                }),
+            DateTime::make('Created At')->sortable(),
+            DateTime::make('Updated At')->sortable(),
         ];
     }
 

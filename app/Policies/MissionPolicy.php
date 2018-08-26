@@ -21,8 +21,8 @@ class MissionPolicy
     {
         return true;
         return $mission->user->is($user)
-            || $user->tokenCan('administrate')
-            || $user->tokenCan('mission-test')
+            || $user->hasRole('administrator')
+            || $user->hasRole('mission-tester')
             || (bool) $mission->verified_by;
     }
 
@@ -47,8 +47,8 @@ class MissionPolicy
     public function update(User $user, Mission $mission)
     {
         return $mission->user->is($user)
-            || $user->tokenCan('administrate')
-            || $user->tokenCan('mission-test');
+            || $user->hasRole('administrator')
+            || $user->hasRole('mission-tester');
     }
 
     /**
@@ -63,7 +63,7 @@ class MissionPolicy
         // TODO Prevent deletion if mission is assigned to an operation
 
         return $mission->user->is($user)
-            || $user->tokenCan('administrate');
+            || $user->hasRole('administrator');
     }
 
     /**
@@ -75,7 +75,7 @@ class MissionPolicy
      */
     public function restore(User $user, Mission $mission)
     {
-        return $user->tokenCan('administrate');
+        return $user->hasRole('administrator');
     }
 
     /**
@@ -87,7 +87,7 @@ class MissionPolicy
      */
     public function forceDelete(User $user, Mission $mission)
     {
-        return $user->tokenCan('administrate');
+        return $user->hasRole('administrator');
     }
 
     /**
@@ -101,7 +101,7 @@ class MissionPolicy
     {
         // TODO Only if user is tester or admin
 
-        return $user->tokenCan('administrate')
-            || $user->tokenCan('mission-test');
+        return $user->hasRole('administrator')
+            || $user->hasRole('mission-tester');
     }
 }

@@ -1,3 +1,3 @@
-<img src="{{ url('images/logo.png') }}" style="height: 20px" />
+<img src="{{ url('images/logo_white.png') }}" style="height: 20px" />
 
-<span class="pl-6 font-bold text-xl text-primary">Admin</span>
+<span class="pl-6 font-bold text-xl text-white">Admin</span>

@@ -3044,7 +3044,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var f in this.mission.cfg.briefing) {
                 // Always skip game master briefing
                 if (f === 'game_master') continue;
-                if (this.mission.locked_briefings.includes(f.toLowerCase())) continue;
+
+                if ((this.mission.locked_briefings || []).includes(f.toLowerCase())) continue;
 
                 var filtered = {};
                 var faction = this.mission.cfg.briefing[f];
@@ -43235,7 +43236,7 @@ var render = function() {
   return _vm.$store.state.mission.viewing !== null
     ? _c(
         "div",
-        { staticClass: "container mx-auto h-full" },
+        { staticClass: "max-w-screen-xl mx-auto h-full" },
         [
           _c(
             "div",
@@ -69870,7 +69871,8 @@ var config = {
     '3xl': '80rem',
     '4xl': '90rem',
     '5xl': '100rem',
-    'full': '100%'
+    'full': '100%',
+    'screen-xl': '1200px'
   },
 
   /*

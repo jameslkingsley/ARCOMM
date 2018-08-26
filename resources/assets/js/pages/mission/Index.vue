@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$store.state.mission.viewing !== null" class="container mx-auto h-full">
+    <div v-if="$store.state.mission.viewing !== null" class="max-w-screen-xl mx-auto h-full">
         <div :class="{ 'text-white': $store.state.mission.viewing.banner.full.length }" class="w-full text-center mt-16">
             <span class="inline-block w-full text-5xl font-black uppercase tracking-wide">{{ $store.state.mission.viewing.name }}</span>
             <span class="inline-block w-full text-2xl font-bold">By {{ $store.state.mission.viewing.user.name }}</span>
