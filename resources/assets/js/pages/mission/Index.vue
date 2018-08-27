@@ -14,7 +14,7 @@
                 <mission-overview></mission-overview>
             </template>
 
-            <template slot="briefing">
+            <template v-if="hasFactions" slot="briefing">
                 <mission-briefing></mission-briefing>
             </template>
 
@@ -77,6 +77,10 @@
                     r.fullPath = `/hub/missions/${this.$store.state.mission.viewing.ref}/${r.path}`
                     return r
                 })
+            },
+
+            hasFactions() {
+                return this.$store.getters['mission/factions'].length > 0
             }
         },
 

@@ -48,5 +48,40 @@ export default {
         fetch(state, missions) {
             state.all = missions
         }
+    },
+
+    getters: {
+        factions(state) {
+            if (!state.viewing) return []
+
+            let filled = []
+
+            for (let f in state.viewing.cfg.briefing) {
+                // Always skip game master briefing
+                if (f === 'game_master') continue
+
+                if (!state.viewing.actions.update) {
+                    if ((state.viewing.locked_briefings || []).includes(f.toLowerCase())) continue
+                }
+
+                let filtered = {}
+                let faction = state.viewing.cfg.briefing[f]
+
+                for (let s in faction) {
+                    if (faction[s].length) {
+                        filtered[s] = faction[s]
+                    }
+                }
+
+                if (Object.keys(filtered).length) {
+                    filled.push({
+                        name: f.toLowerCase(),
+                        sections: filtered
+                    })
+                }
+            }
+
+            return filled
+        }
     }
 }

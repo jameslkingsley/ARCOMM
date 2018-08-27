@@ -46,6 +46,7 @@ let defaultConfig = require('tailwindcss/defaultConfig')()
 let colors = {
   'transparent': 'transparent',
   'dim': 'rgba(255,255,255,0.88)',
+  'modal': 'rgba(82, 95, 127, 0.25)',
 
   'black': '#22292f',
   'grey-lightest': '#EBEBED',
@@ -75,6 +76,7 @@ let colors = {
   'error-dark': '#C23F3F',
   'error-darker': '#812A2A',
   'error-darkest': '#411515',
+  'error-50': 'rgba(215, 70, 70, 0.5)',
 
   'success-lightest': '#EAFAF4',
   'success-lighter': '#ACE9D3',
@@ -459,6 +461,7 @@ const config = {
     'full': '100%',
     'screen': '100vw',
     'golden': 'calc(100vh / 1.618)',
+    'image': '70vw',
   },
 
 
@@ -498,6 +501,7 @@ const config = {
     'full': '100%',
     'screen': '100vh',
     'golden': 'calc(100vh / 1.618)',
+    'image': 'calc(70vw / 16 * 9)',
   },
 
 

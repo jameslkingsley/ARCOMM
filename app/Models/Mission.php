@@ -86,7 +86,8 @@ class Mission extends Model implements HasMedia
                 $this
                     ->addMediaConversion('thumb')
                     ->width(512)
-                    ->height(512);
+                    ->height(512)
+                    ->nonQueued();
             });
 
         $this->addMediaCollection('images')
@@ -94,7 +95,8 @@ class Mission extends Model implements HasMedia
                 $this
                     ->addMediaConversion('thumb')
                     ->width(512)
-                    ->height(512);
+                    ->height(512)
+                    ->nonQueued();
             });
     }
 

@@ -1,22 +1,33 @@
 <template>
-    <div class="p-6">
-        <upload class="text-right" name="image" :url="imageUploadUrl" :options="galleryOptions" @success="fetch">
-            Upload Image
-        </upload>
+    <div>
+        <div class="bg-off-white-2 border-b border-off-white w-full p-4 text-right">
+            <ui-button class="inline-block mr-3" :disabled="!images.length" :icon="manage ? 'checkmark' : 'cog'" @click="manage = !manage">
+                {{ manage ? 'Done' : 'Manage'}}
+            </ui-button>
 
-        <gallery :images="gallery" :index="galleryIndex" @close="galleryIndex = null"></gallery>
+            <upload class="inline-block" name="image" :url="imageUploadUrl" @success="fetch">
+                Upload Image
+            </upload>
+        </div>
 
-        <grid class="mt-4" template-columns="repeat(4, 0.25fr)" gap="1rem" auto-rows="min-content">
-            <div v-for="(image, index) in images" :key="index" @click="galleryIndex = index" class="rounded relative" :style="{
-                'background-image': `url(${image.thumb_url})`,
-                'background-position': 'center',
-                'background-size': 'cover',
-                'background-repeat': 'no-repeat',
-                'padding-top': '100%'
-            }">
-                <button class="absolute pin-t pin-r mt-1 mr-2 text-2xl text-white font-medium" @click.prevent="deleteImage(image.id)">&times;</button>
-            </div>
-        </grid>
+        <ui-gallery v-if="images.length" :images="images" property="full_url">
+            <grid slot-scope="{ open }" class="p-6" template-columns="repeat(4, 0.25fr)" gap="1rem" auto-rows="min-content">
+                <div
+                    :key="index"
+                    @click="manage ? () => {} : open(index)"
+                    v-for="(image, index) in images"
+                    class="rounded relative bg-center bg-no-repeat bg-cover"
+                    :style="{'background-image': `url(${image.thumb_url})`, 'padding-top': '100%'}">
+                    <div v-if="manage" @click="deleteImage(image.id)" class="absolute pin bg-error-50 flex items-center justify-center text-5xl font-bold text-white rounded select-none cursor-pointer">
+                        <ui-icon name="trash" size="48" color="white" />
+                    </div>
+                </div>
+            </grid>
+        </ui-gallery>
+
+        <div v-else class="flex w-full items-center justify-center py-16 text-lg font-medium text-grey-lighter">
+            There's nothing here yet!
+        </div>
     </div>
 </template>
 
@@ -31,10 +42,7 @@
         data() {
             return {
                 images: [],
-                galleryIndex: null,
-                galleryOptions: {
-                    closeOnSlideClick: true
-                }
+                manage: false,
             };
         },
 
@@ -60,12 +68,19 @@
 
         methods: {
             fetch() {
-                ajax.get(`/api/mission/${this.mission.ref}/media`)
+                ajax.get(this.imageUploadUrl)
                     .then(r => this.images = r.data);
             },
 
             deleteImage(id) {
-                //
+                ajax.delete(`${this.imageUploadUrl}/${id}`)
+                    .then(r => {
+                        this.images = _.filter(this.images, i => i.id !== id)
+
+                        if (!this.images.length) {
+                            this.manage = false
+                        }
+                    })
             }
         },
 

@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/mission/{mission}/media', 'API\MissionMediaController@index');
     Route::post('/mission/{mission}/media', 'API\MissionMediaController@store');
     Route::post('/mission/{mission}/banner', 'API\MissionBannerController@store');
+    Route::delete('/mission/{mission}/media/{media}', 'API\MissionMediaController@destroy');
 
     // Mission Briefing
     Route::put('/mission/{mission}/briefing', 'API\MissionBriefingController@update');

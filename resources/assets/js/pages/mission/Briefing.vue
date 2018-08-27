@@ -40,32 +40,7 @@
             },
 
             factions() {
-                let filled = []
-
-                for (let f in this.mission.cfg.briefing) {
-                    // Always skip game master briefing
-                    if (f === 'game_master') continue
-
-                    if ((this.mission.locked_briefings || []).includes(f.toLowerCase())) continue
-
-                    let filtered = {}
-                    let faction = this.mission.cfg.briefing[f]
-
-                    for (let s in faction) {
-                        if (faction[s].length) {
-                            filtered[s] = faction[s]
-                        }
-                    }
-
-                    if (Object.keys(filtered).length) {
-                        filled.push({
-                            name: f.toLowerCase(),
-                            sections: filtered
-                        })
-                    }
-                }
-
-                return filled
+                return this.$store.getters['mission/factions']
             },
 
             faction() {

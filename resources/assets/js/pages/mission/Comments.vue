@@ -146,7 +146,7 @@
             editComment(comment) {
                 this.update = {
                     id: comment.id,
-                    text: comment.text
+                    text: _.unescape(comment.text).replace(/<br\s*[\/]?>/gi, '')
                 }
 
                 this.creating = false

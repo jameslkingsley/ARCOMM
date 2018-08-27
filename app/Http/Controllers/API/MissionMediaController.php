@@ -16,23 +16,13 @@ class MissionMediaController extends Controller
      */
     public function index(Mission $mission)
     {
-        return $mission->getMedia('images')->transform(function (Media $media) {
+        return $mission->getMedia('images')->map(function ($media) {
             return [
                 'id' => $media->id,
-                'full_url' => $media->getUrl(),
-                'thumb_url' => $media->getUrl('thumb'),
+                'full_url' => url($media->getUrl()),
+                'thumb_url' => url($media->getUrl('thumb')),
             ];
         });
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -48,47 +38,12 @@ class MissionMediaController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Mission $mission, Media $media)
     {
-        //
+        $media->delete();
     }
 }
