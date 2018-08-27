@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\HasMany;
 use Vyuldashev\NovaPermission\Role;
 use Laravel\Nova\Fields\MorphToMany;
@@ -47,6 +48,10 @@ class User extends Resource
 
             Text::make('Discord ID')
                 ->sortable(),
+
+            Avatar::make('Avatar')->thumbnail(function () {
+                return $this->avatar;
+            }),
 
             Text::make('Name')
                 ->sortable()
