@@ -14,3 +14,7 @@
         box-shadow: 0 -3px 0 config('colors.primary') inset;
     }
 }
+
+.mission-item-fade {
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.66));
+}

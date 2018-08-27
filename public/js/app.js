@@ -1947,6 +1947,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: {
         url: String,
         name: String,
+        multi: { type: Boolean, default: false },
         btnClasses: { type: String, default: '' }
     },
 
@@ -1965,7 +1966,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var root = this.$root;
             var data = new FormData();
-            data.append(this.name, this.$refs.file.files[0]);
+            var index = 0;
+
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this.$refs.file.files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var file = _step.value;
+
+                    data.append(this.name + '-' + index, this.$refs.file.files[index]);
+                    index++;
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
 
             ajax.post(this.url, data, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -3433,6 +3460,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -42462,76 +42491,78 @@ var render = function() {
     "router-link",
     { staticClass: "mission", style: _vm.background, attrs: { to: _vm.url } },
     [
-      _c(
-        "div",
-        {
-          staticClass:
-            "text-left absolute pin-b pin-l pin-r text-white py-6 px-8 mb-3 rounded-b",
-          attrs: { role: "wrapper" }
-        },
-        [
-          !_vm.mission.verified_by
-            ? _c(
-                "div",
-                {
-                  staticClass: "w-full inline-block mb-3",
-                  attrs: { role: "verification" }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass:
-                        "rounded-full border border-white px-3 py-1 text-xs uppercase"
-                    },
-                    [_vm._v("Incomplete")]
-                  )
-                ]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass: "font-bold text-2xl w-full inline-block mb-1",
-              attrs: { role: "name" }
-            },
-            [_vm._v(_vm._s(_vm.mission.name))]
-          ),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass: "w-full inline-block opacity-75 mb-1",
-              attrs: { role: "summary" }
-            },
-            [_vm._v(_vm._s(_vm.mission.summary))]
-          ),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass: "w-full inline-block opacity-50 text-sm",
-              attrs: { role: "meta" }
-            },
-            [
-              _vm._v(
-                _vm._s(_vm._f("capitalize")(_vm.mission.mode)) +
-                  " · " +
-                  _vm._s(_vm._f("capitalize")(_vm.mission.map.name)) +
-                  " · " +
-                  _vm._s(_vm.mission.user.name)
-              )
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "absolute pin-b pin-l pin-r h-4 rounded-b",
-        class: "bg-" + _vm.mission.mode,
-        attrs: { role: "accent" }
-      })
+      _c("div", { staticClass: "absolute pin rounded mission-item-fade" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "text-left absolute pin-b pin-l pin-r text-white py-6 px-8 mb-3 rounded-b",
+            attrs: { role: "wrapper" }
+          },
+          [
+            !_vm.mission.verified_by
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "w-full inline-block mb-3",
+                    attrs: { role: "verification" }
+                  },
+                  [
+                    _c(
+                      "span",
+                      {
+                        staticClass:
+                          "rounded-full border border-white px-3 py-1 text-xs uppercase"
+                      },
+                      [_vm._v("Incomplete")]
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "font-bold text-2xl w-full inline-block mb-1",
+                attrs: { role: "name" }
+              },
+              [_vm._v(_vm._s(_vm.mission.name))]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "w-full inline-block opacity-75 mb-1",
+                attrs: { role: "summary" }
+              },
+              [_vm._v(_vm._s(_vm.mission.summary))]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "w-full inline-block opacity-50 text-sm",
+                attrs: { role: "meta" }
+              },
+              [
+                _vm._v(
+                  _vm._s(_vm._f("capitalize")(_vm.mission.mode)) +
+                    " · " +
+                    _vm._s(_vm.mission.map.name) +
+                    " · " +
+                    _vm._s(_vm.mission.user.name)
+                )
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "absolute pin-b pin-l pin-r h-4 rounded-b",
+          class: "bg-" + _vm.mission.mode,
+          attrs: { role: "accent" }
+        })
+      ])
     ]
   )
 }
@@ -43076,34 +43107,36 @@ var render = function() {
             "bg-off-white-2 border-b border-off-white w-full p-4 text-right"
         },
         [
-          _c(
-            "ui-button",
-            {
-              staticClass: "inline-block mr-3",
-              attrs: {
-                disabled: !_vm.images.length,
-                icon: _vm.manage ? "checkmark" : "cog"
-              },
-              on: {
-                click: function($event) {
-                  _vm.manage = !_vm.manage
-                }
-              }
-            },
-            [
-              _vm._v(
-                "\n            " +
-                  _vm._s(_vm.manage ? "Done" : "Manage") +
-                  "\n        "
+          _vm.mission.actions.update
+            ? _c(
+                "ui-button",
+                {
+                  staticClass: "inline-block mr-3",
+                  attrs: {
+                    disabled: !_vm.images.length,
+                    icon: _vm.manage ? "checkmark" : "cog"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.manage = !_vm.manage
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.manage ? "Done" : "Manage") +
+                      "\n        "
+                  )
+                ]
               )
-            ]
-          ),
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "upload",
             {
               staticClass: "inline-block",
-              attrs: { name: "image", url: _vm.imageUploadUrl },
+              attrs: { name: "image", url: _vm.imageUploadUrl, multi: "" },
               on: { success: _vm.fetch }
             },
             [_vm._v("\n            Upload Image\n        ")]
@@ -43492,7 +43525,7 @@ var render = function() {
         [
           _c("input", {
             ref: "file",
-            attrs: { type: "file", name: _vm.name },
+            attrs: { type: "file", name: _vm.name, multiple: _vm.multi },
             on: { change: _vm.upload }
           })
         ]
@@ -69723,7 +69756,13 @@ var colors = {
   'adversarial-darker': '#99402D',
   'adversarial-darkest': '#4D2017',
 
-  'preop': '#ff0000'
+  'preop-lightest': '#EAFAF4',
+  'preop-lighter': '#ACE9D3',
+  'preop-light': '#6DD9B3',
+  'preop': '#2FC892',
+  'preop-dark': '#2AB483',
+  'preop-darker': '#1C7858',
+  'preop-darkest': '#0E3C2C'
 };
 
 var config = {

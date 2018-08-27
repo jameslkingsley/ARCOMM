@@ -5,7 +5,7 @@
         </ui-button>
 
         <form v-show="false">
-            <input type="file" :name="name" ref="file" @change="upload">
+            <input type="file" :name="name" ref="file" @change="upload" :multiple="multi">
         </form>
     </div>
 </template>
@@ -15,7 +15,8 @@
         props: {
             url: String,
             name: String,
-            btnClasses: { type: String, default: '' }
+            multi: { type: Boolean, default: false },
+            btnClasses: { type: String, default: '' },
         },
 
         data() {
@@ -28,32 +29,37 @@
             upload(event) {
                 this.uploading = true
 
-                let root = this.$root;
-                let data = new FormData();
-                data.append(this.name, this.$refs.file.files[0]);
+                let root = this.$root
+                let data = new FormData()
+                let index = 0
+
+                for (let file of this.$refs.file.files) {
+                    data.append(`${this.name}-${index}`, this.$refs.file.files[index])
+                    index++
+                }
 
                 ajax
                     .post(this.url, data, {
                         headers: { 'Content-Type': 'multipart/form-data' },
                         onUploadProgress(e) {
-                            root.progress = Math.floor(e.loaded * 100 / e.total);
+                            root.progress = Math.floor(e.loaded * 100 / e.total)
                         }
                     })
                     .then(r => {
                         this.uploading = false
-                        event.target.value = null;
+                        event.target.value = null
 
-                        this.$emit('success', r.data);
+                        this.$emit('success', r.data)
                     })
                     .catch(({ response }) => {
                         this.uploading = false
-                        event.target.value = null;
-                        this.$emit('error', response.data);
-                    });
+                        event.target.value = null
+                        this.$emit('error', response.data)
+                    })
             },
 
             chooseFile() {
-                this.$refs.file.click();
+                this.$refs.file.click()
             }
         }
     }

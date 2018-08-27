@@ -33,8 +33,11 @@ class MissionMediaController extends Controller
      */
     public function store(Request $request, Mission $mission)
     {
-        $mission->addMediaFromRequest('image')
-            ->toMediaCollection('images');
+        $mission
+            ->addAllMediaFromRequest()
+            ->each(function ($file) {
+                $file->toMediaCollection('images');
+            });
     }
 
     /**
@@ -44,6 +47,8 @@ class MissionMediaController extends Controller
      */
     public function destroy(Mission $mission, Media $media)
     {
+        $this->authorize('forceDelete', $mission);
+
         $media->delete();
     }
 }

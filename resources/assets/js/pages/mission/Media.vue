@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="bg-off-white-2 border-b border-off-white w-full p-4 text-right">
-            <ui-button class="inline-block mr-3" :disabled="!images.length" :icon="manage ? 'checkmark' : 'cog'" @click="manage = !manage">
+            <ui-button v-if="mission.actions.update" class="inline-block mr-3" :disabled="!images.length" :icon="manage ? 'checkmark' : 'cog'" @click="manage = !manage">
                 {{ manage ? 'Done' : 'Manage'}}
             </ui-button>
 
-            <upload class="inline-block" name="image" :url="imageUploadUrl" @success="fetch">
+            <upload class="inline-block" name="image" :url="imageUploadUrl" @success="fetch" multi>
                 Upload Image
             </upload>
         </div>

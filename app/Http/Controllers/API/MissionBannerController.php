@@ -18,7 +18,10 @@ class MissionBannerController extends Controller
     {
         $this->authorize('update', $mission);
 
-        $mission->addMediaFromRequest('banner')
-            ->toMediaCollection('banner');
+        $mission
+            ->addAllMediaFromRequest()
+            ->each(function ($file) {
+                $file->toMediaCollection('banner');
+            });
     }
 }

@@ -102,7 +102,13 @@ let colors = {
   'adversarial-darker': '#99402D',
   'adversarial-darkest': '#4D2017',
 
-  'preop': '#ff0000',
+  'preop-lightest': '#EAFAF4',
+  'preop-lighter': '#ACE9D3',
+  'preop-light': '#6DD9B3',
+  'preop': '#2FC892',
+  'preop-dark': '#2AB483',
+  'preop-darker': '#1C7858',
+  'preop-darkest': '#0E3C2C',
 }
 
 const config = {
