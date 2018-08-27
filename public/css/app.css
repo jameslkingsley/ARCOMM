@@ -3513,6 +3513,10 @@ label {
   min-height: 0;
 }
 
+.min-h-modal {
+  min-height: 8rem;
+}
+
 .min-h-full {
   min-height: 100%;
 }
@@ -8908,6 +8912,10 @@ label {
     min-height: 0;
   }
 
+  .sm\:min-h-modal {
+    min-height: 8rem;
+  }
+
   .sm\:min-h-full {
     min-height: 100%;
   }
@@ -13630,6 +13638,10 @@ label {
 
   .md\:min-h-0 {
     min-height: 0;
+  }
+
+  .md\:min-h-modal {
+    min-height: 8rem;
   }
 
   .md\:min-h-full {
@@ -18356,6 +18368,10 @@ label {
     min-height: 0;
   }
 
+  .lg\:min-h-modal {
+    min-height: 8rem;
+  }
+
   .lg\:min-h-full {
     min-height: 100%;
   }
@@ -23078,6 +23094,10 @@ label {
 
   .xl\:min-h-0 {
     min-height: 0;
+  }
+
+  .xl\:min-h-modal {
+    min-height: 8rem;
   }
 
   .xl\:min-h-full {
@@ -27804,6 +27824,10 @@ label {
     min-height: 0;
   }
 
+  .xxl\:min-h-modal {
+    min-height: 8rem;
+  }
+
   .xxl\:min-h-full {
     min-height: 100%;
   }
@@ -32526,6 +32550,10 @@ label {
 
   .xxxl\:min-h-0 {
     min-height: 0;
+  }
+
+  .xxxl\:min-h-modal {
+    min-height: 8rem;
   }
 
   .xxxl\:min-h-full {

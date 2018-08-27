@@ -152,12 +152,12 @@ trait MissionRequest
         }
 
         if (!$errors->isEmpty()) {
-            $mission->comments()->save(
+            $mission->notes()->save(
                 new Comment([
+                    'collection' => 'notes',
                     'text' => $errors->flatten()->map(function ($error) {
                         return "- $error";
-                    })->implode('<br />'),
-                    'published_at' => now()
+                    })->implode('<br />')
                 ])
             );
         }

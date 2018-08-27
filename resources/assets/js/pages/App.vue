@@ -16,15 +16,18 @@
                         <router-link :to="page.url" v-for="(page, index) in pages" :key="index" class="inline-block py-2 px-4 font-medium">
                             {{ page.text }}
                         </router-link>
+
+                        <a :href="donateUrl" target="_blank" class="inline-block py-2 px-4 font-medium">Donate</a>
                     </div>
 
                     <div class="text-right">
+                        <ui-button @click="absence = true" class="mr-4">Post Absence</ui-button>
                         <upload class="mr-4"></upload>
 
-                        <a href="/hub" class="inline-block py-2 px-4 font-medium" style="line-height: 1.75">
+                        <router-link to="/hub" class="inline-block py-2 px-4 font-medium" style="line-height: 1.75">
                             <img :src="$auth('avatar')" class="w-8 h-8 float-left rounded-full mr-4" />
                             {{ $auth('name') }}
-                        </a>
+                        </router-link>
                     </div>
                 </grid>
             </nav>
@@ -35,45 +38,53 @@
                 <router-view></router-view>
             </transition>
         </main>
+
+        <modal v-model="absence" :btn-complete="false" btn-close="Close" title="Your Absence Announcements">
+            <absence />
+        </modal>
     </div>
 </template>
 
 <script>
-    import Upload from './mission/Upload.vue';
+    import Upload from './mission/Upload.vue'
+    import Absence from './user/Absence.vue'
 
     export default {
         name: 'app',
 
         components: {
-            Upload
+            Upload,
+            Absence
         },
 
         data() {
             return {
+                donateUrl: 'https://www.paypal.com/pools/c/83jrO4GGLm',
+                absence: false,
                 bannerImage: null,
                 pages: [
                     { text: 'Missions', url: '/hub/missions' },
                     { text: 'Guides', url: '/hub/guides' },
                     { text: 'Tutorials', url: '/hub/tutorials' }
                 ]
-            };
+            }
         },
 
         computed: {
             banner() {
-                if (!this.bannerImage) return null;
+                if (!this.bannerImage) return null
 
                 return {
                     'background-image': `url(${this.bannerImage})`
-                };
+                }
             },
 
             accentBarStyle() {
-                if (this.$root.progress === null) return null;
+                if (this.$root.progress === null) return null
 
                 return {
                     width: `${this.$root.progress}%`
-                };
+                }
             }
         },
 
@@ -82,9 +93,9 @@
         },
 
         created() {
-            Events.listen('banner', e => (this.bannerImage = e));
+            Events.listen('banner', e => (this.bannerImage = e))
         }
-    };
+    }
 </script>
 
 <style scoped lang="scss">

@@ -35,6 +35,9 @@ import './icons'
 
 require('./event')
 
+import Form from './form'
+window.Form = Form
+
 window.random = a => {
     return a[Math.floor((Math.random() * a.length))]
 }

@@ -31,7 +31,10 @@
                                 class="float-right mt-1 cursor-pointer hover:opacity-75 select-none transition" />
                         </span>
 
-                        <grid-child class="-mt-2 text-lg font-normal" column-start="2" column-end="3" v-html="comment.text"></grid-child>
+                        <grid-child class="-mt-2 text-lg font-normal" column-start="2" column-end="3">
+                            <span class="block w-full text-sm text-grey-lighter mb-2">{{ comment.created_at | fromnow | capitalize }}</span>
+                            <div v-html="comment.text"></div>
+                        </grid-child>
                     </grid>
                 </div>
             </ui-card>
@@ -146,7 +149,7 @@
             editComment(comment) {
                 this.update = {
                     id: comment.id,
-                    text: _.unescape(comment.text).replace(/<br\s*[\/]?>/gi, '')
+                    text: _.unescape(comment.text).replace(/<br\s*[\/]?>\s*\r*/gi, '\n')
                 }
 
                 this.creating = false

@@ -16,7 +16,7 @@
                     :key="index"
                     @click="manage ? () => {} : open(index)"
                     v-for="(image, index) in images"
-                    class="rounded relative bg-center bg-no-repeat bg-cover"
+                    class="rounded relative bg-center bg-no-repeat bg-cover cursor-pointer"
                     :style="{'background-image': `url(${image.thumb_url})`, 'padding-top': '100%'}">
                     <div v-if="manage" @click="deleteImage(image.id)" class="absolute pin bg-error-50 flex items-center justify-center text-5xl font-bold text-white rounded select-none cursor-pointer">
                         <ui-icon name="trash" size="48" color="white" />

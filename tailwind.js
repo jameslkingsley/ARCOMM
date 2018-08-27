@@ -547,6 +547,7 @@ const config = {
 
   minHeight: {
     '0': '0',
+    'modal': '8rem',
     'full': '100%',
     'screen': '100vh'
   },

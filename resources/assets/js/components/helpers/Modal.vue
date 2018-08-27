@@ -3,16 +3,16 @@
         <div class="fixed pin modal-bg z-50" v-show="value">
             <transition name="slide-fade">
                 <div :style="{ 'width': '33.33333vw' }" class="mx-auto mt-12 bg-white text-black rounded modal-shadow" v-show="value">
-                    <div class="border-b border-off-white py-4 px-6 font-semibold text-sm uppercase rounded-t text-left">
+                    <div class="border-b border-off-white py-4 px-6 font-medium text-lg text-grey-light rounded-t text-left">
                         {{ title }}
                     </div>
 
-                    <div class="p-6 text-lg text-left normal-case">
+                    <div class="p-6 min-h-modal text-lg text-left normal-case bg-off-white-2">
                         <slot></slot>
                     </div>
 
                     <div class="py-4 px-6 border-t border-off-white rounded-b text-right">
-                        <button v-if="btnClose !== false" class="text-grey font-semibold uppercase no-underline text-xs p-2 pb-1 no-outline" @click.prevent="close">
+                        <button v-if="btnClose !== false" class="text-grey-light font-semibold uppercase no-underline text-sm p-2 pb-1 no-outline" @click.prevent="close">
                             {{ btnClose }}
                         </button>
 

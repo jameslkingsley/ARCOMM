@@ -15,7 +15,9 @@ class AbsenceController extends Controller
      */
     public function index(Request $request)
     {
-        return $request->user()->absences;
+        return $request->user()->absences()
+            ->where('date', '>=', now()->startOfDay())
+            ->get();
     }
 
     /**

@@ -146,11 +146,15 @@
             },
 
             deleteMission() {
-                this.$store.dispatch('mission/destroy', this.mission.ref)
-                    .then(r => {
-                        this.$router.push('/hub')
-                        this.$store.commit('mission/view', null)
-                    })
+                let canContinue = confirm(`Are you sure you want to delete ${this.mission.name}?`)
+
+                if (canContinue) {
+                    this.$store.dispatch('mission/destroy', this.mission.ref)
+                        .then(r => {
+                            this.$router.push('/hub')
+                            this.$store.commit('mission/view', null)
+                        })
+                }
             },
 
             lockBriefing(faction) {
