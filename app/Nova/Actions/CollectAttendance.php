@@ -40,7 +40,7 @@ class CollectAttendance extends Action // implements ShouldQueue
                     $name = preg_replace('(\d)', '', $name);
                     $name = str_slug(strtolower(trim($name)), '-');
 
-                    $hubName = str_slug(strtolower(trim($user->username)));
+                    $hubName = str_slug(strtolower(trim($user->name)));
 
                     if (str_contains($hubName, $name)) {
                         Attendance::updateOrCreate([
@@ -77,10 +77,11 @@ class CollectAttendance extends Action // implements ShouldQueue
         $results = $this->toObject($query->process()['main']);
 
         // Brute force the data as sometimes it doesn't respond
-        // while (!isset($results->map)) {
-        //     $results = $this->toObject($query->process()['main']);
-        //     sleep(1);
-        // }
+        while (!isset($results->map)) {
+            $results = $this->toObject($query->process()['main']);
+
+            sleep(1);
+        }
 
         return $results;
     }
