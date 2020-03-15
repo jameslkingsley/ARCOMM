@@ -98,7 +98,7 @@
         <a
             class="pull-left m-l-3"
             style="font-weight:600"
-            href="https://docs.google.com/document/d/1vxyQSLEjB23ZDdZGHClXrOxN90SHbu26bEUXjq7fqLE/edit"
+            href="https://docs.google.com/document/d/1vxyQSLEjB23ZDdZGHClXrOxN90SHbu26bEUXjq7fqLE/view"
             target="_newtab">
             Mission Checklist
         </a>
