@@ -24,6 +24,8 @@ use App\Notifications\MissionCommentAdded;
 use App\Models\Operations\OperationMission;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use App\Helpers\PBOMission\PBOMission;
+use App\Helpers\PBOMission\PBOFile\PBOFile;
 
 class Mission extends Model implements HasMediaConversions
 {
@@ -501,7 +503,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public static function armake()
     {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') { //TODO: Incorporate into derapify
             return resource_path('utils/armake.exe');
         } else {
             return 'armake';
@@ -538,7 +540,7 @@ class Mission extends Model implements HasMediaConversions
 
     /**
      * Unpacks the mission PBO and returns the absolute path of the folder.
-     *
+     * 
      * @return string
      */
     public function unpack($dirname = '', $pbo_path = '')
@@ -584,33 +586,33 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
-     * Gets the mission EXT object.
-     *
+     * Gets parsed mission pbo contents
+     * 
      * @return object
      */
-    public function ext()
+    public function contents() 
     {
-        return json_decode($this->ext_json ?: '{}');
+        return $this->$contents;
     }
 
     /**
-     * Gets the mission SQM object.
-     *
+     * Gets mission json object
+     * 
      * @return object
      */
-    public function sqm()
+    public function misssion()
     {
-        return json_decode($this->sqm_json ?: '{}');
+        return $this->contents()['mission'];
     }
 
     /**
-     * Gets the mission config object.
+     * Gets the missions weather
      *
      * @return object
      */
-    public function config()
+    public function missionWeather() 
     {
-        return json_decode($this->cfg_json ?: '{}')->cfgarcmf;
+        return $this->misssion()['weather'];        
     }
 
     /**
@@ -620,13 +622,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function addons()
     {
-        $addons = $this->sqm()->addonsmetadata;
-
-        unset($addons->list->items);
-
-        $addons = collect($addons->list);
-
-        return $addons->groupBy('author');
+        $addons = $this->mission()['dependencies'];
     }
 
     /**
@@ -636,11 +632,9 @@ class Mission extends Model implements HasMediaConversions
      */
     public function hasAddon($key)
     {
-        foreach ($this->addons() as $group) {
-            foreach ($group as $addon) {
-                if (starts_with(strtolower($addon->classname), strtolower($key))) {
-                    return true;
-                }
+        foreach ($this->addons() as $addonName) {
+            if (starts_with(strtolower($addonName), strtolower($key))) {
+                return true;
             }
         }
 
@@ -653,84 +647,42 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function storeConfigs($before_closure = null, $after_closure = null, $pbo_path = '')
+    public function storeConfigs($pbo_path)
     {
-        $unpacked = $this->unpack('', $pbo_path);
+        //parse mission.sqm
+        $mission = new PBOMission($pbo_path);
+        $export = $mission->export();
 
-        // Run closure with raw unpacked directory
-        if (!is_null($before_closure)) {
-            $before_closure($this, $unpacked);
+        if ($mission->error) {
+            return new ArmaConfigError($mission->error);
         }
 
-        // Return error if these files are missing
-        foreach (['mission.sqm', 'description.ext', 'config.hpp'] as $required_file) {
-            if (!file_exists("{$unpacked}/{$required_file}")) {
-                return new ArmaConfigError("{$required_file} is missing from the mission file");
-            }
-        }
+        $contents = $export['pbo'];
 
-        // Try to convert configs
-        $ext_obj = ArmaConfig::convert("{$unpacked}/description.ext");
-        $cfg_obj = ArmaConfig::convert("{$unpacked}/config.hpp");
-        $version = file_exists("{$unpacked}/version.txt") ? file_get_contents("{$unpacked}/version.txt") : '?.?.?';
+        ValidateMissionContents($contents);
 
-        // If any errors with configs, return error object
-        foreach ([$ext_obj, $cfg_obj] as $parsedObject) {
-            if (get_class($parsedObject) == 'App\Helpers\ArmaConfigError') {
-                $this->deleteUnpacked();
-                return $parsedObject;
-            }
-        }
-
-        // Check loadout files since these are common places for errors
-        // TODO Doesn't check whole directory until new ARCMF version is used
-        $sqf_result = ArmaScript::check("{$unpacked}/loadouts");
-
-        if (strlen(trim($sqf_result)) != 0) {
-            return new ArmaConfigError($sqf_result);
-        }
-
-        $loadoutAddons = ArmaScript::addons("{$unpacked}/loadouts", $this->addonWarnings);
-
-        if ($loadoutAddons->isNotEmpty()) {
-            $this->loadout_addons = $loadoutAddons->toJson();
-        }
-
-        // No errors so far, so store configs in mission as JSON
-        $this->ext_json = json_encode($ext_obj);
-        $this->cfg_json = json_encode($cfg_obj);
-        $this->version = $version;
+        $this->display_name = $contents['mission']['name'];
+        $this->summary = $contents['mission']['name'];
         $this->save();
 
-        // Run closure with raw unpacked directory
-        if (!is_null($after_closure)) {
-            $after_closure($this, $unpacked, $ext_obj, $cfg_obj);
+        $this->contents = $contents;
+
+        // Move to cloud storage
+        $this->deployCloudFiles();
+    }
+
+    private function ValidateMissionContents($contents) 
+    {
+        //TODO: Add validation
+        $files = $contents['files'];
+
+        foreach($files as $file) {
+            $path = $file['path'];
+            $size = $file['size'];
+            $timestamp = $file['timestamp'];
+
+            //TODO: Check if needed files are here
         }
-
-        // Handle Mission SQM
-        // Removes entity data in sqm to avoid Eden string nuances
-        $sqm_file = "{$unpacked}/mission.sqm";
-
-        $sqm_contents = file_get_contents($sqm_file);
-        $sqm_contents = preg_replace('!/\*.*?\*/!s', '', $sqm_contents);
-        $sqm_contents = preg_replace('/(class Entities[\s\S]+)/', '};', $sqm_contents);
-        file_put_contents($sqm_file, $sqm_contents);
-
-        $sqm_obj = ArmaConfig::convert($sqm_file);
-
-        $this->sqm_json = json_encode($sqm_obj);
-        $this->save();
-
-        // Delete unpacked
-        $this->deleteUnpacked();
-
-        // Return config objects
-        return (object)[
-            'sqm' => $sqm_obj,
-            'ext' => $ext_obj,
-            'cfg' => $cfg_obj,
-            'version' => $version
-        ];
     }
 
     /**
@@ -740,7 +692,7 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return any
      */
-    public function deployCloudFiles($unpacked)
+    public function deployCloudFiles()
     {
         $qualified_pbo = "missions/{$this->user_id}/{$this->id}/{$this->exportedName()}";
 
@@ -752,8 +704,8 @@ class Mission extends Model implements HasMediaConversions
 
         $this->cloud_pbo = $qualified_pbo;
 
-        // Mission ZIP
-        $files = glob("{$unpacked}/*");
+        // Mission ZIP //TODO: Fix this since with the new PBO processor we do not unpack
+        /*$files = glob("{$unpacked}/*");
         $name = $this->exportedName('zip');
         $path = "zips/{$name}";
 
@@ -770,21 +722,11 @@ class Mission extends Model implements HasMediaConversions
 
         if (file_exists(public_path("downloads/{$path}"))) {
             unlink(public_path("downloads/{$path}"));
-        }
+        }*/
 
         // Save the new PBO path in the mission
         $this->pbo_path = $qualified_pbo;
         $this->save();
-    }
-
-    /**
-     * Gets the missions framework version.
-     *
-     * @return string
-     */
-    public function version()
-    {
-        return $this->version;
     }
 
     /**
@@ -809,7 +751,7 @@ class Mission extends Model implements HasMediaConversions
     public function fog()
     {
         return static::computeLessThan(
-            (property_path_exists($this->sqm(), 'mission.intel.startfog')) ? $this->sqm()->mission->intel->startfog : 0,
+            $this->missionWeather()['start']['fogDecay'] ?? 0,
             [
                 '' => 0.0,
                 'Light Fog' => 0.1,
@@ -828,9 +770,7 @@ class Mission extends Model implements HasMediaConversions
     public function overcast()
     {
         return static::computeLessThan(
-            property_path_exists($this->sqm(), 'mission.intel.startweather')
-                ? $this->sqm()->mission->intel->startweather
-                : 0,
+            $this->missionWeather()['start']['weather'] ?? 0,
             [
                 'Clear Skies' => 0.1,
                 'Partly Cloudy' => 0.3,
@@ -847,8 +787,8 @@ class Mission extends Model implements HasMediaConversions
      */
     public function rain()
     {
-        $startRain = (property_path_exists($this->sqm(), 'mission.intel.startrain')) ? $this->sqm()->mission->intel->startrain : 0;
-        $forecastRain = (property_path_exists($this->sqm(), 'mission.intel.forecastrain')) ? $this->sqm()->mission->intel->forecastrain : 0;
+        $startRain = $this->missionWeather()['start']['rain'] ?? 0;
+        $forecastRain = $this->missionWeather()['forecast']['rain'] ?? 0;
         $diff = $forecastRain - $startRain;
 
         return static::computeLessThan(
@@ -911,13 +851,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function date()
     {
-        $date = Carbon::createFromDate(
-            (property_path_exists($this->sqm(), 'mission.intel.year')) ? abs($this->sqm()->mission->intel->year) : 2000,
-            (property_path_exists($this->sqm(), 'mission.intel.month')) ? abs($this->sqm()->mission->intel->month) : 1,
-            (property_path_exists($this->sqm(), 'mission.intel.day')) ? abs($this->sqm()->mission->intel->day) : 1
-        );
-
-        return $date->format('jS M Y');
+        return $this->mission()['date'];
     }
 
     /**
@@ -927,13 +861,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function time()
     {
-        $time = Carbon::createFromTime(
-            (property_path_exists($this->sqm(), 'mission.intel.hour')) ? abs($this->sqm()->mission->intel->hour) : 0,
-            (property_path_exists($this->sqm(), 'mission.intel.minute')) ? abs($this->sqm()->mission->intel->minute) : 0,
-            0
-        );
-
-        return $time->format('H:i');
+        return $this->mission()['time'];
     }
 
     /**
@@ -948,8 +876,7 @@ class Mission extends Model implements HasMediaConversions
             'BLUFOR' => $this->locked_blufor_briefing,
             'OPFOR' => $this->locked_opfor_briefing,
             'INDFOR' => $this->locked_indfor_briefing,
-            'CIVILIAN' => $this->locked_civilian_briefing,
-            // 'GAME_MASTER' => $this->locked_gamemaster_briefing
+            'CIVILIAN' => $this->locked_civilian_briefing
         ];
 
         foreach ($factions as $faction => $locked) {
@@ -977,7 +904,7 @@ class Mission extends Model implements HasMediaConversions
     {
         $faction = strtolower($faction);
         $filledSubjects = [];
-        $subjects = [
+        $subjects = [ //TODO: I LEFT OFF HERE. CURRENTLY GOING TOP TO BOTTOM REWRITING MISSION.PHP
             'Situation' => 'situation',
             'Mission' => 'mission',
             'Enemy Forces' => 'enemyforces',

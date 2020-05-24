@@ -60,14 +60,7 @@ class MissionController extends Controller
             $mission->save();
 
             // Unpack PBO and store configs in mission record as JSON objects
-            $configs = $mission->storeConfigs(null, function ($mission, $unpacked, $ext, $config) {
-                $mission->display_name = trim($ext->onloadname, '.');
-                $mission->summary = $ext->onloadmission;
-                $mission->save();
-
-                // Move to cloud storage
-                $mission->deployCloudFiles($unpacked);
-            }, storage_path("app/{$path}"));
+            $configs = $mission->storeConfigs(storage_path("app/{$path}"));
 
             // If errors in configs, return message
             if (get_class($configs) == 'App\Helpers\ArmaConfigError') {

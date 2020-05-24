@@ -180,7 +180,7 @@ return [
         Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
         Kingsley\Mentions\MentionServiceProvider::class,
         NotificationChannels\Discord\DiscordServiceProvider::class,
-        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class
     ],
 
     /*
