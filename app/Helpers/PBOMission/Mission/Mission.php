@@ -18,6 +18,9 @@
     private ?string $author;
     private ?array $weather;
     private ?array $dependencies;
+    private ?array $briefings;
+    private ?array $acreSettings;
+    private ?array $orbatSettings;
 
     private array $groups = array();
     private array $markers = array();
@@ -66,6 +69,10 @@
         $this->description = $this->translate($scenarioData->attribute('overviewText'));
       }
 
+      if($customAttributes = $config->class('CustomAttributes')) {
+        $this->LoadCustomAttributes($customAttributes);
+      }
+
       if ($mission = $config->class('Mission')) {
         $this->parseIntel($mission->class('Intel'));
         // Prep unit default weapons array for unit parser
@@ -97,6 +104,53 @@
       unset($this->entities);
       unset($this->unitVariables);
       unset($this->curatorVariables);
+    }
+
+    private function LoadCustomAttributes(?SQMCLass $customAttributes) {
+      foreach($customAttributes->classes as $class) {
+        if($class->attribute("name") == "TMF_ORBAT_Settings") {
+          $this->LoadOrbatSettings($class);
+        } else if($class->attribute("name") == "TMF_MissionAcre2Attributes") {
+          $this->LoadAcreSettings($class);
+        } else if($class->attribute("name") == "TMF_MissionBriefingAttributes") {
+          $this->LoadBriefingSettings($class);
+        }
+      }
+    }
+
+    private function LoadOrbatSettings(?SQMCLass $rawOrbatSettings) {
+      foreach($rawOrbatSettings->classes as $setting) {
+        if($setting->attribute('property') == "TMF_ORBATSettings") {
+          $rawOrbat = $setting->class('Value')->class('data')->attribute('value');
+
+          $this->orbatSettings = $this->ParseSqfIntoArray($rawOrbat);
+        }
+      }
+    }
+
+    private function LoadAcreSettings(?SQMCLass $rawAcreSettings) {
+      foreach($rawAcreSettings->classes as $setting) {
+        if($setting->attribute('property') == "TMF_AcreSettings") {
+          $rawAcre = $setting->class('Value')->class('data')->attribute('value');
+
+          $this->acreSettings = $this->ParseSqfIntoArray($rawAcre);
+        }
+      }
+    }    
+
+    private function LoadBriefingSettings(?SQMCLass $rawBriefingSettings) {
+      foreach($rawBriefingSettings->classes as $setting) {
+        if($setting->attribute('property') == "TMF_Briefing") {
+          $rawBriefing = $setting->class('Value')->class('data')->attribute('value');
+
+          $this->briefings = $this->ParseSqfIntoArray($rawBriefing);
+        }
+      }
+    }           
+
+    private function ParseSqfIntoArray($sqfString) {
+      $sqfString = str_replace('""', '"', $sqfString);
+      return json_decode($sqfString);
     }
 
     private function parseEntities(?SQMCLass $entities) {
@@ -239,10 +293,12 @@
     }
 
     public function export(): array {
-      $data = array();
+      $data = array();   
+
       // Simple values
       foreach (array('name','map','description','author','date','time','weather',
-      'dependencies','resistance','stats','slotCount','curatorPresent','headlessPresent') as $key) {
+      'dependencies','resistance','stats','slotCount','curatorPresent','headlessPresent',
+      'briefings','acreSettings', 'orbatSettings') as $key) {
         if (isset($this->{$key})) $data[$key] = $this->{$key};
       }
       // Object lists

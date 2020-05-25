@@ -33,6 +33,13 @@ class Mission extends Model implements HasMediaConversions
         HasMediaTrait,
         HasMentions;
 
+    public $factions = [
+        0 => "Opfor",
+        1 => "Blufor",
+        2 => "Indfor",
+        3 => "Civilian"
+    ];
+
     /**
      * Guarded attributes.
      *
@@ -458,9 +465,9 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function lockBriefing($faction, $state)
+    public function lockBriefing($factionId, $state)
     {
-        $this->{'locked_' . strtolower($faction) . '_briefing'} = $state;
+        $this->{'locked_' . $factionId . '_briefing'} = $state;
         $this->save();
     }
 
@@ -651,15 +658,13 @@ class Mission extends Model implements HasMediaConversions
     {
         //parse mission.sqm
         $mission = new PBOMission($pbo_path);
-        $export = $mission->export();
+        $contents = $mission->export();
 
         if ($mission->error) {
             return new ArmaConfigError($mission->error);
         }
 
-        $contents = $export['pbo'];
-
-        ValidateMissionContents($contents);
+        $this->ValidateMissionContents($contents);
 
         $this->display_name = $contents['mission']['name'];
         $this->summary = $contents['mission']['name'];
@@ -674,7 +679,7 @@ class Mission extends Model implements HasMediaConversions
     private function ValidateMissionContents($contents) 
     {
         //TODO: Add validation
-        $files = $contents['files'];
+        $files = $contents['pbo']['files'];
 
         foreach($files as $file) {
             $path = $file['path'];
@@ -872,21 +877,21 @@ class Mission extends Model implements HasMediaConversions
     public function briefingFactions()
     {
         $filledFactions = [];
-        $factions = [
-            'BLUFOR' => $this->locked_blufor_briefing,
-            'OPFOR' => $this->locked_opfor_briefing,
-            'INDFOR' => $this->locked_indfor_briefing,
-            'CIVILIAN' => $this->locked_civilian_briefing
+        $availableBriefings = $contents['mission']['briefings'];
+        $factionLocks = [
+            0 => $this->locked_0_briefing,
+            1 => $this->locked_1_briefing,
+            2 => $this->locked_2_briefing,
+            3 => $this->locked_3_briefing
         ];
 
-        foreach ($factions as $faction => $locked) {
-            if (!empty($this->briefing($faction)) && (!$locked || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine())) {
-                $name = str_replace('_', ' ', $faction);
-
+        foreach($availableBriefings as $briefing) {
+            $factionId = $briefing[1][0];
+            if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
                 $nav = new stdClass();
-                $nav->name = $name;
-                $nav->faction = $faction;
-                $nav->locked = $locked;
+                $nav->name = $briefing[0];
+                $nav->faction = $factions[$factionId];
+                $nav->locked = $factionLocks[$factionId];
 
                 array_push($filledFactions, $nav);
             }
@@ -900,41 +905,49 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return array
      */
-    public function briefing($faction)
+    public function briefing($factionId)
     {
-        $faction = strtolower($faction);
         $filledSubjects = [];
-        $subjects = [ //TODO: I LEFT OFF HERE. CURRENTLY GOING TOP TO BOTTOM REWRITING MISSION.PHP
-            'Situation' => 'situation',
-            'Mission' => 'mission',
-            'Enemy Forces' => 'enemyforces',
-            'Friendly Forces' => 'friendlyforces',
-            'Commanders Intent' => 'commandersintent',
-            'Movement Plan' => 'movementplan',
-            'Special Tasks' => 'specialtasks',
-            'Fire Support Plan' => 'firesupportplan',
-            'Logistics' => 'logistics'
-        ];
+        $briefing = GetBriefing($factionId);
+        $factionName = $briefing[0];
+        $contents = GetBriefingFile($briefing[2]);
 
-        foreach ($subjects as $heading => $subject) {
-            $subject = strtolower($subject);
-
-            if (!property_exists($this->config()->briefing->$faction, $subject)) {
-                continue;
-            }
-
-            $paragraphs = (array)$this->config()->briefing->$faction->$subject;
-
-            if (!empty($paragraphs)) {
-                $subjectObject = new stdClass();
-                $subjectObject->title = $heading;
-                $subjectObject->paragraphs = $paragraphs;
-                $subjectObject->locked = $this->{'locked_' . $faction . '_briefing'};
-                array_push($filledSubjects, $subjectObject);
-            }
+        foreach($contents as $name => $section) {
+            $formattedSection = new stdClass();
+            $formattedSection->title = $name;
+            $formattedSection->paragraphs = $section;
+            $formattedSection->locked = $this->{'locked_' . $factionId . '_briefing'};
+            array_push($filledSubjects, $formattedSection);
         }
 
         return $filledSubjects;
+    }
+
+    private function GetBriefing($factionId) {
+        $availableBriefings = $contents['mission']['briefings'];
+        foreach($availableBriefings as $briefing) {
+            $id = $briefing[1][0];
+            if($id == $factionId) {
+                return $briefing[2];
+            }
+        }
+        
+        throw new Exception("Faction does not have a briefing file specified");
+    }
+
+    private function GetBriefingFile($path) {
+        $fileString = file_get_contents($path); //TODO: THIS IS IS WHERE I LEFT OFF WE NEED TO UNPACK TO GET THIS STILL
+        preg_match_all("~\"diary\", ([^;]+)~", $fileString, $diaryMatches);
+
+        $dict = array();
+        $diaries = $diaryMatches[1];
+
+        foreach ($diaries as $diary) {
+            preg_match_all("~\"([^\"]+)\"~", $diary, $quotes);
+            $dict[$quotes[1][0]] = $quotes[1][1];
+        }
+        
+        return $dict;
     }
 
     /**
