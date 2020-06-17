@@ -15,19 +15,12 @@
 @endforeach
 
 <div class="list-group">
-    @foreach ($mission->addons() as $group)
-        @foreach ($group as $addon)
-            <a
-                href="javascript:void(0)"
-                class="list-group-item list-group-item-action jr-item">
+    @foreach ($mission->addons() as $addon)
+        <a
+            href="javascript:void(0)"
+            class="list-group-item list-group-item-action jr-item">
 
-                <span class="jr-item-title">{{ $addon->name }}</span>
-                <br />
-
-                <span class="jr-item-meta">
-                    {{ $addon->classname }}
-                </span>
-            </a>
-        @endforeach
+            <span class="jr-item-meta">{{ $addon }}</span>
+        </a>
     @endforeach
 </div>

@@ -24,10 +24,6 @@
             Published {{ $mission->created_at->diffForHumans() }}
         </h4>
 
-        <h6>
-            ARCMF {{ $mission->version() }}
-        </h6>
-
         <hr class="m-t-3">
 
         <p class="text-xs-center p-t-3">

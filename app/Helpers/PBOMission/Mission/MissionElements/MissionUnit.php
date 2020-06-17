@@ -8,16 +8,16 @@
 
   class MissionUnit {
     // All units
-    public bool $playable = false;
-    public bool $curator = false;
+    public $playable = false;
+    public $curator = false;
     // Present only if playable
-    public int $id;
-    public string $class;
-    public ?string $variable;
-    public ?string $primaryWeapon;
-    public ?array $position;
-    public ?string $description;
-    public ?string $vehicle;
+    public $id;
+    public $class;
+    public $variable;
+    public $primaryWeapon;
+    public $position;
+    public $description;
+    public $vehicle;
 
     function __construct(SQMClass $unit) {
       global $unitDefaultWeapons;

@@ -7,14 +7,14 @@
   define('HEADER_ENTRY_END_OFFSET', 21);
 
   class PBOHeaderEntry {
-    public string $filename;
-    public int $packingMethod;
-    public int $originalSize;
-    public int $reserved;
-    public int $timestamp;
-    public int $dataSize;
-    public int $length;
-    public int $dataOffset;
+    public $filename;
+    public $packingMethod;
+    public $originalSize;
+    public $reserved;
+    public $timestamp;
+    public $dataSize;
+    public $length;
+    public $dataOffset;
 
     function __construct(string $filename, array $entryParams) {
       $this->filename = $filename;
@@ -32,9 +32,9 @@
   }
 
   class PBOHeader {
-    public array $entries = array();
-    public int $length = 0;
-    private int $currentDataOffset = 0;
+    public $entries = array();
+    public $length = 0;
+    private $currentDataOffset = 0;
 
     public function addEntry(PBOHeaderEntry $entry) {
       // Set offset for reading this entry data
@@ -52,14 +52,14 @@
   }
 
   class PBOFile {
-    public string $name;
-    public bool $error = false;
-    public string $errorReason;
+    public $name;
+    public $error = false;
+    public $errorReason;
 
-    private PBOHeader $header;
-    private string $filepath;
+    private $header;
+    private $filepath;
 
-    public array $info;
+    public $info;
 
     private static $errorReasons = array(
       'UNREADABLE_FILE' => 'Błąd odczytu pliku pbo. Sprawdź czy plik nie jest zbinaryzowany lub zapisany w formacie skompresowanym.',

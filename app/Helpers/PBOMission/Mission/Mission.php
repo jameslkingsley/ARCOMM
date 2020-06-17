@@ -7,26 +7,26 @@
   use App\Helpers\PBOMission\Mission\MissionElements\MissionGroup;
 
   class Mission {
-    public bool $error = false;
-    public string $errorReason;
+    public $error = false;
+    public $errorReason;
 
-    private ?string $name;
-    private ?string $map;
-    private ?string $description;
-    private ?string $date;
-    private ?string $time;
-    private ?string $author;
-    private ?array $weather;
-    private ?array $dependencies;
-    private ?array $briefings;
-    private ?array $acreSettings;
-    private ?array $orbatSettings;
+    private $name;
+    private $map;
+    private $description;
+    private $date;
+    private $time;
+    private $author;
+    private $weather;
+    private $dependencies;
+    public $briefings;
+    public $acreSettings;
+    public $orbatSettings;
 
-    private array $groups = array();
-    private array $markers = array();
-    private array $virtualUnits = array();
-    private ?array $resistance;
-    private array $stats = array(
+    private $groups = array();
+    private $markers = array();
+    private $virtualUnits = array();
+    private $resistance;
+    private $stats = array(
       'units' => 0,
       'groups' => 0,
       'waypoints' => 0,
@@ -39,18 +39,18 @@
       'aiGeneratorsUnits' => 0,
       'attackGenerators' => 0,
     );
-    private int $slotCount = 0;
+    private $slotCount = 0;
 
-    private bool $curatorPresent = false;
-    private bool $headlessPresent = false;
+    private $curatorPresent = false;
+    private $headlessPresent = false;
 
-    private bool $hasStringtable = false;
-    private array $stringtable;
+    private $hasStringtable = false;
+    private $stringtable;
 
     // Temporary values
-    private array $entities = array(); // Calculating links with i.e. vehicles, id => entitie
-    private array $unitVariables = array(); // Linking curator modules with units, variable => unit
-    private array $curatorVariables = array(); // Variables for linking with units, variable
+    private $entities = array(); // Calculating links with i.e. vehicles, id => entitie
+    private $unitVariables = array(); // Linking curator modules with units, variable => unit
+    private $curatorVariables = array(); // Variables for linking with units, variable
 
     function __construct(SQMClass $config, string $map, ?array $stringtable) {
       $this->map = $map;
@@ -150,6 +150,7 @@
 
     private function ParseSqfIntoArray($sqfString) {
       $sqfString = str_replace('""', '"', $sqfString);
+      $sqfString = str_replace('\\', '\\\\', $sqfString);
       return json_decode($sqfString);
     }
 

@@ -467,7 +467,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function lockBriefing($factionId, $state)
     {
-        $this->{'locked_' . $factionId . '_briefing'} = $state;
+        $this->{'locked_' . strtolower($this->factions[$factionId]) . '_briefing'} = $state;
         $this->save();
     }
 
@@ -593,33 +593,13 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
-     * Gets parsed mission pbo contents
-     * 
-     * @return object
-     */
-    public function contents() 
-    {
-        return $this->$contents;
-    }
-
-    /**
-     * Gets mission json object
-     * 
-     * @return object
-     */
-    public function misssion()
-    {
-        return $this->contents()['mission'];
-    }
-
-    /**
      * Gets the missions weather
      *
      * @return object
      */
     public function missionWeather() 
     {
-        return $this->misssion()['weather'];        
+        return $this->weather;
     }
 
     /**
@@ -629,7 +609,12 @@ class Mission extends Model implements HasMediaConversions
      */
     public function addons()
     {
-        $addons = $this->mission()['dependencies'];
+        return json_decode($this->dependencies);
+    }
+
+    public function GetBriefings() 
+    {
+        return json_decode($this->briefings);
     }
 
     /**
@@ -668,12 +653,22 @@ class Mission extends Model implements HasMediaConversions
 
         $this->display_name = $contents['mission']['name'];
         $this->summary = $contents['mission']['name'];
+
+        $briefingsArray = $this->parseBriefings($contents['mission']['briefings']);
+        $this->briefings = json_encode($briefingsArray);
+        $this->dependencies = json_encode($contents['mission']['dependencies']);
+        if(array_key_exists('date', $contents['mission'])) {
+            $this->date = $contents['mission']['date'];
+        }
+        $this->time = $contents['mission']['time'];
+        $this->weather = json_encode($contents['mission']['weather']);
+
         $this->save();
 
-        $this->contents = $contents;
-
         // Move to cloud storage
-        $this->deployCloudFiles();
+        //$this->deployCloudFiles(); //TODO: Uncomment in prod
+
+        return $this;
     }
 
     private function ValidateMissionContents($contents) 
@@ -707,29 +702,9 @@ class Mission extends Model implements HasMediaConversions
             file_get_contents(storage_path("app/{$this->pbo_path}"))
         );
 
+        //TODO: ZIP STORAGE REMOVED REMOVE FROM PAGE AS WELL
+
         $this->cloud_pbo = $qualified_pbo;
-
-        // Mission ZIP //TODO: Fix this since with the new PBO processor we do not unpack
-        /*$files = glob("{$unpacked}/*");
-        $name = $this->exportedName('zip');
-        $path = "zips/{$name}";
-
-        $zip = new \Chumper\Zipper\Zipper;
-        $zip->make("downloads/{$path}")->add($unpacked)->close();
-        $qualified_zip = "missions/{$this->user_id}/{$this->id}/{$name}";
-
-        Storage::cloud()->put(
-            $qualified_zip,
-            file_get_contents(public_path("downloads/{$path}"))
-        );
-
-        $this->cloud_zip = $qualified_zip;
-
-        if (file_exists(public_path("downloads/{$path}"))) {
-            unlink(public_path("downloads/{$path}"));
-        }*/
-
-        // Save the new PBO path in the mission
         $this->pbo_path = $qualified_pbo;
         $this->save();
     }
@@ -856,7 +831,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function date()
     {
-        return $this->mission()['date'];
+        return $this->date;
     }
 
     /**
@@ -866,7 +841,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function time()
     {
-        return $this->mission()['time'];
+        return $this->time;
     }
 
     /**
@@ -877,7 +852,6 @@ class Mission extends Model implements HasMediaConversions
     public function briefingFactions()
     {
         $filledFactions = [];
-        $availableBriefings = $contents['mission']['briefings'];
         $factionLocks = [
             0 => $this->locked_0_briefing,
             1 => $this->locked_1_briefing,
@@ -885,12 +859,12 @@ class Mission extends Model implements HasMediaConversions
             3 => $this->locked_3_briefing
         ];
 
-        foreach($availableBriefings as $briefing) {
+        foreach($this->GetBriefings() as $briefing) {
             $factionId = $briefing[1][0];
             if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
                 $nav = new stdClass();
                 $nav->name = $briefing[0];
-                $nav->faction = $factions[$factionId];
+                $nav->faction = $factionId;
                 $nav->locked = $factionLocks[$factionId];
 
                 array_push($filledFactions, $nav);
@@ -908,14 +882,14 @@ class Mission extends Model implements HasMediaConversions
     public function briefing($factionId)
     {
         $filledSubjects = [];
-        $briefing = GetBriefing($factionId);
+        $briefing = $this->GetBriefing($factionId);
         $factionName = $briefing[0];
-        $contents = GetBriefingFile($briefing[2]);
+        $contents = $briefing[3];
 
         foreach($contents as $name => $section) {
             $formattedSection = new stdClass();
             $formattedSection->title = $name;
-            $formattedSection->paragraphs = $section;
+            $formattedSection->paragraphs = $this->FormatParagraphs($section);
             $formattedSection->locked = $this->{'locked_' . $factionId . '_briefing'};
             array_push($filledSubjects, $formattedSection);
         }
@@ -924,20 +898,33 @@ class Mission extends Model implements HasMediaConversions
     }
 
     private function GetBriefing($factionId) {
-        $availableBriefings = $contents['mission']['briefings'];
+        $availableBriefings = $this->GetBriefings();
         foreach($availableBriefings as $briefing) {
             $id = $briefing[1][0];
             if($id == $factionId) {
-                return $briefing[2];
+                return $briefing;
             }
         }
         
         throw new Exception("Faction does not have a briefing file specified");
     }
 
-    private function GetBriefingFile($path) {
-        $fileString = file_get_contents($path); //TODO: THIS IS IS WHERE I LEFT OFF WE NEED TO UNPACK TO GET THIS STILL
-        preg_match_all("~\"diary\", ([^;]+)~", $fileString, $diaryMatches);
+    private function FormatParagraphs($paragraph) {
+        $paragraph = str_replace("<font size='18'>", "<b>", $paragraph);
+
+        return str_replace("</font>", "</b>", $paragraph);
+    }
+
+    private function parseBriefings($briefings) {   
+        for($i = 0; $i < count($briefings); $i++) {
+            $briefings[$i][3] = $this->parseBriefing($briefings[$i][3]);
+        }
+
+        return $briefings;
+    }
+
+    private function parseBriefing($briefing) {
+        preg_match_all("~\"diary\", ([^;]+)~", $briefing, $diaryMatches);
 
         $dict = array();
         $diaries = $diaryMatches[1];
@@ -958,7 +945,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function briefingLocked($faction)
     {
-        return $this->{'locked_' . strtolower($faction) . '_briefing'} > 0;
+        return $this->{'locked_' . strtolower($this->factions[$faction]) . '_briefing'} > 0;
     }
 
     /**
@@ -1018,67 +1005,6 @@ class Mission extends Model implements HasMediaConversions
         $details->map = $map;
 
         return $details;
-    }
-
-    /**
-     * Gets the ACRE languages for the given faction as a string.
-     *
-     * @return string
-     */
-    public function acreLanguages($faction = 'blufor')
-    {
-        $lang = (array)$this->config()->acre->{strtolower($faction)}->languages;
-
-        $mutated = array_map(function ($item) {
-            return title_case($item);
-        }, $lang);
-
-        return implode(', ', $mutated);
-    }
-
-    /**
-     * Gets the ACRE role list for the given radio classname and faction.
-     *
-     * @return string
-     */
-    public function acreRoles($faction, $radio)
-    {
-        $roles = (array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)};
-
-        $mutated = array_map(function ($item) {
-            if (array_key_exists(strtolower($item), $this->roles)) {
-                return $this->roles[strtolower($item)];
-            } else {
-                return strtoupper($item);
-            };
-        }, $roles);
-
-        return implode(', ', $mutated);
-    }
-
-    /**
-     * Gets an overall description of the comm plan for the given faction.
-     * Can be full, limited or none.
-     *
-     * @return string
-     */
-    public function acreOverview($faction)
-    {
-        $radio_343 = (array)$this->config()->acre->{strtolower($faction)}->an_prc_343;
-
-        if (!empty($radio_343)) {
-            if (in_array('all', array_map('strtolower', $radio_343))) {
-                return 'Full';
-            }
-        }
-
-        foreach (['AN_PRC_148', 'AN_PRC_152', 'AN_PRC_117F', 'AN_PRC_77'] as $radio) {
-            if (!empty((array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)})) {
-                return 'Limited';
-            }
-        }
-
-        return 'None';
     }
 
     /**

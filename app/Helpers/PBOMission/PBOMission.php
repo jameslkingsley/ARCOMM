@@ -13,10 +13,10 @@ class PBOMissionHelper {
 }
 
 class PBOMission {
-  public PBOFile $pbo;
-  public Mission $mission;
-  public bool $error = false;
-  public string $errorReason;
+  public $pbo;
+  public $mission;
+  public $error = false;
+  public $errorReason;
 
   private static $errorReasons = array(
     'EMPTY_MISSION' => 'Błąd odczytu pliku misji (mission.sqm) lub jego brak.',
@@ -81,9 +81,19 @@ class PBOMission {
     // Parse mission
     $this->mission = new Mission($missionConfig->root, $map, $stringtable);
 
+    // Get briefings
+    $this->loadBriefingFiles($this->mission);
+
     if ($this->mission->error) {
       $this->error = true;
       return $this->errorReason = $this->mission->errorReason;
+    }
+  }
+
+  private function loadBriefingFiles(Mission $mission)
+  {
+    for($i = 0; $i < count($mission->briefings); $i++) {
+      $mission->briefings[$i][3] = $this->pbo->getFileContent($mission->briefings[$i][2]);
     }
   }
 

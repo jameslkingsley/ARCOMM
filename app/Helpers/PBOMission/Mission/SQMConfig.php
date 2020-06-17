@@ -5,8 +5,8 @@ define('SQM_READ_MODE_CLASS', 0);
 define('SQM_READ_MODE_ATTRIBUTE', 1);
 
 class SQMAttribute  {
-  public string $name;
-  public bool $isArray;
+  public $name;
+  public $isArray;
   public $value;
 
   function __construct(string $name, bool $isArray) {
@@ -17,10 +17,10 @@ class SQMAttribute  {
 }
 
 class SQMClass {
-  public string $name;
-  public array $classes = array();
-  public array $attributes = array();
-  public ?SQMClass $parentClass;
+  public $name;
+  public $classes = array();
+  public $attributes = array();
+  public $parentClass;
 
   function __construct(string $name, ?SQMClass $parentClass) {
     $this->name = $name;
@@ -65,16 +65,16 @@ class SQMClass {
 }
 
 class SQMConfig {
-  public SQMClass $root;
-  private array $lines;
-  private int $index = 0;
-  private string $mode;
-  private SQMClass $currentClass;
-  private SQMAttribute $currentAttribute;
-  private array $classes = array();
+  public $root;
+  private $lines;
+  private $index = 0;
+  private $mode;
+  private $currentClass;
+  private $currentAttribute;
+  private $classes = array();
 
-  public bool $error = false;
-  public string $errorReason;
+  public $error = false;
+  public $errorReason;
 
   private static $errorReasons = array(
     'STRUCTURE_ERROR' => 'Błąd składniowy w pliku misji (mission.sqm).',

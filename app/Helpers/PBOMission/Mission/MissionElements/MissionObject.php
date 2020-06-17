@@ -4,9 +4,9 @@
   use App\Helpers\PBOMission\Mission\SQMClass;
 
   class MissionObject {
-    public int $id;
-    public string $class;
-    public bool $isSimple = false;
+    public $id;
+    public $class;
+    public $isSimple = false;
 
     function __construct(SQMClass $object) {
       $this->id = $object->attribute('id');

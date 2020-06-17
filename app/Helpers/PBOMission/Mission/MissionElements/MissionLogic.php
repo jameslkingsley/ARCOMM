@@ -17,17 +17,17 @@
   define('MISSION_LOGIC_MODULE_TYPE_GENATTACK', 3);
 
   class MissionLogic {
-    public int $id;
-    public string $class;
-    public int $type = MISSION_LOGIC_TYPE_UNKNOWN;
+    public $id;
+    public $class;
+    public $type = MISSION_LOGIC_TYPE_UNKNOWN;
     // If playable virtual unit
-    public bool $playable = false;
-    public ?string $variable;
-    public ?string $description;
-    public bool $curator = false;
+    public $playable = false;
+    public $variable;
+    public $description;
+    public $curator = false;
     // If module
-    public ?array $settings;
-    public ?int $moduleType;
+    public $settings;
+    public $moduleType;
 
     function __construct(SQMClass $logic) {
       $this->id = $logic->attribute('id');

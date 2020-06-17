@@ -48,6 +48,7 @@ class MissionController extends Controller
             $mission->mode = $details->mode;
             $mission->map_id = $details->map->id;
             $mission->pbo_path = '';
+            $mission->briefings = '';
             $mission->save();
 
             // Store locally temporarily
@@ -132,13 +133,10 @@ class MissionController extends Controller
                 $old_mission_displayname = $mission->display_name;
                 $old_mission_summary = $mission->summary;
 
-                // $old_mission_cloud_pbo_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('pbo')}";
-                // $old_mission_cloud_zip_dir = "missions/{$mission->user_id}/{$mission->id}/{$mission->exportedName('zip')}";
                 $old_mission_cloud_pbo_dir = $mission->cloud_pbo;
                 $old_mission_cloud_zip_dir = $mission->cloud_zip;
 
-                Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
-                Storage::cloud()->move($old_mission_cloud_zip_dir, "x{$old_mission_cloud_zip_dir}");
+                //Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}"); //TODO: Uncomment when done
 
                 if ($mission->verified && $mission->user_id == $user->id) {
                     $mission->verified = 0;
@@ -147,8 +145,11 @@ class MissionController extends Controller
 
                 $mission->file_name = $request->file->getClientOriginalName();
                 $mission->display_name = $request->file->getClientOriginalName();
+                $mission->summary = '';
                 $mission->mode = $details->mode;
                 $mission->map_id = $details->map->id;
+                $mission->pbo_path = '';
+                $mission->briefings = '';
                 $mission->save();
 
                 // Store locally temporarily
@@ -167,16 +168,7 @@ class MissionController extends Controller
                 ]);
 
                 // Unpack PBO and store configs in mission record as JSON objects
-                $configs = $mission->storeConfigs(null, function ($mission, $unpacked, $ext, $config) {
-                    $mission->display_name = trim($ext->onloadname, '.');
-                    $mission->summary = $ext->onloadmission;
-                    $mission->save();
-
-                    $mission = $mission->fresh('map');
-
-                    // Move to cloud storage
-                    $mission->deployCloudFiles($unpacked);
-                }, storage_path("app/{$path}"));
+                $configs = $mission->storeConfigs(storage_path("app/{$path}"));
 
                 $path = "missions/{$mission->user_id}/{$mission->id}";
 
@@ -184,8 +176,7 @@ class MissionController extends Controller
                 if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
                     Storage::deleteDirectory($path);
 
-                    Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir);
-                    Storage::cloud()->move("x{$old_mission_cloud_zip_dir}", $old_mission_cloud_zip_dir);
+                    //Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir); //TODO: Uncomment when done
 
                     // Update the record with the old data
                     $mission->file_name = $old_mission->file_name;
@@ -195,6 +186,12 @@ class MissionController extends Controller
                     $mission->pbo_path = $old_mission->pbo_path;
                     $mission->display_name = $old_mission_displayname;
                     $mission->summary = $old_mission_summary;
+                    $mission->briefings = $old_mission->briefings;
+                    $mission->weather = $old_mission->weather;
+                    if(isset($old_mission->date)) {
+                        $mission->date = $old_mission->date;
+                    }
+                    $mission->time = $old_mission->time;
                     $mission->save();
 
                     $revision->delete();
@@ -207,8 +204,7 @@ class MissionController extends Controller
                 Storage::deleteDirectory("missions/{$user->id}");
 
                 // Delete old cloud files
-                Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
-                Storage::cloud()->delete("x{$old_mission_cloud_zip_dir}");
+                //Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}"); //TODO: Uncomment when done
 
                 // Discord Message
                 $mission->notify(new MissionUpdated($revision, true));

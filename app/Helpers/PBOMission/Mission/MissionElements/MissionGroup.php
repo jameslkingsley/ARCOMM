@@ -8,15 +8,15 @@
 
   class MissionGroup {
     // All groups
-    public int $id;
-    public int $unitsCount = 0;
-    public int $waypointsCount = 0;
-    public bool $playable = false;
+    public $id;
+    public $unitsCount = 0;
+    public $waypointsCount = 0;
+    public $playable = false;
     // Filled only if playable units present
-    public string $side;
-    public string $name;
-    public array $playableUnits = array();
-    public array $crewLinks = array();
+    public $side;
+    public $name;
+    public $playableUnits = array();
+    public $crewLinks = array();
 
     function __construct(SQMClass $group) {
       $this->id = $group->attribute('id');

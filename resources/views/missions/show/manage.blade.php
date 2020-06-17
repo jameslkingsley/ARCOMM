@@ -61,8 +61,6 @@
             @else
                 LAST PLAYED {{ $mission->last_played->diffForHumans() }}
             @endif
-            /
-            ARCMF {{ $mission->version() }}
         </span>
     </div>
 </div>

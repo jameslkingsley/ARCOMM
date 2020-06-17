@@ -7,12 +7,12 @@
   array('id','text','class','color','position','angle'));
 
   class MissionMarker {
-    public int $id;
-    public string $class;
-    public ?string $text;
-    public ?string $color;
-    public ?array $position;
-    public ?float $angle;
+    public $id;
+    public $class;
+    public $text;
+    public $color;
+    public $position;
+    public $angle;
 
     function __construct(SQMClass $marker) {
       $this->id = $marker->attribute('id');
