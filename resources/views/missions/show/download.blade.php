@@ -37,6 +37,5 @@
 
     <div class="dropdown-menu">
         <a href="javascript:void(0)" class="dropdown-item download-mission" data-format="pbo">PBO</a>
-        <a href="javascript:void(0)" class="dropdown-item download-mission" data-format="zip">ZIP</a>
     </div>
 </li>

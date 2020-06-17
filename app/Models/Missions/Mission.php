@@ -510,7 +510,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public static function armake()
     {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') { //TODO: Incorporate into derapify
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             return resource_path('utils/armake.exe');
         } else {
             return 'armake';
@@ -652,7 +652,9 @@ class Mission extends Model implements HasMediaConversions
         $this->ValidateMissionContents($contents);
 
         $this->display_name = $contents['mission']['name'];
-        $this->summary = $contents['mission']['name'];
+        if(array_key_exists('description', $contents['mission'])) {
+            $this->summary = $contents['mission']['description'];
+        }
 
         $briefingsArray = $this->parseBriefings($contents['mission']['briefings']);
         $this->briefings = json_encode($briefingsArray);
@@ -666,7 +668,7 @@ class Mission extends Model implements HasMediaConversions
         $this->save();
 
         // Move to cloud storage
-        //$this->deployCloudFiles(); //TODO: Uncomment in prod
+        $this->deployCloudFiles();
 
         return $this;
     }
@@ -701,8 +703,6 @@ class Mission extends Model implements HasMediaConversions
             $qualified_pbo,
             file_get_contents(storage_path("app/{$this->pbo_path}"))
         );
-
-        //TODO: ZIP STORAGE REMOVED REMOVE FROM PAGE AS WELL
 
         $this->cloud_pbo = $qualified_pbo;
         $this->pbo_path = $qualified_pbo;

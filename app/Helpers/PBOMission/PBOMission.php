@@ -35,21 +35,12 @@ class PBOMission {
     }
 
     // Get mission config content
-    $missionContent = $this->pbo->getFileContent('mission.sqm');
+    //$missionContent = $this->pbo->getFileContent('mission.sqm');
+    //TODO: Debinarize here
 
-    // Debinarize if needed, if it's not binarized it will do nothing
-    /*$missionTempFile = tmpfile();
-    $missionDebinarizedTempFile = tmpfile();
-
-    fwrite($missionTempFile, $missionContent);
-
-    //shell_exec(static::armake() . 'derapify -f {{$missionTempFile}} {{$missionDebinarizedTempFile}}'); //TODO: Uncomment when pushing to prod
-    shell_exec("derap -f {{$missionTempFile}} {{$missionDebinarizedTempFile}}");
-    fseek($missionDebinarizedTempFile, 0);
-    $missionContent = fread($missionDebinarizedTempFile, 1024);    
-
-    fclose($missionTempFile);
-    fclose($missionDebinarizedTempFile);*/ //TODO: Fix derap
+    if (isset($debinContent) || $debinContent != '') {
+      $missionContent = $debinContent;
+    }
 
     if (!isset($missionContent) || $missionContent == '') {
       $this->error = true;
@@ -96,6 +87,16 @@ class PBOMission {
       $mission->briefings[$i][3] = $this->pbo->getFileContent($mission->briefings[$i][2]);
     }
   }
+
+  public static function armake()
+  {
+      if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+          return resource_path('utils/armake.exe');
+      } else {
+          return 'armake';
+      }
+  }
+
 
   private function getStringtable(?string $xmlContent): ?array {
     if (!isset($xmlContent) || $xmlContent == '') return null;

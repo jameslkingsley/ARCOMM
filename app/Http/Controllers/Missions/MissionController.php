@@ -136,7 +136,7 @@ class MissionController extends Controller
                 $old_mission_cloud_pbo_dir = $mission->cloud_pbo;
                 $old_mission_cloud_zip_dir = $mission->cloud_zip;
 
-                //Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}"); //TODO: Uncomment when done
+                Storage::cloud()->move($old_mission_cloud_pbo_dir, "x{$old_mission_cloud_pbo_dir}");
 
                 if ($mission->verified && $mission->user_id == $user->id) {
                     $mission->verified = 0;
@@ -176,7 +176,7 @@ class MissionController extends Controller
                 if (get_class($configs) == 'App\Helpers\ArmaConfigError') {
                     Storage::deleteDirectory($path);
 
-                    //Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir); //TODO: Uncomment when done
+                    Storage::cloud()->move("x{$old_mission_cloud_pbo_dir}", $old_mission_cloud_pbo_dir);
 
                     // Update the record with the old data
                     $mission->file_name = $old_mission->file_name;
@@ -204,7 +204,7 @@ class MissionController extends Controller
                 Storage::deleteDirectory("missions/{$user->id}");
 
                 // Delete old cloud files
-                //Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}"); //TODO: Uncomment when done
+                Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
 
                 // Discord Message
                 $mission->notify(new MissionUpdated($revision, true));
