@@ -386,6 +386,30 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Returns true if this is an arcore mission
+     * 
+     * @return bool
+     */
+    public function isLegacy()
+    {
+        return !is_null($this->sqm_json);
+    }
+
+    /**
+     * Returns page url or nothing if it is a legacy mission
+     * 
+     * @return string
+     */
+    public function getPageUrl() 
+    {
+        if($this->isLegacy()) {
+            return '#';
+        }
+
+        return url('/hub/missions/' . $this->id);
+    }
+
+    /**
      * Gets the mission thumbnail URL.
      *
      * @return string
