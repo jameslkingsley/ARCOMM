@@ -1,5 +1,5 @@
 <a
-    href="{{ $mission->getPageUrl() }}"
+    href="{{ url('/hub/missions/' . $mission->id) }}"
     class="mission-item ripple {{ (isset($classes)) ? $classes : '' }}"
     style="background-image: url({{ $mission->thumbnail() }})"
     data-id="{{ $mission->id }}">
