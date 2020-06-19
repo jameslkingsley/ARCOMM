@@ -35,12 +35,9 @@ class PBOMission {
     }
 
     // Get mission config content
-    //$missionContent = $this->pbo->getFileContent('mission.sqm');
-    //TODO: Debinarize here
+    $missionContent = $this->pbo->getFileContent('mission.sqm');
 
-    if (isset($debinContent) || $debinContent != '') {
-      $missionContent = $debinContent;
-    }
+    //TODO: Debinarize here
 
     if (!isset($missionContent) || $missionContent == '') {
       $this->error = true;
