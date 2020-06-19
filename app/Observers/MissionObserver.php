@@ -18,7 +18,6 @@ class MissionObserver
         $path = "missions/{$mission->user_id}/{$mission->id}";
 
         Storage::cloud()->delete("{$path}/{$mission->exportedName('pbo')}");
-        Storage::cloud()->delete("{$path}/{$mission->exportedName('zip')}");
 
         foreach (['pbos' => 'pbo', 'zips' => 'zip'] as $dir => $name) {
             if (file_exists(public_path("downloads/{$dir}"))) {

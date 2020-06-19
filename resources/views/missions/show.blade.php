@@ -55,7 +55,7 @@
                     url: "{{ url('/hub/missions/'.$mission->id) }}/" + caller.data('panel'),
                     success: function(data) {
                         $('.mission-nav .subnav .subnav-link').removeClass('active');
-                        setUrl('hub/missions/{{ $mission->id }}/' + caller.data('panel'));
+                        'hub/missions/{{ $mission->id }}/' + caller.data('panel');
                         caller.addClass('active');
                         $('.mission-inner').html(data);
                     }

@@ -47,10 +47,6 @@ class ConvertIdToRevisions extends Command
                 Storage::cloud()->move($mission->cloud_pbo, $newCloudPbo);
             }
 
-            if (Storage::cloud()->exists($mission->cloud_zip)) {
-                Storage::cloud()->move($mission->cloud_zip, $newCloudZip);
-            }
-
             $mission->update([
                 'pbo_path' => $newCloudPbo,
                 'cloud_pbo' => $newCloudPbo,

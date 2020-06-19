@@ -24,12 +24,21 @@ use App\Notifications\MissionCommentAdded;
 use App\Models\Operations\OperationMission;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use App\Helpers\PBOMission\PBOMission;
+use App\Helpers\PBOMission\PBOFile\PBOFile;
 
 class Mission extends Model implements HasMediaConversions
 {
     use Notifiable,
         HasMediaTrait,
         HasMentions;
+
+    public $factions = [
+        0 => "Opfor",
+        1 => "Blufor",
+        2 => "Indfor",
+        3 => "Civilian"
+    ];
 
     /**
      * Guarded attributes.
@@ -377,6 +386,30 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Returns true if this is an arcore mission
+     * 
+     * @return bool
+     */
+    public function isLegacy()
+    {
+        return !is_null($this->sqm_json);
+    }
+
+    /**
+     * Returns page url or nothing if it is a legacy mission
+     * 
+     * @return string
+     */
+    public function getPageUrl() 
+    {
+        if($this->isLegacy()) {
+            return '#';
+        }
+
+        return url('/hub/missions/' . $this->id);
+    }
+
+    /**
      * Gets the mission thumbnail URL.
      *
      * @return string
@@ -456,9 +489,9 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function lockBriefing($faction, $state)
+    public function lockBriefing($factionId, $state)
     {
-        $this->{'locked_' . strtolower($faction) . '_briefing'} = $state;
+        $this->{'locked_' . strtolower($this->factions[$factionId]) . '_briefing'} = $state;
         $this->save();
     }
 
@@ -538,7 +571,7 @@ class Mission extends Model implements HasMediaConversions
 
     /**
      * Unpacks the mission PBO and returns the absolute path of the folder.
-     *
+     * 
      * @return string
      */
     public function unpack($dirname = '', $pbo_path = '')
@@ -584,33 +617,13 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
-     * Gets the mission EXT object.
+     * Gets the missions weather
      *
      * @return object
      */
-    public function ext()
+    public function missionWeather() 
     {
-        return json_decode($this->ext_json ?: '{}');
-    }
-
-    /**
-     * Gets the mission SQM object.
-     *
-     * @return object
-     */
-    public function sqm()
-    {
-        return json_decode($this->sqm_json ?: '{}');
-    }
-
-    /**
-     * Gets the mission config object.
-     *
-     * @return object
-     */
-    public function config()
-    {
-        return json_decode($this->cfg_json ?: '{}')->cfgarcmf;
+        return $this->weather;
     }
 
     /**
@@ -620,13 +633,12 @@ class Mission extends Model implements HasMediaConversions
      */
     public function addons()
     {
-        $addons = $this->sqm()->addonsmetadata;
+        return json_decode($this->dependencies);
+    }
 
-        unset($addons->list->items);
-
-        $addons = collect($addons->list);
-
-        return $addons->groupBy('author');
+    public function GetBriefings() 
+    {
+        return json_decode($this->briefings);
     }
 
     /**
@@ -636,11 +648,9 @@ class Mission extends Model implements HasMediaConversions
      */
     public function hasAddon($key)
     {
-        foreach ($this->addons() as $group) {
-            foreach ($group as $addon) {
-                if (starts_with(strtolower($addon->classname), strtolower($key))) {
-                    return true;
-                }
+        foreach ($this->addons() as $addonName) {
+            if (starts_with(strtolower($addonName), strtolower($key))) {
+                return true;
             }
         }
 
@@ -653,84 +663,52 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return void
      */
-    public function storeConfigs($before_closure = null, $after_closure = null, $pbo_path = '')
+    public function storeConfigs($pbo_path)
     {
-        $unpacked = $this->unpack('', $pbo_path);
+        //parse mission.sqm
+        $mission = new PBOMission($pbo_path);
+        $contents = $mission->export();
 
-        // Run closure with raw unpacked directory
-        if (!is_null($before_closure)) {
-            $before_closure($this, $unpacked);
+        if ($mission->error) {
+            return new ArmaConfigError($mission->error);
         }
 
-        // Return error if these files are missing
-        foreach (['mission.sqm', 'description.ext', 'config.hpp'] as $required_file) {
-            if (!file_exists("{$unpacked}/{$required_file}")) {
-                return new ArmaConfigError("{$required_file} is missing from the mission file");
-            }
+        $this->ValidateMissionContents($contents);
+
+        $this->display_name = $contents['mission']['name'];
+        if(array_key_exists('description', $contents['mission'])) {
+            $this->summary = $contents['mission']['description'];
         }
 
-        // Try to convert configs
-        $ext_obj = ArmaConfig::convert("{$unpacked}/description.ext");
-        $cfg_obj = ArmaConfig::convert("{$unpacked}/config.hpp");
-        $version = file_exists("{$unpacked}/version.txt") ? file_get_contents("{$unpacked}/version.txt") : '?.?.?';
-
-        // If any errors with configs, return error object
-        foreach ([$ext_obj, $cfg_obj] as $parsedObject) {
-            if (get_class($parsedObject) == 'App\Helpers\ArmaConfigError') {
-                $this->deleteUnpacked();
-                return $parsedObject;
-            }
+        $briefingsArray = $this->parseBriefings($contents['mission']['briefings']);
+        $this->briefings = json_encode($briefingsArray);
+        $this->dependencies = json_encode($contents['mission']['dependencies']);
+        if(array_key_exists('date', $contents['mission'])) {
+            $this->date = $contents['mission']['date'];
         }
+        $this->time = $contents['mission']['time'];
+        $this->weather = json_encode($contents['mission']['weather']);
 
-        // Check loadout files since these are common places for errors
-        // TODO Doesn't check whole directory until new ARCMF version is used
-        $sqf_result = ArmaScript::check("{$unpacked}/loadouts");
-
-        if (strlen(trim($sqf_result)) != 0) {
-            return new ArmaConfigError($sqf_result);
-        }
-
-        $loadoutAddons = ArmaScript::addons("{$unpacked}/loadouts", $this->addonWarnings);
-
-        if ($loadoutAddons->isNotEmpty()) {
-            $this->loadout_addons = $loadoutAddons->toJson();
-        }
-
-        // No errors so far, so store configs in mission as JSON
-        $this->ext_json = json_encode($ext_obj);
-        $this->cfg_json = json_encode($cfg_obj);
-        $this->version = $version;
         $this->save();
 
-        // Run closure with raw unpacked directory
-        if (!is_null($after_closure)) {
-            $after_closure($this, $unpacked, $ext_obj, $cfg_obj);
+        // Move to cloud storage
+        $this->deployCloudFiles();
+
+        return $this;
+    }
+
+    private function ValidateMissionContents($contents) 
+    {
+        //TODO: Add validation
+        $files = $contents['pbo']['files'];
+
+        foreach($files as $file) {
+            $path = $file['path'];
+            $size = $file['size'];
+            $timestamp = $file['timestamp'];
+
+            //TODO: Check if needed files are here
         }
-
-        // Handle Mission SQM
-        // Removes entity data in sqm to avoid Eden string nuances
-        $sqm_file = "{$unpacked}/mission.sqm";
-
-        $sqm_contents = file_get_contents($sqm_file);
-        $sqm_contents = preg_replace('!/\*.*?\*/!s', '', $sqm_contents);
-        $sqm_contents = preg_replace('/(class Entities[\s\S]+)/', '};', $sqm_contents);
-        file_put_contents($sqm_file, $sqm_contents);
-
-        $sqm_obj = ArmaConfig::convert($sqm_file);
-
-        $this->sqm_json = json_encode($sqm_obj);
-        $this->save();
-
-        // Delete unpacked
-        $this->deleteUnpacked();
-
-        // Return config objects
-        return (object)[
-            'sqm' => $sqm_obj,
-            'ext' => $ext_obj,
-            'cfg' => $cfg_obj,
-            'version' => $version
-        ];
     }
 
     /**
@@ -740,7 +718,7 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return any
      */
-    public function deployCloudFiles($unpacked)
+    public function deployCloudFiles()
     {
         $qualified_pbo = "missions/{$this->user_id}/{$this->id}/{$this->exportedName()}";
 
@@ -751,40 +729,8 @@ class Mission extends Model implements HasMediaConversions
         );
 
         $this->cloud_pbo = $qualified_pbo;
-
-        // Mission ZIP
-        $files = glob("{$unpacked}/*");
-        $name = $this->exportedName('zip');
-        $path = "zips/{$name}";
-
-        $zip = new \Chumper\Zipper\Zipper;
-        $zip->make("downloads/{$path}")->add($unpacked)->close();
-        $qualified_zip = "missions/{$this->user_id}/{$this->id}/{$name}";
-
-        Storage::cloud()->put(
-            $qualified_zip,
-            file_get_contents(public_path("downloads/{$path}"))
-        );
-
-        $this->cloud_zip = $qualified_zip;
-
-        if (file_exists(public_path("downloads/{$path}"))) {
-            unlink(public_path("downloads/{$path}"));
-        }
-
-        // Save the new PBO path in the mission
         $this->pbo_path = $qualified_pbo;
         $this->save();
-    }
-
-    /**
-     * Gets the missions framework version.
-     *
-     * @return string
-     */
-    public function version()
-    {
-        return $this->version;
     }
 
     /**
@@ -809,7 +755,7 @@ class Mission extends Model implements HasMediaConversions
     public function fog()
     {
         return static::computeLessThan(
-            (property_path_exists($this->sqm(), 'mission.intel.startfog')) ? $this->sqm()->mission->intel->startfog : 0,
+            $this->missionWeather()['start']['fogDecay'] ?? 0,
             [
                 '' => 0.0,
                 'Light Fog' => 0.1,
@@ -828,9 +774,7 @@ class Mission extends Model implements HasMediaConversions
     public function overcast()
     {
         return static::computeLessThan(
-            property_path_exists($this->sqm(), 'mission.intel.startweather')
-                ? $this->sqm()->mission->intel->startweather
-                : 0,
+            $this->missionWeather()['start']['weather'] ?? 0,
             [
                 'Clear Skies' => 0.1,
                 'Partly Cloudy' => 0.3,
@@ -847,8 +791,8 @@ class Mission extends Model implements HasMediaConversions
      */
     public function rain()
     {
-        $startRain = (property_path_exists($this->sqm(), 'mission.intel.startrain')) ? $this->sqm()->mission->intel->startrain : 0;
-        $forecastRain = (property_path_exists($this->sqm(), 'mission.intel.forecastrain')) ? $this->sqm()->mission->intel->forecastrain : 0;
+        $startRain = $this->missionWeather()['start']['rain'] ?? 0;
+        $forecastRain = $this->missionWeather()['forecast']['rain'] ?? 0;
         $diff = $forecastRain - $startRain;
 
         return static::computeLessThan(
@@ -911,13 +855,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function date()
     {
-        $date = Carbon::createFromDate(
-            (property_path_exists($this->sqm(), 'mission.intel.year')) ? abs($this->sqm()->mission->intel->year) : 2000,
-            (property_path_exists($this->sqm(), 'mission.intel.month')) ? abs($this->sqm()->mission->intel->month) : 1,
-            (property_path_exists($this->sqm(), 'mission.intel.day')) ? abs($this->sqm()->mission->intel->day) : 1
-        );
-
-        return $date->format('jS M Y');
+        return $this->date;
     }
 
     /**
@@ -927,13 +865,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function time()
     {
-        $time = Carbon::createFromTime(
-            (property_path_exists($this->sqm(), 'mission.intel.hour')) ? abs($this->sqm()->mission->intel->hour) : 0,
-            (property_path_exists($this->sqm(), 'mission.intel.minute')) ? abs($this->sqm()->mission->intel->minute) : 0,
-            0
-        );
-
-        return $time->format('H:i');
+        return $this->time;
     }
 
     /**
@@ -944,22 +876,20 @@ class Mission extends Model implements HasMediaConversions
     public function briefingFactions()
     {
         $filledFactions = [];
-        $factions = [
-            'BLUFOR' => $this->locked_blufor_briefing,
-            'OPFOR' => $this->locked_opfor_briefing,
-            'INDFOR' => $this->locked_indfor_briefing,
-            'CIVILIAN' => $this->locked_civilian_briefing,
-            // 'GAME_MASTER' => $this->locked_gamemaster_briefing
+        $factionLocks = [
+            0 => $this->locked_0_briefing,
+            1 => $this->locked_1_briefing,
+            2 => $this->locked_2_briefing,
+            3 => $this->locked_3_briefing
         ];
 
-        foreach ($factions as $faction => $locked) {
-            if (!empty($this->briefing($faction)) && (!$locked || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine())) {
-                $name = str_replace('_', ' ', $faction);
-
+        foreach($this->GetBriefings() as $briefing) {
+            $factionId = $briefing[1][0];
+            if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
                 $nav = new stdClass();
-                $nav->name = $name;
-                $nav->faction = $faction;
-                $nav->locked = $locked;
+                $nav->name = $briefing[0];
+                $nav->faction = $factionId;
+                $nav->locked = $factionLocks[$factionId];
 
                 array_push($filledFactions, $nav);
             }
@@ -973,41 +903,62 @@ class Mission extends Model implements HasMediaConversions
      *
      * @return array
      */
-    public function briefing($faction)
+    public function briefing($factionId)
     {
-        $faction = strtolower($faction);
         $filledSubjects = [];
-        $subjects = [
-            'Situation' => 'situation',
-            'Mission' => 'mission',
-            'Enemy Forces' => 'enemyforces',
-            'Friendly Forces' => 'friendlyforces',
-            'Commanders Intent' => 'commandersintent',
-            'Movement Plan' => 'movementplan',
-            'Special Tasks' => 'specialtasks',
-            'Fire Support Plan' => 'firesupportplan',
-            'Logistics' => 'logistics'
-        ];
+        $briefing = $this->GetBriefing($factionId);
+        $factionName = $briefing[0];
+        $contents = $briefing[3];
 
-        foreach ($subjects as $heading => $subject) {
-            $subject = strtolower($subject);
-
-            if (!property_exists($this->config()->briefing->$faction, $subject)) {
-                continue;
-            }
-
-            $paragraphs = (array)$this->config()->briefing->$faction->$subject;
-
-            if (!empty($paragraphs)) {
-                $subjectObject = new stdClass();
-                $subjectObject->title = $heading;
-                $subjectObject->paragraphs = $paragraphs;
-                $subjectObject->locked = $this->{'locked_' . $faction . '_briefing'};
-                array_push($filledSubjects, $subjectObject);
-            }
+        foreach($contents as $name => $section) {
+            $formattedSection = new stdClass();
+            $formattedSection->title = $name;
+            $formattedSection->paragraphs = $this->FormatParagraphs($section);
+            $formattedSection->locked = $this->{'locked_' . $factionId . '_briefing'};
+            array_push($filledSubjects, $formattedSection);
         }
 
         return $filledSubjects;
+    }
+
+    private function GetBriefing($factionId) {
+        $availableBriefings = $this->GetBriefings();
+        foreach($availableBriefings as $briefing) {
+            $id = $briefing[1][0];
+            if($id == $factionId) {
+                return $briefing;
+            }
+        }
+        
+        throw new Exception("Faction does not have a briefing file specified");
+    }
+
+    private function FormatParagraphs($paragraph) {
+        $paragraph = str_replace("<font size='18'>", "<b>", $paragraph);
+
+        return str_replace("</font>", "</b>", $paragraph);
+    }
+
+    private function parseBriefings($briefings) {   
+        for($i = 0; $i < count($briefings); $i++) {
+            $briefings[$i][3] = $this->parseBriefing($briefings[$i][3]);
+        }
+
+        return $briefings;
+    }
+
+    private function parseBriefing($briefing) {
+        preg_match_all("~\"diary\", ([^;]+)~", $briefing, $diaryMatches);
+
+        $dict = array();
+        $diaries = $diaryMatches[1];
+
+        foreach ($diaries as $diary) {
+            preg_match_all("~\"([^\"]+)\"~", $diary, $quotes);
+            $dict[$quotes[1][0]] = $quotes[1][1];
+        }
+        
+        return $dict;
     }
 
     /**
@@ -1018,7 +969,7 @@ class Mission extends Model implements HasMediaConversions
      */
     public function briefingLocked($faction)
     {
-        return $this->{'locked_' . strtolower($faction) . '_briefing'} > 0;
+        return $this->{'locked_' . strtolower($this->factions[$faction]) . '_briefing'} > 0;
     }
 
     /**
@@ -1078,67 +1029,6 @@ class Mission extends Model implements HasMediaConversions
         $details->map = $map;
 
         return $details;
-    }
-
-    /**
-     * Gets the ACRE languages for the given faction as a string.
-     *
-     * @return string
-     */
-    public function acreLanguages($faction = 'blufor')
-    {
-        $lang = (array)$this->config()->acre->{strtolower($faction)}->languages;
-
-        $mutated = array_map(function ($item) {
-            return title_case($item);
-        }, $lang);
-
-        return implode(', ', $mutated);
-    }
-
-    /**
-     * Gets the ACRE role list for the given radio classname and faction.
-     *
-     * @return string
-     */
-    public function acreRoles($faction, $radio)
-    {
-        $roles = (array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)};
-
-        $mutated = array_map(function ($item) {
-            if (array_key_exists(strtolower($item), $this->roles)) {
-                return $this->roles[strtolower($item)];
-            } else {
-                return strtoupper($item);
-            };
-        }, $roles);
-
-        return implode(', ', $mutated);
-    }
-
-    /**
-     * Gets an overall description of the comm plan for the given faction.
-     * Can be full, limited or none.
-     *
-     * @return string
-     */
-    public function acreOverview($faction)
-    {
-        $radio_343 = (array)$this->config()->acre->{strtolower($faction)}->an_prc_343;
-
-        if (!empty($radio_343)) {
-            if (in_array('all', array_map('strtolower', $radio_343))) {
-                return 'Full';
-            }
-        }
-
-        foreach (['AN_PRC_148', 'AN_PRC_152', 'AN_PRC_117F', 'AN_PRC_77'] as $radio) {
-            if (!empty((array)$this->config()->acre->{strtolower($faction)}->{strtolower($radio)})) {
-                return 'Limited';
-            }
-        }
-
-        return 'None';
     }
 
     /**
