@@ -686,7 +686,9 @@ class Mission extends Model implements HasMediaConversions
         if(array_key_exists('date', $contents['mission'])) {
             $this->date = $contents['mission']['date'];
         }
-        $this->time = $contents['mission']['time'];
+        if(array_key_exists('time', $contents['mission'])) {
+            $this->time = $contents['mission']['time'];
+        }
         $this->weather = json_encode($contents['mission']['weather']);
 
         $this->save();
