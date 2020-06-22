@@ -386,6 +386,30 @@ class Mission extends Model implements HasMediaConversions
     }
 
     /**
+     * Returns true if this is an arcore mission
+     * 
+     * @return bool
+     */
+    public function isLegacy()
+    {
+        return !is_null($this->sqm_json);
+    }
+
+    /**
+     * Returns page url or nothing if it is a legacy mission
+     * 
+     * @return string
+     */
+    public function getPageUrl() 
+    {
+        if($this->isLegacy()) {
+            return '#';
+        }
+
+        return url('/hub/missions/' . $this->id);
+    }
+
+    /**
      * Gets the mission thumbnail URL.
      *
      * @return string
@@ -861,15 +885,19 @@ class Mission extends Model implements HasMediaConversions
             3 => $this->locked_3_briefing
         ];
 
-        foreach($this->GetBriefings() as $briefing) {
-            $factionId = $briefing[1][0];
-            if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
-                $nav = new stdClass();
-                $nav->name = $briefing[0];
-                $nav->faction = $factionId;
-                $nav->locked = $factionLocks[$factionId];
+        $briefings = $this->GetBriefings();
 
-                array_push($filledFactions, $nav);
+        if($briefings != null) {
+            foreach($briefings as $briefing) {
+                $factionId = $briefing[1][0];
+                if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
+                    $nav = new stdClass();
+                    $nav->name = $briefing[0];
+                    $nav->faction = $factionId;
+                    $nav->locked = $factionLocks[$factionId];
+
+                    array_push($filledFactions, $nav);
+                }
             }
         }
 
