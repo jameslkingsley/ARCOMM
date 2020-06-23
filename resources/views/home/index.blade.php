@@ -131,7 +131,7 @@
                 <p class="archub-hero-text">Built in-house, our community mission suite.</p>
 
                 <div class="archub-hero-screenshot" style="box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.15);border-radius: 10px 10px 0 0;">
-                    <img src="{{ url('/images/public/archub/image.png') }}">
+                    <img src="{{ url('/images/public/archub/image.png') }}" alt="Archub example">
                 </div>
             </div>
         </div>
