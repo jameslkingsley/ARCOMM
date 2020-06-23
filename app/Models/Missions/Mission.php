@@ -885,15 +885,19 @@ class Mission extends Model implements HasMediaConversions
             3 => $this->locked_3_briefing
         ];
 
-        foreach($this->GetBriefings() as $briefing) {
-            $factionId = $briefing[1][0];
-            if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
-                $nav = new stdClass();
-                $nav->name = $briefing[0];
-                $nav->faction = $factionId;
-                $nav->locked = $factionLocks[$factionId];
+        $briefings = $this->GetBriefings();
 
-                array_push($filledFactions, $nav);
+        if($briefings != null) {
+            foreach($briefings as $briefing) {
+                $factionId = $briefing[1][0];
+                if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
+                    $nav = new stdClass();
+                    $nav->name = $briefing[0];
+                    $nav->faction = $factionId;
+                    $nav->locked = $factionLocks[$factionId];
+
+                    array_push($filledFactions, $nav);
+                }
             }
         }
 
