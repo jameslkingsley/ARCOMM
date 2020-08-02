@@ -889,7 +889,7 @@ class Mission extends Model implements HasMediaConversions
 
         if($briefings != null) {
             foreach($briefings as $briefing) {
-                $factionId = $briefing[1][0];
+                $factionId = $this->parseFactionId($briefing[1][0]);
                 if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
                     $nav = new stdClass();
                     $nav->name = $briefing[0];
@@ -902,6 +902,20 @@ class Mission extends Model implements HasMediaConversions
         }
 
         return $filledFactions;
+    }
+
+    private function parseFactionId($rawFaction) 
+    {
+        //Briefings are per faction numbers
+        if(is_int($rawFaction)) return $rawFaction;
+
+        //Briefings use a different system so just dirtily attempt to parse them
+        if(str_contains($rawFaction, 'blu')) return 0;
+        if(str_contains($rawFaction, 'opf')) return 1;
+        if(str_contains($rawFaction, 'ind')) return 2;
+        if(str_contains($rawFaction, 'civ')) return 3;
+
+        return 0;
     }
 
     /**
@@ -930,7 +944,7 @@ class Mission extends Model implements HasMediaConversions
     private function GetBriefing($factionId) {
         $availableBriefings = $this->GetBriefings();
         foreach($availableBriefings as $briefing) {
-            $id = $briefing[1][0];
+            $id = $this->parseFactionId($briefing[1][0]);
             if($id == $factionId) {
                 return $briefing;
             }
