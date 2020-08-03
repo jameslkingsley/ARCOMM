@@ -909,13 +909,7 @@ class Mission extends Model implements HasMediaConversions
         //Briefings are per faction numbers
         if(is_int($rawFaction)) return $rawFaction;
 
-        //Briefings use a different system so just dirtily attempt to parse them
-        if(str_contains($rawFaction, 'blu')) return 0;
-        if(str_contains($rawFaction, 'opf')) return 1;
-        if(str_contains($rawFaction, 'ind')) return 2;
-        if(str_contains($rawFaction, 'civ')) return 3;
-
-        return 0;
+        return 3;
     }
 
     /**
