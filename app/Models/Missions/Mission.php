@@ -962,14 +962,14 @@ class Mission extends Model implements HasMediaConversions
     }
 
     private function parseBriefing($briefing) {
-        preg_match_all("~\"diary\", ([^;]+)~", $briefing, $diaryMatches);
+        preg_match_all("~\"diary\", [\S\s]+?(?=\]\s*\]\s*;)~", $briefing, $diaryMatches);
 
         $dict = array();
-        $diaries = $diaryMatches[1];
+        $diaries = $diaryMatches[0];
 
         foreach ($diaries as $diary) {
             preg_match_all("~\"([^\"]+)\"~", $diary, $quotes);
-            $dict[$quotes[1][0]] = $quotes[1][1];
+            $dict[$quotes[1][1]] = $quotes[1][2];
         }
         
         return $dict;
