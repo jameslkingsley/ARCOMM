@@ -673,7 +673,10 @@ class Mission extends Model implements HasMediaConversions
             return new ArmaConfigError($mission->error);
         }
 
-        $this->ValidateMissionContents($contents);
+        $validationError = $this->ValidateMissionContents($contents);
+        if (!is_null($validationError)) {
+            return new ArmaConfigError($validationError);
+        }
 
         $this->display_name = $contents['mission']['name'];
         if(array_key_exists('description', $contents['mission'])) {
@@ -701,16 +704,55 @@ class Mission extends Model implements HasMediaConversions
 
     private function ValidateMissionContents($contents) 
     {
-        //TODO: Add validation
         $files = $contents['pbo']['files'];
-
-        foreach($files as $file) {
-            $path = $file['path'];
-            $size = $file['size'];
-            $timestamp = $file['timestamp'];
-
-            //TODO: Check if needed files are here
+        $expectedFiles = ["mission.sqm", "description.ext"];
+        $expectedFolderCount = ["briefing\\" => ["count" => 0, "ignore" => ["briefing\\briefing_example.sqf"]]];
+        
+        switch ($this->mode) {
+            case "preop":
+                $expectedFolderCount["briefing\\"]["count"] = 0;
+                break;
+            case "coop":
+                $expectedFolderCount["briefing\\"]["count"] = 2;
+                break;
+            case "adversarial":
+                $expectedFolderCount["briefing\\"]["count"] = 3;
+                break;
+            default:
+                return "Unknown mission mode when validating mission contents";
         }
+
+        $errorText = "";
+
+        foreach ($expectedFiles as $file) {
+            if (!array_key_exists($file, $files)) {
+                $errorText .= sprintf("%s is missing\n", $file);
+            }
+        }
+
+        foreach ($expectedFolderCount as $folder => $expectations) {
+            $fileCount = $this->countFilesInFolder($files, $folder, $expectations["ignore"]);
+
+            if ($fileCount < $expectations["count"]) {
+                $errorText .= sprintf("%s has %d files, should have %d\n", $folder, $fileCount, $expectations["count"]);
+            }
+        }
+
+        if (strlen($errorText) > 0) {
+            return $errorText;
+        }
+        return null;
+    }
+
+    private function countFilesInFolder($files, $folder, $ignore) {
+        $count = 0;
+        foreach ($files as $file) {
+            if ((!in_array($file["path"], $ignore)) && (substr($file["path"], 0, strlen($folder)) === $folder)) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**
