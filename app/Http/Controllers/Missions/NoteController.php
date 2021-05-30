@@ -85,8 +85,6 @@ class NoteController extends Controller
         $note->text = $request->text;
         $note->save();
 
-        $note->mention($request->mentions, false);
-
         DiscordWebhook::notifyArchub( "**{$note->user->username}** added a note to the mission **{$note->mission->display_name}** {$note->mission->url()}/notes#note-{$note->id}");
 
         return view('missions.notes.item', compact('note'));
@@ -137,8 +135,6 @@ class NoteController extends Controller
         if (!$note->isMine()) {
             return;
         }
-
-        $note->unmention($note->mentions());
 
         $note->delete();
     }

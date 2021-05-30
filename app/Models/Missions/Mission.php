@@ -13,7 +13,6 @@ use Spatie\MediaLibrary\Media;
 use App\Helpers\ArmaConfigError;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Kingsley\Mentions\Traits\HasMentions;
 use Kingsley\References\Models\Reference;
 use App\Models\Operations\OperationMission;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -24,8 +23,7 @@ use App\Helpers\PBOMission\PBOFile\PBOFile;
 class Mission extends Model implements HasMediaConversions
 {
     use Notifiable,
-        HasMediaTrait,
-        HasMentions;
+        HasMediaTrait;
 
     public $factions = [
         0 => "Opfor",
