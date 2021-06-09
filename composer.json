@@ -20,11 +20,10 @@
     "require": {
         "php": "^7.4",
         "austinb/gameq": "3.x-dev",
-        "fideloper/proxy": "~3.3",
+        "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
         "invisnik/laravel-steam-auth": "^3.2.1",
         "jameslkingsley/laravel-livedata": "^1.0",
-        "jameslkingsley/laravel-references": "dev-master",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",
         "sentry/sentry-laravel": "^0.7.0",

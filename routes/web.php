@@ -10,9 +10,9 @@ Route::get('/arma3sync', function () {
 Route::get('/api/absence', 'API\AbsenceController@index');
 
 //--- Shared Missions
-Route::get('/share/{ref}', 'ShareController@show');
-Route::get('/share/{ref}/{panel}', 'SharePanelController@show');
-Route::get('/share/{ref}/briefing/{faction}', 'ShareBriefingController@show');
+Route::get('/share/{mission}', 'ShareController@show');
+Route::get('/share/{mission}/{panel}', 'SharePanelController@show');
+Route::get('/share/{mission}/briefing/{faction}', 'ShareBriefingController@show');
 
 //--- Steam Authentication
 Route::get('/steamauth', 'AuthController@login');

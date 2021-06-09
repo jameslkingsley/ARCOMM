@@ -2,7 +2,7 @@
     $(document).ready(function(e) {
         $('#mission-share').click(function(event) {
             var caller = $(this);
-            alert("{{ url('/share/'.$mission->ref) }}");
+            alert("{{ url('/share/'.$mission->id) }}");
             event.preventDefault();
         });
     });

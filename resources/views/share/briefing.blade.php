@@ -9,7 +9,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: "{{ url('/share/'.$mission->ref.'/briefing') }}/" + faction,
+                url: "{{ url('/share/'.$mission->id.'/briefing') }}/" + faction,
                 success: function(data) {
                     $('.mission-briefing-content').html(data);
                     $('.mission-briefing-nav a').removeClass('active');

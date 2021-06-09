@@ -30,11 +30,10 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: "{{ url('/share/'.$mission->ref) }}/" + caller.data('panel'),
+                    url: "{{ url('/share/'.$mission->id) }}/" + caller.data('panel'),
                     success: function(data) {
                         $('.mission-nav .subnav .subnav-link').removeClass('active');
                         caller.addClass('active');
-                        setUrl('share/{{ $mission->ref }}/' + caller.data('panel'));
                         $('.mission-inner').html(data);
                     }
                 });
