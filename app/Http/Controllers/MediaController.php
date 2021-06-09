@@ -7,7 +7,6 @@ use App\Models\Portal\User;
 use Illuminate\Http\Request;
 use App\Models\Portal\Gallery;
 use App\Models\Missions\Mission;
-use Illuminate\Support\Facades\Input;
 
 class MediaController extends Controller
 {

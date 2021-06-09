@@ -3,12 +3,12 @@
 namespace App\Models\Portal;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Gallery extends Model implements HasMedia
 {
-    use HasMediaTrait;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class Gallery extends Model implements HasMedia
      *
      * @return void
      */
-    public function registerMediaConversions()
+    public function registerMediaConversions(): void
     {
         $this->addMediaConversion('thumb')
              ->setManipulations(['w' => 256, 'h' => 256, 'fit' => 'crop'])

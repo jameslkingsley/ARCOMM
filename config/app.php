@@ -157,8 +157,7 @@ return [
         Invisnik\LaravelSteamAuth\SteamServiceProvider::class,
         Syntax\SteamApi\SteamApiServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
-        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
-        Sentry\SentryLaravel\SentryLaravelServiceProvider::class
+        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class
     ],
 
     /*
@@ -205,7 +204,6 @@ return [
         'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View' => Illuminate\Support\Facades\View::class,
-        'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'View' => Illuminate\Support\Facades\View::class
     ],
 ];
