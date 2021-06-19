@@ -25,15 +25,7 @@ class PageController extends Controller
             return url('images/'.$file);
         });
 
-        $nextOp = false;
-
-		return view('home.index', compact('banners', 'nextOp'));
-
-        if (auth()->guest()) {
-            return view('home.beta-login');
-        } else if (auth()->user()->isMember()) {
-            return redirect('/hub');
-        }
+        return view('home.index', compact('banners'));
 	}
 
     /**

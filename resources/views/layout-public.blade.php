@@ -42,22 +42,6 @@
                         </a>
                     </div>
 
-                    @if (isset($nextOp) && $nextOp)
-                        <div class="next-op">
-                            <span class="next-op-pre">
-                                Next OP
-                            </span>
-
-                            <span class="next-op-countdown">
-                                {{ \App\Models\Operations\Operation::nextWeek()->starts_at->diffForHumans() }}
-                            </span>
-
-                            <span class="next-op-date">
-                                Every {{ env('SITE_OP_DAY') }} at {{ env('SITE_OP_TIME') }}
-                            </span>
-                        </div>
-                    @endif
-
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url('/roster') }}">Roster</a></li>
                         <li><a href="{{ url('/media') }}">Media</a></li>
