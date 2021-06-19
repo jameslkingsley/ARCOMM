@@ -54,7 +54,6 @@
                     <div class="pull-right">
                         @yield('nav-right')
                         {{-- @include('nav.notifications') --}}
-                        @include('absence.nav')
                         @include('nav.user')
                     </div>
                 </div>

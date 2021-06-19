@@ -12,18 +12,6 @@
     </a>
 @endif
 
-@if (auth()->user()->hasPermission('absences:view'))
-    <a href="{{ url('/hub/absence') }}" class="nav-item nav-link hidden-sm-down">
-        Absences
-    </a>
-@endif
-
-@if (auth()->user()->hasPermission('attendance:view'))
-    <a href="{{ url('/hub/attendance') }}" class="nav-item nav-link hidden-sm-down">
-        Attendance
-    </a>
-@endif
-
 @if (auth()->user()->hasPermission('users:all'))
     <a href="{{ url('/hub/users') }}" class="nav-item nav-link hidden-sm-down">
         Users
@@ -95,18 +83,6 @@
             @if (auth()->user()->hasPermission('apps:view'))
                 <a href="{{ url('/hub/applications') }}" class="list-group-item list-group-item-action">
                     Applications
-                </a>
-            @endif
-
-            @if (auth()->user()->hasPermission('absences:view'))
-                <a href="{{ url('/hub/absence') }}" class="list-group-item list-group-item-action">
-                    Absences
-                </a>
-            @endif
-
-            @if (auth()->user()->hasPermission('attendance:view'))
-                <a href="{{ url('/hub/attendance') }}" class="list-group-item list-group-item-action">
-                    Attendance
                 </a>
             @endif
 
