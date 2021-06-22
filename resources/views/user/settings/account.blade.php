@@ -33,7 +33,7 @@
 
 <div class="row">
     <a href="javascript:void(0)" class="btn btn-primary m-x-auto m-t-1" id="avatar-sync">
-        Sync From Steam
+        Sync From Discord
     </a>
 </div>
 

@@ -849,7 +849,7 @@ class Mission extends Model implements HasMedia
         if($briefings != null) {
             foreach($briefings as $briefing) {
                 $factionId = $this->parseFactionId($briefing[1][0]);
-                if(!$factionLocks[$factionId] || auth()->user()->hasPermission('mission:view_locked_briefings') || $this->isMine()) {
+                if(!$factionLocks[$factionId] || auth()->user()->can('test-missions') || $this->isMine()) {
                     $nav = new stdClass();
                     $nav->name = $briefing[0];
                     $nav->faction = $factionId;

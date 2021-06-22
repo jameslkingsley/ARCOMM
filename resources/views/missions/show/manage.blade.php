@@ -1,11 +1,11 @@
-@if ($mission->isMine() || auth()->user()->hasPermissions(['mission:update','mission:delete'], true))
+@if ($mission->isMine() || auth()->user()->can('manage-missions'))
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-cog"></i>
         </a>
 
         <div class="dropdown-menu">
-            @if ($mission->isMine() || auth()->user()->hasPermission('mission:update'))
+            @if ($mission->isMine() || auth()->user()->can('manage-missions'))
                 <script>
                     $(document).ready(function(e) {
                         $('#update-mission').dropzone({
@@ -28,7 +28,7 @@
                 <a href="javascript:void(0)" class="dropdown-item" id="update-mission">Update</a>
             @endif
 
-            @if ($mission->isMine() || auth()->user()->hasPermission('mission:delete'))
+            @if ($mission->isMine() || auth()->user()->can('manage-missions'))
                 <script>
                     $(document).ready(function(e) {
                         $('#delete-mission').click(function(event) {
@@ -39,7 +39,7 @@
                     });
                 </script>
 
-                @if (!$mission->existsInOperation() || auth()->user()->hasPermission('mission:delete'))
+                @if (!$mission->existsInOperation() || auth()->user()->can('manage-missions'))
                     <a
                         href="{{ url('/hub/missions/' . $mission->id . '/delete') }}"
                         class="dropdown-item"

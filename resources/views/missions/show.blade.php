@@ -23,25 +23,22 @@
 @endif
 
 @section('nav-right')
-    @if (auth()->user()->hasPermission('mission:verification'))
+    @can('verify-missions')
         @include('missions.show.verification')
-    @endif
+    @endcan
 
-    @if ($mission->isMine() || auth()->user()->hasPermission('mission:notes'))
+    @if ($mission->isMine() || auth()->user()->can('test-missions'))
         @include('missions.show.revisions')
-    @endif
-
-    @if ($mission->isMine() || auth()->user()->hasPermission('mission:download'))
         @include('missions.show.download')
     @endif
 
-    @if ($mission->isMine() || auth()->user()->hasPermission('mission:update'))
+    @if ($mission->isMine() || auth()->user()->can('manage-missions'))
         @include('missions.show.manage')
     @endif
 
-    @if (auth()->user()->hasPermission('mission:share'))
+    @can('share-missions')
         @include('missions.show.share')
-    @endif
+    @endcan
 @endsection
 
 @section('content')
@@ -114,7 +111,7 @@
                     class="subnav-link ripple"
                 >Media</a>
 
-                @if (auth()->user()->hasPermission('mission:notes') || $mission->isMine())
+                @if (auth()->user()->can('test-missions') || $mission->isMine())
                     <a
                         href="javascript:void(0)"
                         data-panel="addons"

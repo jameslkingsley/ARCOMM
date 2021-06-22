@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\MigrateOldApps::class,
         Commands\ConvertIdToRevisions::class,
-        Commands\PurgeNonMembers::class,
     ];
 
     /**

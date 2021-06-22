@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Socialite\Facades\Socialite;
+
 //--- Home
 Route::get('/', 'PageController@index');
 
@@ -12,8 +14,11 @@ Route::get('/share/{mission}', 'ShareController@show');
 Route::get('/share/{mission}/{panel}', 'SharePanelController@show');
 Route::get('/share/{mission}/briefing/{faction}', 'ShareBriefingController@show');
 
-//--- Steam Authentication
-Route::get('/steamauth', 'AuthController@login');
+//--- Authentication
+Route::get('/auth/redirect', 'Auth\DiscordController@redirect');
+Route::get('/auth/callback', 'Auth\DiscordController@callback');
+Route::get('/auth/steam', 'Auth\SteamController@redirect');
+Route::get('/auth/steamcallback', 'Auth\SteamController@callback');
 
 //--- Public Applications
 Route::get('/join/acknowledged', 'PublicJoinController@acknowledged');
@@ -28,10 +33,8 @@ Route::post('/media/delete', 'MediaController@deletePhoto');
 //--- Roster
 Route::get('/roster', 'PageController@roster');
 
-//--- Admins
-Route::group(['middleware' => 'permission:apps:all'], function () {
+Route::group(['middleware' => 'can:view-applications'], function () {
     // Route::get('/hub/applications/transfer', 'JoinController@transferOldRecords');
-
     Route::get('/hub/applications/api/items', 'Join\JoinController@items');
     Route::get('/hub/applications/show/{jr}', 'Join\JoinController@show');
 
@@ -48,23 +51,18 @@ Route::group(['middleware' => 'permission:apps:all'], function () {
     Route::resource('/hub/applications', 'Join\JoinController');
 });
 
-Route::group(['middleware' => 'permission:apps:emails'], function () {
-    // Email Templates
+Route::group(['middleware' => 'can:manage-applications'], function () {
     Route::resource('/hub/applications/api/emails', 'Join\EmailTemplateController');
 });
 
-//--- Operations
-Route::group(['middleware' => 'permission:operations:all'], function () {
+Route::group(['middleware' => 'can:manage-operations'], function () {
     Route::get('/hub/operations', 'Missions\OperationController@index');
-});
-
-Route::group(['middleware' => 'permission:operations:all'], function () {
     Route::resource('/api/operations', 'API\OperationController');
     Route::resource('/api/operations/missions', 'API\OperationMissionController');
 });
 
 //--- Missions
-Route::group(['middleware' => 'member'], function () {
+Route::group(['middleware' => 'can:access-hub'], function () {
     // Mission Media
     Route::post('/hub/missions/media/add-photo', 'Missions\MediaController@uploadPhoto');
     Route::post('/hub/missions/media/delete-photo', 'Missions\MediaController@deletePhoto');
@@ -120,7 +118,6 @@ Route::group(['middleware' => 'member'], function () {
     ]);
 });
 
-//--- User Management
-Route::group(['middleware' => 'permission:users:all'], function () {
+Route::group(['middleware' => 'can:view-users'], function () {
     Route::resource('/hub/users', 'Users\UserController');
 });

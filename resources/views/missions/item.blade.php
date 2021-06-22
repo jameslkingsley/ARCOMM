@@ -27,7 +27,7 @@
             {{ $mission->mode }}
         </span> --}}
 
-        @if (($mission->isMine() || auth()->user()->hasPermission('mission:verification')) && !$mission->verified)
+        @if (!$mission->verified && ($mission->isMine() || auth()->user()->can('verify-missions')))
             <span class="mission-item-verified" title="Not verified">!</span>
         @endif
     </div>

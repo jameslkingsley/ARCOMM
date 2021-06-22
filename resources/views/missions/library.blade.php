@@ -44,7 +44,7 @@
     </div>
 </div>
 
-@if (auth()->user()->hasPermission('mission:see_new'))
+@can('test-missions')
     @if (!$newMissions->isEmpty())
         <ul class="mission-group" data-title="New Missions">
             @foreach ($newMissions as $mission)
@@ -52,7 +52,7 @@
             @endforeach
         </ul>
     @endif
-@endif
+@endcan
 
 <ul
     class="mission-group {{ ($myMissions->isEmpty()) ? 'mission-empty-group' : '' }}"

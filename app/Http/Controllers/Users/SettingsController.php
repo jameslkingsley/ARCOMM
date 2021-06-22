@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
+use App\Discord;
 use App\Http\Controllers\Controller;
 use App\Models\Portal\User;
-use Steam;
 
 class SettingsController extends Controller
 {
@@ -93,19 +93,12 @@ class SettingsController extends Controller
         //
     }
 
-    /**
-     * Syncs the avatar from Steam.
-     *
-     * @return any
-     */
     public function avatarSync()
     {
-        $api_key = env('STEAM_API_KEY');
-        $steam_id = auth()->user()->steam_id;
-        $json = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={$api_key}&steamids={$steam_id}");
-        $info = json_decode($json)->response->players[0];
-        auth()->user()->avatar = $info->avatarfull;
-        auth()->user()->save();
-        return $info->avatarfull;
+        $user = auth()->user();
+        $user->avatar = Discord::getAvatar($user->discord_id);
+        $user->save();
+
+        return $user->avatar;
     }
 }

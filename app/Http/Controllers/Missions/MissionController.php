@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Missions;
 
-use App\DiscordWebhook;
+use App\Discord;
 use Illuminate\Http\Request;
 use App\Models\Missions\Mission;
 use App\Http\Controllers\Controller;
@@ -71,7 +71,8 @@ class MissionController extends Controller
             // Delete local temp files
             Storage::deleteDirectory("missions/{$user->id}");
 
-            DiscordWebhook::notifyArchub("**{$mission->user->username}** submitted a mission named **{$mission->display_name}**");
+            $content = "**{$mission->user->username}** submitted a mission named **{$mission->display_name}**";
+            Discord::missionUpdate($content, $mission, false, $mission->url());
 
             return $mission->url();
         }
@@ -85,7 +86,7 @@ class MissionController extends Controller
      */
     public function show(Request $request, Mission $mission)
     {
-        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->can('test-missions') && !$mission->isMine()) {
             return redirect('/hub/missions?403=1');
         }
 
@@ -188,7 +189,8 @@ class MissionController extends Controller
                 // Delete old cloud files
                 Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
                 
-                DiscordWebhook::notifyArchub("**{$revision->user->username}** updated the mission **{$revision->mission->display_name}**");
+                $content = "**{$revision->user->username}** has updated **{$revision->mission->display_name}**";
+                Discord::missionUpdate($content, $revision->mission);
 
                 return view('missions.show', compact('mission'));
             }
@@ -203,7 +205,7 @@ class MissionController extends Controller
      */
     public function destroy(Mission $mission)
     {
-        if ($mission->existsInOperation() && !auth()->user()->hasPermission('mission:delete')) {
+        if ($mission->existsInOperation() && !auth()->user()->can('manage-missions')) {
             return redirect('/hub/missions/' . $mission->id);
         }
 
@@ -233,7 +235,7 @@ class MissionController extends Controller
     {
         $mission = Mission::find($request->mission_id);
 
-        if (!$mission->isMine() && !auth()->user()->hasPermission('mission:set_briefing_locks')) {
+        if (!$mission->isMine() && !auth()->user()->can('manage-missions')) {
             abort(403, 'You are not authorised to edit this mission');
             return;
         }
@@ -266,7 +268,8 @@ class MissionController extends Controller
         $mission->save();
 
         if ($mission->verified) {
-            DiscordWebhook::notifyArchub("**{$mission->verifiedByUser()->username}** verified the mission **{$mission->display_name}**");
+            $content = "**{$mission->verifiedByUser()->username}** has verified **{$mission->display_name}**";
+            Discord::missionUpdate($content, $mission, true);
         }
 
         $updated_by = auth()->user()->username;
@@ -291,7 +294,7 @@ class MissionController extends Controller
      */
     public function panel(Request $request, Mission $mission, $panel)
     {
-        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->hasPermission('mission:see_new') && !$mission->isMine()) {
+        if (!$mission->verified && !$mission->existsInOperation() && !auth()->user()->can('test-missions') && !$mission->isMine()) {
             return redirect('/hub/missions?403=1');
         }
 

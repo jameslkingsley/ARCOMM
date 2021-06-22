@@ -7,7 +7,6 @@ use App\JoinRequest;
 use App\Http\Requests;
 use App\Models\Portal\User;
 use Illuminate\Http\Request;
-use App\Models\Portal\SteamAPI;
 use App\Models\Operations\Operation;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,11 +27,6 @@ class PageController extends Controller
         return view('home.index', compact('banners'));
 	}
 
-    /**
-     * Displays the Steam group roster.
-     *
-     * @return view
-     */
     public function roster()
     {
         $members = User::all();

@@ -31,7 +31,7 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         // Record 1 is the default gallery
-        if (auth()->user()->hasPermission('public_media:upload')) {
+        if (auth()->user()->can('manage-public-media')) {
             $gallery = Gallery::find(1);
             $gallery->addMedia($request->file('file'))->toMediaCollection('images');
         }

@@ -1,22 +1,22 @@
 <a href="{{ url('/hub/missions') }}" class="nav-item nav-link hidden-sm-down active">Missions</a>
 
-@if (auth()->user()->hasPermission('operations:all'))
+@can('manage-operations')
     <a href="{{ url('/hub/operations') }}" class="nav-item nav-link hidden-sm-down">
         Operations
     </a>
-@endif
+@endcan
 
-@if (auth()->user()->hasPermission('apps:view'))
+@can('view-applications')
     <a href="{{ url('/hub/applications') }}" class="nav-item nav-link hidden-sm-down">
         Applications
     </a>
-@endif
+@endcan
 
-@if (auth()->user()->hasPermission('users:all'))
+@can('view-users')
     <a href="{{ url('/hub/users') }}" class="nav-item nav-link hidden-sm-down">
         Users
     </a>
-@endif
+@endcan
 
 <li class="nav-item dropdown hidden-sm-down">
     <a class="nav-link dropdown-toggle" style="padding:0" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
@@ -74,23 +74,23 @@
                 Missions
             </a>
 
-            @if (auth()->user()->hasPermission('operations:all'))
+            @can('manage-operations')
                 <a href="{{ url('/hub/operations') }}" class="list-group-item list-group-item-action">
                     Operations
                 </a>
-            @endif
+            @endcan
 
-            @if (auth()->user()->hasPermission('apps:view'))
+            @can('view-applications')
                 <a href="{{ url('/hub/applications') }}" class="list-group-item list-group-item-action">
                     Applications
                 </a>
-            @endif
+            @endcan
 
-            @if (auth()->user()->hasPermission('users:all'))
+            @can('view-users')
                 <a href="{{ url('/hub/users') }}" class="list-group-item list-group-item-action">
                     Users
                 </a>
-            @endif
+            @endcan
 
             @yield('nav-left-mobile')
         </div>

@@ -40,7 +40,7 @@ class MediaController extends Controller
         $mission = Mission::find($request->mission_id);
         $media = $mission->media->find($request->media_id);
 
-        if (($media->getCustomProperty('user_id', -1) == auth()->user()->id || auth()->user()->hasPermission('mission_media:delete'))) {
+        if (($media->getCustomProperty('user_id', -1) == auth()->user()->id || auth()->user()->can('delete-media'))) {
             $mission->deleteMedia($media);
         }
     }

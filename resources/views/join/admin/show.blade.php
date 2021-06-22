@@ -14,7 +14,7 @@
 @section('content')
     <div class="container">
         <div class="card p-a-3">
-            @if (auth()->user()->hasPermission('apps:emails'))
+            @can('manage-applications')
                 <script>
                     $(document).ready(function(e) {
                         $('#send-app-email').click(function(event) {
@@ -64,16 +64,16 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endcan
 
-            @if (auth()->user()->hasPermission('apps:change_status'))
+            @can('manage-applications')
                 <div id="status" class="pull-right">
                     @include('join.admin.status', [
                         'joinStatuses' => $joinStatuses,
                         'jr' => $jr
                     ])
                 </div>
-            @endif
+            @endcan
 
             <h2>{{ $jr->name }}</h2>
 

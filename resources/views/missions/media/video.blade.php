@@ -7,7 +7,7 @@
             width="520">
     </iframe>
 
-    @if ($video->isMine() || auth()->user()->hasPermission('mission_media:delete'))
+    @if ($video->isMine() || auth()->user()->can('delete-media'))
             <span class="fa fa-trash mission-video-item-delete" data-video="{{ $video->id }}"></span>
     @endif
 </span>
