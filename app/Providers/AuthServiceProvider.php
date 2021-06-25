@@ -49,7 +49,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('manage-missions', function($user) {
             // Includes updating and deleting missions
-            return $user->hasRole(RoleEnum::SeniorTester);
+            return $user->hasRole(RoleEnum::Operations);
         });
 
         Gate::define('share-missions', function($user) {
@@ -57,7 +57,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-operations', function($user) {
-            return $user->hasRole(RoleEnum::SeniorTester);
+            return $user->hasRole(RoleEnum::Operations);
         });
 
         Gate::define('view-users', function($user) {
@@ -73,7 +73,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('delete-media', function($user) {
-            return $user->hasRole(RoleEnum::SeniorTester);
+            return $user->hasRole(RoleEnum::Operations);
         });
 
         Gate::define('manage-public-media', function($user) {

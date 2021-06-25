@@ -112,6 +112,10 @@ class Discord
         {
             return config('services.discord.senior_tester_role');
         }
+        else if ($role == RoleEnum::Operations)
+        {
+            return config('services.discord.operations_role');
+        }
         else if ($role == RoleEnum::Staff) 
         {
             return config('services.discord.staff_role');
