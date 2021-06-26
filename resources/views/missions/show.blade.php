@@ -23,11 +23,8 @@
 @endif
 
 @section('nav-right')
-    @can('verify-missions')
-        @include('missions.show.verification')
-    @endcan
-
     @if ($mission->isMine() || auth()->user()->can('test-missions'))
+        @include('missions.show.verification')
         @include('missions.show.revisions')
         @include('missions.show.download')
     @endif

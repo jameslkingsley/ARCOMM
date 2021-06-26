@@ -1,29 +1,31 @@
-<script>
-    $(document).ready(function(e) {
-        $('#mission-verification').click(function(event) {
-            var caller = $(this);
+@can('verify-missions')
+    <script>
+        $(document).ready(function(e) {
+            $('#mission-verification').click(function(event) {
+                var caller = $(this);
 
-            $.ajax({
-                type: 'POST',
-                url: '{{ url("/hub/missions/{$mission->id}/set-verification") }}',
-                success: function(data) {
-                    if (caller.hasClass('mission-verified')) {
-                        caller.removeClass('mission-verified');
-                        caller.addClass('mission-unverified');
-                        caller.attr('title', "Mark this mission as verified");
-                    } else {
-                        caller.removeClass('mission-unverified');
-                        caller.addClass('mission-verified');
-                        caller.find('em').html(data);
-                        caller.attr('title', "Mark this mission as unverified");
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url("/hub/missions/{$mission->id}/set-verification") }}',
+                    success: function(data) {
+                        if (caller.hasClass('mission-verified')) {
+                            caller.removeClass('mission-verified');
+                            caller.addClass('mission-unverified');
+                            caller.attr('title', "Mark this mission as verified");
+                        } else {
+                            caller.removeClass('mission-unverified');
+                            caller.addClass('mission-verified');
+                            caller.find('em').html(data);
+                            caller.attr('title', "Mark this mission as unverified");
+                        }
                     }
-                }
-            });
+                });
 
-            event.preventDefault();
+                event.preventDefault();
+            });
         });
-    });
-</script>
+    </script>
+@endcan
 
 <li class="nav-item hidden-md-down">
     <a
@@ -38,6 +40,8 @@
             @endif
         </em>
 
-        <i class="fa fa-check"></i>
+        @if (auth()->user()->can('verify-missions') || $mission->verifiedByUser())
+            <i class="fa fa-check"></i>
+        @endif
     </a>
 </li>
