@@ -87,7 +87,7 @@ class NoteController extends Controller
 
         $url = "{$note->mission->url()}/notes#note-{$note->id}";
         $content = "**{$note->user->username}** added a note to **{$note->mission->display_name}**";
-        Discord::missionUpdate($content, $mission, true, $url);
+        Discord::missionUpdate($content, $mission, true, true, $url);
 
         return view('missions.notes.item', compact('note'));
     }

@@ -72,7 +72,7 @@ class MissionController extends Controller
             Storage::deleteDirectory("missions/{$user->id}");
 
             $content = "**{$mission->user->username}** submitted a mission named **{$mission->display_name}**";
-            Discord::missionUpdate($content, $mission, false, $mission->url());
+            Discord::missionUpdate($content, $mission, false, false, $mission->url());
 
             return $mission->url();
         }
@@ -190,7 +190,7 @@ class MissionController extends Controller
                 Storage::cloud()->delete("x{$old_mission_cloud_pbo_dir}");
                 
                 $content = "**{$revision->user->username}** has updated **{$revision->mission->display_name}**";
-                Discord::missionUpdate($content, $revision->mission);
+                Discord::missionUpdate($content, $revision->mission, false, true);
 
                 return view('missions.show', compact('mission'));
             }

@@ -6,6 +6,7 @@ use Auth;
 use Carbon\Carbon;
 use App\Discord;
 use App\Models\Missions\Mission;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\HasMedia;
@@ -14,8 +15,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class User extends Authenticatable implements HasMedia
 {
-    use Notifiable;
-    use InteractsWithMedia;
+    use HasApiTokens, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.

@@ -116,6 +116,13 @@ Route::group(['middleware' => 'can:access-hub'], function () {
     Route::resource('/hub', 'HubController', [
         'only' => ['index']
     ]);
+
+    Route::get('/tokens/create', function (Request $request) {
+        auth()->user()->tokens()->delete();
+        $token = auth()->user()->createToken('api_token');
+    
+        return ['token' => $token->plainTextToken];
+    });
 });
 
 Route::group(['middleware' => 'can:view-users'], function () {

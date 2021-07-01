@@ -114,6 +114,6 @@ class CommentController extends Controller
     {
         $url = "{$comment->mission->url()}/aar#comment-{$comment->id}";
         $message = "**{$comment->user->username}** commented on **{$comment->mission->display_name}**";
-        Discord::missionUpdate($message, $comment->mission, true, $url);
+        Discord::missionUpdate($message, $comment->mission, true, false, $url);
     }
 }

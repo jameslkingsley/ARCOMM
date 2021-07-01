@@ -6,6 +6,7 @@ use App\ChannelEnum;
 use App\RoleEnum;
 use App\Models\Portal\User;
 use App\Models\Missions\Mission;
+use App\Models\Missions\MissionSubscription;
 use Illuminate\Auth\Access\AuthorizationException;
 
 use Illuminate\Support\Facades\Cache;
@@ -13,10 +14,16 @@ use Illuminate\Support\Facades\Http;
 
 class Discord
 {
-    public static function missionUpdate(string $content, Mission $mission, bool $tagAuthor = false, string $url = null)
+    public static function missionUpdate(string $content, Mission $mission, bool $tagAuthor = false, bool $tagSubscribers = false, string $url = null)
     {
         if ($tagAuthor && ($mission->user->id != auth()->user()->id)) {
             $content = "{$content} <@{$mission->user->discord_id}>";
+        }
+
+        if ($tagSubscribers) {
+            foreach (MissionSubscription::where("mission_id", $mission->id)->cursor() as $subscriber) {
+                $content = "{$content} <@{$subscriber->discord_id}>";
+            }
         }
 
         if (!is_null($url)) {
