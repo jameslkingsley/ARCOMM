@@ -22,7 +22,9 @@ class Discord
 
         if ($tagSubscribers) {
             foreach (MissionSubscription::where("mission_id", $mission->id)->cursor() as $subscriber) {
-                $content = "{$content} <@{$subscriber->discord_id}>";
+                if ($subscriber->discord_id != auth()->user()->discord_id) {
+                    $content = "{$content} <@{$subscriber->discord_id}>";
+                }
             }
         }
 
