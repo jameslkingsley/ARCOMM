@@ -4,11 +4,13 @@ namespace App;
 
 class RoleEnum
 {
-    const Member = 0;
-    const Tester = 1;
-    const SeniorTester = 2;
-    const Operations = 3;
-    const Recruiter = 4;
-    const Staff = 5;
-    const Admin = 6;
+    const Recruit = 0;
+    const Member = 1;
+    const Retired = 2;
+    const Tester = 3;
+    const SeniorTester = 4;
+    const Operations = 5;
+    const Recruiter = 6;
+    const Staff = 7;
+    const Admin = 8;
 }
