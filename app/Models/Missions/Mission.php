@@ -371,15 +371,10 @@ class Mission extends Model implements HasMedia
     public function exportedName($format = 'pbo')
     {
         $revisions = $this->revisions()->count();
+        $filename = pathinfo($this->original["file_name"], PATHINFO_FILENAME);
+        [$filenameNoMap, $map] = explode('.', $filename, 2);
 
-        $download = 'ARC_' .
-            strtoupper($this->mode == 'adversarial' ? 'tvt' : $this->mode) . '_' .
-            Str::studly($this->display_name) . '_' .
-            trim(substr($this->user->username, 0, 4)) . '_' .
-            $revisions . '.' .
-            $this->map->class_name . '.' . $format;
-
-        return $download;
+        return "{$filenameNoMap}_{$revisions}.{$map}.{$format}";
     }
 
     /**
