@@ -15,7 +15,6 @@
         </title>
 
         <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
-        <script type="text/javascript" src="{{ url('/js/select2.full.min.js') }}"></script>
 
         <link rel="icon" type="image/png" href="{{ url('/images/favicon.png') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -23,7 +22,6 @@
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
         <link rel="stylesheet" href="{{ url('/css/landing-page.css') }}">
         <link rel="stylesheet" href="{{ mix('/css/public.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url('/css/select2.min.css') }}">
 
         @yield('head')
     </head>

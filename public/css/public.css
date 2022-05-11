@@ -64,12 +64,16 @@ label {
   border-color: white !important;
 }
 
+input.form-control {
+  padding-left: 12px;
+  padding-right: 5px;
+}
+
 .form-control {
   border-radius: 2px;
   box-shadow: none;
   -webkit-box-shadow: none;
   border: 1px solid #333;
-  padding: 8px 12px;
   max-width: 100%;
   background: transparent;
   color: #aaa;
@@ -78,6 +82,34 @@ label {
   border-color: #aaa;
   box-shadow: none;
   -webkit-box-shadow: none;
+}
+
+.select2-container {
+  max-width: 100%;
+}
+.select2-container .select2-selection--single {
+  background-color: transparent;
+  border: solid #333 1px;
+  height: 34px;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+  color: #AAA;
+  line-height: 34px;
+}
+.select2-container--open .select2-selection--single {
+  border: solid #AAA 1px;
+}
+
+.select2-results {
+  background-color: #100f0f;
+}
+.select2-results .select2-results__option--selected {
+  background-color: #100f0f;
+  color: white;
+}
+.select2-results .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: white;
+  color: black;
 }
 
 .footer:not(.footer-big) nav > ul li:first-of-type {
