@@ -2599,20 +2599,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-material-design@npm:4.0.0-beta.4":
-  version: 4.0.0-beta.4
-  resolution: "bootstrap-material-design@npm:4.0.0-beta.4"
-  checksum: 344e1e369d0ee7e1920e7be347abd56f784ebe571d0feaa8ace21c31cde13fc994560ac0a76c80e294765c3bf428a303839c0dab41f48ee26158e85bbb6eeb3a
+"bootstrap-material-design@npm:4.1.3":
+  version: 4.1.3
+  resolution: "bootstrap-material-design@npm:4.1.3"
+  checksum: b97462c7cc9600572fb1d01e5f08d38d76bdb8663e22b9e0afd0597fabd4e17688d275af70481c9686bc378aa648d93bf7d48bbb76d136dd6346e4e04f2c8c71
   languageName: node
   linkType: hard
 
-"bootstrap@npm:4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "bootstrap@npm:4.0.0-beta.3"
+"bootstrap@npm:4.6.1":
+  version: 4.6.1
+  resolution: "bootstrap@npm:4.6.1"
   peerDependencies:
     jquery: 1.9.1 - 3
-    popper.js: ^1.12.9
-  checksum: ff032dff5b93950d9f5d06733c67cc53858cc6b629635952c68e12f2c65ddc759b19806e19a33bcee5b3a6273eb44a71de81940038bedd7e1fd05c919565904e
+    popper.js: ^1.16.1
+  checksum: ff44e13787aafe1e2b8ac77802eae0f19bf957ea53a40ce3d9d4af9b67eab8adc585dc5a62cb6be82a3bc33e7ae67b0efd75f02282c0ddca09272d5c18a0b379
   languageName: node
   linkType: hard
 
@@ -5879,6 +5879,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.3":
+  version: 3.3.4
+  resolution: "nanoid@npm:3.3.4"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 2fddd6dee994b7676f008d3ffa4ab16035a754f4bb586c61df5a22cf8c8c94017aadd360368f47d653829e0569a92b129979152ff97af23a558331e47e37cd9c
+  languageName: node
+  linkType: hard
+
 "negotiator@npm:0.6.2":
   version: 0.6.2
   resolution: "negotiator@npm:0.6.2"
@@ -6384,10 +6393,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"popper.js@npm:^1.12.3":
-  version: 1.12.9
-  resolution: "popper.js@npm:1.12.9"
-  checksum: 9e1a8305d3a0134e5ebadabde1055a1673eff73fee208aa69f313ca613a340937fd75803607efb6d1472015fc53be422f076935079bad06c6478a44aae1957ca
+"popper.js@npm:^1.16.1":
+  version: 1.16.1
+  resolution: "popper.js@npm:1.16.1"
+  checksum: c56ae5001ec50a77ee297a8061a0221d99d25c7348d2e6bcd3e45a0d0f32a1fd81bca29d46cb0d4bdf13efb77685bd6a0ce93f9eb3c608311a461f945fffedbe
   languageName: node
   linkType: hard
 
@@ -6816,14 +6825,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.3.1":
-  version: 8.3.1
-  resolution: "postcss@npm:8.3.1"
+"postcss@npm:8.4.13":
+  version: 8.4.13
+  resolution: "postcss@npm:8.4.13"
   dependencies:
-    colorette: ^1.2.2
-    nanoid: ^3.1.23
-    source-map-js: ^0.6.2
-  checksum: 710ccb3f1a7b2f107a431c1c1dac2eec29cf29aef55c326bef8504f1c35b832811e87b47157e8320e4b5bba81e66a81fc3cfaaa4bec1af0812ceefebcd0f8c90
+    nanoid: ^3.3.3
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 514fb3552805a5d039a2d6b4df3e73f657001716ca93c0d57e6067b0473abdea70276d80afc96005c9aaff82ed5d98062bd97724d3f47ca400fba0b5e9e436ed
   languageName: node
   linkType: hard
 
@@ -7327,8 +7336,8 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.17.10
     "@babel/preset-env": ^7.17.10
     axios: ^0.21
-    bootstrap: 4.0.0-beta.3
-    bootstrap-material-design: 4.0.0-beta.4
+    bootstrap: 4.6.1
+    bootstrap-material-design: 4.1.3
     collect.js: ^3.0.46
     dropit: ^1.0.0
     dropzone: ^4.3.0
@@ -7340,8 +7349,8 @@ __metadata:
     laravel-mix: ^6.0.43
     lodash: ^4.17.4
     magnific-popup: ^1.1.0
-    popper.js: ^1.12.3
-    postcss: 8.3.1
+    popper.js: ^1.16.1
+    postcss: 8.4.13
     resolve-url-loader: 3.1.2
     sass: ^1.34.0
     sass-loader: 11.0.1
@@ -7744,6 +7753,13 @@ __metadata:
   version: 0.6.2
   resolution: "source-map-js@npm:0.6.2"
   checksum: 9c8151a29e00fd8d3ba87709fdf9a9ce48313d653f4a29a39b4ae53d346ac79e005de624796ff42eff55cbaf26d2e87f4466001ca87831d400d818c5cf146a0e
+  languageName: node
+  linkType: hard
+
+"source-map-js@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "source-map-js@npm:1.0.2"
+  checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
   languageName: node
   linkType: hard
 
