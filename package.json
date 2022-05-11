@@ -30,5 +30,6 @@
         "showdown": "^1.9.1",
         "tributejs": "^2.3.4",
         "vue": "^2.1.10"
-    }
+    },
+    "packageManager": "yarn@3.2.0"
 }
