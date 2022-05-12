@@ -20089,6 +20089,13 @@ header .subnav .subnav-link.active {
   font-size: 64px;
 }
 
+.mission-tags .select2-container {
+  max-width: 100%;
+}
+.mission-tags .select2-container .select2-selection--multiple {
+  border: solid #eee 1px;
+}
+
 .pulse {
   width: 1.5rem;
   height: 1.5rem;

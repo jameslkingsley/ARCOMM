@@ -1,3 +1,31 @@
+<script>
+    $(document).ready(function(event) {
+        $('select').select2({
+            multiple: true,
+            placeholder: "Tags",
+            tags: true,
+
+            createTag: function (params) {
+                var term = $.trim(params.term);
+
+                if (term === '') {
+                    return null;
+                }
+
+                return {
+                    id: term,
+                    text: term
+                }
+            }
+        });
+
+        $('select').on('select2:select', function(e) {
+            var data = e.params.data;
+            $mission.addTag(data["text"]);
+        });
+    });
+</script>
+
 <div class="row">
     <div class="col-md-4 mission-overview-card">
         <h4>
@@ -78,4 +106,12 @@
             <i class="fa fa-video-camera"></i>
         </span>
     </a>
+</div>
+
+<div class="mission-tags">
+    <select name="tags" class="form-control">
+        @foreach ($mission->getTags() as $tag)
+            <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+        @endforeach
+    </select>
 </div>

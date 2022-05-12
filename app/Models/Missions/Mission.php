@@ -2,16 +2,13 @@
 
 namespace App\Models\Missions;
 
-use File;
 use Storage;
 use \stdClass;
 use Carbon\Carbon;
-use App\Helpers\ArmaConfig;
-use App\Helpers\ArmaScript;
 use App\Helpers\ArmaConfigError;
 use App\Helpers\PBOMission\PBOMission;
-use App\Helpers\PBOMission\PBOFile\PBOFile;
 use App\Models\Portal\User;
+use App\Models\Missions\Tag;
 use App\Models\Operations\OperationMission;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
@@ -710,6 +707,16 @@ class Mission extends Model implements HasMedia
     public function time()
     {
         return $this->time;
+    }
+
+    public function getTags() 
+    {
+        return Tag::all();
+    }
+
+    public function addTag($tag) 
+    {
+        return Tag::insertOrIgnore(["text" => $tag]);
     }
 
     /**
