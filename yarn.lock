@@ -7354,6 +7354,7 @@ __metadata:
     resolve-url-loader: 3.1.2
     sass: ^1.34.0
     sass-loader: 11.0.1
+    select2: ^4.1.0-rc.0
     showdown: ^1.9.1
     tributejs: ^2.3.4
     vue: ^2.1.10
@@ -7474,6 +7475,13 @@ __metadata:
   version: 2.0.0
   resolution: "select-hose@npm:2.0.0"
   checksum: d7e5fcc695a4804209d232a1b18624a5134be334d4e1114b0721f7a5e72bd73da483dcf41528c1af4f4f4892ad7cfd6a1e55c8ffb83f9c9fe723b738db609dbb
+  languageName: node
+  linkType: hard
+
+"select2@npm:^4.1.0-rc.0":
+  version: 4.1.0-rc.0
+  resolution: "select2@npm:4.1.0-rc.0"
+  checksum: c27cefc3967d2082b2887869e8379f6e8e0ec2e02a268b7abbaec87fbda20abe4d62ac008b87a14f17bfa46dd27aa0b33ee793ed30142e3bc30ba408e208ad20
   languageName: node
   linkType: hard
 

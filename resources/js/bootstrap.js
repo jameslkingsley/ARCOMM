@@ -6,6 +6,7 @@
 
 // window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
+window.select2 = require('select2');
 // window.Tether = require('tether');
 // window.Vue = require('vue');
 // window.axios = require('axios');

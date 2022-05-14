@@ -697,3 +697,40 @@ $mission-banner-author-font-sizes: (
         font-size: 64px;
     }
 }
+
+.mission-tags {
+    .select2-container {
+        max-width: 100%;
+
+        .select2-selection--multiple {
+            border: solid #eee 1px;
+        }
+
+        .select2-selection__choice {
+            color: white;
+            background-color: #007bff;
+            border: none;
+
+            &__remove {
+                color: white;
+
+                &:hover,
+                &:active,
+                &:focus {
+                    color: white;
+                    background-color: #0852a1;
+                }
+            }
+        }
+
+        .select2-search__field {
+            padding-bottom: 22px;
+        }
+    }
+
+    .badge {
+        margin-right: 8px;
+        font-size: 100%;
+        background-color: #007bff;
+    }
+}

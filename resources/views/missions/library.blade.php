@@ -1,21 +1,79 @@
 @php
     use App\Models\Operations\Operation;
-    use App\Models\Missions\Mission;
 @endphp
 
 @php
-    $myMissions = auth()->user()->missions();
     $nextOperation = Operation::nextWeek();
-
     if ($nextOperation) {
         $nextOperationMissions = $nextOperation->missions;
     }
-
     $prevOperation = Operation::lastWeek();
-    $newMissions = Mission::allNew();
-    $pastMissions = Mission::allPast();
-    $isTester = auth()->user()->can('test-missions')
+    $isTester = auth()->user()->can('test-missions');
 @endphp
+
+<script>
+    $(document).ready(function(event) {
+        $('#filter_select').select2({
+            multiple: true,
+            placeholder: "Tags",
+            dropdownParent: $('#filter_modal')
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '{{ url("/hub/missions/tags") }}',
+
+            success: function(tagIds) {
+                $.each(tagIds, function(index, value) {
+                    var newOption = new Option(value["name"], index, false, false);
+                    $('#filter_select').append(newOption).trigger('change');
+                });
+            }
+        });
+
+        function filter() {
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('/hub/missions/search') }}",
+                data: {
+                    tags: JSON.stringify($('#filter_select').select2('data'))
+                },
+
+                success: function(data) {
+                    $('#filter_results').html(data);
+                }
+            });
+        }
+
+        function clear() {
+            $('#filter_select').val(null).trigger('change');
+            filter();
+        }
+
+        document.getElementById("filter_btn").addEventListener("click", filter)
+        document.getElementById("clear_btn").addEventListener("click", clear)
+    });
+</script>
+
+<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#filter_modal">
+    Filter
+</button>
+
+<div class="modal" id="filter_modal" tabindex="-1" role="dialog" aria-labelledby="modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="mission-tags">
+                    <select name="tags" class="form-control" style="width: 100%" id="filter_select"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="clear_btn">Clear</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="filter_btn">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="missions-pinned">
     <div class="missions-pinned-groups">
@@ -43,43 +101,13 @@
         @if ($prevOperation)
             <ul class="mission-group mission-group-pinned" data-title="Past Operation">
                 @foreach ($prevOperation->missions as $item)
-                    @include('missions.item', ['mission' => $item->mission, 'isTester' => $isTester, 'ignore_new_banner' => true])
+                    @include('missions.item', ['mission' => $item->mission, 'isTester' => $isTester])
                 @endforeach
             </ul>
         @endif
     </div>
 </div>
 
-@if ($isTester && !$newMissions->isEmpty())
-    <ul class="mission-group" data-title="New Missions">
-        @foreach ($newMissions as $mission)
-            @include('missions.item', ['mission' => $mission, 'isTester' => true])
-        @endforeach
-    </ul>
-@endif
-
-<ul
-    class="mission-group {{ ($myMissions->isEmpty()) ? 'mission-empty-group' : '' }}"
-    data-title="My Missions"
-    @if ($myMissions->isEmpty())
-        data-subtitle="You haven't uploaded any missions!"
-    @endif>
-
-    @if (!$myMissions->isEmpty())
-        @foreach ($myMissions as $mission)
-            @include('missions.item', [
-                'mission' => $mission,
-                'isTester' => $isTester,
-                'ignore_new_banner' => true
-            ])
-        @endforeach
-    @endif
-</ul>
-
-@if (!$pastMissions->isEmpty())
-    <ul class="mission-group" data-title="Past Missions">
-        @foreach ($pastMissions as $mission)
-            @include('missions.item', ['mission' => $mission, 'isTester' => $isTester, 'ignore_new_banner' => true])
-        @endforeach
-    </ul>
-@endif
+<div id="filter_results">
+    @include('missions.search')
+</div>

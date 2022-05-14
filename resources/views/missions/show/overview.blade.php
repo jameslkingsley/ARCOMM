@@ -1,3 +1,84 @@
+@php
+    $canManageTags = auth()->user()->can('manage-tags');
+@endphp
+
+@if ($mission->isMine() || $canManageTags)
+    <script>
+        $(document).ready(function(event) {
+            $('select').select2({
+                multiple: true,
+                placeholder: "Tags",
+                tags: "{{ $canManageTags }}",
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ url("/hub/missions/{$mission->id}/tags") }}',
+
+                success: function(selectedTagIds) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url("/hub/missions/tags") }}',
+
+                        success: function(data) {
+                            $.each(data, function(index, value) {
+                                var selected = selectedTagIds.indexOf(value["id"]) != -1;
+                                var newOption = new Option(value["name"], index, selected, selected);
+                                $('select').append(newOption).trigger('change');
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('select').on('select2:select', function(e) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url("/hub/missions/{$mission->id}/tags") }}',
+                    data: {
+                        "tag": e.params.data["text"],
+                    }
+                });
+            });
+
+            $('select').on('select2:unselect', function(e) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '{{ url("/hub/missions/{$mission->id}/tags") }}',
+                    data: {
+                        "tag": e.params.data["text"],
+                    }
+                });
+            });
+        });
+    </script>
+@else
+    <script>
+        $(document).ready(function(event) {
+            $.ajax({
+                type: 'GET',
+                url: '{{ url("/hub/missions/{$mission->id}/tags") }}',
+
+                success: function(selectedTagIds) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ url("/hub/missions/tags") }}',
+
+                        success: function(data) {
+                            $.each(data, function(index, value) {
+                                var selected = selectedTagIds.indexOf(value["id"]) != -1;
+                                if (selected) {
+                                    $('.mission-tags').append('<span class="badge badge-primary">' + value["name"] + '</span>');
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endif
+
 <div class="row">
     <div class="col-md-4 mission-overview-card">
         <h4>
@@ -78,4 +159,10 @@
             <i class="fa fa-video-camera"></i>
         </span>
     </a>
+</div>
+
+<div class="mission-tags">
+    @if ($mission->isMine() || $canManageTags)
+        <select name="tags" class="form-control"></select>
+    @endif
 </div>
