@@ -13,6 +13,21 @@
 
 <script>
     $(document).ready(function(event) {
+        $('#author_select').select2({
+            placeholder: "Mission maker",
+            dropdownParent: $('#filter_modal'),
+            ajax: {
+                delay: 250,
+                type: 'GET',
+                url: '{{ url("/hub/users/search") }}',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                }
+            }
+        });
+
         $('#filter_select').select2({
             multiple: true,
             placeholder: "Tags",
@@ -32,11 +47,13 @@
         });
 
         function filter() {
+            var author = $('#author_select').select2('data')
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: "{{ url('/hub/missions/search') }}",
                 data: {
-                    tags: JSON.stringify($('#filter_select').select2('data'))
+                    "author": author.length > 0 ? author[0]["text"] : null,
+                    "tags[]": $('#filter_select').select2('data').map(item => item.text)
                 },
 
                 success: function(data) {
@@ -46,6 +63,7 @@
         }
 
         function clear() {
+            $('#author_select').val(null).trigger('change');
             $('#filter_select').val(null).trigger('change');
             filter();
         }
@@ -103,6 +121,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="mission-tags">
+                    <select name="author" class="form-control" style="width: 100%" id="author_select"></select>
                     <select name="tags" class="form-control" style="width: 100%" id="filter_select"></select>
                 </div>
             </div>
