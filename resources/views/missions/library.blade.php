@@ -13,9 +13,29 @@
 
 <script>
     $(document).ready(function(event) {
+        $('#mode_select').select2({
+            placeholder: "Mode",
+            dropdownParent: $('#filter_modal'),
+            allowClear: true,
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '{{ url("/hub/missions/modes") }}',
+
+            success: function(modes) {
+                $.each(modes, function(index, value) {
+                    var newOption = new Option(value, index, false, false);
+                    $('#mode_select').append(newOption);
+                });
+                $('#mode_select').val(null).trigger('change'); // Ensure selection starts empty
+            }
+        });
+
         $('#author_select').select2({
             placeholder: "Mission maker",
             dropdownParent: $('#filter_modal'),
+            allowClear: true,
             ajax: {
                 delay: 250,
                 type: 'GET',
@@ -28,9 +48,15 @@
             }
         });
 
-        $('#filter_select').select2({
+        $('#whitelist_select').select2({
             multiple: true,
-            placeholder: "Tags",
+            placeholder: "Whitelist",
+            dropdownParent: $('#filter_modal')
+        });
+
+        $('#blacklist_select').select2({
+            multiple: true,
+            placeholder: "Blacklist",
             dropdownParent: $('#filter_modal')
         });
 
@@ -41,19 +67,25 @@
             success: function(tagIds) {
                 $.each(tagIds, function(index, value) {
                     var newOption = new Option(value["name"], index, false, false);
-                    $('#filter_select').append(newOption).trigger('change');
+                    var newOption2 = new Option(value["name"], index, false, false);
+                    $('#whitelist_select').append(newOption).trigger('change');
+                    $('#blacklist_select').append(newOption2).trigger('change');
                 });
             }
         });
 
         function filter() {
-            var author = $('#author_select').select2('data')
+            var mode = $('#mode_select').select2('data');
+            var author = $('#author_select').select2('data');
+
             $.ajax({
                 type: 'GET',
                 url: "{{ url('/hub/missions/search') }}",
                 data: {
+                    "mode": mode.length > 0 ? mode[0]["text"] : null,
                     "author": author.length > 0 ? author[0]["text"] : null,
-                    "tags[]": $('#filter_select').select2('data').map(item => item.text)
+                    "whitelist[]": $('#whitelist_select').select2('data').map(item => item.text),
+                    "blacklist[]": $('#blacklist_select').select2('data').map(item => item.text),
                 },
 
                 success: function(data) {
@@ -63,8 +95,10 @@
         }
 
         function clear() {
+            $('#mode_select').val(null).trigger('change');
             $('#author_select').val(null).trigger('change');
-            $('#filter_select').val(null).trigger('change');
+            $('#whitelist_select').val(null).trigger('change');
+            $('#blacklist_select').val(null).trigger('change');
             filter();
         }
 
@@ -121,8 +155,10 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="mission-tags">
+                    <select name="mode" class="form-control" style="width: 100%" id="mode_select"></select>
                     <select name="author" class="form-control" style="width: 100%" id="author_select"></select>
-                    <select name="tags" class="form-control" style="width: 100%" id="filter_select"></select>
+                    <select name="whitelist" class="form-control" style="width: 100%" id="whitelist_select"></select>
+                    <select name="blacklist" class="form-control" style="width: 100%" id="blacklist_select"></select>
                 </div>
             </div>
             <div class="modal-footer">

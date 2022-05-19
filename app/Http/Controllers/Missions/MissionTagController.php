@@ -17,6 +17,11 @@ class MissionTagController extends Controller
         ->all();
     }
 
+    public function modes(Request $request)
+    {
+        return array_values(Mission::$gamemodes);
+    }
+
     public function index(Request $request, Mission $mission)
     {
         return MissionTag::where('mission_id', $mission->id)->get()
@@ -51,30 +56,46 @@ class MissionTagController extends Controller
 
     public function search(Request $request)
     {
-        $author = $request->query('author');
-        $activeTags = $request->query('tags');
-        if (!$activeTags && !$author) {
+        if (empty($request->all())) {
             return view('missions.search');
         }
 
+        $mode = $request->query('mode');
+        $author = $request->query('author');
+        $whitelist = $request->query('whitelist');
+        $blacklist = $request->query('blacklist');
+
         $results = Mission::
-        when($activeTags, function ($query, $activeTags) {
+        when($whitelist || $blacklist, function ($query, $a) {
             return $query->leftJoin('mission_tags', 'missions.id', '=', 'mission_tags.mission_id');
         })
         ->selectRaw('missions.id')
-        ->when($activeTags, function ($query, $activeTags) {
-            $tags = Tag::whereIn('name', $activeTags)->get()
-            ->pluck('id')
-            ->toArray();
-            return $query->selectRaw('count(*) as total')->whereIn('tag_id', $tags);
+        ->when($whitelist, function ($query, $whitelist) {
+            $white = Tag::whereIn('name', $whitelist)->get()->pluck('id')->toArray();
+            $placeholders = implode(",", array_fill(0, count($white), '?'));
+            return $query->selectRaw("count(CASE WHEN (tag_id IN ($placeholders)) THEN 1 END) as whitelisted", $white);
+        })
+        ->when($blacklist, function ($query, $blacklist) {
+            $black = Tag::whereIn('name', $blacklist)->get()->pluck('id')->toArray();
+            $placeholders = implode(",", array_fill(0, count($black), '?'));
+            return $query->selectRaw("count(CASE WHEN (tag_id IN ($placeholders)) THEN 1 END) as blacklisted", $black);
+        })
+        ->when($mode, function ($query, $mode) {
+            return $query->where('mode', $mode);
         })
         ->when($author, function ($query, $author) {
             $user = User::where('username', $author)->first();
             return $query->where('user_id', $user->id);
         })
-        ->when($activeTags, function ($query, $activeTags) {
+        ->when($whitelist || $blacklist, function ($query, $a) {
+            return $query->groupBy('id');
+        })
+        ->when($whitelist, function ($query, $whitelist) {
             // Only get results which match *all* tags;
-            return $query->groupBy('id')->having('total', count($activeTags));
+            return $query->having('whitelisted', count($whitelist));
+        })
+        ->when($blacklist, function($query, $a) {
+            return $query->having('blacklisted', 0);
         })
         ->get()
         ->pluck('id')
