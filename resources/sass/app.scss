@@ -1,10 +1,10 @@
+@import "bootstrap/scss/functions";
 @import 'variables';
-@import 'bootstrap-material-design/scss/bootstrap-material-design';
-@import 'magnific-popup/dist/magnific-popup';
-@import 'font-awesome/css/font-awesome';
-@import 'select2';
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
 
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import 'magnific-popup/dist/magnific-popup';
+@import 'select2';
 
 body {
     overflow-y: scroll;
@@ -44,20 +44,16 @@ body {
 
 @import 'mixins';
 @import 'header';
+@import 'landing';
 @import 'mission';
 @import 'pulse';
-@import 'notifications';
 @import 'atwho';
 @import 'jr';
 
-.navbar
-    .navbar-nav
-    .nav-item.dropdown
-    .dropdown-menu
-    .list-group
-    .list-group-item.active
-    .list-group-item-text {
-    color: rgba(255, 255, 255, 0.75) !important;
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1140px;
+    }
 }
 
 main {
@@ -134,42 +130,17 @@ a {
     width: 100%;
 }
 
-.nav.navbar-nav {
-    display: block !important;
-
-    div.pull-left,
-    div.pull-right {
-        .nav-item {
-            .nav-link {
-                position: relative;
-            }
-
-            .dropdown-menu {
-                position: absolute;
-            }
-        }
-    }
-
-    div.pull-left {
-        .nav-item {
-            .dropdown-menu {
-                left: 0;
-                right: auto;
-            }
-        }
-    }
-
-    div.pull-right {
-        .nav-item {
-            .dropdown-menu {
-                right: 0;
-                left: auto;
-            }
-        }
-    }
-}
-
 .modal-header,
 .card {
     display: block;
+}
+
+.card.application-card {
+    border: 0;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+.list-group-item-text {
+    font-weight: 400;
+    line-height: 1.5rem;
 }

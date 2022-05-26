@@ -30,16 +30,12 @@
     });
 </script>
 
-<div class="row">
-    <div class="col-md-12 p-x-3 p-t-1">
-        <a href="javascript:void(0)" class="btn btn-primary pull-right m-t-0 m-b-5" id="create-email">
-            <i class="fa fa-plus m-r-1"></i>
-            Create
-        </a>
-    </div>
-</div>
+<a href="javascript:void(0)" class="btn btn-primary float-end mt-0 mb-3" id="create-email">
+    <i class="fa fa-plus me-1"></i>
+    Create
+</a>
 
-<div class="list-group">
+<div class="list-group list-group-flush float-end">
     @foreach ($emails as $email)
         <a href="javascript:void(0)" class="list-group-item list-group-item-action email-item jr-item" data-id="{{ $email->id }}">
         <span class="jr-item-title">{{ $email->subject }}</span>

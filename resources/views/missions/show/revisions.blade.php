@@ -1,31 +1,22 @@
-<li class="nav-item dropdown">
-    <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
+<li class="nav-item dropdown hidden-sm-down">
+    <a class="nav-link dropdown-toggle" id="revisionDropdown" data-bs-toggle="dropdown" href="javascript:void(0)" role="button" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-history"></i>
     </a>
 
-    <div class="dropdown-menu" style="width: 20rem">
-        <div class="list-group pull-left w-100">
+    <ul class="dropdown-menu" aria-labelledby="revisionDropdown" style="width: 20rem">
+        <div class="list-group list-group-flush float-start w-100">
             @if ($mission->revisions->isEmpty())
-                <p class="text-xs-center text-muted p-y-2 m-b-0">No revisions have been made!</p>
+                <li><p class="text-center text-muted py-2 mb-0">No revisions have been made!</p></li>
             @else
                 @foreach ($mission->revisions as $revision)
-                    <a
-                        href="javascript:void(0)"
-                        class="list-group-item notification-item"
-                        title="{{ $revision->created_at }}"
-                        style="text-decoration: none !important;cursor: default;">
-                        <span class="notification-image" style="'background-image: url('{{ $revision->user->avatar }}')"></span>
-
-                        <p class="list-group-item-text notification-text">
-                            Updated by {{ $revision->user->username }}
-                        </p>
-
-                        <p class="list-group-item-text notification-subtext">
+                    <li class="list-group-item-text my-1" title="{{ $revision->created_at }}" style="text-decoration: none !important;cursor: default;">
+                        <div class="ms-3 me-auto">
+                            <div class="fw-bold">{{ $revision->user->username }}</div>
                             {{ $revision->created_at->diffForHumans() }}
-                        </p>
-                    </a>
+                        </div>
+                    </li>
                 @endforeach
             @endif
         </div>
-    </div>
+    </ul>
 </li>

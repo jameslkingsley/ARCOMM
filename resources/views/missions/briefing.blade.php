@@ -1,3 +1,9 @@
+@if ($mission->briefingLocked($faction))
+    <div class="alert alert-warning float-start w-100 mt-2" role="alert">
+        <strong>This briefing is locked!</strong> Only the mission maker and testers can see it.
+    </div>
+@endif
+
 @if ($mission->isMine() || auth()->user()->can('manage-missions'))
     <script>
         $(document).ready(function(e) {
@@ -30,10 +36,10 @@
         });
     </script>
 
-    <div class="pull-left w-100">
+    <div class="float-start w-100">
         <a
             href="javascript:void(0)"
-            class="btn btn-primary pull-right m-t-3"
+            class="btn btn-primary float-end mt-3"
             id="lock-briefing"
             data-faction="{{ $faction }}"
             data-id="{{ $mission->id }}"
@@ -43,13 +49,7 @@
     </div>
 @endif
 
-@if ($mission->briefingLocked($faction))
-    <div class="alert alert-warning pull-left w-100 m-t-2" role="alert">
-        <strong>This briefing is locked!</strong> Only the mission maker and testers can see it.
-    </div>
-@endif
-
-<div class="pull-left w-100 m-t-3">
+<div class="float-start w-100 mt-3">
     @foreach ($mission->briefing($faction) as $subject)
         <h5>{{ $subject->title }}</h5>       
 

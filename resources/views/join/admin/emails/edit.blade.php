@@ -49,9 +49,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 <h4 class="modal-title">Edit Email Template</h4>
             </div>
@@ -62,8 +60,8 @@
                     @include('join.admin.emails.form')
 
                     @if (!$email->locked)
-                        <button class="btn btn-danger pull-left m-t-3" id="delete-email">
-                            <i class="fa fa-trash m-r-2"></i>
+                        <button class="btn btn-danger float-start mt-3" id="delete-email">
+                            <i class="fa fa-trash me-2"></i>
                             Delete
                         </button>
                     @endif
@@ -71,7 +69,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="email-modal-save">Save Changes</button>
             </div>
         </div>

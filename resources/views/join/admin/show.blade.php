@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="container">
-        <div class="card p-a-3">
+        <div class="card application-card p-3 mb-3">
             @can('manage-applications')
                 <script>
                     $(document).ready(function(e) {
@@ -35,7 +35,7 @@
                 </script>
 
                 <button
-                    class="btn btn-secondary pull-right"
+                    class="btn btn-secondary float-end"
                     type="button"
                     title="Choose an email to send"
                     id="send-app-email">
@@ -46,9 +46,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
 
                                 <h4 class="modal-title">Email {{ $jr->name }}</h4>
                             </div>
@@ -58,7 +56,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary" id="email-modal-send">Send</button>
                             </div>
                         </div>
@@ -67,7 +65,7 @@
             @endcan
 
             @can('manage-applications')
-                <div id="status" class="pull-right">
+                <div id="status" class="float-end me-3">
                     @include('join.admin.status', [
                         'joinStatuses' => $joinStatuses,
                         'jr' => $jr
@@ -77,7 +75,7 @@
 
             <h2>{{ $jr->name }}</h2>
 
-            <table class="table table-sm no-border pull-left" style="margin: 15px 0 30px 0">
+            <table class="table table-sm no-border float-start" style="margin: 15px 0 30px 0">
                 <tr>
                     <td width="50%">
                         <i class="jr-icon fa fa-envelope"></i>
@@ -85,26 +83,26 @@
                     </td>
 
                     <td width="50%" class="{{ ($jr->age) ? 'text-success' : 'text-danger' }}">
-                        <i class="jr-icon fa fa-calendar"></i>
+                        <i class="jr-icon fa-regular fa-calendar-days"></i>
                         {{ $jr->age }}
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <i class="jr-icon fa fa-map-marker"></i>
+                        <i class="jr-icon fa-solid fa-location-dot"></i>
                         {{ $jr->location }}
                     </td>
 
                     <td>
-                        <i class="jr-icon fa fa-steam-square"></i>
+                        <i class="jr-icon fa-brands fa-steam-square"></i>
                         <a href="{{ $jr->steam }}" target="_newtab">Steam Account</a>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="{{ ($jr->available) ? 'text-success' : 'text-danger' }}">
-                        <i class="jr-icon fa fa-clock-o"></i>
+                        <i class="jr-icon fa-regular fa-clock"></i>
                         {{ ($jr->available) ? 'Available ' : 'Unavailable ' }} {{ env('SITE_OP_DAY') }}
                     </td>
 
@@ -121,7 +119,7 @@
                     </td>
 
                     <td>
-                        <i class="jr-icon fa fa-globe"></i>
+                        <i class="jr-icon fa-solid fa-earth-americas"></i>
                         {{ $jr->source->name }}
                         @if (strlen($jr->source_text))
                             ({{ $jr->source_text }})
@@ -130,17 +128,17 @@
                 </tr>
             </table>
 
-            <h5 class="m-t-3">Arma Experience</h5>
+            <h5 class="mt-3">Arma Experience</h5>
             <p>{!! $jr->experience !!}</p>
 
-            <h5 class="m-t-3">About</h5>
-            <p class="m-b-0">{!! $jr->bio !!}</p>
+            <h5 class="mt-3">About</h5>
+            <p class="mb-0">{!! $jr->bio !!}</p>
         </div>
 
-        <div class="card p-a-3">
+        <div class="card application-card p-3">
             <h4>Emails</h4>
 
-            <div class="list-group m-b-0 p-b-0" id="email-submissions">
+            <div class="list-group list-group-flush mb-0 pb-0" id="email-submissions">
                 @include('join.admin.email-submissions')
             </div>
         </div>

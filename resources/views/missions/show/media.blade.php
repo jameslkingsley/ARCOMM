@@ -84,19 +84,19 @@
     });
 </script>
 
-<div class="pull-left w-100 m-b-2" style="padding: .5rem .5rem 0 .5rem; border: 1px">
-    <a href="javascript:void(0)" class="mission-media-video-upload btn btn-primary btn-raised pull-right m-l-1" data-mission="{{ $mission->id }}">
-        <i class="fa fa-twitch m-r-1"></i> Clip
+<div class="float-start w-100 mb-2" style="padding: .5rem .5rem 0 .5rem; border: 1px">
+    <a href="javascript:void(0)" class="mission-media-video-upload btn btn-primary btn-raised float-end mx-1" data-mission="{{ $mission->id }}">
+        <i class="fa-brands fa-twitch me-1"></i> Clip
     </a>
 
-    <a href="javascript:void(0)" class="mission-media-upload btn btn-primary btn-raised pull-right">
-        <i class="fa fa-picture-o m-r-1"></i> Photo
+    <a href="javascript:void(0)" class="mission-media-upload btn btn-primary btn-raised float-end mx-1">
+        <i class="fa-regular fa-image me-1"></i> Photo
     </a>
 </div>
 
-<div class="pull-left w-100 mission-media">
+<div class="float-start w-100 mission-media">
     @if ($mission->photos()->isEmpty() && $mission->videos->isEmpty())
-        <p class="text-xs-center text-muted">Upload a photo for the mission banner!</p>
+        <p class="text-center text-muted">Upload a photo for the mission banner!</p>
     @else
         @foreach ($mission->photos() as $media)
             @include('missions.media.photo', [
@@ -106,7 +106,7 @@
         @endforeach
 
         @if (!$mission->videos->isEmpty() && !$mission->photos()->isEmpty())
-            <p class="text-xs-center text-muted">Twitch Clips</p>
+            <p class="text-center text-muted">Twitch Clips</p>
         @endif
         
         @foreach ($mission->videos as $video)

@@ -144,8 +144,8 @@
     </div>
 </div>
 
-<div class="filter-div">
-    <button type="button" class="btn btn-primary btn-raised float-right" data-toggle="modal" data-target="#filter_modal">
+<div class="filter-div me-auto">
+    <button type="button" class="btn btn-primary btn-raised float-end" data-bs-toggle="modal" data-bs-target="#filter_modal">
         Filter
     </button>
 </div>
@@ -162,8 +162,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="clear_btn">Clear</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="filter_btn">Apply</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="clear_btn">Clear</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="filter_btn">Apply</button>
             </div>
         </div>
     </div>

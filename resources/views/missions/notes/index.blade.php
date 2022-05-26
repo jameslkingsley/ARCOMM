@@ -74,23 +74,23 @@
     @endforeach
 </div>
 
-<div class="mission-comments-form pull-left w-100">
+<div class="mission-comments-form float-start w-100">
     <form method="post" id="submit-mission-comment">
         <input type="hidden" name="id" value="-1'">
 
         <textarea
-            class="form-control-editable form-control mission-aar-textarea m-b-3 m-t-3"
+            class="form-control-editable form-control mission-aar-textarea my-3"
             id="submit-mission-comment-text-real"
             name="text">{!! (!is_null($mission->draft())) ? $mission->draft()->text : '' !!}</textarea>
 
         <a
-            class="pull-left m-l-3"
+            class="float-start mx-3"
             style="font-weight:600"
             href="https://docs.google.com/document/d/1vxyQSLEjB23ZDdZGHClXrOxN90SHbu26bEUXjq7fqLE/view"
             target="_newtab">
             Mission Checklist
         </a>
 
-        <button type="submit" class="btn btn-raised btn-primary pull-right m-r-3">Submit</button>
+        <button type="submit" class="btn btn-raised btn-primary float-end mx-3">Submit</button>
     </form>
 </div>
