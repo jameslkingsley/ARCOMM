@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Missions;
 
 use App\Discord;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Missions\MissionNote;
 use App\Models\Missions\Mission;
+use App\Models\Missions\MissionNote;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
@@ -44,7 +46,7 @@ class NoteController extends Controller
      */
     public function index(Request $request, Mission $mission)
     {
-        if (!auth()->user()->can('test-missions') && !$mission->isMine()) {
+        if (!Gate::allows('test-mission', $mission)) {
             return redirect($mission->url());
         }
 
